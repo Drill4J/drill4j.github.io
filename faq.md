@@ -45,13 +45,13 @@ Also, you can download the [Postman collection](/assets/files/stable/drill-postm
 Yes, Drill supports https connection. [(https drill setup)](/https-drill-setup) 
 
 
-# Useful links
+# Useful Links
 
 [GitHub](https://github.com/Drill4J)
 
 [Contribute](https://contribute.epam.com/products/136)
 
-# Drill browser extension
+# Drill Browser Extension
 [https://github.com/Drill4J/browser-extension/releases](https://github.com/Drill4J/browser-extension/releases)
 
 It is a small software program that customizes a browsing experience. It enables users to tailor Chrome functionality and behavior to their preferences and needs
@@ -59,17 +59,17 @@ It is a small software program that customizes a browsing experience. It enable
 ![](https://user-images.githubusercontent.com/45354520/59715780-41f82880-921d-11e9-8727-bbf6d1c2ff94.png)
 
 
-# Deployment scheme
-![](/assets/img/d4j_img_wiki_Deployment_scheme.png)
+# Auto Testing Scheme
+![](/assets/img/Auto Testing Diagram@2x.png)
 
 
-# Agent and plugin decomposition
-![](/assets/img/d4j_img_AP_Decomposition.png)
+# Manual Testing Scheme
+![](/assets/img/Manual Testing Diagram@2x.png)
 
 
 
 
-## Development installation:
+## Development Installation:
 
 ### Front-end
 See [https://github.com/Drill4J/admin-ui/tree/develop/dev-guide](https://github.com/Drill4J/admin-ui/tree/develop/dev-guide)
