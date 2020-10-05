@@ -72,6 +72,68 @@ drill {
         </plugins>
     </build>
 ```
+For **Surefire** plugin add args to the main properties block
+```xml
+<properties>
+    <extraArgs>${argLine}</extraArgs> // expose to surfire if needed
+</properties>
+```
+and add to **Surefire** plugin
+```xml
+<argLine>-Dfile.encoding=UTF-8 ${extraArgs}</argLine>
+```
+or set drill **profile**
+```xml
+        <profile>
+            <id>drill</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>drill</id>
+                    <url>https://oss.jfrog.org/artifactory/list/oss-release-local</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.epam.drill.agent.runner</groupId>
+                        <artifactId>maven</artifactId>
+                        <version>0.2.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>autotest</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <drill>
+                                <version>0.9.1</version>
+                                <agentId>ExampleAgentId</agentId>
+                                <adminHost>localhost</adminHost>
+                                <adminPort>8090</adminPort>
+                                <logLevel>TRACE</logLevel>
+                                <logFile>drillLog.log</logFile>
+                            </drill>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <extraArgs>${argLine}</extraArgs> // expose to surfire if needed
+            </properties>
+        </profile>
+```
+### run it
+```cmd
+-P drill
+```
 
 ### Notes
 > If you use **remote** setup for UI autotests run (Selenium GRID, SELENOID etc.),  
