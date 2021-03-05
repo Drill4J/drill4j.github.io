@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[7],{77:function(o){o.exports=JSON.parse('{"allTagsPath":"/drill4j-website/blog/tags","slug":"facebook","name":"facebook","count":1,"permalink":"/drill4j-website/blog/tags/facebook"}')}}]);
