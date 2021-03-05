@@ -4,9 +4,18 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
 
-const features = [
+import styles from './styles.module.scss';
+import '../css/index.css';
+
+
+interface Feature {
+    title: string;
+    imageUrl: string;
+    description: React.ReactNode;
+}
+
+const features: Feature[] = [
   {
     title: 'Easy to Use',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
@@ -39,7 +48,7 @@ const features = [
   },
 ];
 
-function Feature({imageUrl, title, description}) {
+function Feature({imageUrl, title, description}: Feature) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx('col col--4', styles.feature)}>

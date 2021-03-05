@@ -1,0 +1,25 @@
+name: Bump version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 10
+      - run: git fetch
+      - name: Next Prerelease SemVer
+        id: next_semver
+        uses: Drill4J/semver-tag-action@v0.1.0
+        with:
+          type: prerelease
+      - name: Tag commit
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.TOKEN }}
+          tag: ${{ steps.next_semver.outputs.tag }}

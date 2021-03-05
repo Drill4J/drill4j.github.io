@@ -1,16 +1,16 @@
 module.exports = {
   title: 'My Site',
   tagline: 'The tagline of my site',
-  url: 'https://drill4j-website.github.io',
-  baseUrl: '/',
+  url: 'https://Drill4J.github.io',
+  baseUrl: '/drill4j-website/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'drill4j',
+  organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'Drill4J',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -24,7 +24,7 @@ module.exports = {
         },
         {to: 'blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/Drill4J',
           label: 'GitHub',
           position: 'right',
         },
@@ -86,15 +86,9 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -102,4 +96,5 @@ module.exports = {
       },
     ],
   ],
+  plugins: ['docusaurus-plugin-sass'],
 };
