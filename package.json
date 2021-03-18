@@ -13,15 +13,19 @@
     "tailwind:css": "tailwind build src/css/tailwind.css -c tailwind.config.js -o src/css/index.css"
   },
   "dependencies": {
+    "@docsearch/react": "^1.0.0-alpha.14",
     "@docusaurus/core": "2.0.0-alpha.70",
     "@docusaurus/preset-classic": "2.0.0-alpha.70",
     "@mdx-js/react": "^1.6.21",
+    "@types/react-instantsearch-dom": "^6.10.0",
+    "algoliasearch": "^4.8.6",
     "babel-plugin-macros": "^3.0.1",
     "clsx": "^1.1.1",
     "docusaurus-plugin-sass": "^0.1.11",
     "postcss": "^8.2.7",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-instantsearch-dom": "^6.10.3",
     "tailwindcss": "^2.0.3"
   },
   "browserslist": {
