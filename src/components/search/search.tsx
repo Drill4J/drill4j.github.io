@@ -20,7 +20,7 @@ interface HitProps {
 const Hit = ({ hit }: HitProps) => (
   <div
     className={clsx(
-      'px-2 py-1 border-b border-monochrome-dark-tint',
+      'px-2 py-1 border-b border-monochrome-medium-tint',
       'text-ellipsis font-regulars text-monochrome-black hover:bg-monochrome-medium-tint cursor-pointer',
     )}
     title={hit?.name}
@@ -52,7 +52,11 @@ export const Search = () => {
         <TextInput />
         <Configure hitsPerPage={4} distinct />
         {isOpen && createPortal(
-          <div ref={ref} className="absolute top-24 left-2 z-10 max-w-3xl border border-monochrome-medium-tint bg-monochrome-white">
+          <div
+            ref={ref}
+            className={clsx('absolute top-24 left-2 z-10 max-w-3xl',
+              'border border-monochrome-medium-tint bg-monochrome-white last:border-b-0')}
+          >
             <Hits hitComponent={Hit} />
           </div>,
           document.body,
