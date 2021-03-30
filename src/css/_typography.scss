@@ -1,0 +1,84 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+  color: map-get($monochrome, black);
+  font-weight: $bold;
+  font-size: 40px;
+  line-height: 56px;
+}
+
+h2 {
+  color: map-get($monochrome, black);
+  font-weight: $semibold;
+  font-size: 28px;
+  line-height: 40px;
+}
+
+h3 {
+  color: map-get($monochrome, black);
+  font-weight: $semibold;
+  font-size: 24px;
+  line-height: 40px;
+}
+
+h4 {
+  color: map-get($monochrome, black);
+  font-weight: $semibold;
+  font-size: 20px;
+  line-height: 32px;
+}
+
+//body text
+p {
+  color: map-get($monochrome, black);
+  font-weight: $normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+//service text
+em {
+  color: map-get($monochrome, black);
+  font-style: italic;
+  font-weight: $normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+//inline link
+a {
+  outline: none;
+  text-decoration: none;
+  font-weight: $semibold;
+  font-size: 16px;
+  line-height: 24px;
+  color: map-get($primary-blue, default);
+
+  &:visited {
+    color: #632ed1;
+  }
+
+  &:hover {
+    color: map-get($primary-blue, medium-tint);
+    text-decoration-line: underline;
+  }
+}
+
+//console text
+code {
+  font-family: 'Roboto', sans-serif;
+  font-weight: $normal;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+strong {
+  line-height: 24px;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+}
