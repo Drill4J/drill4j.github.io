@@ -10,6 +10,10 @@ docker-compose up -d
 
 Drill4J is “feature-on-demand” tool for real-time application profiling that does not affect codebase. It provides the ability to make white box functional testing, via access to application instructions and memory.
 
+<img src="/assets/img/image.png" alt="My awesome image"/>
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem temporibus odit, eius dicta repellat illo cupiditate quis fuga, quo placeat, ullam ex saepe ab velit. Corrupti hic quas voluptates tempore! 
+
 ## Different code blocks
 
 ```java
