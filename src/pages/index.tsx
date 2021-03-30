@@ -7,6 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './styles.module.scss';
 import '../css/index.css';
+import { Card } from '../components/card';
 
 interface Feature {
   title: string;
