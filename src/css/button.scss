@@ -3,6 +3,7 @@
 
 .button-primary {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 12px 48px;
   border-radius: 8px;
@@ -19,12 +20,20 @@
     background-color: map-get($primary-blue, medium-tint);
     color: map-get($monochrome, white);
     text-decoration: none;
+
+    svg {
+      fill: map-get($monochrome, white);
+    }
   }
 
   &:active {
     border: 2px solid map-get($primary-blue, shade);
     background-color: map-get($primary-blue, shade);
     color: map-get($monochrome, white);
+  }
+
+  svg {
+    fill: map-get($monochrome, white);
   }
 }
 
@@ -33,6 +42,10 @@
   border: 2px solid map-get($monochrome, white);
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default);
+
+  svg {
+    fill: map-get($primary-blue, default);
+  }
 }
 
 .button-ghost {
@@ -40,4 +53,8 @@
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default);
+
+  svg {
+    fill: map-get($primary-blue, default);
+  }
 }

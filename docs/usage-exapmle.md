@@ -41,9 +41,9 @@ fun main(args: Array<String>) {
     <img src="../static/img/download-icon.svg" alt=""/>
     Try demo
 </button> <br/>
-<button className="button-secondary">
+<button className="button-secondary">Try demo</button> <br/>
+<button className="button-ghost">
     <Download/>
     Try demo
 </button> <br/>
-<button className="button-ghost">Try demo</button> <br/>
 <a className="button-primary"> asdad</a>
