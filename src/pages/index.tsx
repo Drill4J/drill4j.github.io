@@ -5,6 +5,8 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
+import { AdditionalInformation } from '../components';
+
 import styles from './styles.module.scss';
 import '../css/index.css';
 
