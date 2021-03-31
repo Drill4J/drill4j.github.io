@@ -1,3 +1,8 @@
+---
+id: usage-exapmle
+title: usage-exapmle
+---
+
 ## Step 1. Run Drill4J
 
 Start Drill4J using the following command in the terminal:
@@ -31,3 +36,7 @@ fun main(args: Array<String>) {
 ```ts
   const greeting = () => console.log("Hello, world!");
 ```
+<button>Try demo</button>
+<button className="button-secondary">Try demo</button>
+<button className="button-ghost">Try demo</button>
+<a className="button-primary"> asdad</a>

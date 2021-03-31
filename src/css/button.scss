@@ -1,43 +1,47 @@
-.button {
-  display: inline-block;
+@import "colors";
+@import "fonts";
+
+.button-primary {
+  display: flex;
+  gap: 8px;
   padding: 12px 48px;
   border-radius: 8px;
-  color: #FFFFFF;
-  font-family: 'OpenSans', sans-serif;
+  border: 2px solid map-get($primary-blue, default);
+  background-color: map-get($primary-blue, default);
+  color: map-get($monochrome, white);
+  font-weight: $bold;
   font-size: 16px;
-  font-weight: 700;
   line-height: 24px;
   cursor: pointer;
 
   &:hover {
-    border: 2px solid #3399FF;
-    background: #3399FF;
-    color: #FFFFFF;
+    border: 2px solid map-get($primary-blue, medium-tint);
+    background-color: map-get($primary-blue, medium-tint);
+    color: map-get($monochrome, white);
+    text-decoration: none;
   }
 
   &:active {
-    border: 2px solid #006CD8;
-    background: #006CD8;
-    color: #FFFFFF;
+    border: 2px solid map-get($primary-blue, shade);
+    background-color: map-get($primary-blue, shade);
+    color: map-get($monochrome, white);
   }
 }
 
-.button-primary {
-  @extend .button;
-  border: 2px solid #007FFF;
-  background: #007FFF;
+button {
+  @extend .button-primary;
 }
 
 .button-secondary {
-  @extend .button;
-  border: 2px solid #FFFFFF;
-  background: #FFFFFF;
-  color: #007FFF;
+  @extend .button-primary;
+  border: 2px solid map-get($monochrome, white);
+  background-color: map-get($monochrome, white);
+  color: map-get($primary-blue, default);
 }
 
-.button-secondary-ghost {
-  @extend .button;
-  border: 2px solid #007FFF;
-  background: #FFFFFF;
-  color: #007FFF;
+.button-ghost {
+  @extend .button-primary;
+  border: 2px solid map-get($primary-blue, default);
+  background-color: map-get($monochrome, white);
+  color: map-get($primary-blue, default);
 }

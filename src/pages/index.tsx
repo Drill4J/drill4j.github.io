@@ -6,7 +6,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './styles.module.scss';
-import '../css/button.scss';
 import '../css/index.css';
 
 interface Feature {
@@ -85,9 +84,6 @@ function Home() {
             >
               Get Started
             </Link>
-            <button className="button-primary">Try demo</button>
-            <button className="button-secondary">Try demo</button>
-            <button className="button-secondary-ghost">Try demo</button>
           </div>
         </div>
       </header>
