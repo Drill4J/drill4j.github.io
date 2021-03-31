@@ -9,6 +9,9 @@ module.exports = {
   organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {
+    prism: {
+      additionalLanguages: ['java', 'kotlin'],
+    },
     navbar: {
       title: 'Drill4J',
       logo: {
@@ -91,7 +94,7 @@ module.exports = {
           showReadingTime: true,
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/custom.scss'),
         },
       },
     ],

@@ -1,0 +1,5 @@
+.prism-code {
+  & > div {
+    background-color: map-get($monochrome, black) !important;
+  }
+}
