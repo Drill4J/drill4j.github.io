@@ -2,6 +2,7 @@
 id: usage-exapmle
 title: usage-exapmle
 ---
+import Download from '../static/img/download-icon.svg';
 
 ## Step 1. Run Drill4J
 
@@ -36,7 +37,13 @@ fun main(args: Array<String>) {
 ```ts
   const greeting = () => console.log("Hello, world!");
 ```
-<button>Try demo</button>
-<button className="button-secondary">Try demo</button>
-<button className="button-ghost">Try demo</button>
+<button className="button-primary">
+    <img src="../static/img/download-icon.svg" alt=""/>
+    Try demo
+</button> <br/>
+<button className="button-secondary">
+    <Download/>
+    Try demo
+</button> <br/>
+<button className="button-ghost">Try demo</button> <br/>
 <a className="button-primary"> asdad</a>

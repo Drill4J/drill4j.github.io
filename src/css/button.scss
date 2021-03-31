@@ -28,10 +28,6 @@
   }
 }
 
-button {
-  @extend .button-primary;
-}
-
 .button-secondary {
   @extend .button-primary;
   border: 2px solid map-get($monochrome, white);
