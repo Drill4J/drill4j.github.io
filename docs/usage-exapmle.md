@@ -4,6 +4,7 @@ title: usage-exapmle
 ---
 
 import DownloadIcon from '../static/img/download-icon.svg';
+import { Card } from '../src/components';
 
 ## Step 1. Run Drill4J
 
@@ -48,3 +49,5 @@ fun main(args: Array<String>) {
     Try demo
 </button> <br/>
 <a className="button-primary"> asdad</a>
+
+<Card iconUrl={'img/net-logo.svg'}>.Net agent</Card>

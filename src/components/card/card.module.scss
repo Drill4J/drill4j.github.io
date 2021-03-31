@@ -1,3 +1,5 @@
+@import "../../css/index";
+
 .card {
   display: flex;
   align-items: center;
@@ -6,20 +8,29 @@
   font-family: "OpenSans-Semibold", sans-serif;
   font-size: 18px;
   line-height: 24px;
-  text-align: left;
-  color: #687481;
-  background: #fff;
+  color: map-get($monochrome, default);
+  background-color: map-get($monochrome, white);
   box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3);
   border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 200ms ease, transform 200ms ease;
 
   &:hover{
     outline: none;
     text-decoration: none;
-    color: #687481;
+    color: map-get($monochrome, default);
     box-shadow: 0px 6px 16px rgba(27, 25, 27, 0.16);
+    transform: scale(1.01);
   }
+}
 
-  &__external-link-icon {
-    margin-left: auto;
-  }
+.icon {
+  width: 48px;
+  height: 48px;
+}
+
+.externalLinkIcon {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
 }

@@ -7,19 +7,20 @@ interface Props {
   iconUrl: string;
   children: string;
   href: string;
-  altTextForIcon: string;
 }
 
 export const Card = ({
-  children, iconUrl, href, altTextForIcon,
+  children, iconUrl, href,
 }: Props) => (
   <a href={href} className={styles.card}>
-    <img src={useBaseUrl(iconUrl)} alt={altTextForIcon} />
+    <span
+      className={styles.icon}
+      style={{ backgroundImage: `url(${useBaseUrl(iconUrl)})` }}
+    />
     {children}
-    <img
-      className={styles['card__external-link-icon']}
-      src={useBaseUrl('img/external-link.svg')}
-      alt="external link icon"
+    <span
+      className={styles.externalLinkIcon}
+      style={{ backgroundImage: `url(${useBaseUrl('img/external-link.svg')})` }}
     />
   </a>
 );
