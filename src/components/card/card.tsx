@@ -1,5 +1,6 @@
 import React from 'react';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+
+import { Icon } from '../icon';
 
 import styles from './card.module.scss';
 
@@ -13,14 +14,8 @@ export const Card = ({
   children, iconSrc, href,
 }: Props) => (
   <a href={href} className={styles.card}>
-    <span
-      className={styles.icon}
-      style={{ backgroundImage: `url(${useBaseUrl(iconSrc)})` }}
-    />
+    <Icon src={iconSrc} width={48} height={48} />
     {children}
-    <span
-      className={styles.externalLinkIcon}
-      style={{ backgroundImage: `url(${useBaseUrl('img/external-link.svg')})` }}
-    />
+    <Icon src="img/external-link.svg" className={styles.externalLinkIcon} />
   </a>
 );

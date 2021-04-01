@@ -48,6 +48,6 @@ fun main(args: Array<String>) {
     <DownloadIcon/>
     Try demo
 </button> <br/>
-<a className="button-primary"> asdad</a>
+<a className="button-primary">Link with button styles</a> <br/>
 
 <Card iconSrc={'img/net-logo.svg'}>.Net agent</Card>
