@@ -50,4 +50,4 @@ fun main(args: Array<String>) {
 </button> <br/>
 <a className="button-primary"> asdad</a>
 
-<Card iconUrl={'img/net-logo.svg'}>.Net agent</Card>
+<Card iconSrc={'img/net-logo.svg'}>.Net agent</Card>

@@ -4,18 +4,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './card.module.scss';
 
 interface Props {
-  iconUrl: string;
+  iconSrc: string;
   children: string;
   href: string;
 }
 
 export const Card = ({
-  children, iconUrl, href,
+  children, iconSrc, href,
 }: Props) => (
   <a href={href} className={styles.card}>
     <span
       className={styles.icon}
-      style={{ backgroundImage: `url(${useBaseUrl(iconUrl)})` }}
+      style={{ backgroundImage: `url(${useBaseUrl(iconSrc)})` }}
     />
     {children}
     <span
