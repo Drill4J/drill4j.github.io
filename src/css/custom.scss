@@ -18,3 +18,8 @@
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
 }
+
+.react-toggle {
+  visibility: hidden;
+  position: absolute;
+}
