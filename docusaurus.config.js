@@ -111,7 +111,7 @@ module.exports = {
               href: '#',
             },
             {
-              label: 'Chrome Browser Extension',
+              label: 'Chrome Extension',
               href: '#',
             },
           ],
