@@ -9,6 +9,10 @@ module.exports = {
   organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
     prism: {
       additionalLanguages: ['java', 'kotlin'],
     },
