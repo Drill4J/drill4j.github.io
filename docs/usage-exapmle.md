@@ -2,7 +2,8 @@
 id: usage-exapmle
 title: usage-exapmle
 ---
-import Download from '../static/img/download-icon.svg';
+
+import DownloadIcon from '../static/img/download-icon.svg';
 
 ## Step 1. Run Drill4J
 
@@ -38,12 +39,12 @@ fun main(args: Array<String>) {
   const greeting = () => console.log("Hello, world!");
 ```
 <button className="button-primary">
-    <img src="../static/img/download-icon.svg" alt=""/>
+    <DownloadIcon/>
     Try demo
 </button> <br/>
 <button className="button-secondary">Try demo</button> <br/>
 <button className="button-ghost">
-    <Download/>
+    <DownloadIcon/>
     Try demo
 </button> <br/>
 <a className="button-primary"> asdad</a>
