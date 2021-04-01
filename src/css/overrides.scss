@@ -149,8 +149,12 @@
     height: 48px;
   }
 
+  &__items {
+    display: flex;
+    gap: 24px;
+  }
+
   &__link {
     padding: 0;
-    margin-right: 24px;
   }
 }
