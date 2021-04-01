@@ -1,0 +1,60 @@
+@import "colors";
+@import "fonts";
+
+.button-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 48px;
+  border-radius: 8px;
+  border: 2px solid map-get($primary-blue, default);
+  background-color: map-get($primary-blue, default);
+  color: map-get($monochrome, white);
+  font-weight: $bold;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid map-get($primary-blue, medium-tint);
+    background-color: map-get($primary-blue, medium-tint);
+    color: map-get($monochrome, white);
+    text-decoration: none;
+
+    svg {
+      fill: map-get($monochrome, white);
+    }
+  }
+
+  &:active {
+    border: 2px solid map-get($primary-blue, shade);
+    background-color: map-get($primary-blue, shade);
+    color: map-get($monochrome, white);
+  }
+
+  svg {
+    fill: map-get($monochrome, white);
+  }
+}
+
+.button-secondary {
+  @extend .button-primary;
+  border: 2px solid map-get($monochrome, white);
+  background-color: map-get($monochrome, white);
+  color: map-get($primary-blue, default);
+
+  svg {
+    fill: map-get($primary-blue, default);
+  }
+}
+
+.button-ghost {
+  @extend .button-primary;
+  border: 2px solid map-get($primary-blue, default);
+  background-color: map-get($monochrome, white);
+  color: map-get($primary-blue, default);
+
+  svg {
+    fill: map-get($primary-blue, default);
+  }
+}
