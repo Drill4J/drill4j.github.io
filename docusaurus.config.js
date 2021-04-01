@@ -38,7 +38,7 @@ module.exports = {
           <span class="footer__copyright__info">
             Sponsored by
             <a href="https://www.epam-group.ru/" target="_blank" rel="noreferrer noopener">
-              <img src="img/epam-footer-logo.svg" alt="Epam" />
+              <img src="img/epam-logo.svg" alt="Epam" />
             </a>
             Licensed under Apache v2.0
           </span>
@@ -58,7 +58,7 @@ module.exports = {
               href="#" target="_blank" rel="noreferrer noopener"
             ></a>
             <a 
-              class="footer__copyright__social-links__you-tube"
+              class="footer__copyright__social-links__youtube"
               href="https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured"
               target="_blank" rel="noreferrer noopener"
             ></a>
@@ -71,7 +71,7 @@ module.exports = {
               html: `
               <div class="footer__item__logo">
                 <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
-                  <img src="img/logo-section-footer.svg" alt="drill4j github" />
+                  <img src="img/drill4j-logo-grayscale.svg" alt="drill4j github" />
                 </a>
               </div>
                 `,
@@ -100,19 +100,19 @@ module.exports = {
           items: [
             {
               label: 'Java Agent',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              href: '#',
             },
             {
               label: 'JS Agent',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: '#',
             },
             {
               label: 'Auto tests Agent',
-              href: 'https://twitter.com/docusaurus',
+              href: '#',
             },
             {
               label: 'Chrome Browser Extension',
-              href: 'https://twitter.com/docusaurus',
+              href: '#',
             },
           ],
         },
@@ -121,11 +121,11 @@ module.exports = {
           items: [
             {
               label: 'About',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              href: '#',
             },
             {
               label: 'Contacts us',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://t.me/drill4j',
             },
           ],
         },
