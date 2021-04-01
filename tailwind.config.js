@@ -6,6 +6,18 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '960px',
+        xl: '960px',
+        '2xl': '960px',
+      },
+      container: {
+        padding: {
+          DEFAULT: '0',
+        },
+      },
       spacing: {
         21: '5.25rem',
         27: '6.75rem',
