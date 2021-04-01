@@ -1,3 +1,11 @@
+---
+id: usage-exapmle
+title: usage-exapmle
+---
+
+import DownloadIcon from '../static/img/download-icon.svg';
+import { Card } from '../src/components';
+
 ## Step 1. Run Drill4J
 
 Start Drill4J using the following command in the terminal:
@@ -31,3 +39,15 @@ fun main(args: Array<String>) {
 ```ts
   const greeting = () => console.log("Hello, world!");
 ```
+<button className="button-primary">
+    <DownloadIcon/>
+    Try demo
+</button> <br/>
+<button className="button-secondary">Try demo</button> <br/>
+<button className="button-ghost">
+    <DownloadIcon/>
+    Try demo
+</button> <br/>
+<a className="button-primary">Link with button styles</a> <br/>
+
+<Card iconSrc={'img/net-logo.svg'}>.Net agent</Card>
