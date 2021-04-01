@@ -13,23 +13,29 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin'],
     },
     navbar: {
-      title: 'Drill4J',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Drill4J Logo',
+        src: 'img/drill4J-logo.svg',
       },
       items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
-        },
-        { to: 'blog', label: 'Blog', position: 'left' },
-        {
-          href: 'https://github.com/Drill4J',
-          label: 'GitHub',
+          label: 'Installation',
           position: 'right',
+        },
+        {
+          to: 'docs/',
+          activeBasePath: 'docs',
+          label: 'Documentation',
+          position: 'right',
+        },
+        {
+          to: 'docs/',
+          activeBasePath: 'docs',
+          label: 'Try demo',
+          position: 'right',
+          className: 'button-primary ml-4',
         },
       ],
     },
