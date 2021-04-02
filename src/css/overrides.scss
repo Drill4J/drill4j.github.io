@@ -10,34 +10,116 @@
   }
 }
 
+.footer {
+  padding: 0;
+  background-color: map-get($monochrome, light-tint);
+
+  &__title {
+    margin-bottom: 12px;
+    font-weight: $bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: map-get($monochrome, default);
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: 221px repeat(3, 140px);
+    gap: 106px;
+    padding: 56px 0;
+    margin: 0;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 425px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__item {
+    margin-bottom: 8px;
+
+    a {
+      @extend %link;
+    }
+  }
+
+  &__copyright {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 72px;
+    border-top: solid 1px map-get($monochrome, medium-tint);
+
+    &__info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      line-height: 24px;
+      color: map-get($monochrome, default);
+
+      @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    &__social-links {
+      display: flex;
+      gap: 16px;
+
+      a {
+        width: 24px;
+        height: 24px;
+      }
+
+      &__git-hub {
+        background-image: url('/static/img/git-hub.svg');
+      }
+
+      &__telegram {
+        background-image: url('/static/img/telegram.svg');
+      }
+
+      &__twiter {
+        background-image: url('/static/img/twiter.svg');
+      }
+
+      &__youtube {
+        background-image: url('/static/img/youtube.svg');
+      }
+    }
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px 0;
+    }
+  }
+}
+
+.row .col {
+  padding: 0;
+}
+
 //header styles
 .navbar {
   height: 88px;
   padding: 0;
 
+  @media (max-width: 996px) {
+    .container {
+      padding: 0 32px;
+    }
+  }
+
   &__inner {
     display: flex;
     margin: 0 auto;
-
-    @media (min-width: 640px) {
-      max-width: 640px;
-    }
-
-    @media (min-width: 768px) {
-      max-width: 768px;
-    }
-
-    @media (min-width: 1024px) {
-      max-width: 960px;
-    }
-
-    @media (min-width: 1280px) {
-      max-width: 960px;
-    }
-
-    @media (min-width: 1536px) {
-      max-width: 960px;
-    }
   }
 
   a {
@@ -55,5 +137,11 @@
 
   &__link {
     padding: 0;
+
+    &:last-child {
+      @media (max-width: 996px) {
+        display: none;
+      }
+    }
   }
 }
