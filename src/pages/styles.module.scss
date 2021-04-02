@@ -1,37 +1,161 @@
-/* stylelint-disable docusaurus/copyright-header */
+@import "../css/index";
 
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
+.mainPageWrapper {
+  h2 {
+    font-size: 32px;
+    font-weight: $bold;
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.integrateStepsWrapper {
+  padding: 72px 0;
+  background-color: map-get($monochrome, black);
+  text-align: center;
+
+  h4 {
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+
+  h2, h4 {
+    color: map-get($monochrome, white);
+  }
+
+  p {
+    font-size: 16px;
+    color: map-get($monochrome, default);
+  }
+
+  .integrateStepNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    border-radius: 100%;
+    color: map-get($monochrome, white);
+    font-size: 18px;
+    font-weight: $bold;
+  }
+
+  .bgBlueGradient {
+    background: linear-gradient(172deg, #68ADF4 6%, #3F88E2 94%);
+  }
+}
+
+.quickStart {
+  padding: 64px 0 56px 0;
+  background-image: url("/static/img/quick-start.png");
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: $bold;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: $normal;
+  }
+
+  h2, h3 {
+    color: map-get($monochrome, white);
+  }
+}
+
+.commercialServices {
+  h3 {
+    font-size: 24px;
+    font-weight: $bold;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: $normal;
+    color: map-get($monochrome, default);
+  }
 }
 
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
-}
+  h3 {
+     font-weight: $bold;
+     color: map-get($monochrome, shade)
+  }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+  p {
+    font-size: 18px;
+  }
+
+  .feature {
+    position: relative;
+    font-weight: $bold;
+    font-size: 18px;
+    color: map-get($monochrome, default);
+    list-style: none;
+    line-height: 24px;
+    margin-bottom: 16px;
+
+    &::before {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .basicFeature {
+    @extend .feature;
+
+    &::before {
+      content: url("/static/img/small-done.svg");
+      top: 50%;
+      transform: translateY(-50%);
+      left: -32px;
+      padding-bottom: 4px;
+      background-color: map-get($primary-blue, medium-tint);
+    }
+  }
+
+  .individualFeatures {
+    box-shadow: 0 20px 64px rgba(16, 33, 64, 0.12);
+    border-radius: 16px;
+
+    p {
+      max-height: 48px;
+      border-top: 1px solid map-get($monochrome, medium-tint);
+    }
+  }
+
+  .individualFeature {
+    @extend .feature;
+
+    &::before {
+      content: url("/static/img/small-plus.svg");
+      top: 8px;
+      left: -32px;
+      padding-bottom: 6px;
+      background-color: map-get($green, success);
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-weight: $normal;
+      color: map-get($monochrome, shade);
+    }
+  }
 }
