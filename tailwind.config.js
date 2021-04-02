@@ -1,13 +1,22 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require('tailwindcss/plugin');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './build/index.html'],
   darkMode: false,
   theme: {
     extend: {
+      screens: {
+        mxs: '320px',
+        xs: '475px',
+        ...defaultTheme.screens,
+      },
       container: {
         padding: {
+          mxs: '16px',
+          xs: '32px',
           sm: '32px',
           md: '32px',
           lg: '32px',
