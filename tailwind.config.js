@@ -162,6 +162,16 @@ module.exports = {
           overflow: 'hidden',
           textOverflow: 'ellipsis',
         },
+        '.gray-link': {
+          fontSize: '16px',
+          lineHeight: '24px',
+          fontWeight: 'normal',
+          color: '#687481',
+        },
+        '.gray-link:hover': {
+          color: '#687481',
+          textDecorationLine: 'underline',
+        },
       };
 
       addUtilities(newUtilities);

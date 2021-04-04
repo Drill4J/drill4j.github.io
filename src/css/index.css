@@ -25113,6 +25113,19 @@
   text-overflow: ellipsis
 }
 
+.gray-link {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: normal;
+  color: #687481
+}
+
+.gray-link:hover {
+  color: #687481;
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%

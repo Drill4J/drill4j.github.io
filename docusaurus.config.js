@@ -17,29 +17,21 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin'],
     },
     navbar: {
-      logo: {
-        alt: 'Drill4J Logo',
-        src: 'img/drill4J-logo.svg',
-      },
       items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Installation',
-          position: 'right',
         },
         {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Documentation',
-          position: 'right',
         },
         {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Try demo',
-          position: 'right',
-          className: 'button-primary ml-4',
         },
       ],
     },
