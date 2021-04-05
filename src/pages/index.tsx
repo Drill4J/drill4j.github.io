@@ -1,67 +1,11 @@
+/* eslint-disable max-len */
 import React from 'react';
-import clsx from 'clsx';
 import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { RellaxWrapper } from 'react-rellax-wrapper';
 
 import styles from './styles.module.scss';
 import '../css/index.css';
-import { Card } from '../components/card';
-
-interface Feature {
-  title: string;
-  imageUrl: string;
-  description: React.ReactNode;
-}
-
-const features: Feature[] = [
-  {
-    title: 'Easy to Use',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
-  },
-];
-
-function Feature({ imageUrl, title, description }: Feature) {
-  const imgUrl = useBaseUrl(imageUrl);
-  return (
-    <div className={clsx('col col--4', styles.feature)}>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
-  );
-}
 
 function Home() {
   const context = useDocusaurusContext();
@@ -71,36 +15,33 @@ function Home() {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+      <div className={styles.parallax}>
         <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted,
-              )}
-              to={useBaseUrl('docs/')}
-            >
-              Get Started
-            </Link>
+          <div className="pt-52 space-y-4">
+            <h1 className="text-center">
+              Minimize Your Regression <br />
+              Suite with Drill4J
+            </h1>
+            <p className="text-center text-monochrome-default">
+              Drill4J is “feature-on-demand” tool for real-time application profiling that does not <br />
+              affect codebase. It provides the ability to make white box functional testing, via <br />
+              access to application instructions and memory.
+            </p>
           </div>
+          <RellaxWrapper speed={-1} className={styles.cube1} />
+          <RellaxWrapper speed={-2} className={styles.cube2} />
+          <RellaxWrapper speed={-2} className={styles.cube3} />
+          <RellaxWrapper speed={-1} className={styles.cube4} />
+          <RellaxWrapper speed={-3} className={styles.cube5} />
+          <RellaxWrapper speed={1} className={styles.cube6} />
+          <RellaxWrapper speed={-2} className={styles.cube7} />
+          <RellaxWrapper speed={-1} className={styles.cube8} />
+          <RellaxWrapper speed={-1} className={styles.cube9} />
+          <RellaxWrapper speed={-2} className={styles.cube10} />
+          <RellaxWrapper speed={-4} className={styles.cube11} />
+          <RellaxWrapper speed={-4} className={styles.cube12} />
         </div>
-      </header>
-      <main>
-        {features && features.length > 0 && (
-          <section className={styles.features}>
-            <div className="container">
-              <div className="row">
-                {features.map((props, idx) => (
-                  <Feature key={idx} {...props} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-      </main>
+      </div>
     </Layout>
   );
 }

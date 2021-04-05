@@ -18,6 +18,145 @@
   }
 }
 
+.parallax {
+  position: relative;
+  height: 672px;
+  background: linear-gradient(177.8deg, #f5faff 1.95%, #ffffff 98.34%);
+}
+
+.cube1 {
+  width: 64px;
+  height: 61px;
+  background-image: url('/static/parallax-cubes/cube1.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 62.86%;
+  right: 33.4%;
+  top: 2.49%;
+  bottom: 96.37%;
+}
+.cube2 {
+  width: 94px;
+  height: 95px;
+  background-image: url('/static/parallax-cubes/cube2.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 42%;
+  right: 53.69%;
+  top: 18.43%;
+  bottom: 73.66%;
+}
+.cube3 {
+  width: 77px;
+  height: 79px;
+  background-image: url('/static/parallax-cubes/cube3.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 75.9%;
+  right: 18.96%;
+  top: 30.44%;
+  bottom: 61.14%;
+}
+.cube4 {
+  width: 64px;
+  height: 63px;
+  background-image: url('/static/parallax-cubes/cube4.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 33.2%;
+  right: 63.05%;
+  top: 36.95%;
+  bottom: 56.69%;
+}
+.cube5 {
+  width: 217px;
+  height: 217px;
+  background-image: url('/static/parallax-cubes/cube5.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 15.07%;
+  right: 74.71%;
+  top: 25.86%;
+  bottom: 56.68%;
+}
+.cube6 {
+  width: 26px;
+  height: 25px;
+  background-image: url('/static/parallax-cubes/cube6.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 53.13%;
+  right: 45.84%;
+  top: 7.3%;
+  bottom: 92.36%;
+}
+.cube7 {
+  width: 133px;
+  height: 137px;
+  background-image: url('/static/parallax-cubes/cube7.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 83.47%;
+  right: 9.32%;
+  top: 58.68%;
+  bottom: 29.26%;
+}
+.cube8 {
+  width: 115px;
+  height: 117px;
+  background-image: url('/static/parallax-cubes/cube8.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 68.11%;
+  right: 26.3%;
+  top: 58.05%;
+  bottom: 32.4%;
+}
+.cube9 {
+  width: 53px;
+  height: 51px;
+  background-image: url('/static/parallax-cubes/cube9.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 33.41%;
+  right: 63.96%;
+  top: 62.68%;
+  bottom: 32.46%;
+}
+.cube10 {
+  width: 137px;
+  height: 133px;
+  background-image: url('/static/parallax-cubes/cube10.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 14.72%;
+  right: 77.99%;
+  top: 71.41%;
+  bottom: 18.75%;
+}
+.cube11 {
+  width: 120px;
+  height: 125px;
+  background-image: url('/static/parallax-cubes/cube11.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 48.27%;
+  right: 43.6%;
+  top: 71.27%;
+  bottom: 15.07%;
+}
+.cube12 {
+  width: 54px;
+  height: 54px;
+  background-image: url('/static/parallax-cubes/cube12.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 25.03%;
+  right: 72.14%;
+  top: 2.28%;
+  bottom: 96.87%;
+}
+
 .buttons {
   display: flex;
   align-items: center;
