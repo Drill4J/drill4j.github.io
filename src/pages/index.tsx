@@ -110,7 +110,7 @@ function Home() {
         </section>
         <section className={clsx(styles.features, 'container')}>
           <div className="pt-24 pb-32">
-            <h2 className="mb-18 text-center">Commercial Services</h2>
+            <h2 className="mb-18 mxs:mb-6 text-center">Commercial Services</h2>
             <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-26">
               <div className="py-4 px-8 mb-6 lg:mb-0">
                 <h3 className="mb-10">Basic</h3>
