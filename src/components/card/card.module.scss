@@ -1,6 +1,7 @@
 @import "../../css/index";
 
 .card {
+  @include card-shadow;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -10,17 +11,13 @@
   line-height: 24px;
   color: map-get($monochrome, default);
   background-color: map-get($monochrome, white);
-  box-shadow: $box-shadow;
   border-radius: 8px;
   cursor: pointer;
-  transition: box-shadow 200ms ease, transform 200ms ease;
 
   &:hover{
     outline: none;
     text-decoration: none;
     color: map-get($monochrome, default);
-    box-shadow: $box-shadow-on-hover;
-    transform: scale(1.01);
   }
 }
 
