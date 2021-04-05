@@ -45,16 +45,18 @@
 
   li {
     position: relative;
-    &:not(:last-child) {
-      &::before {
-        content: '';
-        position: absolute;
-        top: 28px;
-        left: 130px;
-        width: 200px;
-        height: 1px;
-        background-color: map-get($monochrome, default);
-        opacity: 0.5;
+    @media (min-width: 1024px) {
+      &:not(:last-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 28px;
+          left: 130px;
+          width: 200px;
+          height: 1px;
+          background-color: map-get($monochrome, default);
+          opacity: 0.5;
+        }
       }
     }
   }
