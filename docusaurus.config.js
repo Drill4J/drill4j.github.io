@@ -2,7 +2,7 @@ module.exports = {
   title: 'My Site',
   tagline: 'The tagline of my site',
   url: 'https://Drill4J.github.io',
-  baseUrl: '/drill4j-website/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -19,18 +19,15 @@ module.exports = {
     navbar: {
       items: [
         {
-          to: 'docs/installation',
-          activeBasePath: 'docs/installation',
+          to: 'docs/',
           label: 'Installation',
         },
         {
-          to: 'docs/documentation',
-          activeBasePath: 'docs/documentation',
+          to: 'docs/',
           label: 'Documentation',
         },
         {
-          to: 'docs/demo',
-          activeBasePath: 'docs/demo',
+          to: 'docs/',
           label: 'Try demo',
         },
       ],
@@ -97,9 +94,6 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-        },
-        blog: {
-          showReadingTime: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
