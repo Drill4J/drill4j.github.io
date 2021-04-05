@@ -114,7 +114,7 @@ function Home() {
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <a href="#" className="button-ghost">For free</a>
+                <a href="#" className="button-ghost justify-center">For free</a>
               </div>
               <div className={clsx(styles.individualFeatures, 'pt-4 pb-8')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
@@ -139,7 +139,7 @@ function Home() {
                     <span>Connection of agents to a project</span>
                   </li>
                 </ul>
-                <a href="#" className="button-primary mx-8">Contact us</a>
+                <a href="#" className="button-primary mx-8 justify-center">Mail us</a>
               </div>
             </div>
           </div>
