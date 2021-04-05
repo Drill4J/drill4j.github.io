@@ -1,20 +1,150 @@
-/* stylelint-disable docusaurus/copyright-header */
+@import '../css/index';
 
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.mainPageWrapper {
+  h2 {
+    font-size: 32px;
+    font-weight: $bold;
+  }
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
+.integrateStepsWrapper {
+  background-color: map-get($monochrome, black);
+
+  h4 {
+    font-size: 20px;
+  }
+
+  h2,
+  h4 {
+    color: map-get($monochrome, white);
+  }
+
+  p {
+    font-size: 16px;
+    color: map-get($monochrome, default);
+  }
+
+  .integrateStepNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    border-radius: 100%;
+    color: map-get($monochrome, white);
+    font-size: 18px;
+    font-weight: $bold;
+  }
+
+  .bgBlueGradient {
+    background: linear-gradient(172deg, #68adf4 6%, #3f88e2 94%);
+  }
+
+  li {
+    position: relative;
+
+    @media (min-width: 1024px) {
+      &:not(:last-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 28px;
+          left: 130px;
+          width: 200px;
+          height: 1px;
+          background-color: map-get($monochrome, default);
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
+
+.features {
+  h3 {
+    font-weight: $bold;
+    color: map-get($monochrome, shade);
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  .feature {
+    position: relative;
+    font-weight: $bold;
+    font-size: 18px;
+    color: map-get($monochrome, default);
+    list-style: none;
+    line-height: 24px;
+    margin-bottom: 16px;
+
+    &::before {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .basicFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/static/img/small-done.svg');
+      top: 50%;
+      transform: translateY(-50%);
+      left: -32px;
+      padding-bottom: 4px;
+      background-color: map-get($primary-blue, medium-tint);
+    }
+  }
+
+  .individualFeatures {
+    box-shadow: 0 20px 64px rgba(16, 33, 64, 0.12);
+    border-radius: 16px;
+  }
+
+  .individualFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/static/img/small-plus.svg');
+      top: 8px;
+      left: -32px;
+      padding-bottom: 6px;
+      background-color: map-get($green, success);
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-weight: $normal;
+      color: map-get($monochrome, shade);
+    }
+  }
+}
+
+.quickStart {
+  background-image: url('/static/img/quick-start.png');
+  background-size: cover;
+
+  p {
+    font-size: 18px;
+    font-weight: $normal;
+  }
+
+  h2,
+  p {
+    color: map-get($monochrome, white);
   }
 }
 
@@ -155,22 +285,4 @@
   right: 72.14%;
   top: 2.28%;
   bottom: 96.87%;
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
-}
-
-.featureImage {
-  height: 200px;
-  width: 200px;
 }
