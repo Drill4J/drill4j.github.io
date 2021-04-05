@@ -8,6 +8,16 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
+      gridTemplateColumns: {
+        // Complex site-specific column configuration
+        footer: '221px repeat(3, 140px)',
+      },
+      backgroundImage: () => ({
+        'git-hub': "url('/static/img/git-hub.svg')",
+        telegram: "url('/static/img/telegram.svg')",
+        twiter: "url('/static/img/twiter.svg')",
+        youtube: "url('/static/img/youtube.svg')",
+      }),
       screens: {
         mxs: '320px',
         xs: '475px',

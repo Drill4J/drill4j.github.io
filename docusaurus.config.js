@@ -36,50 +36,7 @@ module.exports = {
       ],
     },
     footer: {
-      copyright: `
-          <span class="footer__copyright__info">
-            Sponsored by
-            <a href="https://www.epam-group.ru/" target="_blank" rel="noreferrer noopener">
-              <img src="img/epam-logo.svg" alt="Epam" />
-            </a>
-            Licensed under Apache v2.0
-          </span>
-          <div class="footer__copyright__social-links">
-            <a 
-              class="footer__copyright__social-links__git-hub"
-              href="https://github.com/Drill4J" target="_blank"
-              rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__telegram"
-              href="https://t.me/drill4j" 
-              target="_blank" rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__twiter"
-              href="#" target="_blank" rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__youtube"
-              href="https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured"
-              target="_blank" rel="noreferrer noopener"
-            ></a>
-          </div>
-      `,
       links: [
-        {
-          items: [
-            {
-              html: `
-              <div class="footer__item__logo">
-                <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
-                  <img src="img/drill4j-logo-grayscale.svg" alt="drill4j github" />
-                </a>
-              </div>
-                `,
-            },
-          ],
-        },
         {
           title: 'Documentation',
           items: [
