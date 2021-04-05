@@ -10,11 +10,11 @@
 .integrateStepsWrapper {
   background-color: map-get($monochrome, black);
 
-  h4 {
+  h3 {
     font-size: 20px;
   }
 
-  h2, h4 {
+  h2, h3 {
     color: map-get($monochrome, white);
   }
 
