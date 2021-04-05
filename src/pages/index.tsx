@@ -78,30 +78,30 @@ function Home() {
             </figcaption>
           </Figure>
         </section>
-        <section className={styles.integrateStepsWrapper}>
+        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
             <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
               <li>
                 <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>1</span>
-                <h4>Run Drill4J</h4>
+                <h4 className="mb-2">Run Drill4J</h4>
                 <p>Deploy Drill4J Admin</p>
               </li>
               <li>
                 <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>2</span>
-                <h4>Run Application</h4>
+                <h4 className="mb-2">Run Application</h4>
                 <p>Start your application with Drill4J Agent</p>
               </li>
               <li>
                 <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>3</span>
-                <h4>Register Agent</h4>
+                <h4 className="mb-2">Register Agent</h4>
                 <p>Open Drill4J and register the Agent</p>
               </li>
               <li>
                 <span className={clsx(styles.integrateStepNumber, 'bg-green-success')}>
                   <Icon src={useBaseUrl('img/done.svg')} width={21} height={16} />
                 </span>
-                <h4>Done</h4>
+                <h4 className="mb-2">Done</h4>
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
@@ -125,7 +125,7 @@ function Home() {
               </div>
               <div className={clsx(styles.individualFeatures, 'pt-4 pb-8')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
-                <p className="mb-6 pt-6 px-8">Basic features, plus:</p>
+                <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
                 <ul className="mx-8 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
@@ -151,10 +151,10 @@ function Home() {
             </div>
           </div>
         </section>
-        <section className={styles.quickStart}>
-          <div className="container">
+        <section className={clsx(styles.quickStart, 'pt-16 pb-14')}>
+          <div className="container flex flex-col justify-center text-center">
             <h2 className="mb-2">Get a quick start with Drill4J today</h2>
-            <h3 className="mb-8">Try easy to install demo examples for JAVA and JS agents. ***</h3>
+            <p className="mb-8">Try easy to install demo examples for JAVA and JS agents. ***</p>
             <a href="#" className="button-secondary mx-auto">Try demo</a>
           </div>
         </section>
