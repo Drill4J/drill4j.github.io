@@ -42,6 +42,22 @@
   .bgBlueGradient {
     background: linear-gradient(172deg, #68ADF4 6%, #3F88E2 94%);
   }
+
+  li {
+    position: relative;
+    &:not(:last-child) {
+      &::before {
+        content: '';
+        position: absolute;
+        top: 28px;
+        left: 130px;
+        width: 200px;
+        height: 1px;
+        background-color: map-get($monochrome, default);
+        opacity: 0.5;
+      }
+    }
+  }
 }
 
 .quickStart {
