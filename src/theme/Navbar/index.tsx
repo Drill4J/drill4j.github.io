@@ -27,7 +27,9 @@ const Navbar = () => {
             {items.map(({ to = '', label = '' }: any, index) => (
               <li className={window.location.pathname.includes(to) ? styles.activeTab : undefined}>
                 <Link
-                  className={items.length !== index + 1 ? 'hidden md:block gray-link' : 'button-primary md:ml-5'}
+                  className={items.length !== index + 1
+                    ? 'hidden md:block gray-link'
+                    : 'button-primary md:ml-5'}
                   to={useBaseUrl(to)}
                 >
                   {label}
