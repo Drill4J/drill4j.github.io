@@ -1,11 +1,39 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const plugin = require('tailwindcss/plugin');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './build/index.html'],
   darkMode: false,
   theme: {
     extend: {
+      gridTemplateColumns: {
+        // Complex site-specific column configuration
+        footer: '221px repeat(3, 140px)',
+      },
+      backgroundImage: () => ({
+        'git-hub': "url('/static/img/git-hub.svg')",
+        telegram: "url('/static/img/telegram.svg')",
+        twiter: "url('/static/img/twiter.svg')",
+        youtube: "url('/static/img/youtube.svg')",
+      }),
+      screens: {
+        mxs: '320px',
+        xs: '475px',
+        ...defaultTheme.screens,
+      },
+      container: {
+        padding: {
+          mxs: '16px',
+          xs: '32px',
+          sm: '32px',
+          md: '32px',
+          lg: '32px',
+          xl: '160px',
+          '2xl': '288px',
+        },
+      },
       spacing: {
         21: '5.25rem',
         27: '6.75rem',
@@ -143,6 +171,16 @@ module.exports = {
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+        },
+        '.gray-link': {
+          fontSize: '16px',
+          lineHeight: '24px',
+          fontWeight: 'normal',
+          color: '#687481',
+        },
+        '.gray-link:hover': {
+          color: '#687481',
+          textDecorationLine: 'underline',
         },
       };
 
