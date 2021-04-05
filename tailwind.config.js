@@ -13,10 +13,10 @@ module.exports = {
         footer: '221px repeat(3, 140px)',
       },
       backgroundImage: () => ({
-        'git-hub': "url('/static/img/git-hub.svg')",
-        telegram: "url('/static/img/telegram.svg')",
-        twiter: "url('/static/img/twiter.svg')",
-        youtube: "url('/static/img/youtube.svg')",
+        'git-hub': "url('/img/git-hub.svg')",
+        telegram: "url('/img/telegram.svg')",
+        twiter: "url('/img/twiter.svg')",
+        youtube: "url('/img/youtube.svg')",
       }),
       screens: {
         mxs: '320px',
