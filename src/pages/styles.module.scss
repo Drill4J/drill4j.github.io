@@ -24,37 +24,55 @@
   }
 
   .integrateStepNumber {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 56px;
     height: 56px;
-    margin: 0 auto 24px;
     border-radius: 100%;
     color: map-get($monochrome, white);
     font-size: 18px;
     font-weight: $bold;
   }
 
-  .bgBlueGradient {
-    background: linear-gradient(172deg, #68ADF4 6%, #3F88E2 94%);
-  }
+  ol {
+    list-style: none;
+    counter-reset: counter;
 
-  li {
-    position: relative;
+    li {
+      counter-increment: counter;
+      position: relative;
+      padding-top: 80px;
 
-    @media (min-width: 1024px) {
-      &:not(:last-child) {
-        &::before {
-          content: '';
-          position: absolute;
-          top: 28px;
-          left: 130px;
-          width: 200px;
-          height: 1px;
-          background-color: map-get($monochrome, default);
-          opacity: 0.5;
+      @media (min-width: 1024px) {
+        &:not(:last-child) {
+          &::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 130px;
+            width: 200px;
+            height: 1px;
+            background-color: map-get($monochrome, default);
+            opacity: 0.5;
+          }
         }
+      }
+
+      &::after {
+        @extend .integrateStepNumber;
+        content: counter(counter);
+        background: linear-gradient(128.65deg, #76B4F4 -60.46%, #3881E7 74.51%);
+      }
+
+      &:nth-child(4)::after {
+        @extend .integrateStepNumber;
+        content: url("/static/img/done.svg");
+        background: map-get($green, success);
       }
     }
   }

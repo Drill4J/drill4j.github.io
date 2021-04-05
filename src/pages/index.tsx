@@ -83,24 +83,18 @@ function Home() {
             <h2 className="mb-12">Easy to integrate</h2>
             <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>1</span>
                 <h3 className="mb-2">Run Drill4J</h3>
                 <p>Deploy Drill4J Admin</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>2</span>
                 <h3 className="mb-2">Run Application</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>3</span>
                 <h3 className="mb-2">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, 'bg-green-success')}>
-                  <Icon src={useBaseUrl('img/done.svg')} width={21} height={16} />
-                </span>
                 <h3 className="mb-2">Done</h3>
                 <p>Drill4J is ready to use</p>
               </li>
