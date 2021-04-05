@@ -9,7 +9,7 @@ import { Icon } from '../components';
 import styles from './styles.module.scss';
 import '../css/index.css';
 
-const Figure: React.FC = ({ children }) => <figure className="grid lg:grid-cols-2 md:grid-cols-1 grid-rows-1 gap-x-16">{children}</figure>;
+const Figure: React.FC = ({ children }) => <figure className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-16">{children}</figure>;
 
 function Home() {
   const context = useDocusaurusContext();
@@ -64,7 +64,7 @@ function Home() {
             <img className="lg:order-1" src={useBaseUrl('img/browser-extension.png')} alt="browser extension" />
             <figcaption className="flex flex-col justify-center lg:order-2">
               <h3>Chrome Browser Extension</h3>
-              <p>
+              <p className="mb-8 lg:mb-0">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
               </p>
@@ -74,7 +74,7 @@ function Home() {
         <section className={styles.integrateStepsWrapper}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
-            <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-5 p-0 mb-20">
+            <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
               <li>
                 <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>1</span>
                 <h4>Run Drill4J</h4>
@@ -88,7 +88,7 @@ function Home() {
               <li>
                 <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>3</span>
                 <h4>Register Agent</h4>
-                <p>Register Agent</p>
+                <p>Open Drill4J and register the Agent</p>
               </li>
               <li>
                 <span className={clsx(styles.integrateStepNumber, 'bg-green-success')}>
@@ -105,10 +105,10 @@ function Home() {
           <div className="pt-24 pb-32">
             <h2 className="mb-18 text-center">Commercial Services</h2>
             <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-26">
-              <div className="py-4 px-8">
+              <div className="py-4 px-8 mb-6 lg:mb-0">
                 <h3 className="mb-10">Basic</h3>
                 <p className="mb-6">Functionality and features:</p>
-                <ul className="lg:mb-66 md:mb-9">
+                <ul className="lg:mb-66 md:mb-9 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
@@ -119,13 +119,13 @@ function Home() {
               <div className={clsx(styles.individualFeatures, 'pt-4 pb-8')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
                 <p className="mb-6 pt-6 px-8">Basic features, plus:</p>
-                <ul className="mx-8">
+                <ul className="mx-8 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <ul className="mb-9 mx-8">
+                <ul className="mb-9 mx-8 pl-8">
                   <li className={styles.individualFeature}>
                     <strong>Support</strong>
                     <span>Q&A sessions</span>

@@ -10,7 +10,7 @@
   border-radius: 8px;
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($primary-blue, default);
-  color: map-get($monochrome, white) !important;
+  color: map-get($monochrome, white);
   text-decoration: none !important;
   font-weight: $bold;
   font-size: 16px;
