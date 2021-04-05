@@ -9,7 +9,14 @@ import { Icon } from '../components';
 import styles from './styles.module.scss';
 import '../css/index.css';
 
-const Figure: React.FC = ({ children }) => <figure className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-16">{children}</figure>;
+const Figure: React.FC = ({ children }) => (
+  <figure
+    className="grid lg:grid-cols-2 md:grid-cols-1 place-items-center gap-x-16"
+    style={{ minHeight: '400px' }}
+  >
+    {children}
+  </figure>
+);
 
 function Home() {
   const context = useDocusaurusContext();
