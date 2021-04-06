@@ -64,7 +64,7 @@ function Home() {
               alt="time savings"
             />
             <figcaption className="flex flex-col justify-center lg:order-2">
-              <h3>Time Savings</h3>
+              <h3 className="mb-4">Time Savings</h3>
               <p>
                 Drill is “feature-on-demand” tool for real-time application profiling that does not affect codebase.
                 It provides the ability to make white box functional.
@@ -86,7 +86,7 @@ function Home() {
               />
             </div>
             <figcaption className="flex flex-col justify-center order-1">
-              <h3>Risk and Test to Run</h3>
+              <h3 className="mb-4">Risk and Test to Run</h3>
               <p>Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
               </p>
@@ -109,7 +109,7 @@ function Home() {
               />
             </div>
             <figcaption className="flex flex-col justify-center lg:order-2 md:order-1">
-              <h3>Measure Code Coverage</h3>
+              <h3 className="mb-4">Measure Code Coverage</h3>
               <p>
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
                 to code and vice versa.
@@ -130,7 +130,7 @@ function Home() {
               />
             </div>
             <figcaption className="flex flex-col justify-center order-1">
-              <h3>Quality Gate</h3>
+              <h3 className="mb-4">Quality Gate</h3>
               <p>
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
                 and use Drill4J Quality Gate status (passed, failed) in a CI/CD pipelines.
@@ -151,7 +151,7 @@ function Home() {
               />
             </div>
             <figcaption className="flex flex-col justify-center md:order-1 lg:order-2">
-              <h3>Chrome Browser Extension</h3>
+              <h3 className="mb-4">Chrome Browser Extension</h3>
               <p className="mb-8 lg:mb-0">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
@@ -180,12 +180,12 @@ function Home() {
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="#" className="button-primary mx-auto">Full instruction</a>
+            <a href="#" className="button-primary mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
         <section className={clsx(styles.features, 'container')}>
           <div className="pt-24 pb-32">
-            <h2 className="mb-18 mxs:mb-6 text-center">Commercial Services</h2>
+            <h2 className="mb-6 lg:mb-18 text-center">Commercial Services</h2>
             <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-26">
               <div className="py-4 px-8 mb-6 lg:mb-0">
                 <h3 className="mb-10">Basic</h3>

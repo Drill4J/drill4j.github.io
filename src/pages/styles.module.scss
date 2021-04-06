@@ -34,7 +34,7 @@
   height: 240px;
   width: 240px;
   top: -16px;
-  left: 220px;
+  right: 0;
   border-radius: 100%;
 
   img {
@@ -130,7 +130,7 @@
     font-size: 18px;
     font-weight: $bold;
   }
-  
+
   ol {
     list-style: none;
     counter-reset: counter;
@@ -196,6 +196,7 @@
       align-items: center;
       width: 16px;
       height: 16px;
+      padding-bottom: 6px;
       border-radius: 100%;
       box-sizing: border-box;
     }
@@ -209,7 +210,6 @@
       top: 50%;
       transform: translateY(-50%);
       left: -32px;
-      padding-bottom: 4px;
       background-color: map-get($primary-blue, medium-tint);
     }
   }
@@ -226,7 +226,6 @@
       content: url('/static/img/small-plus.svg');
       top: 8px;
       left: -32px;
-      padding-bottom: 6px;
       background-color: map-get($green, success);
     }
 
