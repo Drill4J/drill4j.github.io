@@ -6,14 +6,12 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
 import { RellaxWrapper } from 'react-rellax-wrapper';
 
-import { Icon } from '../components';
-
 import styles from './styles.module.scss';
 import '../css/index.css';
 
 const Figure: React.FC = ({ children }) => (
   <figure
-    className="grid lg:grid-cols-2 md:grid-cols-1 place-items-center gap-x-16"
+    className="grid grid-cols-12 items-center justify-items-center lg:justify-items-start gap-x-5"
     style={{ minHeight: '400px' }}
   >
     {children}
@@ -59,100 +57,103 @@ function Home() {
         <section className="container pb-24">
           <Figure>
             <img
-              className={clsx(styles.shadowImg, 'lg:order-1 order-2 bg-contain')}
+              className={clsx(styles.shadowImg, 'order-2 lg:order-1 col-span-full lg:col-span-6')}
               src={useBaseUrl('img/time-savings.png')}
               alt="time savings"
             />
-            <figcaption className="flex flex-col justify-center lg:order-2">
+            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Time Savings</h3>
-              <p>
-                Drill is “feature-on-demand” tool for real-time application profiling that does not affect codebase.
-                It provides the ability to make white box functional.
+              <p className="text-monochrome-shade">
+                It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
               </p>
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 w-100 h-62">
-              <div className={clsx(styles.risksAndTestsToRun, styles.borderedImgWrapper, 'absolute z-10')}>
+            <div className="relative order-2 lg:col-start-7 col-span-full z-10">
+              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 lg:w-auto')}>
                 <img
+                  className="rounded-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
                   alt="risks and tests to run"
                 />
               </div>
               <img
-                className={clsx(styles.risksAndTestsToRunBackground, 'absolute')}
+                className={clsx(styles.shadowImg)}
                 src={useBaseUrl('img/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center order-1">
+            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
               <h3 className="mb-4">Risk and Test to Run</h3>
-              <p>Risk is a new or modified uncovered method.
+              <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
               </p>
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative lg:order-1 order-2 w-100 h-62">
+            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 mx-4 xl:mx-0">
               <div
-                className={clsx(styles.coverage, styles.borderedImgWrapper, 'absolute z-10')}
+                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10')}
+                style={{ borderRadius: '14px', width: '117%' }}
               >
                 <img
+                  className="w-full"
+                  style={{ borderRadius: '14px' }}
                   src={useBaseUrl('img/coverage.png')}
                   alt="coverage"
                 />
               </div>
               <img
-                className={clsx(styles.coverageBackground, 'absolute')}
+                className={styles.shadowImg}
                 src={useBaseUrl('img/coverage-background.png')}
                 alt="coverage background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center lg:order-2 md:order-1">
+            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Measure Code Coverage</h3>
-              <p>
+              <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
                 to code and vice versa.
               </p>
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 w-100 h-62">
+            <div className="relative order-2 lg:col-start-7 col-span-full z-10 mt-12 lg:mt-0">
               <div
-                className={clsx(styles.qualityGate, styles.borderedImgWrapper, 'absolute z-10')}
+                className={clsx(styles.borderedImgWrapper, 'absolute -top-9 right-5 rounded-full w-1/2 lg:w-auto')}
               >
-                <img src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
+                <img className="rounded-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
               <img
-                className={clsx(styles.qualityGateBackground, 'absolute')}
+                className={clsx(styles.shadowImg)}
                 src={useBaseUrl('img/quality-gate-background.png')}
                 alt="quality gate background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center order-1">
+            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
               <h3 className="mb-4">Quality Gate</h3>
-              <p>
+              <p className="text-monochrome-shade">
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
                 and use Drill4J Quality Gate status (passed, failed) in a CI/CD pipelines.
               </p>
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative lg:order-1 order-2 md:mb-8 w-100 h-62">
+            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 w-11/12 md:w-1/2 lg:w-11/12 h-40 md:h-62">
               <img
-                className={clsx(styles.browserExtension, 'absolute z-10')}
+                className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-3/4 md:w-auto')}
                 src={useBaseUrl('img/browser-extension.png')}
                 alt="browser extension"
               />
               <img
-                className={clsx(styles.browserExtensionBackground, 'absolute')}
+                className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-3/4 md:w-auto')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center md:order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
-              <p className="mb-8 lg:mb-0">
+              <p className="mb-8 lg:mb-0 text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
               </p>
