@@ -19,18 +19,18 @@ module.exports = {
     navbar: {
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          to: 'docs/installation',
+          activeBasePath: 'docs/installation',
           label: 'Installation',
         },
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          to: 'docs/documentation',
+          activeBasePath: 'docs/documentation',
           label: 'Documentation',
         },
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          to: 'docs/demo',
+          activeBasePath: 'docs/demo',
           label: 'Try demo',
         },
       ],

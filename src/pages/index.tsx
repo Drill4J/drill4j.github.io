@@ -1,8 +1,10 @@
+/* eslint-disable max-len */
 import React from 'react';
-import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import clsx from 'clsx';
+import { RellaxWrapper } from 'react-rellax-wrapper';
 
 import { Icon } from '../components';
 
@@ -27,6 +29,33 @@ function Home() {
       description="Description will go into a meta tag in <head />"
     >
       <main className={styles.mainPageWrapper}>
+        <div className={styles.parallax}>
+          <div className="relative container h-full">
+            <div className="pt-52 space-y-4">
+              <h1 className="text-center">
+                Minimize Your Regression <br />
+                Suite with Drill4J
+              </h1>
+              <p className="text-center text-monochrome-default">
+                Drill4J is “feature-on-demand” tool for real-time application profiling that does not <br />
+                affect codebase. It provides the ability to make white box functional testing, via <br />
+                access to application instructions and memory.
+              </p>
+            </div>
+            <RellaxWrapper speed={3} className={`${styles.cube1} hidden md:block`} />
+            <RellaxWrapper speed={4} className={`${styles.cube2} hidden md:block`} />
+            <RellaxWrapper speed={4} className={`${styles.cube3} hidden lg:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube4} hidden md:block`} />
+            <RellaxWrapper speed={5} className={`${styles.cube5} hidden lg:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube6} hidden md:block`} />
+            <RellaxWrapper speed={4} className={`${styles.cube7} hidden lg:block`} />
+            <RellaxWrapper speed={4} className={`${styles.cube8} hidden md:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube9} hidden md:block`} />
+            <RellaxWrapper speed={4} className={`${styles.cube10} hidden lg:block`} />
+            <RellaxWrapper speed={5} className={`${styles.cube11} hidden lg:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube12} hidden md:block`} />
+          </div>
+        </div>
         <section className="container">
           <Figure>
             <img
