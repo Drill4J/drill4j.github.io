@@ -35,7 +35,11 @@ module.exports = {
         },
       },
       spacing: {
+        18: '4.5rem',
         21: '5.25rem',
+        22: '5.5rem',
+        25: '6.25rem',
+        26: '6.5rem',
         27: '6.75rem',
         29: '7.25rem',
         30: '7.5rem',
@@ -43,6 +47,7 @@ module.exports = {
         34: '8.5rem',
         42: '9.5rem',
         43: '9.75rem',
+        66: '16.5rem',
         88: '22rem',
         97: '25rem',
         98: '26rem',
@@ -79,6 +84,7 @@ module.exports = {
         shade: '#009402',
         'medium-tint': '#33c535',
         'light-tint': '#e5f7e5',
+        success: '#18D09B',
       },
       red: {
         default: '#ee0000',

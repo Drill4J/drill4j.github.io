@@ -10,6 +10,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 
+import styles from './styles.module.scss';
+
 const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   return (
@@ -23,9 +25,11 @@ const Navbar = () => {
         <section className="md:flex items-center">
           <ul className="md:flex gap-x-6 items-center">
             {items.map(({ to = '', label = '' }: any, index) => (
-              <li>
+              <li className={window.location.pathname.includes(to) ? styles.activeTab : undefined}>
                 <Link
-                  className={items.length !== index + 1 ? 'hidden md:block gray-link' : 'button-primary md:ml-5'}
+                  className={items.length !== index + 1
+                    ? 'hidden md:block gray-link'
+                    : 'button-primary md:ml-5'}
                   to={useBaseUrl(to)}
                 >
                   {label}

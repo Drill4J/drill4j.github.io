@@ -1,37 +1,265 @@
-/* stylelint-disable docusaurus/copyright-header */
+@import '../css/index';
 
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
+.mainPageWrapper {
+  h2 {
+    font-size: 32px;
+    font-weight: $bold;
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.integrateStepsWrapper {
+  background-color: map-get($monochrome, black);
+
+  h4 {
+    font-size: 20px;
+  }
+
+  h2,
+  h4 {
+    color: map-get($monochrome, white);
+  }
+
+  p {
+    font-size: 16px;
+    color: map-get($monochrome, default);
+  }
+
+  .integrateStepNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    border-radius: 100%;
+    color: map-get($monochrome, white);
+    font-size: 18px;
+    font-weight: $bold;
+  }
+
+  .bgBlueGradient {
+    background: linear-gradient(172deg, #68adf4 6%, #3f88e2 94%);
+  }
+
+  li {
+    position: relative;
+
+    @media (min-width: 1024px) {
+      &:not(:last-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 28px;
+          left: 130px;
+          width: 200px;
+          height: 1px;
+          background-color: map-get($monochrome, default);
+          opacity: 0.5;
+        }
+      }
+    }
+  }
 }
 
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  h3 {
+    font-weight: $bold;
+    color: map-get($monochrome, shade);
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  .feature {
+    position: relative;
+    font-weight: $bold;
+    font-size: 18px;
+    color: map-get($monochrome, default);
+    list-style: none;
+    line-height: 24px;
+    margin-bottom: 16px;
+
+    &::before {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .basicFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/static/img/small-done.svg');
+      top: 50%;
+      transform: translateY(-50%);
+      left: -32px;
+      padding-bottom: 4px;
+      background-color: map-get($primary-blue, medium-tint);
+    }
+  }
+
+  .individualFeatures {
+    box-shadow: 0 20px 64px rgba(16, 33, 64, 0.12);
+    border-radius: 16px;
+  }
+
+  .individualFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/static/img/small-plus.svg');
+      top: 8px;
+      left: -32px;
+      padding-bottom: 6px;
+      background-color: map-get($green, success);
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-weight: $normal;
+      color: map-get($monochrome, shade);
+    }
+  }
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+.quickStart {
+  background-image: url('/static/img/quick-start.png');
+  background-size: cover;
+
+  p {
+    font-size: 18px;
+    font-weight: $normal;
+  }
+
+  h2,
+  p {
+    color: map-get($monochrome, white);
+  }
+}
+
+.parallax {
+  height: 648px;
+  background: linear-gradient(177.8deg, #f5faff 1.95%, #ffffff 98.34%);
+}
+
+.cube1 {
+  width: 64px;
+  height: 61px;
+  background-image: url('/static/parallax-cubes/cube1.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 65%;
+  top: -5%;
+}
+.cube2 {
+  width: 94px;
+  height: 95px;
+  background-image: url('/static/parallax-cubes/cube2.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 42%;
+  top: 4%;
+}
+.cube3 {
+  width: 77px;
+  height: 79px;
+  background-image: url('/static/parallax-cubes/cube3.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 78%;
+  top: 24%;
+}
+.cube4 {
+  width: 64px;
+  height: 63px;
+  background-image: url('/static/parallax-cubes/cube4.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 31%;
+  top: 23%;
+}
+.cube5 {
+  width: 217px;
+  height: 217px;
+  background-image: url('/static/parallax-cubes/cube5.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 1%;
+  top: 16%;
+}
+.cube6 {
+  width: 26px;
+  height: 25px;
+  background-image: url('/static/parallax-cubes/cube6.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 52%;
+  top: 40%;
+}
+.cube7 {
+  width: 133px;
+  height: 137px;
+  background-image: url('/static/parallax-cubes/cube7.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 85%;
+  top: 58%;
+}
+.cube8 {
+  width: 115px;
+  height: 117px;
+  background-image: url('/static/parallax-cubes/cube8.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 66%;
+  top: 60%;
+}
+.cube9 {
+  width: 53px;
+  height: 51px;
+  background-image: url('/static/parallax-cubes/cube9.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 27%;
+  top: 65%;
+}
+.cube10 {
+  width: 137px;
+  height: 133px;
+  background-image: url('/static/parallax-cubes/cube10.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 14.72%;
+  right: 77.99%;
+  top: 71.41%;
+  bottom: 18.75%;
+}
+.cube11 {
+  width: 120px;
+  height: 125px;
+  background-image: url('/static/parallax-cubes/cube11.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 48%;
+  top: 80%;
+}
+.cube12 {
+  width: 54px;
+  height: 54px;
+  background-image: url('/static/parallax-cubes/cube12.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 25%;
+  top: 3%;
 }
