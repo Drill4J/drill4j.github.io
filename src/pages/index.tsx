@@ -44,18 +44,14 @@ function Home() {
           </Figure>
           <Figure>
             <div className="relative order-2 w-100 h-62">
-              <div
-                className={clsx(styles.borderedImgWrapper, 'absolute rounded-full z-10')}
-                style={{ top: '-16px', left: '220px' }}
-              >
+              <div className={clsx(styles.risksAndTestsToRun, styles.borderedImgWrapper, 'absolute z-10')}>
                 <img
-                  className="rounded-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
                   alt="risks and tests to run"
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'absolute')}
+                className={clsx(styles.risksAndTestsToRunBackground, 'absolute')}
                 src={useBaseUrl('img/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
@@ -70,18 +66,15 @@ function Home() {
           <Figure>
             <div className="relative lg:order-1 order-2 w-100 h-62">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 transform -translate-y-1/2 z-10')}
-                style={{ borderRadius: '14px' }}
+                className={clsx(styles.coverage, styles.borderedImgWrapper, 'absolute z-10')}
               >
                 <img
-                  style={{ borderRadius: '14px' }}
                   src={useBaseUrl('img/coverage.png')}
                   alt="coverage"
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'absolute')}
-                style={{ left: '28px' }}
+                className={clsx(styles.coverageBackground, 'absolute')}
                 src={useBaseUrl('img/coverage-background.png')}
                 alt="coverage background"
               />
@@ -97,17 +90,12 @@ function Home() {
           <Figure>
             <div className="relative order-2 w-100 h-62">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute rounded-full z-10')}
-                style={{ top: '-37px', left: '180px' }}
+                className={clsx(styles.qualityGate, styles.borderedImgWrapper, 'absolute z-10')}
               >
-                <img
-                  className="rounded-full"
-                  src={useBaseUrl('img/quality-gate.png')}
-                  alt="quality gate"
-                />
+                <img src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'absolute')}
+                className={clsx(styles.qualityGateBackground, 'absolute')}
                 src={useBaseUrl('img/quality-gate-background.png')}
                 alt="quality gate background"
               />
@@ -123,14 +111,12 @@ function Home() {
           <Figure>
             <div className="relative lg:order-1 order-2 md:mb-8 w-100 h-62">
               <img
-                className={clsx(styles.shadowImg, 'absolute z-10')}
-                style={{ top: '29px' }}
+                className={clsx(styles.browserExtension, 'absolute z-10')}
                 src={useBaseUrl('img/browser-extension.png')}
                 alt="browser extension"
               />
               <img
-                className={clsx(styles.shadowImg, 'absolute')}
-                style={{ left: '140px' }}
+                className={clsx(styles.browserExtensionBackground, 'absolute')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
