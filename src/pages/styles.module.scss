@@ -62,6 +62,10 @@
     list-style: none;
     counter-reset: counter;
 
+    h3 {
+      line-height: 32px;
+    }
+
     li {
       counter-increment: counter;
       position: relative;

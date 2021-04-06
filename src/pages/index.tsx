@@ -63,7 +63,7 @@ function Home() {
             />
             <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Time Savings</h3>
-              <p>
+              <p className="text-monochrome-shade">
                 It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
               </p>
             </figcaption>
@@ -85,7 +85,7 @@ function Home() {
             </div>
             <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
               <h3 className="mb-4">Risk and Test to Run</h3>
-              <p>Risk is a new or modified uncovered method.
+              <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
               </p>
             </figcaption>
@@ -111,7 +111,7 @@ function Home() {
             </div>
             <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Measure Code Coverage</h3>
-              <p>
+              <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
                 to code and vice versa.
               </p>
@@ -132,7 +132,7 @@ function Home() {
             </div>
             <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
               <h3 className="mb-4">Quality Gate</h3>
-              <p>
+              <p className="text-monochrome-shade">
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
                 and use Drill4J Quality Gate status (passed, failed) in a CI/CD pipelines.
               </p>
@@ -153,7 +153,7 @@ function Home() {
             </div>
             <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
-              <p className="mb-8 lg:mb-0">
+              <p className="mb-8 lg:mb-0 text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
               </p>
