@@ -58,7 +58,11 @@ function Home() {
         </div>
         <section className="container">
           <Figure>
-            <img className="lg:order-1 bg-contain" src={useBaseUrl('img/time-savings.png')} alt="time savings" />
+            <img
+              className={clsx(styles.shadowImg, 'lg:order-1 order-2 bg-contain')}
+              src={useBaseUrl('img/time-savings.png')}
+              alt="time savings"
+            />
             <figcaption className="flex flex-col justify-center lg:order-2">
               <h3>Time Savings</h3>
               <p>
@@ -68,8 +72,20 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <img className="md:order-1 lg:order-2" src={useBaseUrl('img/risks-and-t2r.png')} alt="risks and tests to run" />
-            <figcaption className="flex flex-col justify-center md:order-2 lg:order-1">
+            <div className="relative order-2 w-100 h-62">
+              <div className={clsx(styles.risksAndTestsToRun, styles.borderedImgWrapper, 'absolute z-10')}>
+                <img
+                  src={useBaseUrl('img/risks-and-t2r.png')}
+                  alt="risks and tests to run"
+                />
+              </div>
+              <img
+                className={clsx(styles.risksAndTestsToRunBackground, 'absolute')}
+                src={useBaseUrl('img/risks-and-t2r-background.png')}
+                alt="risks and tests to run background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center order-1">
               <h3>Risk and Test to Run</h3>
               <p>Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
@@ -77,8 +93,22 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <img className="lg:order-1" src={useBaseUrl('img/coverage.png')} alt="coverage" />
-            <figcaption className="flex flex-col justify-center lg:order-2">
+            <div className="relative lg:order-1 order-2 w-100 h-62">
+              <div
+                className={clsx(styles.coverage, styles.borderedImgWrapper, 'absolute z-10')}
+              >
+                <img
+                  src={useBaseUrl('img/coverage.png')}
+                  alt="coverage"
+                />
+              </div>
+              <img
+                className={clsx(styles.coverageBackground, 'absolute')}
+                src={useBaseUrl('img/coverage-background.png')}
+                alt="coverage background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center lg:order-2 md:order-1">
               <h3>Measure Code Coverage</h3>
               <p>
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
@@ -87,8 +117,19 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <img className="md:order-1 lg:order-2" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
-            <figcaption className="flex flex-col justify-center md:order-2 lg:order-1">
+            <div className="relative order-2 w-100 h-62">
+              <div
+                className={clsx(styles.qualityGate, styles.borderedImgWrapper, 'absolute z-10')}
+              >
+                <img src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
+              </div>
+              <img
+                className={clsx(styles.qualityGateBackground, 'absolute')}
+                src={useBaseUrl('img/quality-gate-background.png')}
+                alt="quality gate background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center order-1">
               <h3>Quality Gate</h3>
               <p>
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
@@ -97,8 +138,19 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <img className="lg:order-1" src={useBaseUrl('img/browser-extension.png')} alt="browser extension" />
-            <figcaption className="flex flex-col justify-center lg:order-2">
+            <div className="relative lg:order-1 order-2 md:mb-8 w-100 h-62">
+              <img
+                className={clsx(styles.browserExtension, 'absolute z-10')}
+                src={useBaseUrl('img/browser-extension.png')}
+                alt="browser extension"
+              />
+              <img
+                className={clsx(styles.browserExtensionBackground, 'absolute')}
+                src={useBaseUrl('img/browser-extension-background.png')}
+                alt="browser extension background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center md:order-1 lg:order-2">
               <h3>Chrome Browser Extension</h3>
               <p className="mb-8 lg:mb-0">
                 Browser extension allows gather manual Code Coverage for several users
@@ -112,25 +164,19 @@ function Home() {
             <h2 className="mb-12">Easy to integrate</h2>
             <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>1</span>
-                <h4 className="mb-2">Run Drill4J</h4>
+                <h3 className="mb-2">Run Drill4J</h3>
                 <p>Deploy Drill4J Admin</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>2</span>
-                <h4 className="mb-2">Run Application</h4>
+                <h3 className="mb-2">Run Application</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, styles.bgBlueGradient)}>3</span>
-                <h4 className="mb-2">Register Agent</h4>
+                <h3 className="mb-2">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
               <li>
-                <span className={clsx(styles.integrateStepNumber, 'bg-green-success')}>
-                  <Icon src={useBaseUrl('img/done.svg')} width={21} height={16} />
-                </span>
-                <h4 className="mb-2">Done</h4>
+                <h3 className="mb-2">Done</h3>
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
