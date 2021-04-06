@@ -198,8 +198,7 @@ function Home() {
                 </ul>
                 <a href="#" className="button-ghost justify-center mxs:mb-4">For free</a>
               </div>
-              <div className="col-span-1" />
-              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-span-6 col-span-full')}>
+              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-start-7 col-span-full')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
                 <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
                 <ul className="mx-8 pl-8">
