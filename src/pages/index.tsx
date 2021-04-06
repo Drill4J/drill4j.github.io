@@ -186,19 +186,20 @@ function Home() {
         <section className={clsx(styles.features, 'container')}>
           <div className="pt-24 pb-32">
             <h2 className="mb-6 lg:mb-18 text-center">Commercial Services</h2>
-            <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-x-26">
-              <div className="py-4 px-8 mb-6 lg:mb-0">
+            <div className="grid grid-cols-12 gap-x-5 mx-auto" style={{ maxWidth: '796px' }}>
+              <div className="mt-4 md:col-span-5 col-span-full">
                 <h3 className="mb-10">Basic</h3>
                 <p className="mb-6">Functionality and features:</p>
-                <ul className="lg:mb-66 md:mb-9 pl-8">
+                <ul className="mb-9 md:mb-72 lg:mb-66 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <a href="#" className="button-ghost justify-center">For free</a>
+                <a href="#" className="button-ghost justify-center mxs:mb-4">For free</a>
               </div>
-              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8')}>
+              <div className="col-span-1" />
+              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-span-6 col-span-full')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
                 <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
                 <ul className="mx-8 pl-8">
