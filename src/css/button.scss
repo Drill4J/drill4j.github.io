@@ -3,6 +3,7 @@
 
 .button-primary {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   padding: 12px 48px;
@@ -58,5 +59,12 @@
 
   svg {
     fill: map-get($primary-blue, default);
+  }
+}
+
+
+.markdown {
+  .button-primary, .button-secondary, .button-ghost {
+    margin-bottom: 32px;
   }
 }

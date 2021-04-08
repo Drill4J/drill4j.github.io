@@ -19,7 +19,7 @@ module.exports = {
     navbar: {
       items: [
         {
-          to: 'docs/',
+          to: 'installation/',
           label: 'Installation',
         },
         {
