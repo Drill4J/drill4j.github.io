@@ -7,11 +7,15 @@
 
 import React from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 
+import styles from './styles.module.scss';
+
 const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
+  const { pathname } = useLocation();
   return (
     <header className="sticky top-0 z-50 bg-monochrome-white shadow">
       <nav className="flex flex-col gap-y-4 items-center xs:flex-row justify-between py-5 container">
@@ -23,9 +27,11 @@ const Navbar = () => {
         <section className="md:flex items-center">
           <ul className="md:flex gap-x-6 items-center">
             {items.map(({ to = '', label = '' }: any, index) => (
-              <li>
+              <li className={pathname.includes(to) ? styles.activeTab : undefined}>
                 <Link
-                  className={items.length !== index + 1 ? 'hidden md:block gray-link' : 'button-primary md:ml-5'}
+                  className={items.length !== index + 1
+                    ? 'hidden md:block gray-link'
+                    : 'button-primary md:ml-5'}
                   to={useBaseUrl(to)}
                 >
                   {label}
