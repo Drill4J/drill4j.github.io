@@ -5,7 +5,9 @@
   display: flex;
   align-items: center;
   gap: 24px;
+  flex-grow: 1;
   padding: 24px;
+  margin-bottom: 32px;
   font-family: "OpenSans-Semibold", sans-serif;
   font-size: 18px;
   line-height: 24px;

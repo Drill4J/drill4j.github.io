@@ -11,5 +11,10 @@ interface Props {
 export const Icon = ({
   src, width = 16, height = 16, className,
 }: Props) => (
-  <span className={className} style={{ backgroundImage: `url(${useBaseUrl(src)})`, width: `${width}px`, height: `${height}px` }} />
+  <span
+    className={className}
+    style={{
+      backgroundImage: `url(${useBaseUrl(src)})`, minWidth: `${width}px`, minHeight: `${height}px`, display: 'inline-block',
+    }}
+  />
 );
