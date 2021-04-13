@@ -1,0 +1,59 @@
+---
+id: java-agent
+title: Java Agent
+sidebar_label: Java Agent
+---
+
+import { AdditionalInformation, Badge } from '../src/components';
+import DownloadIcon from '../static/img/download-icon.svg';
+
+There are two ways to deploy Java Agent:
+
+## 1. Using Docker images
+
+If you use docker images of app you need to share volume with drill agent files and add JAVA parameters. Try using this example:
+
+```java
+class HelloWorld {
+  public static void main(String[] args) {
+      System.out.println("Hello World!");
+  }
+}
+```
+
+<AdditionalInformation class="space-y-2">
+
+<Badge color="#76A5E3">agent-files</Badge> — container with drill agent files. <br/>
+<Badge color="#76A5E3">adminAddress</Badge> — host and backend port of your drill admin. <br/>
+<Badge color="#76A5E3">8090</Badge> — default port for agent connection. <br/>
+<Badge color="#76A5E3">agentId </Badge> — ID for drill agent of application. <br/>
+<Badge color="#76A5E3">buildVersion</Badge> — build version of your application. <br/>
+
+</AdditionalInformation>
+
+## 2. Using Jar
+
+If you use jar for running you can download the archive with the agent distribution for your OS
+
+<button class="button-ghost">
+    <DownloadIcon/>
+    Download zip for Win
+</button>
+
+and start application with following parameters (example for Windows):
+
+```java
+java -agentpath:distr/drill_agent.dll=drillInstallationDir
+```
+
+<AdditionalInformation>
+
+<Badge>distr</Badge> — folder with drill agent files.  <br/>
+— host and backend port of your drill admin. <br/>
+Use <Badge>distr</Badge> <br/>
+— default port for agent connection.<br/>
+— default port for agent connection. <br/>
+— build version of your application. <br/>
+— URL of your application.
+
+</AdditionalInformation>

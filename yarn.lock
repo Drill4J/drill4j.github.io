@@ -9549,6 +9549,13 @@ react-loadable@^5.5.0:
   dependencies:
     prop-types "^15.5.0"
 
+react-rellax-wrapper@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-rellax-wrapper/-/react-rellax-wrapper-1.0.6.tgz#aa7bb82c9f74c979a33d801bd16a85561d96c4b3"
+  integrity sha512-wWhtNKSMFWz8jMzxrHrcPFp0Em2Eew4A4j8NwsAG7uVvzXXKuoWTnVQUsSzC0v1eXLPYkbfgifXjrCKXHDBhAQ==
+  dependencies:
+    rellax "^1.12.1"
+
 react-router-config@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-router-config/-/react-router-config-5.1.1.tgz#0f4263d1a80c6b2dc7b9c1902c9526478194a988"
@@ -9818,6 +9825,11 @@ relateurl@^0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
+
+rellax@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/rellax/-/rellax-1.12.1.tgz#1b433ef7ac4aa3573449a33efab391c112f6b34d"
+  integrity sha512-XBIi0CDpW5FLTujYjYBn1CIbK2CJL6TsAg/w409KghP2LucjjzBjsujXDAjyBLWgsfupfUcL5WzdnIPcGfK7XA==
 
 remark-admonitions@^1.2.1:
   version "1.2.1"
