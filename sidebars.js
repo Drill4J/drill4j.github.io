@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Installation',
-      items: ['java-agent', 'js-agent'],
+      items: ['java-agent', 'js-agent', 'autotest-agent'],
     },
     {
       type: 'category',
