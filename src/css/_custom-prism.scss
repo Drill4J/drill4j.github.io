@@ -1,4 +1,6 @@
 .prism-code {
+  max-width: 411px;
+
   & > div {
     background-color: map-get($monochrome, black) !important;
   }
