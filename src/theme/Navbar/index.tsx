@@ -27,10 +27,11 @@ const Navbar = () => {
         <section className="md:flex items-center">
           <ul className="md:flex gap-x-6 items-center">
             {items.map(({ to = '', label = '' }: any, index) => (
-              <li className={pathname.includes(to) ? styles.activeTab : undefined}>
+              <li className={pathname.includes(to) ? styles.activeTab : styles.tab}>
                 <Link
+                  style={{ textDecoration: 'none' }}
                   className={items.length !== index + 1
-                    ? 'hidden md:block gray-link'
+                    ? 'hidden md:block text-16 font-normal leading-24 text-monochrome-default hover:text-blue-default'
                     : 'button-primary md:ml-5'}
                   to={useBaseUrl(to)}
                 >

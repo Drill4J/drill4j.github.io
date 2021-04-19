@@ -19,15 +19,15 @@ module.exports = {
     navbar: {
       items: [
         {
-          to: 'installation/',
-          label: 'Installation',
+          to: 'how-to-start/',
+          label: 'How to start',
         },
         {
           to: 'docs/',
           label: 'Documentation',
         },
         {
-          to: 'docs/',
+          to: 'try-demo/',
           label: 'Try demo',
         },
       ],

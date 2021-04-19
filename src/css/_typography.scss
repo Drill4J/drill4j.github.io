@@ -108,6 +108,14 @@ ol[class] {
     margin-bottom: 24px;
     margin-top: 0;
   }
+
+  & > ul {
+    list-style: inside;
+  }
+
+  & > ol {
+    list-style: decimal;
+  }
 }
 
 svg {
