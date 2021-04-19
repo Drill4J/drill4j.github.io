@@ -29,14 +29,14 @@ function Home() {
       <main className={styles.mainPageWrapper}>
         <div className={styles.parallax}>
           <div className="relative container h-full">
-            <div className="pt-52 space-y-4">
+            <div className="pt-52 space-y-4 px-44">
               <h1 className="text-center">
-                Minimize Your Regression <br />
+                Minimize Your Regression
                 Suite with Drill4J
               </h1>
               <p className="text-center text-monochrome-default">
-                Drill4J is “feature-on-demand” tool for real-time application profiling that does not <br />
-                affect codebase. It provides the ability to make white box functional testing, via <br />
+                Drill4J is “feature-on-demand” tool for real-time application profiling that does not
+                affect codebase. It provides the ability to make white box functional testing, via
                 access to application instructions and memory.
               </p>
             </div>
