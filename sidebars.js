@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Installation',
-      items: ['installation/java-agent', 'installation/js-agent', 'installation/autotest-agent', 'installation/extension'],
+      items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices', 'installation/autotest-agent', 'installation/extension'],
     },
     {
       type: 'category',

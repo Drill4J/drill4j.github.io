@@ -3,17 +3,17 @@ id: java-agent
 title: Java Agent
 sidebar_label: Java Agent
 ---
-
 import { AdditionalInformation, Badge } from '../../src/components';
 import ExternalLinkIcon from '../../static/img/external-link.svg';
 
 There are two ways to deploy Java Agent:
 
-## 1. Using Docker Imagesggggggggg ggggggggggggg ggggggggg ggggggggg
+### 1. Using Docker Images
+
 
 If you use docker images of app you need to share volume with drill agent files and add JAVA parameters. Try using this example:
 
-```javascript
+```java
 version: '3'
 
 services:
@@ -37,21 +37,21 @@ volumes:
 
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#76A5E3">agent-files</Badge> — container with drill agent files. <br/>
-<Badge color="#76A5E3">adminAddress</Badge> — host and backend port of your drill admin. <br/>
-<Badge color="#76A5E3">8090</Badge> — default port for agent connection. <br/>
-<Badge color="#76A5E3">agentId </Badge> — ID for drill agent of application. <br/>
-<Badge color="#76A5E3">buildVersion</Badge> — build version of your application. <br/>
+<Badge color="#BFC7D5">agent-files</Badge> — container with drill agent files. <br/>
+<Badge color="#BFC7D5">adminAddress</Badge> — host and backend port of your drill admin. <br/>
+<Badge color="#BFC7D5">8090</Badge> — default port for agent connection. <br/>
+<Badge color="#BFC7D5">agentId </Badge> — ID for drill agent of application. <br/>
+<Badge color="#B6C7D5">buildVersion</Badge> — build version of your application. <br/>
 
 </AdditionalInformation>
 
-## 2. Using Jar
+### 2. Using Jar
 
 If you use a .jar for running you can download the archive with the agent distribution for your OS:
 
-<a href='https://github.com/Drill4J/java-agent/releases/tag/v0.7.0-28' target="_black" class="button-ghost">
+<a href='https://github.com/Drill4J/java-agent/releases/tag/v0.7.0-28' target="_black">
+    Java Agent
     <ExternalLinkIcon/>
-    Java Agent 
 </a>
 
 and start an application with the following parameters (example for Windows):
@@ -62,10 +62,10 @@ and start an application with the following parameters (example for Windows):
 
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#76A5E3">distr</Badge> — folder with drill agent files.  <br/>
-Use <Badge color="#76A5E3">.dll</Badge> for Windows <Badge color="#76A5E3">.so</Badge> for Linux and <Badge color="#76A5E3">.dylib</Badge> agent file for MacOS. <br/>
-<Badge color="#76A5E3">adminAdress</Badge> — host and backend port of your drill admin.  <br/>
-<Badge color="#76A5E3">agentId</Badge> — ID for drill agent of application. <br/> 
-<Badge color="#76A5E3">buildVersion</Badge> — build version of your application. <br/>
+<Badge color="#BFC7D5">distr</Badge> — folder with drill agent files.  <br/>
+Use <Badge color="#BFC7D5">.dll</Badge> for Windows <Badge color="#76A5E3">.so</Badge> for Linux and <Badge color="#76A5E3">.dylib</Badge> agent file for MacOS. <br/>
+<Badge>adminAdress</Badge> — host and backend port of your drill admin.  <br/>
+<Badge color="#BFC7D5">agentId</Badge> — ID for drill agent of application. <br/> 
+<Badge color="#BFC7D5">buildVersion</Badge> — build version of your application. <br/>
 
 </AdditionalInformation>
