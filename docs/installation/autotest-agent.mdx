@@ -2,7 +2,7 @@
 id: autotest-agent
 title: Autotest Agent
 ---
-import { AdditionalInformation, Badge } from '../src/components';
+import { AdditionalInformation, Badge } from '../../src/components';
 
 To use Drill **Test2Code plugin** with autotests (RESTful API and Selenium-based UI [*](#notes)) 
 add a special autotest agent to your test automation framework.
@@ -42,36 +42,36 @@ drill {
 ## Maven
 Add the following lines to your project **POM**:
 ```java
-    <pluginRepositories>
-        <pluginRepository>
-            <id>drill</id>
-            <url>https://oss.jfrog.org/artifactory/list/oss-release-local</url>
-        </pluginRepository>
-    </pluginRepositories>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.epam.drill.agent.runner</groupId>
-                <artifactId>maven</artifactId>
-                <version>0.2.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>autotest</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <drill>
-                        <version>0.15.6</version>
-                        <agentId>ExampleAgentId</agentId>
-                        <adminHost>localhost</adminHost>
-                        <adminPort>8090</adminPort>
-                    </drill>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<pluginRepositories>
+    <pluginRepository>
+        <id>drill</id>
+        <url>https://oss.jfrog.org/artifactory/list/oss-release-local</url>
+    </pluginRepository>
+</pluginRepositories>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.agent.runner</groupId>
+            <artifactId>maven</artifactId>
+            <version>0.2.2</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>autotest</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <drill>
+                    <version>0.15.6</version>
+                    <agentId>ExampleAgentId</agentId>
+                    <adminHost>localhost</adminHost>
+                    <adminPort>8090</adminPort>
+                </drill>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 ```
 For **Surefire** plugin add args to the main properties block:
 ```java

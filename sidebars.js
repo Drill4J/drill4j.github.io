@@ -3,12 +3,12 @@ module.exports = {
     {
       type: 'category',
       label: 'Installation',
-      items: ['java-agent', 'js-agent', 'autotest-agent'],
+      items: ['installation/java-agent', 'installation/js-agent', 'installation/autotest-agent', 'installation/extension'],
     },
     {
       type: 'category',
       label: 'Docusaurus',
-      items: ['doc1', 'doc2', 'doc3'],
+      items: ['doc1', 'doc2', 'doc3'], 
     },
     {
       type: 'category',
@@ -20,11 +20,6 @@ module.exports = {
       label: 'Examples',
       items: ['usage-exapmle'],
     },
-    {
-      type: 'category',
-      label: 'blah',
-      items: ['Ins'],
-    },
-    'faq',
+     'faq',
   ],
 };
