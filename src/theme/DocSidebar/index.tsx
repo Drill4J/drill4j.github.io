@@ -9,21 +9,14 @@ import React, {
   useState, useCallback, useEffect, useRef,
 } from 'react';
 import clsx from 'clsx';
-import { useThemeConfig, isSamePath } from '@docusaurus/theme-common';
-import useUserPreferencesContext from '@theme/hooks/useUserPreferencesContext';
+import { isSamePath } from '@docusaurus/theme-common';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import useWindowSize, { windowSizes } from '@theme/hooks/useWindowSize';
-import useScrollPosition from '@theme/hooks/useScrollPosition';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
-import Logo from '@theme/Logo';
-import IconArrow from '@theme/IconArrow';
-import IconMenu from '@theme/IconMenu';
 
 import styles from './styles.module.css';
-
-const MOBILE_TOGGLE_SIZE = 24;
 
 function usePrevious(value) {
   const ref = useRef(value);
@@ -194,16 +187,8 @@ function DocSidebar({
   path,
   sidebar,
   sidebarCollapsible = true,
-  onCollapse,
-  isHidden,
 }: Props): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
-  const {
-    navbar: { hideOnScroll },
-    hideableSidebar,
-  } = useThemeConfig();
-  const { isAnnouncementBarClosed } = useUserPreferencesContext();
-  const { scrollY } = useScrollPosition();
 
   useLockBodyScroll(showResponsiveSidebar);
   const windowSize = useWindowSize();
@@ -215,52 +200,13 @@ function DocSidebar({
   }, [windowSize]);
 
   return (
-    <div
-      className={clsx(styles.sidebar, {
-        [styles.sidebarWithHideableNavbar]: hideOnScroll,
-        [styles.sidebarHidden]: isHidden,
-      })}
-    >
-      {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
+    <div className={clsx(styles.sidebar)}>
       <div
         className={clsx(
           'menu',
-          'menu--responsive',
-          'thin-scrollbar',
           styles.menu,
-          {
-            'menu--show': showResponsiveSidebar,
-            [styles.menuWithAnnouncementBar]:
-              !isAnnouncementBarClosed && scrollY === 0,
-          },
         )}
       >
-        <button
-          aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
-          aria-haspopup="true"
-          className="button button--secondary button--sm menu__button"
-          type="button"
-          onClick={() => {
-            setShowResponsiveSidebar(!showResponsiveSidebar);
-          }}
-        >
-          {showResponsiveSidebar ? (
-            <span
-              className={clsx(
-                styles.sidebarMenuIcon,
-                styles.sidebarMenuCloseIcon,
-              )}
-            >
-              &times;
-            </span>
-          ) : (
-            <IconMenu
-              className={styles.sidebarMenuIcon}
-              height={MOBILE_TOGGLE_SIZE}
-              width={MOBILE_TOGGLE_SIZE}
-            />
-          )}
-        </button>
         <ul className="menu__list">
           {sidebar.map((item) => (
             <DocSidebarItem
@@ -276,20 +222,6 @@ function DocSidebar({
           ))}
         </ul>
       </div>
-      {hideableSidebar && (
-        <button
-          type="button"
-          title="Collapse sidebar"
-          aria-label="Collapse sidebar"
-          className={clsx(
-            'button button--secondary button--outline',
-            styles.collapseSidebarButton,
-          )}
-          onClick={onCollapse}
-        >
-          <IconArrow className={styles.collapseSidebarButtonIcon} />
-        </button>
-      )}
     </div>
   );
 }
