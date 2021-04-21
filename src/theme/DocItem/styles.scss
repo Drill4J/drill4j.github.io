@@ -1,0 +1,23 @@
+@import "../../../src/css/index";
+
+.table-of-contents {
+  margin-top: 24px;
+
+  li {
+    padding-left: 8px;
+    margin: 0;
+
+    .table-of-contents__link {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: $normal;
+      color: map-get($monochrome, black);
+    }
+
+    .table-of-contents__link--active {
+      font-weight: $bold;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+@import "../../../src/css/index";
 
 .menu {
   padding: 0;
@@ -26,6 +27,9 @@
 
     .menu__list {
       margin-left: 0;
+      overflow-y: hidden;
+      will-change: height;
+      transition: height 200ms linear;
 
       .menu__link {
         padding: 8px 16px 8px 32px;
@@ -38,7 +42,7 @@
   }
 }
 
-.menu__link--sublist{
+.menu__link--sublist {
   display: flex;
   align-items: center;
 
@@ -51,40 +55,13 @@
 }
 
 .menu__list-item--collapsed {
+  .menu__list {
+    height: 0 !important;
+  }
+
   .menu__link--sublist {
     &:after {
       transform: rotate(180deg);
-    }
-  }
-}
-
-.table-of-contents {
-  margin-top: 24px;
-
-  li {
-    padding-left: 8px;
-    margin: 0;
-
-    .table-of-contents__link {
-      display: inline-block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      line-height: 20px;
-      font-weight: $normal;
-      color: map-get($monochrome, black);
-    }
-
-    .table-of-contents__link--active {
-      font-weight: $bold;
-    }
-    ul {
-      a {
-        margin: 0 0 8px 0;
-      }
-
-      li {
-        margin: 0 0 8px 0;
-      }
     }
   }
 }

@@ -15,6 +15,8 @@ import DocPaginator from '@theme/DocPaginator';
 import type { Props } from '@theme/DocItem';
 import TOC from '@theme/TOC';
 
+import './styles.scss';
+
 function DocItem(props: Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   const { url: siteUrl } = siteConfig;

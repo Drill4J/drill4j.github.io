@@ -16,7 +16,7 @@ import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
 
-import styles from './styles.module.css';
+import './styles.scss';
 
 function usePrevious(value) {
   const ref = useRef(value);
@@ -104,7 +104,6 @@ function DocSidebarItemCategory({
         className={clsx('menu__link', {
           'menu__link--sublist': collapsible,
           'menu__link--active': collapsible && isActive,
-          [styles.menuLinkText]: !collapsible,
         })}
         onClick={collapsible ? handleItemClick : undefined}
         href={collapsible ? '#!' : undefined}
@@ -200,12 +199,9 @@ function DocSidebar({
   }, [windowSize]);
 
   return (
-    <div className={clsx(styles.sidebar)}>
+    <div className="flex flex-col mt-6">
       <div
-        className={clsx(
-          'menu',
-          styles.menu,
-        )}
+        className="menu"
       >
         <ul className="menu__list">
           {sidebar.map((item) => (
