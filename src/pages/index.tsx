@@ -150,6 +150,11 @@ function Home() {
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
+              <img
+                className={clsx(styles.drillLogoShadow, 'absolute top-7 right-12 z-10 rounded-full')}
+                src={useBaseUrl('img/drill-rounded-logo.svg')}
+                alt="drill logo"
+              />
             </div>
             <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
