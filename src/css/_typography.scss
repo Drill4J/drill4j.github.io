@@ -94,6 +94,26 @@ ol[class] {
     margin-top: 0;
   }
 
+  & > h1 {
+    font-size: 32px;
+    line-height: 48px;
+  }
+
+  & > h2 {
+    margin-top: 32px;
+    font-size: 24px;
+    line-height: 40px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  & > h3 {
+    font-size: 20px;
+    line-height: 32px;
+  }
+
   & > h4 {
     margin-bottom: 8px;
     margin-top: 0;
@@ -107,14 +127,27 @@ ol[class] {
   & > img {
     margin-bottom: 24px;
     margin-top: 0;
+    filter: drop-shadow(0px 2px 8px rgba(27, 25, 27, 0.08));
+    border-radius: 8px;
   }
 
-  & > ul {
+  ul, ol {
+    margin-bottom: 24px;
+  }
+
+  ul {
     list-style: inside;
   }
 
-  & > ol {
+  ol {
     list-style: decimal;
+  }
+
+  a {
+    svg {
+      margin-left: 4px;
+      margin-bottom: 3px;
+    }
   }
 }
 
