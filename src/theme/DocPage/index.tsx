@@ -18,10 +18,10 @@ import NotFound from '@theme/NotFound';
 import type { DocumentRoute } from '@theme/DocItem';
 import type { Props } from '@theme/DocPage';
 import { matchPath } from '@docusaurus/router';
-import useWindowSize, { windowSizes } from '@theme/hooks/useWindowSize';
 import { docVersionSearchTag } from '@docusaurus/theme-common';
-
 import clsx from 'clsx';
+
+import styles from './styled.module.scss';
 
 type DocPageContentProps = {
   readonly currentDocRoute: DocumentRoute;
@@ -40,7 +40,6 @@ function DocPageContent({
   } = versionMetadata;
   const sidebarName = permalinkToSidebar[currentDocRoute.path];
   const sidebar = docsSidebars[sidebarName];
-  const windowSize = useWindowSize();
 
   const [hiddenSidebarContainer, setHiddenSidebarContainer] = useState(false);
   const [hiddenSidebar, setHiddenSidebar] = useState(false);
@@ -60,11 +59,9 @@ function DocPageContent({
         tag: docVersionSearchTag(pluginId, version),
       }}
     >
-      <div className={clsx('grid grid-cols-12 gap-x-5 mx-auto')} style={{ maxWidth: '1120px' }}>
+      <div className={clsx(styles.container, 'grid grid-cols-12 gap-x-5 mx-auto')}>
         <div
-          className={clsx('col-span-3 mr-4 border-r border-monochrome-medium-tint', {
-            'border-opacity-0': windowSize === windowSizes.mobile,
-          })}
+          className={clsx('lg:col-span-3 col-span-0 mr-4 border-r md:border-opacity-0 border-monochrome-medium-tint')}
           role="complementary"
         >
           <DocSidebar

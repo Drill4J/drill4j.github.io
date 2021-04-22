@@ -17,7 +17,7 @@ const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   const { pathname } = useLocation();
   return (
-    <header className="sticky top-0 z-50 bg-monochrome-white shadow">
+    <header className="sticky top-0 z-10 bg-monochrome-white shadow">
       <nav className="flex flex-col gap-y-4 items-center xs:flex-row justify-between py-5 container">
         <Link
           to={useBaseUrl('/')}

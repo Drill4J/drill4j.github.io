@@ -11,12 +11,11 @@ import React, {
 import clsx from 'clsx';
 import { isSamePath } from '@docusaurus/theme-common';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
-import useWindowSize, { windowSizes } from '@theme/hooks/useWindowSize';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
 import IconMenu from '@theme/IconMenu';
-
+import { useWindowSize, windowSizes } from '../../hooks/use-window-size';
 import './styles.scss';
 
 const MOBILE_TOGGLE_SIZE = 24;
@@ -196,24 +195,24 @@ function DocSidebar({
   const windowSize = useWindowSize();
 
   useEffect(() => {
-    if (windowSize === windowSizes.desktop) {
+    if (windowSize === windowSizes.md) {
       setShowResponsiveSidebar(false);
     }
   }, [windowSize]);
   return (
-    <div className={clsx('flex flex-col mt-6', {
-      'absolute top-16 inset-x-0 bottom-0 z-100 bg-monochrome-white': showResponsiveSidebar,
+    <div className={clsx('flex flex-col lg:mt-6', {
+      'fixed inset-0 z-20 mt-0 bg-monochrome-white': showResponsiveSidebar,
     })}
     >
       <div
         className="menu"
       >
-        {windowSize === windowSizes.mobile && (
+        {windowSize === windowSizes.md && (
           <button
             aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
             aria-haspopup="true"
             className={clsx('button button--secondary button--sm menu__button',
-              'flex items-center justify-center w-16 h-9 absolute right-4 bottom-10')}
+              'flex items-center justify-center w-16 h-9 fixed right-4 bottom-10')}
             type="button"
             onClick={() => setShowResponsiveSidebar(!showResponsiveSidebar)}
           >
@@ -229,7 +228,7 @@ function DocSidebar({
             )}
           </button>
         )}
-        {(windowSize === windowSizes.desktop || showResponsiveSidebar) && (
+        {(windowSize === windowSizes.xl || showResponsiveSidebar) && (
           <ul className="menu__list">
             {sidebar.map((item) => (
               <DocSidebarItem

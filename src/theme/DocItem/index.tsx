@@ -14,6 +14,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import DocPaginator from '@theme/DocPaginator';
 import type { Props } from '@theme/DocItem';
 import TOC from '@theme/TOC';
+import { windowSizes, useWindowSize } from '../../hooks/use-window-size';
 
 import './styles.scss';
 
@@ -35,7 +36,7 @@ function DocItem(props: Props): JSX.Element {
     title,
     permalink,
   } = metadata;
-
+  const windowSize = useWindowSize();
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -58,7 +59,7 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
-      <main className="col-span-7">
+      <main className="lg:col-span-7 col-span-12">
         <article>
           {!hideTitle && (
             <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
@@ -71,7 +72,7 @@ function DocItem(props: Props): JSX.Element {
           <DocPaginator metadata={metadata} />
         </div>
       </main>
-      {!hideTableOfContents && DocContent.toc && (
+      {!hideTableOfContents && DocContent.toc && windowSize === windowSizes.xl && (
         <div className="col-span-2">
           <TOC toc={DocContent.toc} />
         </div>
