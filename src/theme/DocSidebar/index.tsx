@@ -15,8 +15,11 @@ import useWindowSize, { windowSizes } from '@theme/hooks/useWindowSize';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
+import IconMenu from '@theme/IconMenu';
 
 import './styles.scss';
+
+const MOBILE_TOGGLE_SIZE = 24;
 
 function usePrevious(value) {
   const ref = useRef(value);
@@ -197,26 +200,51 @@ function DocSidebar({
       setShowResponsiveSidebar(false);
     }
   }, [windowSize]);
-
   return (
-    <div className="flex flex-col mt-6">
+    <div className={clsx('flex flex-col mt-6', {
+      'absolute top-16 inset-x-0 bottom-0 z-100 bg-monochrome-white': showResponsiveSidebar,
+    })}
+    >
       <div
         className="menu"
       >
-        <ul className="menu__list">
-          {sidebar.map((item) => (
-            <DocSidebarItem
-              key={item.label}
-              item={item}
-              onItemClick={(e) => {
-                e.target.blur();
-                setShowResponsiveSidebar(false);
-              }}
-              collapsible={sidebarCollapsible}
-              activePath={path}
-            />
-          ))}
-        </ul>
+        {windowSize === windowSizes.mobile && (
+          <button
+            aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
+            aria-haspopup="true"
+            className={clsx('button button--secondary button--sm menu__button',
+              'flex items-center justify-center w-16 h-9 absolute right-4 bottom-10')}
+            type="button"
+            onClick={() => setShowResponsiveSidebar(!showResponsiveSidebar)}
+          >
+            {showResponsiveSidebar ? (
+              <span className="text-24">
+                &times;
+              </span>
+            ) : (
+              <IconMenu
+                height={MOBILE_TOGGLE_SIZE}
+                width={MOBILE_TOGGLE_SIZE}
+              />
+            )}
+          </button>
+        )}
+        {(windowSize === windowSizes.desktop || showResponsiveSidebar) && (
+          <ul className="menu__list">
+            {sidebar.map((item) => (
+              <DocSidebarItem
+                key={item.label}
+                item={item}
+                onItemClick={(e) => {
+                  e.target.blur();
+                  setShowResponsiveSidebar(false);
+                }}
+                collapsible={sidebarCollapsible}
+                activePath={path}
+              />
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
