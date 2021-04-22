@@ -61,9 +61,7 @@ function DocItem(props: Props): JSX.Element {
       <main className="col-span-7">
         <article>
           {!hideTitle && (
-            <header>
-              <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
-            </header>
+            <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
           )}
           <div className="markdown">
             <DocContent />
