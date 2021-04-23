@@ -20,6 +20,8 @@ export const ImageViewer = ({ src, alt }: Props) => {
         <Lightbox
           mainSrc={src}
           onCloseRequest={() => setIsViewerOpen(false)}
+          enableZoom={false}
+          imagePadding={48}
         />
       )}
     </>
