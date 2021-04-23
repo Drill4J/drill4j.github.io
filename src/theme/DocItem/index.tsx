@@ -36,7 +36,7 @@ function DocItem(props: Props): JSX.Element {
     title,
     permalink,
   } = metadata;
-  const isWindowLessLarge = useBreakpoint('lg');
+  const isWindowLarge = useBreakpoint('lg');
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -72,7 +72,7 @@ function DocItem(props: Props): JSX.Element {
           <DocPaginator metadata={metadata} />
         </div>
       </main>
-      {!hideTableOfContents && DocContent.toc && !isWindowLessLarge && (
+      {!hideTableOfContents && DocContent.toc && isWindowLarge && (
         <div className="col-span-2">
           <TOC toc={DocContent.toc} />
         </div>

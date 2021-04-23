@@ -9,18 +9,18 @@ export const windowSizes = {
 };
 
 export const useBreakpoint = (size: keyof typeof windowSizes) => {
-  const [isWindowLessSize, setIsWindowLessSize] = useState(false);
+  const [isWindowLargerSize, setIsWindowLargerSize] = useState(false);
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth < windowSizes[size]) {
-        setIsWindowLessSize(true);
+      if (window.innerWidth >= windowSizes[size]) {
+        setIsWindowLargerSize(true);
       } else {
-        setIsWindowLessSize(false);
+        setIsWindowLargerSize(false);
       }
     }
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  return isWindowLessSize;
+  return isWindowLargerSize;
 };
