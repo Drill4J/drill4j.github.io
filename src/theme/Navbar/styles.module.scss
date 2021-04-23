@@ -8,34 +8,35 @@
 
 .activeTab {
   position: relative;
+  font-weight: $semibold;
 
-  & > a {
-    font-weight: $semibold;
-  }
-
-  &:not(:last-child):after {
-    position: absolute;
-    top: 52px;
-    display: block;
-    width: 100%;
-    height: 4px;
-    content: '';
-    background: map-get($primary-blue, default);
-    border-radius: 4px 4px 0px 0px;
+  @media screen and (min-width: 768px){
+    &:after {
+      position: absolute;
+      top: 52px;
+      display: block;
+      width: 100%;
+      height: 4px;
+      content: '';
+      background: map-get($primary-blue, default);
+      border-radius: 4px 4px 0px 0px;
+    }
   }
 }
 
 .tab {
   position: relative;
 
-  &:hover:not(:last-child):after {
-    position: absolute;
-    top: 52px;
-    display: block;
-    width: 100%;
-    height: 4px;
-    content: '';
-    background: map-get($monochrome, medium-tint);
-    border-radius: 4px 4px 0px 0px;
+  @media screen and (min-width: 768px) {
+    &:hover:after {
+      position: absolute;
+      top: 52px;
+      display: block;
+      width: 100%;
+      height: 4px;
+      content: '';
+      background: map-get($monochrome, medium-tint);
+      border-radius: 4px 4px 0px 0px;
+    }
   }
 }
