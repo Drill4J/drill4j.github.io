@@ -4,8 +4,18 @@
   padding: 0;
 
   .menu__list {
+    overflow-y: hidden;
+
     &-item {
       margin: 0;
+    }
+
+    .menu__link.menu__link--sublist.menu__link--active {
+      background: map-get($monochrome, white);
+
+      &:hover {
+        background: map-get($monochrome, light-tint);
+      }
     }
 
     .menu__link {
@@ -16,7 +26,7 @@
       padding: 8px 16px;
 
       &--active {
-        background: map-get($monochrome, white);
+        background: map-get($monochrome, light-tint);
         font-weight: $bold;
       }
 
@@ -31,10 +41,12 @@
       transition: height 200ms linear;
 
       .menu__link {
-        padding: 8px 16px 8px 32px;
+        padding-left: 32px;
+      }
 
-        &--active {
-          background: map-get($monochrome, light-tint);
+      .menu__list {
+        .menu__link {
+          padding-left: 48px;
         }
       }
     }
