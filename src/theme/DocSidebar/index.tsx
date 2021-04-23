@@ -15,7 +15,7 @@ import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
 import IconMenu from '@theme/IconMenu';
-import { useWindowSize, windowSizes } from '../../hooks/use-window-size';
+import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
 
 const MOBILE_TOGGLE_SIZE = 24;
@@ -192,13 +192,12 @@ function DocSidebar({
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
 
   useLockBodyScroll(showResponsiveSidebar);
-  const windowSize = useWindowSize();
+  const isWindowLessLarge = useBreakpoint('lg');
 
   useEffect(() => {
-    if (windowSize === windowSizes.md) {
-      setShowResponsiveSidebar(false);
-    }
-  }, [windowSize]);
+    setShowResponsiveSidebar(false);
+  }, [isWindowLessLarge]);
+
   return (
     <div className={clsx('flex flex-col lg:mt-6', {
       'fixed inset-0 z-20 mt-0 bg-monochrome-white': showResponsiveSidebar,
@@ -207,7 +206,7 @@ function DocSidebar({
       <div
         className="menu"
       >
-        {windowSize === windowSizes.md && (
+        {isWindowLessLarge && (
           <button
             aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
             aria-haspopup="true"
@@ -228,7 +227,7 @@ function DocSidebar({
             )}
           </button>
         )}
-        {(windowSize === windowSizes.xl || showResponsiveSidebar) && (
+        {(!isWindowLessLarge || showResponsiveSidebar) && (
           <ul className="menu__list">
             {sidebar.map((item) => (
               <DocSidebarItem

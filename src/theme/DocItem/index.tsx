@@ -14,7 +14,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import DocPaginator from '@theme/DocPaginator';
 import type { Props } from '@theme/DocItem';
 import TOC from '@theme/TOC';
-import { windowSizes, useWindowSize } from '../../hooks/use-window-size';
+import { useBreakpoint } from '../../hooks/use-breakpoint';
 
 import './styles.scss';
 
@@ -36,7 +36,7 @@ function DocItem(props: Props): JSX.Element {
     title,
     permalink,
   } = metadata;
-  const windowSize = useWindowSize();
+  const isWindowLessLarge = useBreakpoint('lg');
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -72,7 +72,7 @@ function DocItem(props: Props): JSX.Element {
           <DocPaginator metadata={metadata} />
         </div>
       </main>
-      {!hideTableOfContents && DocContent.toc && windowSize === windowSizes.xl && (
+      {!hideTableOfContents && DocContent.toc && !isWindowLessLarge && (
         <div className="col-span-2">
           <TOC toc={DocContent.toc} />
         </div>
