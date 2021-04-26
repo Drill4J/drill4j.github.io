@@ -14,7 +14,7 @@ import IconMenu from '@theme/IconMenu';
 import clsx from 'clsx';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 
-import { useClickOutside } from '../../hooks/use-click-outside';
+import { useBlur } from '../../hooks/use-blur';
 
 import styles from './styles.module.scss';
 
@@ -25,7 +25,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [navbarShown, setNavbarShown] = useState(false);
   useLockBodyScroll(navbarShown);
-  const ref = useClickOutside(() => setNavbarShown(false));
+  const ref = useBlur(() => setNavbarShown(false));
 
   return (
     <header className="sticky top-0 z-10 bg-monochrome-white shadow">
@@ -35,7 +35,7 @@ const Navbar = () => {
         >
           <img src={useBaseUrl('img/drill4j-logo.svg')} alt="drill-logo" />
         </Link>
-        <section className="md:flex items-center" ref={ref}>
+        <div className="md:flex items-center" ref={ref}>
           <ul
             className={clsx('fixed md:static flex flex-col md:flex-row gap-2 md:gap-6 md:items-center p-4 md:p-0 transition-all', {
               'inset-y-0 z-20 left-0 right-1/4 bg-monochrome-white': navbarShown,
@@ -70,7 +70,7 @@ const Navbar = () => {
             height={MOBILE_TOGGLE_SIZE}
             width={MOBILE_TOGGLE_SIZE}
           />
-        </section>
+        </div>
       </nav>
     </header>
   );

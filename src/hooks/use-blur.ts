@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-export function useClickOutside(callback: () => void) {
+export function useBlur(callback: () => void) {
   const node = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

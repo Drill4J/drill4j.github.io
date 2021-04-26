@@ -192,11 +192,11 @@ function DocSidebar({
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
 
   useLockBodyScroll(showResponsiveSidebar);
-  const isWindowLarge = useBreakpoint('lg');
+  const isWindowLg = useBreakpoint('lg');
 
   useEffect(() => {
     setShowResponsiveSidebar(false);
-  }, [isWindowLarge]);
+  }, [isWindowLg]);
 
   return (
     <div className={clsx('flex flex-col lg:mt-6', {
@@ -206,7 +206,7 @@ function DocSidebar({
       <div
         className="menu"
       >
-        {!isWindowLarge && (
+        {!isWindowLg && (
           <button
             aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
             aria-haspopup="true"
@@ -227,7 +227,7 @@ function DocSidebar({
             )}
           </button>
         )}
-        {(isWindowLarge || showResponsiveSidebar) && (
+        {(isWindowLg || showResponsiveSidebar) && (
           <ul className="menu__list">
             {sidebar.map((item) => (
               <DocSidebarItem
