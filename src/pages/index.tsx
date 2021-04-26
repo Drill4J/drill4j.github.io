@@ -29,8 +29,8 @@ function Home() {
     >
       <main className={styles.mainPageWrapper}>
         <div className={clsx(styles.parallax)}>
-          <div className="relative container pb-12 md:h-full">
-            <div className="pt-24 md:pt-52 space-y-4 md:px-44">
+          <div className="relative container pt-24 md:pt-54 pb:12 md:pb-58 md:h-full">
+            <div className="space-y-4 md:px-16 lg:px-44">
               <h1 className="text-32 md:text-40 text-center">
                 Minimize Your Regression
                 Suite with Drill4J
@@ -92,7 +92,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 mx-4 xl:mx-0 mb-10 md:mb-0">
+            <div className="relative order-1 col-span-full md:col-span-6 mx-8 xl:mx-0 mb-10 md:mb-0">
               <div
                 className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10')}
                 style={{ borderRadius: '14px', width: '117%' }}
@@ -119,9 +119,9 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mt-12 lg:mt-0 mb-10 md:mb-0">
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10  mb-10 md:mb-0">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute -top-9 right-5 rounded-full w-1/2 lg:w-auto')}
+                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 lg:w-auto')}
               >
                 <img className="rounded-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
@@ -140,26 +140,26 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 w-11/12 md:w-1/2 md:w-11/12 h-40 md:h-62 mb-10 md:mb-0">
+            <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 h-48 lg:h-62 mb-10 md:mb-0">
               <img
-                className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-3/4 md:w-auto')}
+                className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-60 md:w-3/4 lg:w-auto')}
                 src={useBaseUrl('img/browser-extension.png')}
                 alt="browser extension"
               />
               <img
-                className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-3/4 md:w-auto')}
+                className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-54 lg:w-3/4 lg:w-auto')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
               <img
-                className={clsx(styles.drillLogoShadow, 'absolute top-7 right-12 z-10 rounded-full')}
+                className={clsx(styles.drillLogoShadow, 'absolute top-7 right-7 lg:right-12 z-10 rounded-full w-11 lg:w-auto')}
                 src={useBaseUrl('img/drill-rounded-logo.svg')}
                 alt="drill logo"
               />
             </div>
             <figcaption className="flex flex-col justify-center col-span-full md:col-start-7 order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
-              <p className="mb-8 lg:mb-0 text-monochrome-shade">
+              <p className="text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
               </p>
