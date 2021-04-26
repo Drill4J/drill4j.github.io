@@ -41,18 +41,18 @@ function Home() {
                 access to application instructions and memory.
               </p>
             </div>
-            <RellaxWrapper speed={3} className={`${styles.cube1} hidden md:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube1} hidden md:block`} />
             <RellaxWrapper speed={4} className={`${styles.cube2} hidden md:block`} />
             <RellaxWrapper speed={4} className={`${styles.cube3} hidden lg:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube4} hidden md:block`} />
-            <RellaxWrapper speed={5} className={`${styles.cube5} hidden lg:block`} />
+            <RellaxWrapper speed={-1} className={`${styles.cube4} hidden md:block`} />
+            <RellaxWrapper speed={1} className={`${styles.cube5} hidden lg:block`} />
             <RellaxWrapper speed={0} className={`${styles.cube6} hidden md:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube7} hidden lg:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube8} hidden md:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube9} hidden md:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube10} hidden lg:block`} />
-            <RellaxWrapper speed={2} className={`${styles.cube11} hidden lg:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube12} hidden md:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube7} hidden lg:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube8} hidden md:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube9} hidden md:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube10} hidden lg:block`} />
+            <RellaxWrapper speed={1} className={`${styles.cube11} hidden lg:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube12} hidden md:block`} />
           </div>
         </div>
         <section className="container pb-12 md:pb-24 ">
