@@ -9,6 +9,7 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import clsx from 'clsx';
 
 const socialLinks = [
   { bg: 'bg-git-hub', link: 'https://github.com/Drill4J' },
@@ -22,12 +23,12 @@ const Footer = () => {
   return (
     <footer className="bg-monochrome-light-tint">
       <div className="container">
-        <section className="grid py-16 grid-cols-1 md:grid-cols-2 lg:grid-cols-footer" style={{ gap: '106px' }}>
-          <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
+        <section className="grid py-16 grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-y-12 gap-x-5">
+          <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener" className="col-span-full lg:col-span-4">
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
-          {links.map(({ title = '', items }) => (
-            <div className="space-y-3">
+          {links.map(({ title = '', items }, index) => (
+            <div className={clsx('space-y-3', `lg:col-span-3 lg:col-start-${5 + index * 3}`)}>
               <h5>{title}</h5>
               <ul>
                 {items.map(({ label, href }) => (

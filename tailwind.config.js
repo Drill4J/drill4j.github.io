@@ -8,10 +8,6 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
-      gridTemplateColumns: {
-        // Complex site-specific column configuration
-        footer: '221px repeat(3, 140px)',
-      },
       backgroundImage: () => ({
         'git-hub': "url('/img/git-hub.svg')",
         telegram: "url('/img/telegram.svg')",
