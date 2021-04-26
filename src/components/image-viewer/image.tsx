@@ -7,7 +7,7 @@ interface Props {
   alt?: string;
 }
 
-export const ImageViewer = ({ src, alt }: Props) => {
+export const Image = ({ src, alt }: Props) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   return (
     <>
