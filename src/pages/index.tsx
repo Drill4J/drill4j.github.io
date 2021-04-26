@@ -11,8 +11,9 @@ import '../css/index.css';
 
 const Figure: React.FC = ({ children }) => (
   <figure
-    className="grid grid-cols-12 items-center justify-items-center lg:justify-items-start gap-x-5"
-    style={{ minHeight: '400px' }}
+    className={clsx(styles.figure,
+      'grid grid-cols-12 items-center justify-items-center lg:justify-items-start gap-x-5',
+      'py-12 md:py-0')}
   >
     {children}
   </figure>
@@ -27,10 +28,10 @@ function Home() {
       description="Description will go into a meta tag in <head />"
     >
       <main className={styles.mainPageWrapper}>
-        <div className={styles.parallax}>
-          <div className="relative container h-full">
-            <div className="pt-52 space-y-4 px-44">
-              <h1 className="text-center">
+        <div className={clsx(styles.parallax)}>
+          <div className="relative container pb-12 md:h-full">
+            <div className="pt-24 md:pt-52 space-y-4 md:px-44">
+              <h1 className="text-32 md:text-40 text-center">
                 Minimize Your Regression
                 Suite with Drill4J
               </h1>
@@ -54,14 +55,14 @@ function Home() {
             <RellaxWrapper speed={3} className={`${styles.cube12} hidden md:block`} />
           </div>
         </div>
-        <section className="container pb-24">
+        <section className="container pb-12 md:pb-24 ">
           <Figure>
             <img
-              className={clsx(styles.shadowImg, 'order-2 lg:order-1 col-span-full lg:col-span-6')}
+              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-6 mb-10 md:mb-0')}
               src={useBaseUrl('img/time-savings.png')}
               alt="time savings"
             />
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center md:col-start-7 md:col-end-12 col-span-full order-2">
               <h3 className="mb-4">Time Savings</h3>
               <p className="text-monochrome-shade">
                 It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
@@ -69,7 +70,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:col-start-7 col-span-full z-10">
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0">
               <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 lg:w-auto')}>
                 <img
                   className="rounded-full"
@@ -83,7 +84,7 @@ function Home() {
                 alt="risks and tests to run background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Risk and Test to Run</h3>
               <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
@@ -91,7 +92,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 mx-4 xl:mx-0">
+            <div className="relative order-1 col-span-full md:col-span-6 mx-4 xl:mx-0 mb-10 md:mb-0">
               <div
                 className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10')}
                 style={{ borderRadius: '14px', width: '117%' }}
@@ -109,7 +110,7 @@ function Home() {
                 alt="coverage background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center md:col-start-7  col-span-full order-2">
               <h3 className="mb-4">Measure Code Coverage</h3>
               <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
@@ -118,7 +119,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:col-start-7 col-span-full z-10 mt-12 lg:mt-0">
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mt-12 lg:mt-0 mb-10 md:mb-0">
               <div
                 className={clsx(styles.borderedImgWrapper, 'absolute -top-9 right-5 rounded-full w-1/2 lg:w-auto')}
               >
@@ -130,7 +131,7 @@ function Home() {
                 alt="quality gate background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Quality Gate</h3>
               <p className="text-monochrome-shade">
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
@@ -139,7 +140,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 w-11/12 md:w-1/2 lg:w-11/12 h-40 md:h-62">
+            <div className="relative order-1 col-span-full md:col-span-6 w-11/12 md:w-1/2 md:w-11/12 h-40 md:h-62 mb-10 md:mb-0">
               <img
                 className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-3/4 md:w-auto')}
                 src={useBaseUrl('img/browser-extension.png')}
@@ -156,7 +157,7 @@ function Home() {
                 alt="drill logo"
               />
             </div>
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-start-7 order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
               <p className="mb-8 lg:mb-0 text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
@@ -165,7 +166,7 @@ function Home() {
             </figcaption>
           </Figure>
         </section>
-        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-center')}>
+        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-center md:text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
             <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">

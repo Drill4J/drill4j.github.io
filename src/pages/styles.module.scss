@@ -11,6 +11,18 @@
   }
 }
 
+.figure {
+  height: auto;
+
+  @media screen and (min-width: 768px) {
+    height: 368px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 400px;
+  }
+}
+
 .shadowImg {
   box-shadow: 0px 3.75249px 11.2575px rgba(27, 25, 27, 0.12);
   background-color: map-get($monochrome, white);
@@ -206,6 +218,7 @@
   left: 65%;
   top: -5%;
 }
+
 .cube2 {
   width: 94px;
   height: 95px;
@@ -215,6 +228,7 @@
   left: 42%;
   top: 4%;
 }
+
 .cube3 {
   width: 77px;
   height: 79px;
@@ -224,6 +238,7 @@
   left: 78%;
   top: 24%;
 }
+
 .cube4 {
   width: 64px;
   height: 63px;
@@ -233,6 +248,7 @@
   left: 31%;
   top: 23%;
 }
+
 .cube5 {
   width: 217px;
   height: 217px;
@@ -242,6 +258,7 @@
   left: 1%;
   top: 16%;
 }
+
 .cube6 {
   width: 26px;
   height: 25px;
@@ -251,6 +268,7 @@
   left: 52%;
   top: 40%;
 }
+
 .cube7 {
   width: 133px;
   height: 137px;
@@ -260,6 +278,7 @@
   left: 85%;
   top: 58%;
 }
+
 .cube8 {
   width: 115px;
   height: 117px;
@@ -269,6 +288,7 @@
   left: 66%;
   top: 60%;
 }
+
 .cube9 {
   width: 53px;
   height: 51px;
@@ -278,6 +298,7 @@
   left: 27%;
   top: 65%;
 }
+
 .cube10 {
   width: 137px;
   height: 133px;
@@ -289,6 +310,7 @@
   top: 71.41%;
   bottom: 18.75%;
 }
+
 .cube11 {
   width: 120px;
   height: 125px;
@@ -298,6 +320,7 @@
   left: 48%;
   top: 80%;
 }
+
 .cube12 {
   width: 54px;
   height: 54px;
