@@ -169,7 +169,7 @@ function Home() {
         <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-left md:text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
-            <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
+            <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-14 md:mb-20">
               <li className="relative pl-20 md:pl-0 md:pt-20">
                 <h3 className="md:mb-2">Run Drill4J</h3>
                 <p className="h-12">Deploy Drill4J Admin</p>
@@ -190,31 +190,31 @@ function Home() {
             <a href="#" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
-        <section className={clsx(styles.features, 'container')}>
+        <section className={clsx(styles.features, 'md:container')}>
           <div className="pt-24 pb-32">
-            <h2 className="mb-6 lg:mb-18 text-center">Commercial Services</h2>
+            <h2 className="mb-8 md:mb-12 lg:mb-18 text-left px-4 md:px-0 md:text-center">Commercial Services</h2>
             <div className="grid grid-cols-12 gap-x-5 mx-auto">
-              <div className="mt-4 col-span-full md:col-span-5">
-                <h3 className="mb-10">Basic</h3>
+              <div className="mt-4 col-span-full md:col-span-5 px-4">
+                <h3 className="mb-6 md:mb-10">Basic</h3>
                 <p className="mb-6">Functionality and features:</p>
-                <ul className="mb-9 md:mb-72 lg:mb-66 pl-8">
+                <ul className="mb-9 md:mb-66 lg:mb-66 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <a href="#" className="button-ghost justify-center mxs:mb-4">For free</a>
+                <a href="#" className="button-ghost justify-center mb-20 md:mb-4">For free</a>
               </div>
               <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-start-7 col-span-full')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
                 <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
-                <ul className="mx-8 pl-8">
+                <ul className="mx-4 md:mx-8 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <ul className="mb-9 mx-8 pl-8">
+                <ul className="mb-9 mx-4 md:mx-8 pl-8">
                   <li className={styles.individualFeature}>
                     <strong>Support</strong>
                     <span>Q&A sessions</span>

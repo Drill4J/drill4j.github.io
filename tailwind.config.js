@@ -26,9 +26,9 @@ module.exports = {
       container: {
         padding: {
           mxs: '16px',
-          xs: '32px',
-          sm: '32px',
-          md: '32px',
+          xs: '16px',
+          sm: '16px',
+          md: '24px',
           lg: '32px',
           xl: '160px',
           '2xl': '288px',
