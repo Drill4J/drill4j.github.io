@@ -166,35 +166,35 @@ function Home() {
             </figcaption>
           </Figure>
         </section>
-        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-center md:text-center')}>
+        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-left md:text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
-            <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
-              <li>
-                <h3 className="mb-2">Run Drill4J</h3>
-                <p>Deploy Drill4J Admin</p>
+            <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Run Drill4J</h3>
+                <p className="h-12">Deploy Drill4J Admin</p>
               </li>
-              <li>
-                <h3 className="mb-2">Run Application</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Run Application</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
-              <li>
-                <h3 className="mb-2">Register Agent</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
-              <li>
-                <h3 className="mb-2">Done</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Done</h3>
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="#" className="button-primary mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
+            <a href="#" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
         <section className={clsx(styles.features, 'container')}>
           <div className="pt-24 pb-32">
             <h2 className="mb-6 lg:mb-18 text-center">Commercial Services</h2>
-            <div className="grid grid-cols-12 gap-x-5 mx-auto" style={{ maxWidth: '796px' }}>
-              <div className="mt-4 md:col-span-5 col-span-full">
+            <div className="grid grid-cols-12 gap-x-5 mx-auto">
+              <div className="mt-4 col-span-full md:col-span-5">
                 <h3 className="mb-10">Basic</h3>
                 <p className="mb-6">Functionality and features:</p>
                 <ul className="mb-9 md:mb-72 lg:mb-66 pl-8">
@@ -233,10 +233,10 @@ function Home() {
             </div>
           </div>
         </section>
-        <section className={clsx(styles.quickStart, 'pt-16 pb-14')}>
+        <section className={clsx(styles.quickStart, 'pt-16 pb-16 md:pb-14')}>
           <div className="container flex flex-col justify-center text-center">
-            <h2 className="mb-2">Get a quick start with Drill4J today</h2>
-            <p className="mb-8">Try easy to install demo examples for JAVA and JS agents. ***</p>
+            <h2 className="mb-2 leading-48">Get a quick start with Drill4J today</h2>
+            <p className="mb-9 md:mb-8 leading-32">Try easy to install demo examples for JAVA and JS agents. ***</p>
             <a href="#" className="button-secondary mx-auto">Try demo</a>
           </div>
         </section>

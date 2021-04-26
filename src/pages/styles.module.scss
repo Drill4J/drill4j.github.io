@@ -61,8 +61,7 @@
   .integrateStepNumber {
     position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,6 +71,11 @@
     color: map-get($monochrome, white);
     font-size: 18px;
     font-weight: $bold;
+
+    @media (min-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   ol {
@@ -84,20 +88,23 @@
 
     li {
       counter-increment: counter;
-      position: relative;
-      padding-top: 80px;
 
-      @media (min-width: 1024px) {
-        &:not(:last-child) {
-          &::before {
-            content: '';
-            position: absolute;
+      &:not(:last-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          left: 28px;
+          top: 50%;
+          width: 1px;
+          height: 120%;
+          background-color: map-get($monochrome, default);
+          opacity: 0.5;
+
+          @media (min-width: 768px) {
             top: 28px;
-            left: 130px;
-            width: 200px;
+            left: 50%;
+            width: 120%;
             height: 1px;
-            background-color: map-get($monochrome, default);
-            opacity: 0.5;
           }
         }
       }
@@ -192,6 +199,7 @@
 .quickStart {
   background-image: url('/img/quick-start.png');
   background-size: cover;
+  background-position: 50% 50%;
 
   p {
     font-size: 18px;
