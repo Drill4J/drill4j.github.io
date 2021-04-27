@@ -7,6 +7,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'For Development',
+      items: [
+        {
+          type: 'category',
+          label: 'JavaScript Agent',
+          items: ['for-development/java-script-agent/js-agent-admin-be-communication']
+        }
+      ]
+    },
+    {
+      type: 'category',
       label: 'Docusaurus',
       items: ['doc1', 'doc2', 'doc3'], 
     },
