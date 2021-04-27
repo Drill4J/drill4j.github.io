@@ -197,9 +197,13 @@
 }
 
 .quickStart {
-  background-image: url('/img/quick-start.png');
+  background-image: url('/img/quick-start-small.png');
   background-size: cover;
   background-position: 50% 50%;
+
+  @media screen and (min-width: 640px){
+    background-image: url('/img/quick-start.png');
+  }
 
   p {
     font-size: 18px;
