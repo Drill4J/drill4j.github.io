@@ -59,7 +59,7 @@ function DocPageContent({
         tag: docVersionSearchTag(pluginId, version),
       }}
     >
-      <div className={clsx(styles.container, 'grid grid-cols-12 gap-x-5 mx-auto')}>
+      <div className={clsx(styles.docPageContainer, 'grid grid-cols-12 gap-x-5 mx-auto')}>
         <div
           className={clsx('lg:col-span-3 col-span-0 mr-4 border-r md:border-opacity-0 border-monochrome-medium-tint')}
           role="complementary"
