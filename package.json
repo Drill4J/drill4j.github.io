@@ -23,6 +23,7 @@
     "prism-react-renderer": "^1.2.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-image-lightbox": "^5.1.1",
     "react-rellax-wrapper": "^1.0.6",
     "tailwindcss": "^2.0.3"
   },
