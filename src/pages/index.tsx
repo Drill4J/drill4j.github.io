@@ -3,6 +3,8 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useThemeConfig } from '@docusaurus/theme-common';
+import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import { RellaxWrapper } from 'react-rellax-wrapper';
 
@@ -22,6 +24,9 @@ const Figure: React.FC = ({ children }) => (
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
+  const { navbar: { items } } = useThemeConfig();
+  const { label, to }: any = items[items.length - 1];
+
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
@@ -30,16 +35,23 @@ function Home() {
       <main className={styles.mainPageWrapper}>
         <div className={clsx(styles.parallax)}>
           <div className="relative container pt-24 md:pt-54 pb:12 md:pb-58 md:h-full">
-            <div className="space-y-4 md:px-16 lg:px-44">
-              <h1 className="text-32 md:text-40 text-center">
+            <div className="md:px-16 lg:px-44">
+              <h1 className="text-32 mb-4 md:text-40 text-center">
                 Minimize Your Regression
                 Suite with Drill4J
               </h1>
-              <p className="text-center text-monochrome-default">
+              <p className="mb-6 md:mb-0 text-center text-monochrome-default">
                 Drill4J is “feature-on-demand” tool for real-time application profiling that does not
                 affect codebase. It provides the ability to make white box functional testing, via
                 access to application instructions and memory.
               </p>
+              <Link
+                style={{ textDecoration: 'none' }}
+                className="button-primary w-44 mx-auto mb-12 visible md:invisible md:absolute"
+                to={useBaseUrl(to)}
+              >
+                {label}
+              </Link>
             </div>
             <RellaxWrapper speed={0} className={`${styles.cube1} hidden md:block`} />
             <RellaxWrapper speed={4} className={`${styles.cube2} hidden md:block`} />

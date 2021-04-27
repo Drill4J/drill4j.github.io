@@ -28,7 +28,7 @@ const Navbar = () => {
   const ref = useBlur(() => setNavbarShown(false));
 
   return (
-    <header className="sticky top-0 z-10 bg-monochrome-white shadow">
+    <header className="sticky top-0 z-20 bg-monochrome-white shadow">
       <nav className="flex items-center justify-between py-5 container">
         <Link
           to={useBaseUrl('/')}
@@ -52,7 +52,7 @@ const Navbar = () => {
                     style={{ textDecoration: 'none' }}
                     className={clsx({
                       'text-16 font-normal leading-24 text-monochrome-default hover:text-blue-default': !isTryDemoButton,
-                      'button-primary w-44 md:ml-5': isTryDemoButton,
+                      'button-primary w-44 ml-5 invisible md:visible': isTryDemoButton,
                       [tab]: !isTryDemoButton,
                     })}
                     to={useBaseUrl(to)}
