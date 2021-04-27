@@ -2,7 +2,7 @@
 .container {
   box-sizing: border-box;
 
-  @media screen and (min-width: 360px) {
+  @media screen and (min-width: 360px) and (max-width: 475px) {
     box-sizing: initial;
   }
   @media screen and (min-width: 768px) {

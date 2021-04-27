@@ -140,7 +140,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 h-48 lg:h-62 mb-10 md:mb-0">
+            <div className="relative order-1 col-span-full md:col-span-6 w-full xs:w-80 md:w-11/12 h-48 lg:h-62 mb-10 md:mb-0">
               <img
                 className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-60 md:w-3/4 lg:w-auto')}
                 src={useBaseUrl('img/browser-extension.png')}
@@ -172,7 +172,7 @@ function Home() {
             <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-14 md:mb-20">
               <li className="relative pl-20 md:pl-0 md:pt-20">
                 <h3 className="md:mb-2">Run Drill4J</h3>
-                <p className="h-12">Deploy Drill4J Admin</p>
+                <p className="h-12 xs:h-auto">Deploy Drill4J Admin</p>
               </li>
               <li className="relative pl-20 md:pl-0 md:pt-20">
                 <h3 className="md:mb-2">Run Application</h3>
