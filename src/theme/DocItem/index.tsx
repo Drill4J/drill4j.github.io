@@ -12,18 +12,11 @@ import { useTitleFormatter } from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import DocPaginator from '@theme/DocPaginator';
-import DocVersionSuggestions from '@theme/DocVersionSuggestions';
 import type { Props } from '@theme/DocItem';
 import TOC from '@theme/TOC';
-import IconEdit from '@theme/IconEdit';
+import { useBreakpoint } from '../../hooks/use-breakpoint';
 
-import clsx from 'clsx';
-import {
-  useActivePlugin,
-  useVersions,
-  useActiveVersion,
-} from '@theme/hooks/useDocs';
-import styles from './styles.module.css';
+import './styles.scss';
 
 function DocItem(props: Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -42,20 +35,8 @@ function DocItem(props: Props): JSX.Element {
     description,
     title,
     permalink,
-    editUrl,
-    lastUpdatedAt,
-    lastUpdatedBy,
   } = metadata;
-
-  const { pluginId } = useActivePlugin({ failfast: true });
-  const versions = useVersions(pluginId);
-  const version = useActiveVersion(pluginId);
-
-  // If site is not versioned or only one version is included
-  // we don't show the version badge
-  // See https://github.com/facebook/docusaurus/issues/3362
-  const showVersionBadge = versions.length > 1;
-
+  const isWindowLg = useBreakpoint('lg');
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -78,99 +59,24 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
-
-      <div className="row">
-        <div
-          className={clsx('col', {
-            [styles.docItemCol]: !hideTableOfContents,
-          })}
-        >
-          <DocVersionSuggestions />
-          <div className={styles.docItemContainer}>
-            <article>
-              {showVersionBadge && (
-                <div>
-                  <span className="badge badge--secondary">
-                    Version: {version.label}
-                  </span>
-                </div>
-              )}
-              {!hideTitle && (
-                <header>
-                  <h1 className={styles.docTitle}>{title}</h1>
-                </header>
-              )}
-              <div className="markdown">
-                <DocContent />
-              </div>
-            </article>
-            {(editUrl || lastUpdatedAt || lastUpdatedBy) && (
-              <div className="margin-vert--xl">
-                <div className="row">
-                  <div className="col">
-                    {editUrl && (
-                      <a
-                        href={editUrl}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        <IconEdit />
-                        Edit this page
-                      </a>
-                    )}
-                  </div>
-                  {(lastUpdatedAt || lastUpdatedBy) && (
-                    <div className="col text--right">
-                      <em>
-                        <small>
-                          Last updated{' '}
-                          {lastUpdatedAt && (
-                            <>
-                              on{' '}
-                              <time
-                                dateTime={new Date(
-                                  lastUpdatedAt * 1000,
-                                ).toISOString()}
-                                className={styles.docLastUpdatedAt}
-                              >
-                                {new Date(
-                                  lastUpdatedAt * 1000,
-                                ).toLocaleDateString()}
-                              </time>
-                              {lastUpdatedBy && ' '}
-                            </>
-                          )}
-                          {lastUpdatedBy && (
-                            <>
-                              by <strong>{lastUpdatedBy}</strong>
-                            </>
-                          )}
-                          {process.env.NODE_ENV === 'development' && (
-                            <div>
-                              <small>
-                                {' '}
-                                (Simulated during dev for better perf)
-                              </small>
-                            </div>
-                          )}
-                        </small>
-                      </em>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            <div className="margin-vert--lg">
-              <DocPaginator metadata={metadata} />
-            </div>
+      <main className="lg:col-span-7 col-span-12">
+        <article>
+          {!hideTitle && (
+            <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
+          )}
+          <div className="markdown">
+            <DocContent />
           </div>
+        </article>
+        <div className="margin-vert--lg">
+          <DocPaginator metadata={metadata} />
         </div>
-        {!hideTableOfContents && DocContent.toc && (
-          <div className="col col--3">
-            <TOC toc={DocContent.toc} />
-          </div>
-        )}
-      </div>
+      </main>
+      {!hideTableOfContents && DocContent.toc && isWindowLg && (
+        <div className="col-span-2">
+          <TOC toc={DocContent.toc} />
+        </div>
+      )}
     </>
   );
 }0;

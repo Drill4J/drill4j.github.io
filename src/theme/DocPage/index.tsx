@@ -17,12 +17,11 @@ import MDXComponents from '@theme/MDXComponents';
 import NotFound from '@theme/NotFound';
 import type { DocumentRoute } from '@theme/DocItem';
 import type { Props } from '@theme/DocPage';
-import IconArrow from '@theme/IconArrow';
 import { matchPath } from '@docusaurus/router';
-
-import clsx from 'clsx';
 import { docVersionSearchTag } from '@docusaurus/theme-common';
-import styles from './styles.module.scss';
+import clsx from 'clsx';
+
+import styles from './styled.module.scss';
 
 type DocPageContentProps = {
   readonly currentDocRoute: DocumentRoute;
@@ -60,68 +59,23 @@ function DocPageContent({
         tag: docVersionSearchTag(pluginId, version),
       }}
     >
-      <div className={clsx(styles.docPage, 'container')}>
-        {sidebar && (
-          <div
-            className={clsx(styles.docSidebarContainer, {
-              [styles.docSidebarContainerHidden]: hiddenSidebarContainer,
-            })}
-            onTransitionEnd={(e) => {
-              if (
-                !e.currentTarget.classList.contains(styles.docSidebarContainer)
-              ) {
-                return;
-              }
-
-              if (hiddenSidebarContainer) {
-                setHiddenSidebar(true);
-              }
-            }}
-            role="complementary"
-          >
-            <DocSidebar
-              key={
-                // Reset sidebar state on sidebar changes
-                // See https://github.com/facebook/docusaurus/issues/3414
-                sidebarName
-              }
-              sidebar={sidebar}
-              path={currentDocRoute.path}
-              sidebarCollapsible={
-                siteConfig.themeConfig?.sidebarCollapsible ?? true
-              }
-              onCollapse={toggleSidebar}
-              isHidden={hiddenSidebar}
-            />
-
-            {hiddenSidebar && (
-              <div
-                className={styles.collapsedDocSidebar}
-                title="Expand sidebar"
-                aria-label="Expand sidebar"
-                tabIndex={0}
-                role="button"
-                onKeyDown={toggleSidebar}
-                onClick={toggleSidebar}
-              >
-                <IconArrow />
-              </div>
-            )}
-          </div>
-        )}
-        <main className={styles.docMainContainer}>
-          <div
-            className={clsx(
-              'py-8 px-10',
-              styles.docItemWrapper,
-              {
-                [styles.docItemWrapperEnhanced]: hiddenSidebarContainer,
-              },
-            )}
-          >
-            <MDXProvider components={MDXComponents}>{children}</MDXProvider>
-          </div>
-        </main>
+      <div className={clsx(styles.container, 'grid grid-cols-12 gap-x-5 mx-auto')}>
+        <div
+          className={clsx('lg:col-span-3 col-span-0 mr-4 border-r md:border-opacity-0 border-monochrome-medium-tint')}
+          role="complementary"
+        >
+          <DocSidebar
+            key={sidebarName}
+            sidebar={sidebar}
+            path={currentDocRoute.path}
+            sidebarCollapsible={
+              siteConfig.themeConfig?.sidebarCollapsible ?? true
+            }
+            onCollapse={toggleSidebar}
+            isHidden={hiddenSidebar}
+          />
+        </div>
+        <MDXProvider components={MDXComponents}>{children}</MDXProvider>
       </div>
     </Layout>
   );

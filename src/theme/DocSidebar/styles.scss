@@ -1,0 +1,78 @@
+@import "../../../src/css/index";
+
+.menu {
+  padding: 0;
+
+  .menu__list {
+    overflow-y: hidden;
+
+    &-item {
+      margin: 0;
+    }
+
+    .menu__link.menu__link--sublist.menu__link--active {
+      background: map-get($monochrome, white);
+
+      &:hover {
+        background: map-get($monochrome, light-tint);
+      }
+    }
+
+    .menu__link {
+      color: map-get($monochrome, black);
+      font-weight: $normal;
+      font-size: 14px;
+      line-height: 24px;
+      padding: 8px 16px;
+
+      &--active {
+        background: map-get($monochrome, light-tint);
+        font-weight: $bold;
+      }
+
+      &:hover {
+        background: map-get($monochrome, light-tint);
+      }
+    }
+
+    .menu__list {
+      margin-left: 0;
+      will-change: height;
+      transition: height 200ms linear;
+
+      .menu__link {
+        padding-left: 32px;
+      }
+
+      .menu__list {
+        .menu__link {
+          padding-left: 48px;
+        }
+      }
+    }
+  }
+}
+
+.menu__link--sublist {
+  display: flex;
+  align-items: center;
+
+  &:after {
+    width: 10px;
+    height: 6px;
+    background: url('/img/small-arrow.svg');
+    transform: rotate(0deg);
+  }
+}
+
+.menu__list-item--collapsed {
+  .menu__list {
+    height: 0 !important;
+  }
+
+  .menu__link--sublist {
+    &:after {
+      transform: rotate(180deg);
+    }
+  }
+}

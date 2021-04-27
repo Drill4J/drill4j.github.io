@@ -22,7 +22,7 @@ const Footer = () => {
   return (
     <footer className="bg-monochrome-light-tint">
       <div className="container">
-        <section className="grid pt-14 pb-18 grid-cols-1 md:grid-cols-2 lg:grid-cols-footer" style={{ gap: '106px' }}>
+        <section className="grid py-16 grid-cols-1 md:grid-cols-2 lg:grid-cols-footer" style={{ gap: '106px' }}>
           <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
