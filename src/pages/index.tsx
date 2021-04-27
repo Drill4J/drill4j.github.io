@@ -219,7 +219,7 @@ function Home() {
               </div>
               <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-start-7 col-span-full')}>
                 <h3 className="mb-4 mx-8">Individual</h3>
-                <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
+                <p className="h-12 mb-6 pt-6 pl-4 md:pl-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
                 <ul className="mx-4 md:mx-8 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
