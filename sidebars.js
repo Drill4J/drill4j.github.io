@@ -7,12 +7,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Configuration',
+      items: ['configuration/launch-parameters'], 
+    },
+    {
+      type: 'category',
       label: 'For Development',
       items: [
         {
           type: 'category',
           label: 'JavaScript Agent',
-          items: ['for-development/java-script-agent/js-agent-admin-be-communication']
+          items: ['for-development/java-script/js-agent-admin-be-communication']
         }
       ]
     },
