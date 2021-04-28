@@ -204,21 +204,21 @@ function Home() {
         </section>
         <section className={clsx(styles.features, 'md:container')}>
           <div className="pt-24 pb-32">
-            <h2 className="mb-8 md:mb-12 lg:mb-18 text-left px-4 md:px-0 md:text-center">Commercial Services</h2>
-            <div className="grid grid-cols-12 gap-x-5 mx-auto">
-              <div className="mt-4 col-span-full md:col-span-5 px-4">
+            <h2 className="mb-8 md:mb-12 lg:mb-18 px-4 md:px-0 text-left md:text-center">Commercial Services</h2>
+            <div className="relative grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5 mx-auto">
+              <div className="relative md:col-span-4 lg:col-start-2 lg:col-span-4 mt-4 pl-4 md:pl-8 lg:pl-4 pr-4">
                 <h3 className="mb-6 md:mb-10">Basic</h3>
                 <p className="mb-6">Functionality and features:</p>
-                <ul className="mb-9 md:mb-66 lg:mb-66 pl-8">
+                <ul className="mb-9 lg:mb-66 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <a href="#" className="button-ghost justify-center mb-20 md:mb-4">For free</a>
+                <a href="#" className="button-ghost md:absolute bottom-8 xs:w-70 mb-20 md:mb-0">For free</a>
               </div>
-              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-start-7 col-span-full')}>
-                <h3 className="mb-4 mx-8">Individual</h3>
+              <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pt-4 pb-8')}>
+                <h3 className="mb-4 mx-4 md:mx-8">Individual</h3>
                 <p className="h-12 mb-6 pt-6 pl-4 md:pl-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
                 <ul className="mx-4 md:mx-8 pl-8">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
@@ -240,7 +240,7 @@ function Home() {
                     <span>Connection of agents to a project</span>
                   </li>
                 </ul>
-                <a href="#" className="button-primary mx-8 justify-center">Mail us</a>
+                <a href="#" className="button-primary xs:w-70 mx-4 md:mx-auto">Mail us</a>
               </div>
             </div>
           </div>
