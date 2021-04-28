@@ -199,7 +199,7 @@ function Home() {
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="#" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
+            <a href="#" className="button-primary xs:w-48 md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
         <section className={clsx(styles.features, 'md:container')}>
