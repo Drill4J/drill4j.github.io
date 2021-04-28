@@ -14,8 +14,7 @@ import '../css/index.css';
 const Figure: React.FC = ({ children }) => (
   <figure
     className={clsx(styles.figure,
-      'grid grid-cols-12 items-center justify-items-center lg:justify-items-start gap-x-5',
-      'py-12 md:py-0')}
+      'grid grid-cols-12 items-center justify-items-start gap-x-5 py-12 md:py-0')}
   >
     {children}
   </figure>
@@ -67,10 +66,10 @@ function Home() {
             <RellaxWrapper speed={0} className={`${styles.cube12} hidden md:block`} />
           </div>
         </div>
-        <section className="container pb-12 md:pb-24 ">
+        <section className="container pb-12 md:pb-24">
           <Figure>
             <img
-              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-6 mb-10 md:mb-0')}
+              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12')}
               src={useBaseUrl('img/time-savings.png')}
               alt="time savings"
             />
@@ -82,16 +81,16 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0">
-              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 lg:w-auto')}>
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
+              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 lg:w-auto')}>
                 <img
-                  className="rounded-full"
+                  className="rounded-full w-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
                   alt="risks and tests to run"
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg)}
+                className={clsx(styles.shadowImg, 'w-full')}
                 src={useBaseUrl('img/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
@@ -104,10 +103,10 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 mx-8 xl:mx-0 mb-10 md:mb-0">
+            <div className="relative order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10')}
-                style={{ borderRadius: '14px', width: '117%' }}
+                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
+                style={{ borderRadius: '14px' }}
               >
                 <img
                   className="w-full"
@@ -117,7 +116,7 @@ function Home() {
                 />
               </div>
               <img
-                className={styles.shadowImg}
+                className={clsx(styles.shadowImg, 'w-5/6 mx-auto')}
                 src={useBaseUrl('img/coverage-background.png')}
                 alt="coverage background"
               />
@@ -131,14 +130,14 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10  mb-10 md:mb-0">
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 lg:w-auto')}
+                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2 lg:w-auto')}
               >
-                <img className="rounded-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
+                <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
               <img
-                className={clsx(styles.shadowImg)}
+                className={clsx(styles.shadowImg, 'w-full')}
                 src={useBaseUrl('img/quality-gate-background.png')}
                 alt="quality gate background"
               />
@@ -153,20 +152,24 @@ function Home() {
           </Figure>
           <Figure>
             <div className="relative order-1 col-span-full md:col-span-6 w-full xs:w-80 md:w-11/12 h-48 lg:h-62 mb-10 md:mb-0">
-              <img
-                className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-60 md:w-3/4 lg:w-auto')}
-                src={useBaseUrl('img/browser-extension.png')}
-                alt="browser extension"
-              />
+              <div className="absolute left-0 bottom-0 z-10 w-5/6 lg:w-auto">
+                <img
+                  className={clsx(styles.shadowImg)}
+                  style={{ width: '80%' }}
+                  src={useBaseUrl('img/browser-extension.png')}
+                  alt="browser extension"
+                />
+                <img
+                  className={clsx(styles.drillLogoShadow, 'absolute top-0 right-0 z-10 rounded-full')}
+                  style={{ width: '17%' }}
+                  src={useBaseUrl('img/drill-rounded-logo.svg')}
+                  alt="drill logo"
+                />
+              </div>
               <img
                 className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-54 lg:w-3/4 lg:w-auto')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
-              />
-              <img
-                className={clsx(styles.drillLogoShadow, 'absolute top-7 right-7 lg:right-12 z-10 rounded-full w-11 lg:w-auto')}
-                src={useBaseUrl('img/drill-rounded-logo.svg')}
-                alt="drill logo"
               />
             </div>
             <figcaption className="flex flex-col justify-center col-span-full md:col-start-7 order-2">
