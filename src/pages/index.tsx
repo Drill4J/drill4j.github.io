@@ -153,7 +153,7 @@ function Home() {
           <Figure>
             <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
               <img
-                className={clsx(styles.shadowImg, 'block w-5/6 opacity-0')}
+                className={clsx(styles.shadowImg, 'w-5/6 invisible')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension"
               />
