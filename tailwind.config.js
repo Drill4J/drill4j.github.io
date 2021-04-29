@@ -13,15 +13,19 @@ module.exports = {
         telegram: "url('/img/telegram.svg')",
         twiter: "url('/img/twiter.svg')",
         youtube: "url('/img/youtube.svg')",
+        menu: "url('/img/menu.svg')",
+        close: "url('/img/close.svg')",
       }),
       screens: {
         mxs: '320px',
-        xs: '475px',
+        'mobile-m': '375px',
+        xs: '425px',
         ...defaultTheme.screens,
       },
       container: {
         padding: {
           mxs: '16px',
+          'mobile-m': '16px',
           xs: '16px',
           sm: '16px',
           md: '24px',
