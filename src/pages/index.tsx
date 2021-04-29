@@ -151,8 +151,13 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 w-full xs:w-80 md:w-11/12 h-48 lg:h-62 mb-10 md:mb-0">
-              <div className="absolute left-0 bottom-0 z-10 w-5/6 lg:w-auto">
+            <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
+              <img
+                className={clsx(styles.shadowImg, 'block w-5/6 opacity-0')}
+                src={useBaseUrl('img/browser-extension-background.png')}
+                alt="browser extension"
+              />
+              <div className="absolute left-0 bottom-0 z-10 w-5/6">
                 <img
                   className={clsx(styles.shadowImg)}
                   style={{ width: '80%' }}
@@ -167,7 +172,7 @@ function Home() {
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-54 lg:w-3/4 lg:w-auto')}
+                className={clsx(styles.shadowImg, 'absolute w-8/12 top-0 right-0 ')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
