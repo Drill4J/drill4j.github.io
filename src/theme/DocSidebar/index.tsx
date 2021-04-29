@@ -99,6 +99,7 @@ function DocSidebarItemCategory({
     <li
       className={clsx('menu__list-item', {
         'menu__list-item--collapsed': collapsed,
+        'menu__list-item--none-collapsed': !collapsed,
       })}
       key={label}
     >

@@ -76,3 +76,9 @@
     }
   }
 }
+
+.menu__list-item--none-collapsed {
+  & > .menu__link--sublist {
+    font-weight: $bold !important;
+  }
+}

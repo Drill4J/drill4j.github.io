@@ -59,7 +59,7 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
-      <main className="lg:col-span-7 col-span-12">
+      <main className="lg:col-span-7 col-span-12 mb-22">
         <article>
           {!hideTitle && (
             <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
@@ -68,9 +68,6 @@ function DocItem(props: Props): JSX.Element {
             <DocContent />
           </div>
         </article>
-        <div className="margin-vert--lg">
-          <DocPaginator metadata={metadata} />
-        </div>
       </main>
       {!hideTableOfContents && DocContent.toc && isWindowLg && (
         <div className="col-span-2">
