@@ -19,8 +19,8 @@ import styles from './styles.module.scss';
 const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   const { pathname } = useLocation();
-  const [navbarShown, setNavbarShown] = useState(false);
-  useLockBodyScroll(navbarShown);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(false);
+  useLockBodyScroll(isNavbarVisible);
 
   const [tryDemoButton, ...links] = [...items].reverse();
   return (
@@ -57,16 +57,15 @@ const Navbar = () => {
             </ul>
             <button
               aria-label="menu button"
-              className={`flex items-center justify-center w-9 h-9 md:hidden ${navbarShown ? 'bg-close' : 'bg-menu'} bg-no-repeat`}
+              className={`flex items-center justify-center w-9 h-9 md:hidden ${isNavbarVisible ? 'bg-close' : 'bg-menu'} bg-no-repeat`}
               type="button"
-              onClick={() => setNavbarShown(!navbarShown)}
+              onClick={() => setIsNavbarVisible(!isNavbarVisible)}
             />
           </div>
         </nav>
       </header>
       {
-        navbarShown && (
-          <div className="visible md:invisible fixed z-10 w-full h-full left-0 top-22">
+        isNavbarVisible && (
             <div className="bg-monochrome-white">
               <div className="container pt-2 pb-6">
                 <ul>
@@ -100,8 +99,7 @@ const Navbar = () => {
                 </ul>
               </div>
             </div>
-            <div className="w-full h-full bg-monochrome-black bg-opacity-50" onClick={() => setNavbarShown(!navbarShown)} />
-          </div>
+            <div className="w-full h-full bg-monochrome-black bg-opacity-50" onClick={() => setIsNavbarVisible(!isNavbarVisible)} />
         )
       }
     </>
