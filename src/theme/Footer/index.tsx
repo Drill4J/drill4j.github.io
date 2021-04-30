@@ -4,19 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 import React from 'react';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
-
-const socialLinks = [
-  { bg: 'bg-git-hub', link: 'https://github.com/Drill4J' },
-  { bg: 'bg-telegram', link: 'https://t.me/drill4j' },
-  { bg: 'bg-twiter', link: 'https://twitter.com/' },
-  { bg: 'bg-youtube', link: 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured' },
-];
+import { socialLinks } from '../social-links';
 
 const Footer = () => {
   const { footer: { links } } = useThemeConfig();
@@ -52,8 +45,8 @@ const Footer = () => {
           </span>
           <ul className="flex justify-center gap-x-4 items-center">
             {socialLinks.map(({ bg, link }) => (
-              <li className={`${bg} w-6 h-6 cursor-pointer`}>
-                <Link to={link} />
+              <li>
+                <Link to={link} className={`${bg} block w-6 h-6 cursor-pointer`} />
               </li>
             ))}
           </ul>
