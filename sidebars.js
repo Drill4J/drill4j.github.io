@@ -16,8 +16,13 @@ module.exports = {
       items: [
         {
           type: 'category',
+          label: 'Java Agent',
+          items: ['for-development/java-agent/java-coverage-receiving-event-flow', 'for-development/java-agent/java-switch-scope-event-flow']
+        },
+        {
+          type: 'category',
           label: 'JavaScript Agent',
-          items: ['for-development/java-script/js-agent-admin-be-communication']
+          items: ['for-development/java-script-agent/js-agent-admin-be-communication']
         }
       ]
     },
