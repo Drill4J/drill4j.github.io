@@ -10,7 +10,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
-import clsx from 'clsx';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import { socialLinks } from '../social-links';
 
@@ -24,8 +23,8 @@ const Navbar = () => {
 
   const [tryDemoButton, ...links] = [...items].reverse();
   return (
-    <>
-      <header className="sticky top-0 z-20 bg-monochrome-white shadow">
+    <header className="sticky top-0 z-50">
+      <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
         <nav className="flex items-center justify-between py-5 container">
           <Link
             to={useBaseUrl('/')}
@@ -34,26 +33,29 @@ const Navbar = () => {
           </Link>
           <div className="md:flex items-center">
             <ul className="invisible md:visible fixed md:static flex flex-row gap-6 items-center">
-              {items.map(({ to = '', label = '' }: any, index) => {
-                const tab = pathname.includes(to) ? styles.activeTab : styles.tab;
-                const isTryDemoButton = items.length === index + 1;
-
-                return (
-                  <li>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      className={clsx({
-                        'text-16 font-normal leading-24 text-monochrome-default hover:text-blue-default': !isTryDemoButton,
-                        'button-primary w-44 ml-5': isTryDemoButton,
-                        [tab]: !isTryDemoButton,
-                      })}
-                      to={useBaseUrl(to)}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                );
-              })}
+              {links.map(({ to = '', label = '' }: any) => (
+                <li>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    className={`
+                      text-16 font-normal leading-24 text-monochrome-default hover:text-blue-default 
+                      ${pathname.includes(to) ? styles.activeTab : styles.tab}
+                      `}
+                    to={useBaseUrl(to)}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  style={{ textDecoration: 'none' }}
+                  className="button-primary w-44 ml-5"
+                  to={useBaseUrl((tryDemoButton as any).to)}
+                >
+                  {tryDemoButton.label}
+                </Link>
+              </li>
             </ul>
             <button
               aria-label="menu button"
@@ -63,9 +65,10 @@ const Navbar = () => {
             />
           </div>
         </nav>
-      </header>
+      </div>
       {
         isNavbarVisible && (
+          <nav className="visible md:invisible fixed w-full h-full left-0 top-22">
             <div className="bg-monochrome-white">
               <div className="container pt-2 pb-6">
                 <ul>
@@ -100,9 +103,10 @@ const Navbar = () => {
               </div>
             </div>
             <div className="w-full h-full bg-monochrome-black bg-opacity-50" onClick={() => setIsNavbarVisible(!isNavbarVisible)} />
+          </nav>
         )
       }
-    </>
+    </header>
   );
 };
 
