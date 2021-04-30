@@ -17,15 +17,13 @@ module.exports = {
         close: "url('/img/close.svg')",
       }),
       screens: {
-        mxs: '320px',
-        'mobile-m': '375px',
+        mxs: '360px',
         xs: '425px',
         ...defaultTheme.screens,
       },
       container: {
         padding: {
           mxs: '16px',
-          'mobile-m': '16px',
           xs: '16px',
           sm: '16px',
           md: '24px',
