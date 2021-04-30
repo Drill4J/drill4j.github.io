@@ -15,6 +15,7 @@ import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
 import IconMenu from '@theme/IconMenu';
+import SearchBar from '@theme/SearchBar';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
 
@@ -191,6 +192,7 @@ function DocSidebar({
   sidebarCollapsible = true,
 }: Props): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
+  const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
 
   useLockBodyScroll(showResponsiveSidebar);
   const isWindowLg = useBreakpoint('lg');
@@ -204,6 +206,13 @@ function DocSidebar({
       'fixed inset-0 z-20 mt-0 bg-monochrome-white': showResponsiveSidebar,
     })}
     >
+      <div className="mb-4 mr-3">
+        <SearchBar
+          handleSearchBarToggle={setIsSearchBarExpanded}
+          isSearchBarExpanded={isSearchBarExpanded}
+        />
+      </div>
+
       <div
         className="menu"
       >
