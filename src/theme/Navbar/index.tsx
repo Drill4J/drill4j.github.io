@@ -20,8 +20,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
   useLockBodyScroll(isNavbarVisible);
-
-  const [tryDemoButton, ...links] = [...items].reverse();
+  const [tryDemoButton, ...links] = swap(items);
   return (
     <header className="sticky top-0 z-50">
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
@@ -34,7 +33,7 @@ const Navbar = () => {
           <div className="md:flex items-center">
             <ul className="invisible md:visible fixed md:static flex flex-row gap-6 items-center">
               {links.map(({ to = '', label = '' }: any) => (
-                <li>
+                <li key={to}>
                   <Link
                     style={{ textDecoration: 'none' }}
                     className={`
@@ -73,7 +72,7 @@ const Navbar = () => {
               <div className="container pt-2 pb-6">
                 <ul>
                   {links.map(({ to = '', label = '' }: any) => (
-                    <li className="text-16 leading-24 border-b border-monochrome-medium-tint">
+                    <li key={to} className="text-16 leading-24 border-b border-monochrome-medium-tint">
                       <Link
                         style={{ textDecoration: 'none' }}
                         className="gray-link inline-flex py-4 w-full h-full"
@@ -85,7 +84,7 @@ const Navbar = () => {
                   ))}
                   <div className="flex gap-x-6 mt-9 mb-30">
                     {socialLinks.map(({ bg, link }) => (
-                      <li>
+                      <li key={link}>
                         <Link to={link} className={`${bg} bg-no-repeat bg-center transform scale-150 block w-9 h-9 cursor-pointer`} />
                       </li>
                     ))}
@@ -111,3 +110,9 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+function swap(arr: any[]) {
+  const newArr = [...arr];
+  [newArr[0], newArr[newArr.length - 1]] = [newArr[newArr.length - 1], newArr[0]];
+  return newArr;
+}
