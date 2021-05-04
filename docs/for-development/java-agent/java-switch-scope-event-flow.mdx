@@ -20,9 +20,9 @@ An Agent has established a connection with the Drill Admin.
 ### Flow
 1. User executes HTTP request to finish/delete scope.
 2. Admin does an action **SwitchActiveScope**.
-3. Admin's plugin part finish/delete scope and sends **InitActiveScope** to agent's plugin part;
-4. Agent's plugin part responds **ScopeInitialized** to Admin's plugin part;
-5. Admin initializes new scope and recalculates build coverage
+3. Admin's plugin part finish/delete scope and sends **InitActiveScope** to the Agent's plugin part.
+4. Agent's plugin part responds **ScopeInitialized** to Admin's plugin part.
+5. Admin initializes new scope and recalculates build coverage.
 
 ### Sequence Diagram
 <Image src="../assets/switch-scope-sequence.png"/>

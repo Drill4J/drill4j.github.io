@@ -1,17 +1,193 @@
 ---
 id: try-demo
-title: Try
+title: Try Drill4J Demo Examples
 ---
+import JavaJSLogo from '../../static/img/java-js-logo.svg';
 import JavaLogo from '../../static/img/java-logo.svg';
+import JsLogo from '../../static/img/javascript-logo.svg';
+import ExternalLinkIcon from '../../static/img/external-link.svg';
+import { AdditionalInformation, Badge } from '../../src/components';
+import DownloadIcon from '../../static/img/download-icon.svg';
 
 
-123
+
+
+We have prepared a demo environment for different agent types:
+<!-- JAVA+JS BLOCK -->
 <details>
 <summary>
-    <JavaLogo /> Java Agent
-</summary>
+    <JavaJSLogo /> Java+JS App
+</summary> <br/>
 
-### Deploy Drill4J
-32332
 
+1. Start docker containers:
+
+```java
+./demo-up.sh
+```
+
+<p>
+2. Go to <a href='http://localhost:8080' target="_black">
+    http://localhost:8080
+    <ExternalLinkIcon/>
+</a>  and wait for application up.
+</p>
+
+<p>
+3. Go to Drill Admin <a href='http://localhost:8091' target="_black">
+    http://localhost:8091
+    <ExternalLinkIcon/>
+</a>  and register agents.
+</p>
+
+<AdditionalInformation className="space-y-2">
+
+Don't forget to set target host "http://localhost:8080/" for frontend agent.
+
+</AdditionalInformation>
+
+4. Run tests:
+```java
+./gradlew clean :build1:test
+```
+See results in the Drill Admin and finish scopes.
+
+5. Deploy the second build of the app:
+```java
+./demo-deploy-build2.sh
+```
+See new build notifications and diffs in the Drill Admin.
+
+6. Run tests:
+```java
+./gradlew clean :build2:test
+```
+See results in the Drill Admin and finish scopes.
+
+7. Deploy the third build of the app:
+```java
+./demo-deploy-build3.sh
+```
+See new build notifications and diffs in the Drill Admin.
+
+8. Run tests:
+```java
+./gradlew clean :build3:test
+```
+See results in the Drill Admin and finish scopes.
+
+Also, you can down demo setup:
+```java
+./demo-down.sh
+```
+</details> 
+<br/>
+
+<!-- JAVA BLOCK -->
+<details>
+<summary>
+    <JavaLogo /> Java App
+</summary> <br/>
+
+1. You need to download a special **docker-compose-file:**
+<a href='./assets/docker-compose.yml' target="_black" class="button-ghost mt-2" download>
+    <DownloadIcon/>
+    Docker-Compose file
+</a>
+
+2. Start Drill Admin:
+
+```java
+
+docker-compose up -d drill-admin admin-ui agent-files
+
+```
+
+3. Start Example App with Drill Agent:
+
+```java
+
+docker-compose up -d example-app
+
+```
+<p>
+You can find Drill Admin on <a href='http://localhost:8091' target="_black">
+    http://localhost:8091
+    <ExternalLinkIcon/>
+</a> 
+</p>
+<p> 
+And Application UI is located here: <a href='http://localhost:8087' target="_black">
+    http://localhost:8087
+    <ExternalLinkIcon/>
+</a>
+</p>
+<p> 
+Application is based on <a href='https://github.com/spring-projects/spring-petclinic' target="_black">
+    Spring Petclinic
+    <ExternalLinkIcon/>
+</a>
+</p>
+
+Use browser extension for manual testing:
+
+<span className="text-red-default">NEED TO ADD LINK TO DOCS</span>
+</details>
+<br/>
+
+<!-- JS BLOCK -->
+<details>
+<summary>
+    <JsLogo /> JS App
+</summary> <br/>
+
+**Clone the example repository:**
+
+```java
+git clone https://github.com/Drill4J/todomvc
+```
+
+**Run Drill4J services**:
+
+1. Run:
+```java
+ docker-compose -f docker-compose.services.yml up -d
+```
+
+2. Run `docker ps` and check that all services have started: `drill-admin`, `admin-ui`, `jsagent` and  `mongo`.
+
+<p> 
+3. Open Drill Admin UI at <a href='http://localhost:9091' target="_black">
+    http://localhost:9091
+    <ExternalLinkIcon/>
+</a>
+</p>
+
+**Run sample application**:
+1. Run:
+
+```java
+docker-compose up -d
+```
+<p> 
+2. Wait for "todomvc-typescript-angular" agent to appear in Admin UI at <a href='http://localhost:9091' target="_black">
+    http://localhost:9091
+    <ExternalLinkIcon/>
+</a>
+</p>
+
+3. Press **Register** button.
+
+4. Click through *Step 1* and *Step 2*, but **make sure to enable** Test2Code plugin at *Step 3*.
+
+<p> 
+5. Open sample application at <a href='http://localhost:8080' target="_black">
+    http://localhost:8080
+    <ExternalLinkIcon/>
+</a>
+</p>
+
+6. Use browser extension for manual testing:
+
+<span className="text-red-default">NEED TO ADD LINK TO DOCS</span>
 </details>

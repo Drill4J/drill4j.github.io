@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  drill-admin:
+    image: drill4j/admin:0.7.0-95
+    environment:
+      - TEST2CODE_PLUGIN_VERSION=0.7.0-126
+      - LOG_LEVEL=INFO
+      - DRILL_DEFAULT_PACKAGES=org/springframework/samples/petclinic
+    ports:
+      - 8090:8090
+
+  admin-ui:
+    image: drill4j/admin-ui:0.7.0-267
+    ports:
+      - 8091:8080
+
+  example-app:
+    image: drill4j/spring-petclinic-sample:0.1.0
+    ports:
+      - 8087:8080
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=drillInstallationDir=/data,adminAddress=host.docker.internal:8090,agentId=ExampleAgent,buildVersion=0.1.0,logLevel=INFO"
+    volumes:
+      - agent-files:/data
+
+  agent-files:
+    image: drill4j/java-agent:0.7.0-28
+    volumes:
+      - agent-files:/java-agent
+
+volumes:
+  agent-files:

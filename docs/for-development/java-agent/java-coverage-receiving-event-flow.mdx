@@ -18,15 +18,15 @@ Only for **Java** agent!
 An Agent has established a connection with the Drill Admin and Agent has been registered.
 
 ### Flow
-1. User executes HTTP request to start session.
+1. User executes HTTP request to start a session.
 2. Admin does an action **StartNewSession**.
-3. Admin's plugin part starts session on its side and sends **StartAgentSession** to agent's plugin part.
+3. Admin's plugin part starts the session on its side and sends **StartAgentSession** to the agent's plugin part.
 4. Probes collection is started. Agent's plugin part responds **SessionStarted** to admin's plugin part.
 5. Agent's plugin part collect **ExecClassData** and sends **СoverDataPart** in chunks max. 65535 objects every 2 seconds to the admin's plugin part.
 <AdditionalInformation className="space-y-2">
 Probes are sent only for the affected classes
 </AdditionalInformation>
-6. If the started session has realtime enabled:
+6. If the started session has real-time enabled:
     - agent's plugin part sends **SessionChanged** to the admin's plugin part.
     - admin's plugin part recalculates coverage.
 7. User executes HTTP request to stop session.
