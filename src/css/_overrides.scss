@@ -7,6 +7,10 @@
     box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3) !important;
     border-radius: 4px !important;
 
+    @media screen and (min-width: 640px) and (max-width: 1024px) {
+      width: 200px;
+    }
+
     &:hover {
       box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(16, 33, 64, 0.2) !important;
     }
@@ -43,7 +47,9 @@
     }
 
     &-Key {
-      display: flex !important;
+      @media screen and (max-width: 1024px) {
+        display: none !important;
+      }
     }
   }
 }
