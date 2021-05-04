@@ -206,13 +206,14 @@ function DocSidebar({
       'fixed inset-0 z-20 mt-0 bg-monochrome-white': showResponsiveSidebar,
     })}
     >
-      <div className="mb-4 mr-3">
-        <SearchBar
-          handleSearchBarToggle={setIsSearchBarExpanded}
-          isSearchBarExpanded={isSearchBarExpanded}
-        />
-      </div>
-
+      {(isWindowLg || showResponsiveSidebar) && (
+        <div className="mt-22 lg:mt-0 mb-3 lg:mb-4 py-3 lg:py-0 pl-3 lg:pl-0 pr-3">
+          <SearchBar
+            handleSearchBarToggle={setIsSearchBarExpanded}
+            isSearchBarExpanded={isSearchBarExpanded}
+          />
+        </div>
+      )}
       <div
         className="menu"
       >
