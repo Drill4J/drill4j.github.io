@@ -45,7 +45,7 @@ function MDXPage(props: Props): JSX.Element {
             </MDXProvider>
           </div>
         </div>
-        <ContactUsViaTelegramBanner />
+        {title === '3 Easy steps to integrate Drill4J' && <ContactUsViaTelegramBanner />}
       </main>
     </Layout>
   );
