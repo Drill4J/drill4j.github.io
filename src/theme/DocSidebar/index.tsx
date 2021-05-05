@@ -15,6 +15,7 @@ import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
 import IconMenu from '@theme/IconMenu';
+import SearchBar from '@theme/SearchBar';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
 
@@ -191,6 +192,7 @@ function DocSidebar({
   sidebarCollapsible = true,
 }: Props): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
+  const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
 
   useLockBodyScroll(showResponsiveSidebar);
   const isWindowLg = useBreakpoint('lg');
@@ -201,11 +203,20 @@ function DocSidebar({
 
   return (
     <div className={clsx('flex flex-col lg:mt-6', {
-      'fixed inset-0 z-20 mt-0 bg-monochrome-white': showResponsiveSidebar,
+      'fixed inset-0 z-50 mt-0 bg-monochrome-white': showResponsiveSidebar,
     })}
     >
+      {(isWindowLg || showResponsiveSidebar) && (
+        <div className="flex justify-between items-center mb-3 lg:mb-4 py-3 lg:py-0 lg:pr-3 pt-6 lg:pt-0 px-6 lg:px-0">
+          <h3 className="hidden sm:inline lg:hidden text-monochrome-default">Documentation</h3>
+          <SearchBar
+            handleSearchBarToggle={setIsSearchBarExpanded}
+            isSearchBarExpanded={isSearchBarExpanded}
+          />
+        </div>
+      )}
       <div
-        className="menu"
+        className="menu px-6 lg:px-0"
       >
         {!isWindowLg && (
           <button

@@ -35,7 +35,7 @@ function Home() {
         <div className={clsx(styles.parallax)}>
           <div className="relative container pt-24 md:pt-54 pb:12 md:pb-58 md:h-full">
             <div className="md:px-16 lg:px-44">
-              <h1 className="text-32 mb-4 md:text-40 text-center">
+              <h1 className="text-32 leading-48 md:leading-56 mb-4 md:text-40 text-center">
                 Minimize Your Regression
                 Suite with Drill4J
               </h1>

@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const [tryDemoButton, ...links] = [...items].reverse();
   return (
-    <header className="sticky top-0 z-50">
+    <header className="sticky top-0 z-50 h-22">
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
         <nav className="flex items-center justify-between py-5 container">
           <Link

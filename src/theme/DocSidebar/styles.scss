@@ -1,8 +1,6 @@
 @import "../../../src/css/index";
 
 .menu {
-  padding: 0;
-
   .menu__list {
     overflow-y: hidden;
 
@@ -60,8 +58,9 @@
   &:after {
     width: 10px;
     height: 6px;
+    top: 50%;
     background: url('/img/small-arrow.svg');
-    transform: rotate(0deg);
+    transform: rotate(0deg) translateY(-50%);
   }
 }
 
