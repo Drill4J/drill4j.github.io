@@ -20,8 +20,9 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
   useLockBodyScroll(isNavbarVisible);
+  const links = [...items];
+  const [tryDemoButton] = links.splice(-1, 1);
 
-  const [tryDemoButton, ...links] = [...items].reverse();
   return (
     <header className="sticky top-0 z-50 h-22">
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
