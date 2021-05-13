@@ -4,3 +4,4 @@ export { Card } from './card';
 export { Badge } from './badge';
 export { Banner } from './banner';
 export { Image } from './image-viewer';
+export { Table } from './Table';
