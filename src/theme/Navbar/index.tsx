@@ -60,7 +60,8 @@ const Navbar = () => {
             </ul>
             <button
               aria-label="menu button"
-              className={`flex items-center justify-center w-9 h-9 md:hidden ${isNavbarVisible ? 'bg-close' : 'bg-menu'} bg-no-repeat`}
+              className={`flex items-center justify-center w-9 h-9 md:hidden text-monochrome-black fill-current ${isNavbarVisible
+                ? 'bg-close' : 'bg-menu'} bg-no-repeat`}
               type="button"
               onClick={() => setIsNavbarVisible(!isNavbarVisible)}
             />

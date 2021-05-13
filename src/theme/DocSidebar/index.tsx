@@ -223,7 +223,7 @@ function DocSidebar({
             aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
             aria-haspopup="true"
             className={clsx('button button--secondary button--sm menu__button',
-              'flex items-center justify-center w-16 h-9 fixed right-4 bottom-10')}
+              'flex items-center justify-center w-16 h-9 fixed right-4 bottom-10 z-20')}
             type="button"
             onClick={() => setShowResponsiveSidebar(!showResponsiveSidebar)}
           >

@@ -5,7 +5,7 @@ title: usage-exapmle
 
 import NetIcon from '../static/img/net-logo.svg'
 import DownloadIcon from '../static/img/download-icon.svg';
-import { Card, Image } from '../src/components';
+import { Card, Image, Table } from '../src/components';
 
 ## Step 1. Run Drill4J
 
@@ -61,3 +61,30 @@ fun main(args: Array<String>) {
 #### Deploy Drill4J
 
 </details>
+
+
+<Table columns={['20%', '15%', '65%']}>
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jar``` |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |
+
+
+</Table>
+
+<Table columns={['15%', '15%', '70%']}>
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jarssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss``` |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |
+
+</Table>
+
