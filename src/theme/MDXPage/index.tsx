@@ -11,6 +11,7 @@ import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import type { Props } from '@theme/MDXPage';
 
+import { useLocation } from '@docusaurus/router';
 import { ContactUsViaTelegramBanner } from './contact-us-via-telegram-banner';
 import { Banner } from '../../components';
 
@@ -26,6 +27,7 @@ function MDXPage(props: Props): JSX.Element {
     wrapperClassName,
   } = frontMatter;
   const { permalink } = metadata;
+  const { pathname } = useLocation();
 
   return (
     <Layout
@@ -39,13 +41,13 @@ function MDXPage(props: Props): JSX.Element {
           <h1 className="text-monochrome-white text-32">{title}</h1>
         </Banner>
         <div className="container pt-12 pb-24">
-          <div className="markdown sm:mx-10 md:mx-22">
+          <div className="markdown">
             <MDXProvider components={MDXComponents}>
               <MDXPageContent />
             </MDXProvider>
           </div>
         </div>
-        <ContactUsViaTelegramBanner />
+        {pathname.replace(/\//g, '') === 'how-to-start' && <ContactUsViaTelegramBanner />}
       </main>
     </Layout>
   );
