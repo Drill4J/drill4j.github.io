@@ -68,22 +68,22 @@ module.exports = {
           items: [
             {
               label: 'Java+JS App',
-              href: '#',
+              href: '/try-demo/#java+js-app',
             },
             {
               label: 'Java App',
-              href: '#',
+              href: '/try-demo/#java-app',
             },
             {
               label: 'JS App',
-              href: '#',
+              href: '/try-demo/#js-app',
             },
           ],
         },
         {
           title: 'Drill4j',
           items: [
-                       {
+            {
               label: 'Contact us',
               href: 'https://t.me/drill4j',
             },

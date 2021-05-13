@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useLocation } from '@docusaurus/router';
 import styles from './styles.module.scss';
 
@@ -11,13 +11,17 @@ interface Props {
 export const ExpandCollapse = ({ children, title, Icon }: Props) => {
   const { hash } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    if (hash.split('#').join('') === title.toLowerCase()) {
+  const id = title.toLowerCase().replace(/\s/g, '-');
+
+  useLayoutEffect(() => {
+    if (hash.split('#').join('') === id) {
       setIsOpen(true);
     }
   }, [hash]);
+
   return (
     <details
+      id={id}
       className={styles.expandCollapse}
       open={isOpen}
       onClick={(e) => {
