@@ -39,39 +39,43 @@ module.exports = {
     footer: {
       links: [
         {
-          title: 'Documentation',
+          title: 'Installation',
           items: [
             {
-              label: 'Features',
-              to: 'docs/',
+              label: 'Drill Admin',
+              to: '/docs/installation/drill-admin/',
             },
             {
-              label: 'Plugins',
-              to: 'docs/doc2/',
+              label: 'Java Agent',
+              to: '/docs/installation/java-agent',
             },
             {
-              label: 'FAQ',
-              to: 'docs/doc2/',
+              label: 'Microservices',
+              href: '/docs/installation/microservices',
+            },
+            {
+              label: 'Autotest Agent',
+              href: '/docs/installation/autotest-agent',
+            },
+            {
+              label: 'Browser Extension',
+              href: '/docs/installation/extension',
             },
           ],
         },
         {
-          title: 'Installation',
+          title: 'Demo Examples',
           items: [
             {
-              label: 'Java Agent',
+              label: 'Java+JS App',
               href: '#',
             },
             {
-              label: 'JS Agent',
+              label: 'Java App',
               href: '#',
             },
             {
-              label: 'Auto tests Agent',
-              href: '#',
-            },
-            {
-              label: 'Chrome Extension',
+              label: 'JS App',
               href: '#',
             },
           ],
@@ -79,13 +83,13 @@ module.exports = {
         {
           title: 'Drill4j',
           items: [
-            {
-              label: 'About',
-              href: '#',
+                       {
+              label: 'Contact us',
+              href: 'https://t.me/drill4j',
             },
             {
-              label: 'Contacts us',
-              href: 'https://t.me/drill4j',
+              label: 'FAQ',
+              href: '/docs/faq/',
             },
           ],
         },

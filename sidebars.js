@@ -28,6 +28,11 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'API',
+      items: ['api/builds-summary'], 
+    },
+    {
+      type: 'category',
       label: 'Docusaurus',
       items: ['doc1', 'doc2', 'doc3'], 
     },

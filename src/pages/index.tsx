@@ -256,7 +256,7 @@ function Home() {
         <section className={clsx(styles.quickStart, 'pt-16 pb-16 md:pb-14')}>
           <div className="container flex flex-col justify-center text-center">
             <h2 className="mb-2 leading-48">Get a quick start with Drill4J today</h2>
-            <p className="mb-9 md:mb-8 leading-32">Try easy to install demo examples for JAVA and JS agents. ***</p>
+            <p className="mb-9 md:mb-8 leading-32">Try easy installation of demo examples for Java and JS agents.</p>
             <a href="#" className="button-secondary mx-auto">Try demo</a>
           </div>
         </section>
