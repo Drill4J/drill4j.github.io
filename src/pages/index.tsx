@@ -3,6 +3,8 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import { useThemeConfig } from '@docusaurus/theme-common';
+import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import { RellaxWrapper } from 'react-rellax-wrapper';
 
@@ -11,8 +13,8 @@ import '../css/index.css';
 
 const Figure: React.FC = ({ children }) => (
   <figure
-    className="grid grid-cols-12 items-center justify-items-center lg:justify-items-start gap-x-5"
-    style={{ minHeight: '400px' }}
+    className={clsx(styles.figure,
+      'grid grid-cols-12 items-center justify-items-start gap-x-5 py-12 md:py-0')}
   >
     {children}
   </figure>
@@ -21,47 +23,57 @@ const Figure: React.FC = ({ children }) => (
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
+  const { navbar: { items } } = useThemeConfig();
+  const { label, to }: any = items[items.length - 1];
+
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
       <main className={styles.mainPageWrapper}>
-        <div className={styles.parallax}>
-          <div className="relative container h-full">
-            <div className="pt-52 space-y-4 px-44">
-              <h1 className="text-center">
+        <div className={clsx(styles.parallax)}>
+          <div className="relative container pt-24 md:pt-54 pb:12 md:pb-58 md:h-full">
+            <div className="md:px-16 lg:px-44">
+              <h1 className="text-32 leading-48 md:leading-56 mb-4 md:text-40 text-center">
                 Minimize Your Regression
                 Suite with Drill4J
               </h1>
-              <p className="text-center text-monochrome-default">
+              <p className="mb-6 md:mb-0 text-center text-monochrome-default">
                 Drill4J is “feature-on-demand” tool for real-time application profiling that does not
                 affect codebase. It provides the ability to make white box functional testing, via
                 access to application instructions and memory.
               </p>
+              <Link
+                style={{ textDecoration: 'none' }}
+                className="button-primary w-44 mx-auto mb-12 visible md:invisible md:absolute"
+                to={useBaseUrl(to)}
+              >
+                {label}
+              </Link>
             </div>
-            <RellaxWrapper speed={3} className={`${styles.cube1} hidden md:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube1} hidden md:block`} />
             <RellaxWrapper speed={4} className={`${styles.cube2} hidden md:block`} />
             <RellaxWrapper speed={4} className={`${styles.cube3} hidden lg:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube4} hidden md:block`} />
-            <RellaxWrapper speed={5} className={`${styles.cube5} hidden lg:block`} />
+            <RellaxWrapper speed={-1} className={`${styles.cube4} hidden md:block`} />
+            <RellaxWrapper speed={1} className={`${styles.cube5} hidden lg:block`} />
             <RellaxWrapper speed={0} className={`${styles.cube6} hidden md:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube7} hidden lg:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube8} hidden md:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube9} hidden md:block`} />
-            <RellaxWrapper speed={4} className={`${styles.cube10} hidden lg:block`} />
-            <RellaxWrapper speed={2} className={`${styles.cube11} hidden lg:block`} />
-            <RellaxWrapper speed={3} className={`${styles.cube12} hidden md:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube7} hidden lg:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube8} hidden md:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube9} hidden md:block`} />
+            <RellaxWrapper speed={3} className={`${styles.cube10} hidden lg:block`} />
+            <RellaxWrapper speed={1} className={`${styles.cube11} hidden lg:block`} />
+            <RellaxWrapper speed={0} className={`${styles.cube12} hidden md:block`} />
           </div>
         </div>
-        <section className="container pb-24">
+        <section className="container pb-12 md:pb-24">
           <Figure>
             <img
-              className={clsx(styles.shadowImg, 'order-2 lg:order-1 col-span-full lg:col-span-6')}
+              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12')}
               src={useBaseUrl('img/time-savings.png')}
               alt="time savings"
             />
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center md:col-start-7 md:col-end-12 col-span-full order-2">
               <h3 className="mb-4">Time Savings</h3>
               <p className="text-monochrome-shade">
                 It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
@@ -69,21 +81,21 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:col-start-7 col-span-full z-10">
-              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 lg:w-auto')}>
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
+              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 lg:w-auto')}>
                 <img
-                  className="rounded-full"
+                  className="rounded-full w-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
                   alt="risks and tests to run"
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg)}
+                className={clsx(styles.shadowImg, 'w-full')}
                 src={useBaseUrl('img/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Risk and Test to Run</h3>
               <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
@@ -91,10 +103,10 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 mx-4 xl:mx-0">
+            <div className="relative order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10')}
-                style={{ borderRadius: '14px', width: '117%' }}
+                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
+                style={{ borderRadius: '14px' }}
               >
                 <img
                   className="w-full"
@@ -104,12 +116,12 @@ function Home() {
                 />
               </div>
               <img
-                className={styles.shadowImg}
+                className={clsx(styles.shadowImg, 'w-5/6 mx-auto')}
                 src={useBaseUrl('img/coverage-background.png')}
                 alt="coverage background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center md:col-start-7  col-span-full order-2">
               <h3 className="mb-4">Measure Code Coverage</h3>
               <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
@@ -118,19 +130,19 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:col-start-7 col-span-full z-10 mt-12 lg:mt-0">
+            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute -top-9 right-5 rounded-full w-1/2 lg:w-auto')}
+                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2 lg:w-auto')}
               >
-                <img className="rounded-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
+                <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
               <img
-                className={clsx(styles.shadowImg)}
+                className={clsx(styles.shadowImg, 'w-full')}
                 src={useBaseUrl('img/quality-gate-background.png')}
                 alt="quality gate background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full lg:col-span-5 order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Quality Gate</h3>
               <p className="text-monochrome-shade">
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
@@ -139,81 +151,90 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-2 lg:order-1 col-span-full lg:col-span-6 w-11/12 md:w-1/2 lg:w-11/12 h-40 md:h-62">
+            <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
               <img
-                className={clsx(styles.shadowImg, 'absolute left-0 bottom-0 z-10 w-3/4 md:w-auto')}
-                src={useBaseUrl('img/browser-extension.png')}
+                className={clsx(styles.shadowImg, 'w-5/6 invisible')}
+                src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension"
               />
+              <div className="absolute left-0 bottom-0 z-10 w-5/6">
+                <img
+                  className={clsx(styles.shadowImg)}
+                  style={{ width: '80%' }}
+                  src={useBaseUrl('img/browser-extension.png')}
+                  alt="browser extension"
+                />
+                <img
+                  className={clsx(styles.drillLogoShadow, 'absolute top-0 right-0 z-10 rounded-full')}
+                  style={{ width: '17%' }}
+                  src={useBaseUrl('img/drill-rounded-logo.svg')}
+                  alt="drill logo"
+                />
+              </div>
               <img
-                className={clsx(styles.shadowImg, 'absolute top-0 right-0 w-3/4 md:w-auto')}
+                className={clsx(styles.shadowImg, 'absolute w-8/12 top-0 right-0 ')}
                 src={useBaseUrl('img/browser-extension-background.png')}
                 alt="browser extension background"
               />
-              <img
-                className={clsx(styles.drillLogoShadow, 'absolute top-7 right-12 z-10 rounded-full')}
-                src={useBaseUrl('img/drill-rounded-logo.svg')}
-                alt="drill logo"
-              />
             </div>
-            <figcaption className="flex flex-col justify-center lg:col-start-7 lg:col-end-12 col-span-full order-1 lg:order-2">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-start-7 order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
-              <p className="mb-8 lg:mb-0 text-monochrome-shade">
+              <p className="text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
               </p>
             </figcaption>
           </Figure>
         </section>
-        <section className={clsx(styles.integrateStepsWrapper, 'py-18 text-center')}>
+        <section className={clsx(styles.integrateStepsWrapper, 'py-18 mb-18 lg:mb-24 text-left md:text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
-            <ol className="grid lg:grid-cols-4 md:grid-cols-2 gap-x-12 gap-y-8 p-0 mb-8 md:mb-20">
-              <li>
-                <h3 className="mb-2">Run Drill4J</h3>
-                <p>Deploy Drill4J Admin</p>
+            <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-14 md:mb-20">
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Run Drill4J</h3>
+                <p className="h-12 xs:h-auto">Deploy Drill4J Admin</p>
               </li>
-              <li>
-                <h3 className="mb-2">Run Application</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Run Application</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
-              <li>
-                <h3 className="mb-2">Register Agent</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
-              <li>
-                <h3 className="mb-2">Done</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20">
+                <h3 className="md:mb-2">Done</h3>
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="#" className="button-primary mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
+            <a href="#" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
-        <section className={clsx(styles.features, 'container')}>
-          <div className="pt-24 pb-32">
-            <h2 className="mb-6 lg:mb-18 text-center">Commercial Services</h2>
-            <div className="grid grid-cols-12 gap-x-5 mx-auto" style={{ maxWidth: '796px' }}>
-              <div className="mt-4 md:col-span-5 col-span-full">
-                <h3 className="mb-10">Basic</h3>
-                <p className="mb-6">Functionality and features:</p>
-                <ul className="mb-9 md:mb-72 lg:mb-66 pl-8">
+        <section className={clsx(styles.features, 'mb-24 lg:mb-32 xs:container')}>
+          <h2 className="mb-8 md:mb-12 lg:mb-18 px-4 md:px-0 text-left md:text-center">Commercial Services</h2>
+          <div className="relative grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5 mx-auto">
+            <div className="relative md:col-span-4 lg:col-start-2 lg:col-span-4 pt-4 px-4 lg:p-0">
+              <h3 className="mb-6 md:mb-10">Basic</h3>
+              <p className="mb-6">Functionality and features:</p>
+              <ul className="mb-9 pl-8">
+                <li className={styles.basicFeature}>Test Impact Analytics</li>
+                <li className={styles.basicFeature}>Test Gap Analysis</li>
+                <li className={styles.basicFeature}>Microservices Support</li>
+                <li className={styles.basicFeature}>Chrome Browser Extension</li>
+              </ul>
+              <a href="#" className="button-ghost md:absolute bottom-8 left-4 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
+            </div>
+            <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pb-9')}>
+              <h3 className="py-4 px-4 md:px-8 border-b border-monochrome-medium-tint">Individual</h3>
+              <p className="py-6 pl-4 md:pl-8">Basic features, plus:</p>
+              <div className="mb-8 px-4">
+                <ul className="pl-8 md:pl-12">
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
                   <li className={styles.basicFeature}>Chrome Browser Extension</li>
                 </ul>
-                <a href="#" className="button-ghost justify-center mxs:mb-4">For free</a>
-              </div>
-              <div className={clsx(styles.individualFeatures, 'pt-4 pb-8 md:col-start-7 col-span-full')}>
-                <h3 className="mb-4 mx-8">Individual</h3>
-                <p className="h-12 mb-6 pt-6 px-8 border-t border-monochrome-medium-tint">Basic features, plus:</p>
-                <ul className="mx-8 pl-8">
-                  <li className={styles.basicFeature}>Test Impact Analytics</li>
-                  <li className={styles.basicFeature}>Test Gap Analysis</li>
-                  <li className={styles.basicFeature}>Microservices Support</li>
-                  <li className={styles.basicFeature}>Chrome Browser Extension</li>
-                </ul>
-                <ul className="mb-9 mx-8 pl-8">
+                <ul className="pl-8 md:pl-12">
                   <li className={styles.individualFeature}>
                     <strong>Support</strong>
                     <span>Q&A sessions</span>
@@ -227,15 +248,15 @@ function Home() {
                     <span>Connection of agents to a project</span>
                   </li>
                 </ul>
-                <a href="#" className="button-primary mx-8 justify-center">Mail us</a>
               </div>
+              <a href="#" className="button-primary mx-4 md:mx-8">Mail us</a>
             </div>
           </div>
         </section>
-        <section className={clsx(styles.quickStart, 'pt-16 pb-14')}>
+        <section className={clsx(styles.quickStart, 'pt-16 pb-16 md:pb-14')}>
           <div className="container flex flex-col justify-center text-center">
-            <h2 className="mb-2">Get a quick start with Drill4J today</h2>
-            <p className="mb-8">Try easy to install demo examples for JAVA and JS agents. ***</p>
+            <h2 className="mb-2 leading-48">Get a quick start with Drill4J today</h2>
+            <p className="mb-9 md:mb-8 leading-32">Try easy to install demo examples for JAVA and JS agents. ***</p>
             <a href="#" className="button-secondary mx-auto">Try demo</a>
           </div>
         </section>

@@ -4,30 +4,24 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 import React from 'react';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-
-const socialLinks = [
-  { bg: 'bg-git-hub', link: 'https://github.com/Drill4J' },
-  { bg: 'bg-telegram', link: 'https://t.me/drill4j' },
-  { bg: 'bg-twiter', link: 'https://twitter.com/' },
-  { bg: 'bg-youtube', link: 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured' },
-];
+import clsx from 'clsx';
+import { socialLinks } from '../social-links';
 
 const Footer = () => {
   const { footer: { links } } = useThemeConfig();
   return (
     <footer className="bg-monochrome-light-tint">
       <div className="container">
-        <section className="grid py-16 grid-cols-1 md:grid-cols-2 lg:grid-cols-footer" style={{ gap: '106px' }}>
-          <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
+        <section className="grid py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-y-12 gap-x-5">
+          <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener" className="col-span-full lg:col-span-4">
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
-          {links.map(({ title = '', items }) => (
-            <div className="space-y-3">
+          {links.map(({ title = '', items }, index) => (
+            <div className={clsx('space-y-3', `md:col-span-${index === 2 ? 2 : 3} lg:col-span-3 lg:col-start-${5 + index * 3}`)}>
               <h5>{title}</h5>
               <ul>
                 {items.map(({ label, href }) => (
@@ -51,8 +45,8 @@ const Footer = () => {
           </span>
           <ul className="flex justify-center gap-x-4 items-center">
             {socialLinks.map(({ bg, link }) => (
-              <li className={`${bg} w-6 h-6 cursor-pointer`}>
-                <Link to={link} />
+              <li>
+                <Link to={link} className={`${bg} block w-6 h-6 cursor-pointer`} />
               </li>
             ))}
           </ul>

@@ -9,6 +9,10 @@ module.exports = {
   organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {
+    algolia: {
+      apiKey: '47ecd3b21be71c5822571b9f59e52544',
+      indexName: 'docusaurus-2',
+    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,

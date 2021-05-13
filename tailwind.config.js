@@ -8,27 +8,25 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
-      gridTemplateColumns: {
-        // Complex site-specific column configuration
-        footer: '221px repeat(3, 140px)',
-      },
       backgroundImage: () => ({
         'git-hub': "url('/img/git-hub.svg')",
         telegram: "url('/img/telegram.svg')",
         twiter: "url('/img/twiter.svg')",
         youtube: "url('/img/youtube.svg')",
+        menu: "url('/img/menu.svg')",
+        close: "url('/img/close.svg')",
       }),
       screens: {
-        mxs: '320px',
-        xs: '475px',
+        mxs: '360px',
+        xs: '425px',
         ...defaultTheme.screens,
       },
       container: {
         padding: {
           mxs: '16px',
-          xs: '32px',
-          sm: '32px',
-          md: '32px',
+          xs: '16px',
+          sm: '16px',
+          md: '24px',
           lg: '32px',
           xl: '160px',
           '2xl': '288px',
@@ -47,8 +45,11 @@ module.exports = {
         34: '8.5rem',
         42: '9.5rem',
         43: '9.75rem',
+        54: '13.5rem',
+        58: '14.5rem',
         62: '15.5rem',
         66: '16.5rem',
+        70: '17.5rem',
         88: '22rem',
         97: '25rem',
         98: '26rem',
