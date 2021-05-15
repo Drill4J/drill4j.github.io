@@ -63,7 +63,7 @@ fun main(args: Array<String>) {
 </details>
 
 
-<Table columns={['20%', '15%', '65%']}>
+<Table columns={['150px', '20%']} width={150}>
 
 |Type                      |Additional Info      |Example                       |
 |:------------------------ |:------------------- |:---------------------------- |
@@ -76,11 +76,10 @@ fun main(args: Array<String>) {
 
 </Table>
 
-<Table columns={['15%', '15%', '70%']}>
+<Table>
 
 |Type                      |Additional Info      |Example                       |
 |:------------------------ |:------------------- |:---------------------------- |
-| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jarssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss``` |
 | System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
 | Java System variable     |                     | -D[smth.bla]                 |
 | config file              |                     |                              |
@@ -88,3 +87,13 @@ fun main(args: Array<String>) {
 
 </Table>
 
+<Table columns={['20%', '45%']}>
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |
+
+</Table>

@@ -2,68 +2,36 @@
 
 .table {
   table {
-    border: 1px solid #D9DBDC;
-    border-radius: 4px;
-    border-collapse: collapse;
+    margin-bottom: 0;
+  }
+}
 
-    thead {
-      tr {
-        position: sticky;
-        top: 0;
-      }
-    }
+.customScroll {
+  max-width: 100%;
+  overflow-x: auto;
 
-    th {
-      display: block;
-      padding: 8px 12px;
-      background-color: map-get($monochrome, light-tint);
-      font-size: 12px;
-      line-height: 24px;
-      color: map-get($monochrome, default);
-    }
+  &::-webkit-scrollbar {
+    max-height: 8px;
+    max-width: 8px;
+  }
 
-    tr {
-      display: flex;
-      width: 100%;
-      box-sizing: border-box;
-    }
+  &::-webkit-scrollbar-thumb {
+    background-color: map-get($monochrome, dark-tint);
+  }
 
-    td {
-      display: block;
-      font-size: 14px;
-      line-height: 18px;
-      color: map-get($monochrome, black);
-      background-color: map-get($monochrome, white);
-    }
-
-    &::-webkit-scrollbar {
-      max-height: 8px;
-      max-width: 8px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: map-get($monochrome, dark-tint);
-    }
-
-    &::-webkit-scrollbar-track{
-      background-color: map-get($monochrome, medium-tint);
-    }
+  &::-webkit-scrollbar-track {
+    background-color: map-get($monochrome, medium-tint);
   }
 }
 
 .expandedTable {
-  table {
-    max-width: 80vw;
-    max-height: 80vh;
-    position: absolute;
-    z-index: 100;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    overflow-x: hidden;
-
-    tr {
-      max-width: 80vw;
-    }
-  }
+  min-width: auto;
+  width: 80vw;
+  max-height: 80vh;
+  position: absolute;
+  z-index: 100;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow-x: auto;
 }
