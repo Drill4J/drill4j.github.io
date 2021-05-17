@@ -7,6 +7,10 @@ table {
   width: 100%;
   min-width: 100%;
 
+  code {
+    display: block;
+  }
+
   thead {
     tr {
       position: sticky;
