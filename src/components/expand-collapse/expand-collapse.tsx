@@ -18,19 +18,19 @@ export const ExpandCollapse = ({ children, title, Icon }: Props) => {
       setIsOpen(true);
       ref && ref.current && ref.current.scrollIntoView({ block: 'center' });
     }
-  }, []);
+  }, [hash]);
 
   return (
     <details
       ref={ref}
       className={styles.expandCollapse}
       open={isOpen}
-      onClick={(e) => {
+    >
+      <summary onClick={(e) => {
         e.preventDefault();
         setIsOpen(!isOpen);
       }}
-    >
-      <summary>
+      >
         {Icon}
         {title}
       </summary>
