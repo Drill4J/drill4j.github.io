@@ -12,8 +12,8 @@ Currently yes, but we're working on .Net agent and JavaScript agent. Python and 
 Java 8+
 
 **Can I use Microservice applications?**  
-Yes, we're supporting microservice applications. [(more info)](installation/microservices)
- 
+Yes, we're supporting microservice applications. See <a href='/docs/installation/microservices' target="_black">Microservices<ExternalLinkIcon/></a>
+
 **Can I use Drill for Android applications?**  
 Yes, it is possible, but it's necessary to implement an agent for android application.
 
@@ -25,9 +25,9 @@ Probes in bytecode. So, methods can be covered in the range of 0.1 - 100.
 Also, we will add the ability to choose a method of coverage collecting. (By string and etc.)
  
 **Which test types do you support?**  
--Manual [(use browser extension)](installation/extension)  
--Auto (API, UI) [(more info)](installation/autotest-agent)
- npm
+<a href='docs/installation/extension' target="_black">- Manual<ExternalLinkIcon/></a><br/>
+<a href='/docs/installation/autotest-agent' target="_black">- Auto (API, UI)<ExternalLinkIcon/></a>
+
 **Why do I need it?**  
 Probably, if your project is small and doesn't have a lot of tests, then you don't need it. BUT, if it's a legacy project with a lot of tests, the tool saves your testing time via Test gap analysis and minimizing of regression suite.
 
@@ -39,11 +39,10 @@ By default, **UPSTREAM** value is **drill-admin:8090**
 Yes, but you need to move the **/work** directory to the volume
 
 **Where can I find API requests?**  
-Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at [http://localhost:8090](http://localhost:8090)
-Also, you can download the [Postman collection](/assets/files/stable/drill-postman-collection.zip) with sample requests.
+Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at <a href='http://localhost:8090' target="_black">http://localhost:8090<ExternalLinkIcon/></a>
 
 **My application has https connection. Does it suitable case for Drill?**   
-Yes, Drill supports https connection. [(https drill setup)](/https-drill-setup) 
+Yes, Drill supports https connection. See <a href='/docs/installation/drill-admin#https-setup' target="_black">HTTPS Setup<ExternalLinkIcon/></a>
 
 **When is a method considered new or modified?** <br/>
 You can find rules in the table:
@@ -54,19 +53,12 @@ You can find rules in the table:
 | Descriptor                     |    -    | changed |     -    | changed |    -    | changed | changed |
 | Body                           |    -    |    -    |  changed |    -    | changed | changed | changed |
 
-
-### Useful Links
-
-[GitHub](https://github.com/Drill4J)
-
-[Contribute](https://contribute.epam.com/products/136)
-
 ### Auto Testing Scheme
-<Image src="../static/img/auto-testing-diagram.png"/>
+<Image src="/static/img/auto-testing-diagram.png"/>
 
 
 ### Manual Testing Scheme
-<Image src="../static/img/manual-testing-diagram.png"/>
+<Image src="/static/img/manual-testing-diagram.png"/>
 
 ## Development Installation
 ### Frontend
