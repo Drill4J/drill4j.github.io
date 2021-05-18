@@ -43,11 +43,11 @@ module.exports = {
           items: [
             {
               label: 'Drill Admin',
-              to: '/docs/installation/drill-admin/',
+              href: '/docs/installation/drill-admin',
             },
             {
               label: 'Java Agent',
-              to: '/docs/installation/java-agent',
+              href: '/docs/installation/java-agent',
             },
             {
               label: 'Microservices',
@@ -81,7 +81,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Drill4j',
+          title: 'Drill4J',
           items: [
             {
               label: 'Contact us',
