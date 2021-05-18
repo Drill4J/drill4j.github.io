@@ -39,53 +39,57 @@ module.exports = {
     footer: {
       links: [
         {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Features',
-              to: 'docs/',
-            },
-            {
-              label: 'Plugins',
-              to: 'docs/doc2/',
-            },
-            {
-              label: 'FAQ',
-              to: 'docs/doc2/',
-            },
-          ],
-        },
-        {
           title: 'Installation',
           items: [
             {
+              label: 'Drill Admin',
+              href: '/docs/installation/drill-admin',
+            },
+            {
               label: 'Java Agent',
-              href: '#',
+              href: '/docs/installation/java-agent',
             },
             {
-              label: 'JS Agent',
-              href: '#',
+              label: 'Microservices',
+              href: '/docs/installation/microservices',
             },
             {
-              label: 'Auto tests Agent',
-              href: '#',
+              label: 'Autotest Agent',
+              href: '/docs/installation/autotest-agent',
             },
             {
-              label: 'Chrome Extension',
-              href: '#',
+              label: 'Browser Extension',
+              href: '/docs/installation/extension',
             },
           ],
         },
         {
-          title: 'Drill4j',
+          title: 'Demo Examples',
           items: [
             {
-              label: 'About',
-              href: '#',
+              label: 'Java+JS App',
+              href: '/try-demo/#java+js-app',
             },
             {
-              label: 'Contacts us',
+              label: 'Java App',
+              href: '/try-demo/#java-app',
+            },
+            {
+              label: 'JS App',
+              href: '/try-demo/#js-app',
+            },
+          ],
+        },
+        {
+          title: 'Drill4J',
+          items: [
+            {
+              label: 'Contact us',
               href: 'https://t.me/drill4j',
+            },
+            {
+              label: 'FAQ',
+              href: '/docs/faq/',
             },
           ],
         },

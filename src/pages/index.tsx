@@ -207,7 +207,7 @@ function Home() {
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="#" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
+            <a href="/how-to-start" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
         <section className={clsx(styles.features, 'mb-24 lg:mb-32 xs:container')}>
@@ -222,7 +222,7 @@ function Home() {
                 <li className={styles.basicFeature}>Microservices Support</li>
                 <li className={styles.basicFeature}>Chrome Browser Extension</li>
               </ul>
-              <a href="#" className="button-ghost md:absolute bottom-8 left-4 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
+              <a href="/how-to-start" className="button-ghost md:absolute bottom-8 left-4 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
             </div>
             <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pb-9')}>
               <h3 className="py-4 px-4 md:px-8 border-b border-monochrome-medium-tint">Individual</h3>
@@ -249,15 +249,15 @@ function Home() {
                   </li>
                 </ul>
               </div>
-              <a href="#" className="button-primary mx-4 md:mx-8">Mail us</a>
+              <a href="mailto:Drill4j@gmail.com" className="button-primary mx-4 md:mx-8">Mail us</a>
             </div>
           </div>
         </section>
         <section className={clsx(styles.quickStart, 'pt-16 pb-16 md:pb-14')}>
           <div className="container flex flex-col justify-center text-center">
             <h2 className="mb-2 leading-48">Get a quick start with Drill4J today</h2>
-            <p className="mb-9 md:mb-8 leading-32">Try easy to install demo examples for JAVA and JS agents. ***</p>
-            <a href="#" className="button-secondary mx-auto">Try demo</a>
+            <p className="mb-9 md:mb-8 leading-32">Try easy installation of demo examples for Java and JS agents.</p>
+            <a href="/try-demo" className="button-secondary mx-auto">Try demo</a>
           </div>
         </section>
       </main>

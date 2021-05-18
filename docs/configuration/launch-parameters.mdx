@@ -1,0 +1,102 @@
+---
+id: launch-parameters
+title: Launch Parameters
+---
+
+## Description
+In this section, you find the list of all params which can be used to customize Drill apps.
+
+## Introduction - How to Pass Params
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jar``` |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |      
+
+## Java Agent
+| Parameter            | Description                                                                                                                       | Required | Example / Format                                                                                              |
+|:---------------------|:----------------------------------------------------------------------------------------------------------------------------------|:---------|:--------------------------------------------------------------------------------------------------------------|
+| agentpath            | the file stores the agent                                                                                                         | yes      | a relative or absolute path, for example: mingwX64-0.7.0-20/drill_agent.dll                                   |
+| agentId              | name of agent                                                                                                                     | yes      | Petclinic                                                                                                     |
+| adminAddress         | admin API URL                                                                                                                     | yes      | localhost:8090                                                                                                |
+| drillInstallationDir | the folder stores agent files                                                                                                     | yes      | a relative or absolute path, for example:  mingwX64-0.7.0-20/                                                 |
+| buildVersion         |                                                                                                                                   | ?        | 0.1.0                                                                                                         |
+| instanceId           |                                                                                                                                   | no       |                                                                                                               |
+| groupId              | this parameter groups your agents in one section. It is helpful if your app is based on a microservices arch                      | no       | petclinic-micro                                                                                               |
+| logLevel             | logging agent work                                                                                                                | ?        | TRACE\|DEBUG\|INFO\|...                                                                                       |
+| logFile              |                                                                                                                                   | no       | a relative or absolute path, for example: "E:\projects\project\spring-petclinic run with agent\drill-log.log" |
+| isWebApp             |                                                                                                                                   | no       |                                                                                                               |
+| isTlsApp             |                                                                                                                                   | no       |                                                                                                               |
+| isAsyncApp           |                                                                                                                                   | no       |                                                                                                               |
+| webAppNames          | the list of TODO                                                                                                                  | no       |                                                                                                               |
+| classScanDelay       | start scanning after waiting of duration in milliseconds                                                                          | no       | 5000                                                                                                          |
+| configPath           | the file stores the config file                                                                                                   | no       |                                                                                                               |   
+
+### System Variables
+|                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
+|:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
+| DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
+| DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+### Example of How to Pass Parameters
+You can list params by properties file:
+```java
+# config file:
+drillInstallationDir=myVersion/
+adminAddress=localhost:8090
+agentId=Petclinic
+buildVersion=0.1.0
+logLevel=TRACE
+```
+And point to the config file in java args:
+```java
+java -agentpath:%DISTR%/drill_agent.dll=configPath=%DISTR%/configFile.properties -jar spring-petclinic-0.1.0.BUILD-SNAPSHOT.jar
+```
+Or use the system variable **DRILL_AGENT_CONFIG_PATH**.
+
+## Autotest Agent
+| Parameter | Default value |      Example      |    Description    |
+|:--------- |:------------- |:----------------- |:----------------- |
+| agentId   | ""            |                   |                   |
+| groupId   | ""            |                   |                   |
+| logFile   | null          |                   |                   |
+| logLevel  | ERROR         |                   |                   |
+| sessionId | null          |                   |                   |
+| logFile   |               | file("debug.log") | create a log file |
+
+additionalParams:
+
+|       Parameter      | Default value |         Input Example         | Description |
+|:-------------------- |:------------- |:----------------------------- |:----------- |
+| isRealTimeEnable     | true          |                               |             |
+| browserProxyAddress  | null          | localhost:7777                |             |
+| isRealTimeEnable     | true          |                               |             |
+| isManuallyControlled | false         |                               |             |
+| sessionForEachTest   | false         |                               |             |
+| isGlobal             | false         |                               |             |
+| rawFrameworkPlugins  | ""            | cucumber-v4;cucumber-v5;junit |             |
+
+## Drill Admin
+|           Parameter          | Default value |                  Description                 | Required |               Example / Format               |
+|:---------------------------- |:------------- |:-------------------------------------------- |:-------- |:-------------------------------------------- |
+| {PLUGIN_NAME}_PLUGIN_VERSION |               |                                              | no       | key=TEST2CODE_PLUGIN_VERSION value=0.7.0-107 |
+| DRILL_AGENTS_SOCKET_TIMEOUT  | 120           | a timeout of agent answers in seconds        | no       | 3000                                         |
+| DRILL_DEFAULT_PACKAGES       | ""            |                                              | no       |                                              |
+| DRILL_PLUGIN_CACHE           | true          | a cache for messages from plugins            | no       | true/false                                   |
+| DRILL_PLUGIN_CACHE_TYPE      | mapdb         | # jvm - on-heap cache mapdb - off-heap cache | no       | jvm/mapdb                                    |
+| DRILL_JWT_LIFETIME           | 60d           |                                              | no       |                                              |
+| PORT                         | 8090          |                                              | no       |                                              |
+| DRILL_DEVMODE                | false         |                                              | no       |                                              |
+| DRILL_PLUGINS_REMOTE_ENABLED |               |                                              | no       | It can be true/false. By default = false     |
+
+## Test2Code Plugin
+Runtime config:
+
+|                    Parameter                    |                             Default value                            | Description | Required | Example / Format |
+|:----------------------------------------------- |:-------------------------------------------------------------------- |:----------- |:-------- |:---------------- |
+| drill.plugins.test2code.features.realtime       | true                                                                 |             | no       |                  |
+| drill.plugins.test2code.features.realtime.cache | depends on drill.plugins.test2code.features.realtime  default value  |             | no       |                  |
+| drill.plugins.test2code.send.packages           | true                                                                 |             | no       |                  |
