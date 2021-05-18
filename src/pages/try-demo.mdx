@@ -18,31 +18,15 @@ We have prepared a demo environment for different agent types:
 
 <ExpandCollapse Icon={<JavaJSLogo />} title="Java+JS App">
 
-Clone the following repository:
-<a href='https://github.com/Drill4J/realworld-java-and-js-coverage' target="_black">
-    Realworld Java and JS Coverage
-<ExternalLinkIcon/>
-</a>
-<br/>
+Clone the following repository: <a href='https://github.com/Drill4J/realworld-java-and-js-coverage' target="_black">Realworld Java and JS Coverage<ExternalLinkIcon/></a>
+
 1. Start docker containers:
 
 ```java
 ./demo-up.sh
 ```
-
-<p>
-    2. Go to <a href='http://localhost:8080' target="_black">
-    http://localhost:8080
-    <ExternalLinkIcon/>
-</a>  and wait for application up.
-</p>
-
-<p>
-    3. Go to Drill Admin <a href='http://localhost:8091' target="_black">
-    http://localhost:8091
-    <ExternalLinkIcon/>
-</a>  and register agents.
-</p>
+2. Go to <a href='http://localhost:8080' target="_black">http://localhost:8080<ExternalLinkIcon/></a> and wait for application up.
+3. Go to Drill Admin <a href='http://localhost:8091' target="_black">http://localhost:8091<ExternalLinkIcon/></a> and register agents.
 
 <AdditionalInformation className="space-y-2">
 
@@ -97,12 +81,7 @@ Also, you can down demo setup:
 
 <ExpandCollapse Icon={<JavaLogo />} title="Java App">
 
-1. You need to download a special **docker-compose-file:**
-<a href='https://github.com/Drill4J/example-configs/blob/main/demo/docker-compose.yml' target="_black">
-    Docker-compose File
-<ExternalLinkIcon/>
-</a>
-
+1. You need to download a special **docker-compose-file:** <a href='https://github.com/Drill4J/example-configs/blob/main/demo/docker-compose.yml' target="_black">Docker-compose File<ExternalLinkIcon/></a>
 2. Start Drill Admin:
 
 ```java
@@ -163,13 +142,7 @@ docker-compose -f docker-compose.services.yml up -d
 ```
 
 2. Run `docker ps` and check that all services have started: `drill-admin`, `admin-ui`, `jsagent` and  `mongo`.
-
-<p>
-    3. Open Drill Admin UI at <a href='http://localhost:9091' target="_black">
-    http://localhost:9091
-    <ExternalLinkIcon/>
-</a>
-</p>
+3. Open Drill Admin UI at <a href='http://localhost:9091' target="_black">http://localhost:9091<ExternalLinkIcon/></a> 
 
 **Run sample application**:
 1. Run:
@@ -177,24 +150,10 @@ docker-compose -f docker-compose.services.yml up -d
 ```java
 docker-compose up -d
 ```
-<p>
-    2. Wait for "todomvc-typescript-angular" agent to appear in Admin UI at <a href='http://localhost:9091' target="_black">
-    http://localhost:9091
-    <ExternalLinkIcon/>
-</a>
-</p>
-
+2. Wait for "todomvc-typescript-angular" agent to appear in Admin UI at <a href='http://localhost:9091' target="_black">http://localhost:9091<ExternalLinkIcon/></a>
 3. Press **Register** button.
-
 4. Click through *Step 1* and *Step 2*, but **make sure to enable** Test2Code plugin at *Step 3*.
-
-<p>
-    5. Open sample application at <a href='http://localhost:8080' target="_black">
-    http://localhost:8080
-    <ExternalLinkIcon/>
-</a>
-</p>
-
+5. Open sample application at <a href='http://localhost:8080' target="_black">http://localhost:8080<ExternalLinkIcon/></a>
 6. Use browser extension for manual testing: 
 <Link to='/docs/installation/extension' target="_black">
     Chrome Browser Extension Installation
