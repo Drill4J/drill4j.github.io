@@ -3,18 +3,24 @@ id: launch-parameters
 title: Launch Parameters
 ---
 
+import {Table} from '../../src/components'
+
 ## Description
 In this section, you find the list of all params which can be used to customize Drill apps.
 
 ## Introduction - How to Pass Params
 
+<Table columns={['200px', '160px']} width={120}>
+
 |Type                      |Additional Info      |Example                       |
 |:------------------------ |:------------------- |:---------------------------- |
-| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jar``` |
+| java args                |                     | <code>-agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jar </code>|
 | System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
 | Java System variable     |                     | -D[smth.bla]                 |
 | config file              |                     |                              |
-| from maven/gradle plugin | for autotest agents |      
+| from maven/gradle plugin | for autotest agents |
+
+</Table>
 
 ## Java Agent
 | Parameter            | Description                                                                                                                       | Required | Example / Format                                                                                              |
@@ -33,7 +39,7 @@ In this section, you find the list of all params which can be used to customize 
 | isAsyncApp           |                                                                                                                                   | no       |                                                                                                               |
 | webAppNames          | the list of TODO                                                                                                                  | no       |                                                                                                               |
 | classScanDelay       | start scanning after waiting of duration in milliseconds                                                                          | no       | 5000                                                                                                          |
-| configPath           | the file stores the config file                                                                                                   | no       |                                                                                                               |   
+| configPath           | the file stores the config file                                                                                                   | no       |                                                                                                               |
 
 ### System Variables
 |                    Parameter                    |                       Description                      | Required |                         Example / Format                         |

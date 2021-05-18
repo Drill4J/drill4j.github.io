@@ -43,11 +43,11 @@ module.exports = {
           items: [
             {
               label: 'Drill Admin',
-              href: '/docs/installation/drill-admin',
+              to: '/docs/installation/drill-admin/',
             },
             {
               label: 'Java Agent',
-              href: '/docs/installation/java-agent',
+              to: '/docs/installation/java-agent',
             },
             {
               label: 'Microservices',
@@ -68,22 +68,22 @@ module.exports = {
           items: [
             {
               label: 'Java+JS App',
-              href: '/try-demo/#java+js-app',
+              href: '#',
             },
             {
               label: 'Java App',
-              href: '/try-demo/#java-app',
+              href: '#',
             },
             {
               label: 'JS App',
-              href: '/try-demo/#js-app',
+              href: '#',
             },
           ],
         },
         {
-          title: 'Drill4J',
+          title: 'Drill4j',
           items: [
-            {
+                       {
               label: 'Contact us',
               href: 'https://t.me/drill4j',
             },

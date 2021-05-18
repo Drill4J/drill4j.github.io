@@ -22,7 +22,7 @@ module.exports = {
         {
           type: 'category',
           label: 'JavaScript Agent',
-          items: ['for-development/java-script-agent/js-agent-overview', 'for-development/java-script-agent/js-agent-admin-be-communication']
+          items: ['for-development/java-script-agent/js-agent-admin-be-communication']
         }
       ]
     },
