@@ -27,7 +27,7 @@ module.exports = {
           label: 'How to start',
         },
         {
-          to: 'docs/',
+          to: 'docs/installation/drill-admin',
           label: 'Documentation',
         },
         {
