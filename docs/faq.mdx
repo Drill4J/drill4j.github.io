@@ -1,0 +1,77 @@
+---
+id: faq
+title: FAQ
+---
+import ExternalLinkIcon from '/static/img/external-link.svg';
+import {Image} from '../src/components'
+
+**Does Drill work only with JVM?**
+Currently yes, but we're working on .Net agent and JavaScript agent. Python and Ruby agents are also possible in the future.
+
+**Which Java versions do you support?**
+Java 8+
+
+**Can I use Microservice applications?**
+Yes, we're supporting microservice applications. See <a href='/docs/installation/microservices' target="_black">Microservices<ExternalLinkIcon/></a>
+
+**Can I use Drill for Android applications?**
+Yes, it is possible, but it's necessary to implement an agent for android application.
+
+**Can I use .war?**
+Yes, but only monolith applications on Tomcat, Jetty, WildFly. Java 8+
+
+**What method of collecting coverage are you using?**
+Probes in bytecode. So, methods can be covered in the range of 0.1 - 100.
+Also, we will add the ability to choose a method of coverage collecting. (By string and etc.)
+
+**Which test types do you support?**<br/>  <a href='docs/installation/extension' target="_black">- Manual<ExternalLinkIcon/></a><br/><a href='/docs/installation/autotest-agent' target="_black">- Auto (API, UI)<ExternalLinkIcon/></a>
+
+**Why do I need it?**
+Probably, if your project is small and doesn't have a lot of tests, then you don't need it. BUT, if it's a legacy project with a lot of tests, the tool saves your testing time via Test gap analysis and minimizing of regression suite.
+
+**How can I specify a backend host for a frontend container?**
+You need to set the **UPSTREAM** env variable for a frontend container.
+By default, **UPSTREAM** value is **drill-admin:8090**
+
+**Will information in the DB be saved, if I recreate backend container?**
+Yes, but you need to move the **/work** directory to the volume
+
+**Where can I find API requests?**
+Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at <a href='http://localhost:8090' target="_black">http://localhost:8090<ExternalLinkIcon/></a>
+
+**My application has https connection. Does it suitable case for Drill?**
+Yes, Drill supports https connection. See <a href='/docs/installation/drill-admin#https-setup' target="_black">HTTPS Setup<ExternalLinkIcon/></a>
+
+**When is a method considered new or modified?** <br/>
+You can find rules in the table:
+
+| Result                         |   New   |   New   | Modified |   New   |   New   |   New   |   New   |
+|--------------------------------|:-------:|:-------:|:--------:|:-------:|:-------:|:-------:|:-------:|
+| Name                           | changed |    -    |     -    | changed | changed |    -    | changed |
+| Descriptor                     |    -    | changed |     -    | changed |    -    | changed | changed |
+| Body                           |    -    |    -    |  changed |    -    | changed | changed | changed |
+
+### Auto Testing Scheme
+<Image src="/img/auto-testing-diagram.png"/>
+
+
+### Manual Testing Scheme
+<Image src="/img/manual-testing-diagram.png"/>
+
+## Development Installation
+### Frontend
+<p>
+See <a href='https://github.com/Drill4J/admin-ui/tree/develop/dev-guide' target="_black">
+    https://github.com/Drill4J/admin-ui/tree/develop/dev-guide
+    <ExternalLinkIcon/>
+</a>
+</p>
+
+
+### Backend
+<p>
+See <a href='https://github.com/Drill4J/Drill4J/blob/develop/README.md' target="_black">
+    https://github.com/Drill4J/Drill4J/blob/develop/README.md
+    <ExternalLinkIcon/>
+</a>
+</p>

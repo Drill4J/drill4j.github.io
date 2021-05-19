@@ -1,0 +1,37 @@
+@import "../../css/index";
+
+.table {
+  table {
+    margin-bottom: 0;
+  }
+}
+
+.customScroll {
+  max-width: 100%;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    max-height: 8px;
+    max-width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: map-get($monochrome, dark-tint);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: map-get($monochrome, medium-tint);
+  }
+}
+
+.expandedTable {
+  min-width: auto;
+  width: 80vw;
+  max-height: 80vh;
+  position: absolute;
+  z-index: 100;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow-x: auto;
+}

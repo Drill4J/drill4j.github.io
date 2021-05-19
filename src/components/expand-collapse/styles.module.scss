@@ -1,0 +1,41 @@
+@import "../../css/index";
+
+.expandCollapse {
+  margin-bottom: 16px;
+
+  &[open] {
+    summary::after {
+      transform: rotate(180deg);
+    }
+  }
+
+  summary {
+    @include card-shadow;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    margin-bottom: 16px;
+    font-family: "OpenSans-Semibold", sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: map-get($monochrome, default);
+    background-color: map-get($monochrome, white);
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      outline: none;
+      text-decoration: none;
+      color: map-get($monochrome, default);
+    }
+
+    &::after {
+      content: url("/static/img/arrow.svg");
+      position: absolute;
+      right: 28px;
+      z-index: 5;
+    }
+  }
+}

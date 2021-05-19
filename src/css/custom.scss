@@ -6,8 +6,6 @@
  */
 
 /* You can override the default Infima variables here. */
-@import './index';
-
 :root {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: rgb(33, 175, 144);
@@ -17,4 +15,18 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
+  --ifm-list-margin: 0;
+  --ifm-list-left-padding: 0;
 }
+
+.threeWaysToDeployContainer {
+  display: grid;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  column-gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+}
+
+@import './index';

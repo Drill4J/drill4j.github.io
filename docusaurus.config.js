@@ -2,130 +2,94 @@ module.exports = {
   title: 'My Site',
   tagline: 'The tagline of my site',
   url: 'https://Drill4J.github.io',
-  baseUrl: '/drill4j-website/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {
+    algolia: {
+      apiKey: '47ecd3b21be71c5822571b9f59e52544',
+      indexName: 'docusaurus-2',
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
     prism: {
       additionalLanguages: ['java', 'kotlin'],
     },
     navbar: {
-      title: 'Drill4J',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
+          to: 'how-to-start/',
+          label: 'How to start',
         },
-        { to: 'blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://github.com/Drill4J',
-          label: 'GitHub',
-          position: 'right',
+          to: 'docs/installation/drill-admin',
+          label: 'Documentation',
+        },
+        {
+          to: 'try-demo/',
+          label: 'Try demo',
         },
       ],
     },
     footer: {
-      copyright: `
-          <span class="footer__copyright__info">
-            Sponsored by
-            <a href="https://www.epam-group.ru/" target="_blank" rel="noreferrer noopener">
-              <img src="img/epam-logo.svg" alt="Epam" />
-            </a>
-            Licensed under Apache v2.0
-          </span>
-          <div class="footer__copyright__social-links">
-            <a 
-              class="footer__copyright__social-links__git-hub"
-              href="https://github.com/Drill4J" target="_blank"
-              rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__telegram"
-              href="https://t.me/drill4j" 
-              target="_blank" rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__twiter"
-              href="#" target="_blank" rel="noreferrer noopener"
-            ></a>
-            <a 
-              class="footer__copyright__social-links__youtube"
-              href="https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured"
-              target="_blank" rel="noreferrer noopener"
-            ></a>
-          </div>
-      `,
       links: [
-        {
-          items: [
-            {
-              html: `
-              <div class="footer__item__logo">
-                <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener">
-                  <img src="img/drill4j-logo-grayscale.svg" alt="drill4j github" />
-                </a>
-              </div>
-                `,
-            },
-          ],
-        },
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Features',
-              to: 'docs/',
-            },
-            {
-              label: 'Plugins',
-              to: 'docs/doc2/',
-            },
-            {
-              label: 'FAQ',
-              to: 'docs/doc2/',
-            },
-          ],
-        },
         {
           title: 'Installation',
           items: [
             {
+              label: 'Drill Admin',
+              href: '/docs/installation/drill-admin',
+            },
+            {
               label: 'Java Agent',
-              href: '#',
+              href: '/docs/installation/java-agent',
             },
             {
-              label: 'JS Agent',
-              href: '#',
+              label: 'Microservices',
+              href: '/docs/installation/microservices',
             },
             {
-              label: 'Auto tests Agent',
-              href: '#',
+              label: 'Autotest Agent',
+              href: '/docs/installation/autotest-agent',
             },
             {
-              label: 'Chrome Browser Extension',
-              href: '#',
+              label: 'Browser Extension',
+              href: '/docs/installation/extension',
             },
           ],
         },
         {
-          title: 'Drill4j',
+          title: 'Demo Examples',
           items: [
             {
-              label: 'About',
-              href: '#',
+              label: 'Java+JS App',
+              href: '/try-demo/#java+js-app',
             },
             {
-              label: 'Contacts us',
+              label: 'Java App',
+              href: '/try-demo/#java-app',
+            },
+            {
+              label: 'JS App',
+              href: '/try-demo/#js-app',
+            },
+          ],
+        },
+        {
+          title: 'Drill4J',
+          items: [
+            {
+              label: 'Contact us',
               href: 'https://t.me/drill4j',
+            },
+            {
+              label: 'FAQ',
+              href: '/docs/faq/',
             },
           ],
         },
@@ -138,9 +102,6 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-        },
-        blog: {
-          showReadingTime: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),

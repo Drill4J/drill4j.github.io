@@ -1,0 +1,47 @@
+---
+id: how-to-start
+slug: /
+title: 3 Easy steps to integrate Drill4J
+---
+
+import { Card } from '../components'
+import DockerIcon from '../../static/img/docker-logo.svg'
+import KubernetesIcon from '../../static/img/kubernetes-logo.svg'
+import OpenshiftIcon from '../../static/img/openshift-logo.svg'
+
+### Step 1. Run Drill4J
+
+There are 3 ways to deploy Drill4J Admin:
+
+<div className="threeWaysToDeployContainer">
+    <a href="/docs/installation/drill-admin#using-docker-compose-file" class="button-ghost">
+        <DockerIcon/>
+        With Docker
+    </a>
+    <a href="/docs/installation/drill-admin#using-kubernetes" class="button-ghost">
+        <KubernetesIcon/>
+        With Kubernetes
+    </a>
+    <a href="/docs/installation/drill-admin#using-openshift" class="button-ghost">
+        <OpenshiftIcon/>
+        With Openshift
+    </a>
+</div>
+
+### Step 2. Deploy your application
+
+Please choose the agent relevant to your application:
+
+<Card iconSrc={'img/java-logo.svg'} href="/docs/installation/java-agent">Java Agent</Card>
+
+To use Drill4J with auto tests, follow this quide (optional):
+
+<Card iconSrc={'img/auto-test-agent-logo.svg'} href="/docs/installation/autotest-agent">Autotest Agent</Card>
+
+For manual testing you need to instal Drill4J Chrome Browser Extension using the following instruction (optional):
+
+<Card iconSrc={'img/browser-extension-logo.svg'} href="/docs/installation/extension">Chrome Browser Extension</Card>
+
+### Step 3. Register Agent
+
+The last thing you need to do is to register an Agent.

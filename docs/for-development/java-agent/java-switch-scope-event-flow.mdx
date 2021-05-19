@@ -1,0 +1,72 @@
+---
+id: java-switch-scope-event-flow
+title: Switch Scope Event Flow
+---
+import { AdditionalInformation, Badge, Image } from '../../../src/components';
+
+
+## Description
+:::caution
+
+Only for **Java** agent!
+
+:::
+
+## Details
+
+### Precondition
+An Agent has established a connection with the Drill Admin.
+
+### Flow
+1. User executes HTTP request to finish/delete scope.
+2. Admin does an action **SwitchActiveScope**.
+3. Admin's plugin part finish/delete scope and sends **InitActiveScope** to the Agent's plugin part.
+4. Agent's plugin part responds **ScopeInitialized** to Admin's plugin part.
+5. Admin initializes new scope and recalculates build coverage.
+
+### Sequence Diagram
+<Image src="/img/for-development/switch-scope-sequence.png"/>
+
+## API
+### Agent Incoming Messages:
+
+```java
+@Serializable
+@SerialName("INIT_ACTIVE_SCOPE")
+data class InitActiveScope(val payload: InitScopePayload) : AgentAction()
+
+@Serializable
+data class InitScopePayload(
+    val id: String,
+    val name: String,
+    val prevId: String
+)
+
+```
+### Agent Outgoing Messages:
+
+```java
+@SerialName("SCOPE_INITIALIZED")
+@Serializable
+data class ScopeInitialized(
+    val id: String,
+    val name: String,
+    val prevId: String,
+    val ts: Long
+) : CoverMessage()
+```
+### Admin Incoming Messages:
+```java
+
+
+@SerialName("SWITCH_ACTIVE_SCOPE")
+@Serializable
+data class SwitchActiveScope(val payload: ActiveScopeChangePayload) : Action()
+
+@Serializable
+data class ActiveScopeChangePayload(
+    val scopeName: String,
+    val savePrevScope: Boolean = false,
+    val prevScopeEnabled: Boolean = true,
+) : JvmSerializable
+```

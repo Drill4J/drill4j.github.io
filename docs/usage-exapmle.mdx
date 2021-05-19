@@ -1,0 +1,96 @@
+---
+id: usage-exapmle
+title: usage-exapmle
+---
+
+import NetIcon from '../static/img/net-logo.svg'
+import DownloadIcon from '../static/img/download-icon.svg';
+import { Card, Image, Table, ExpandCollapse } from '../src/components';
+
+## Step 1. Run Drill4J
+
+Start Drill4J using the following command in the terminal:
+
+```makefile
+docker-compose up -d
+```
+
+#### Deploy Drill4J
+
+Drill4J is “feature-on-demand” tool for real-time application profiling that does not affect codebase. It provides the ability to make white box functional testing, via access to application instructions and memory.
+
+<Image src="/assets/img/image.png" alt="My awesome image"/>
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem temporibus odit, eius dicta repellat illo cupiditate quis fuga, quo placeat, ullam ex saepe ab velit. Corrupti hic quas voluptates tempore!
+
+## Different code blocks
+
+```java
+class HelloWorld {
+  public static void main(String[] args) {
+      System.out.println("Hello World!");
+  }
+}
+```
+```kotlin
+fun main(args: Array<String>) {
+    println("Hello, world!")println("Hello, world!")println("Hello, world!")println("Hello, world!")println("Hello, world!")println("Hello, world!")println("Hello, world!")
+}
+```
+```ts
+  const greeting = () => console.log("Hello, world!");
+```
+<button className="button-primary">
+    <DownloadIcon/>
+    Try demo
+</button> <br/>
+<button className="button-secondary">Try demo</button> <br/>
+<button className="button-ghost">
+    <DownloadIcon/>
+    Try demo
+</button> <br/>
+<a className="button-primary">Link with button styles</a> <br/>
+
+<Card iconSrc={'img/net-logo.svg'}>.Net agent</Card> <br/>
+
+<details>
+<summary>
+    <NetIcon/> Expand
+</summary>
+
+#### Deploy Drill4J
+
+</details>
+
+<ExpandCollapse title={'Expand'} Icon={<NetIcon/>}>
+
+#### Deploy Drill4J
+
+</ExpandCollapse>
+
+<Table columns={['20%', '15%', '65%']}>
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jar``` |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |
+
+
+</Table>
+
+<Table columns={['15%', '15%', '70%']}>
+
+|Type                      |Additional Info      |Example                       |
+|:------------------------ |:------------------- |:---------------------------- |
+| java args                |                     | ```java -agentpath:%DISTR%/drill_agent.dll=drillInstallationDir=%DISTR%/,adminAddress=localhost:8090,agentId=Petclinic,buildVersion=%DRILL_BUILD%,logLevel=TRACE -jar spring-petclinic-%DRILL_BUILD%.BUILD-SNAPSHOT.jarssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss``` |
+| System variables         |                     | DRILL_PLUGINS_REMOTE_ENABLED |
+| Java System variable     |                     | -D[smth.bla]                 |
+| config file              |                     |                              |
+| from maven/gradle plugin | for autotest agents |
+
+</Table>
+
+

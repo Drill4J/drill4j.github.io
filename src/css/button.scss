@@ -1,15 +1,18 @@
-@import "colors";
-@import "fonts";
+@import 'colors';
+@import 'fonts';
 
 .button-primary {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   padding: 12px 48px;
+  max-height: 48px;
   border-radius: 8px;
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($primary-blue, default);
   color: map-get($monochrome, white);
+  text-decoration: none !important;
   font-weight: $bold;
   font-size: 16px;
   line-height: 24px;
@@ -18,7 +21,7 @@
   &:hover {
     border: 2px solid map-get($primary-blue, medium-tint);
     background-color: map-get($primary-blue, medium-tint);
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, white) !important;
     text-decoration: none;
 
     svg {
@@ -29,7 +32,7 @@
   &:active {
     border: 2px solid map-get($primary-blue, shade);
     background-color: map-get($primary-blue, shade);
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, white) !important;
   }
 
   svg {
@@ -56,5 +59,16 @@
 
   svg {
     fill: map-get($primary-blue, default);
+  }
+}
+
+
+.markdown {
+  .button-primary, .button-secondary, .button-ghost {
+    padding: 12px 28px;
+    margin-bottom: 16px;
+    @media screen and (max-width: 360px){
+      width: 100%;
+    }
   }
 }

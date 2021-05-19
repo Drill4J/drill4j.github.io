@@ -4,6 +4,11 @@ import styles from './styles.module.scss';
 
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
 
-export const AdditionalInformation = ({ children }: Props) => <p className={styles.additionalInformation}>{children}</p>;
+export const AdditionalInformation = ({ children, className = '' }: Props) => (
+  <p className={`${styles.additionalInformation} ${className}`}>
+    {children}
+  </p>
+);

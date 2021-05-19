@@ -1,37 +1,343 @@
-/* stylelint-disable docusaurus/copyright-header */
+@import '../css/index';
 
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.drillLogoShadow {
+  box-shadow: 0px 3.36083px 43.6908px rgba(0, 46, 101, 0.55);
 }
 
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
+.mainPageWrapper {
+  h2 {
+    font-size: 32px;
+    font-weight: $bold;
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.figure {
+  height: auto;
+
+  @media screen and (min-width: 768px) {
+    height: 368px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 400px;
+  }
+}
+
+.shadowImg {
+  box-shadow: 0px 3.75249px 11.2575px rgba(27, 25, 27, 0.12);
+  background-color: map-get($monochrome, white);
+  border-radius: 14px;
+}
+
+.borderedImgWrapper {
+  padding: 4px;
+  background-color: map-get($monochrome, white);
+  filter: drop-shadow(0px 20px 64px rgba(16, 33, 64, 0.12));
+  box-sizing: border-box;
+
+  img {
+    border: 1px solid map-get($monochrome, medium-tint);
+    box-sizing: border-box;
+  }
+}
+
+.integrateStepsWrapper {
+  background-color: map-get($monochrome, black);
+
+  h3 {
+    font-size: 20px;
+  }
+
+  h2,
+  h3 {
+    color: map-get($monochrome, white);
+  }
+
+  p {
+    font-size: 16px;
+    color: map-get($monochrome, default);
+  }
+
+  .integrateStepNumber {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 100%;
+    color: map-get($monochrome, white);
+    font-size: 18px;
+    font-weight: $bold;
+
+    @media (min-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  ol {
+    list-style: none;
+    counter-reset: counter;
+
+    h3 {
+      line-height: 32px;
+    }
+
+    li {
+      counter-increment: counter;
+
+      &:not(:last-child) {
+        &::before {
+          content: '';
+          position: absolute;
+          left: 28px;
+          top: 50%;
+          width: 1px;
+          height: 120%;
+          background-color: map-get($monochrome, default);
+          opacity: 0.5;
+
+          @media (min-width: 768px) {
+            top: 28px;
+            left: 50%;
+            width: 120%;
+            height: 1px;
+          }
+        }
+      }
+
+      &::after {
+        @extend .integrateStepNumber;
+        content: counter(counter);
+        background: linear-gradient(128.65deg, #76b4f4 -60.46%, #3881e7 74.51%);
+      }
+
+      &:nth-child(4)::after {
+        @extend .integrateStepNumber;
+        content: url('/img/done.svg');
+        background: map-get($green, success);
+      }
+    }
+  }
 }
 
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  h3 {
+    font-weight: $bold;
+    color: map-get($monochrome, shade);
+    line-height: 48px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  .feature {
+    position: relative;
+    font-weight: $bold;
+    font-size: 18px;
+    color: map-get($monochrome, default);
+    list-style: none;
+    line-height: 24px;
+    margin-bottom: 16px;
+
+    &::before {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      padding-bottom: 6px;
+      border-radius: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  .basicFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/img/small-done.svg');
+      top: 50%;
+      transform: translateY(-50%);
+      left: -32px;
+      background-color: map-get($primary-blue, medium-tint);
+    }
+  }
+
+  .individualFeatures {
+    box-shadow: 0 20px 64px rgba(16, 33, 64, 0.12);
+    border-radius: 16px;
+  }
+
+  .individualFeature {
+    @extend .feature;
+
+    &::before {
+      content: url('/img/small-plus.svg');
+      top: 5px;
+      left: -32px;
+      background-color: map-get($green, success);
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-weight: $normal;
+      color: map-get($monochrome, shade);
+    }
+  }
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+.quickStart {
+  background-image: url('/img/quick-start-small.png');
+  background-size: cover;
+  background-position: 50% 50%;
+
+  @media screen and (min-width: 640px){
+    background-image: url('/img/quick-start.png');
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: $normal;
+  }
+
+  h2,
+  p {
+    color: map-get($monochrome, white);
+  }
+}
+
+.parallax {
+  background: linear-gradient(177.8deg, #f5faff 1.95%, #ffffff 98.34%);
+}
+
+.cube1 {
+  width: 64px;
+  height: 61px;
+  background-image: url('/parallax-cubes/cube1.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 65%;
+  top: -5%;
+}
+
+.cube2 {
+  width: 94px;
+  height: 95px;
+  background-image: url('/parallax-cubes/cube2.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 42%;
+  top: 4%;
+}
+
+.cube3 {
+  width: 77px;
+  height: 79px;
+  background-image: url('/parallax-cubes/cube3.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 78%;
+  top: 24%;
+}
+
+.cube4 {
+  width: 64px;
+  height: 63px;
+  background-image: url('/parallax-cubes/cube4.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 31%;
+  top: 23%;
+}
+
+.cube5 {
+  width: 217px;
+  height: 217px;
+  background-image: url('/parallax-cubes/cube5.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 1%;
+  top: 16%;
+}
+
+.cube6 {
+  width: 26px;
+  height: 25px;
+  background-image: url('/parallax-cubes/cube6.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 52%;
+  top: 40%;
+}
+
+.cube7 {
+  width: 133px;
+  height: 137px;
+  background-image: url('/parallax-cubes/cube7.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 85%;
+  top: 58%;
+}
+
+.cube8 {
+  width: 115px;
+  height: 117px;
+  background-image: url('/parallax-cubes/cube8.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 66%;
+  top: 60%;
+}
+
+.cube9 {
+  width: 53px;
+  height: 51px;
+  background-image: url('/parallax-cubes/cube9.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 27%;
+  top: 65%;
+}
+
+.cube10 {
+  width: 137px;
+  height: 133px;
+  background-image: url('/parallax-cubes/cube10.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 14.72%;
+  right: 77.99%;
+  top: 71.41%;
+  bottom: 18.75%;
+}
+
+.cube11 {
+  width: 120px;
+  height: 125px;
+  background-image: url('/parallax-cubes/cube11.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 48%;
+  top: 80%;
+}
+
+.cube12 {
+  width: 54px;
+  height: 54px;
+  background-image: url('/parallax-cubes/cube12.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 25%;
+  top: 3%;
 }
