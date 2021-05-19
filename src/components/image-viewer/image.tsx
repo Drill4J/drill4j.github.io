@@ -12,6 +12,7 @@ export const Image = ({ src, alt }: Props) => {
   return (
     <>
       <img
+        className="cursor-pointer"
         src={src}
         onClick={() => setIsViewerOpen(true)}
         alt={alt}
