@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 interface Props {
   src: string;
@@ -13,13 +14,13 @@ export const Image = ({ src, alt }: Props) => {
     <>
       <img
         className="cursor-pointer"
-        src={src}
+        src={useBaseUrl(src)}
         onClick={() => setIsViewerOpen(true)}
         alt={alt}
       />
       {isViewerOpen && (
         <Lightbox
-          mainSrc={src}
+          mainSrc={useBaseUrl(src)}
           onCloseRequest={() => setIsViewerOpen(false)}
           enableZoom={false}
           imagePadding={48}
