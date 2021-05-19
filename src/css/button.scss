@@ -21,7 +21,7 @@
   &:hover {
     border: 2px solid map-get($primary-blue, medium-tint);
     background-color: map-get($primary-blue, medium-tint);
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, white) !important;
     text-decoration: none;
 
     svg {
@@ -32,7 +32,7 @@
   &:active {
     border: 2px solid map-get($primary-blue, shade);
     background-color: map-get($primary-blue, shade);
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, white) !important;
   }
 
   svg {

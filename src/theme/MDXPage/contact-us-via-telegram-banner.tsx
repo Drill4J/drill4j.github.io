@@ -10,7 +10,7 @@ export const ContactUsViaTelegramBanner = () => (
       <strong>Still have questions with installation?</strong> Chat with us in Telegram channel
     </p>
     <a
-      className="flex items-center gap-x-2 py-1 px-8 bg-monochrome-white rounded-3xl font-bold"
+      className="flex items-center gap-x-2 py-1 px-8 text-blue-default bg-monochrome-white rounded-3xl font-bold hover:outline-none"
       href="https://t.me/drill4j"
     >
       <Icon src="img/telegram-logo.svg" /> Telegram

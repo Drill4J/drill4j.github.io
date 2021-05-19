@@ -19,4 +19,14 @@
   --ifm-list-left-padding: 0;
 }
 
+.threeWaysToDeployContainer {
+  display: grid;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  column-gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+}
+
 @import './index';
