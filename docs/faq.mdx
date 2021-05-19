@@ -24,9 +24,8 @@ Yes, but only monolith applications on Tomcat, Jetty, WildFly. Java 8+
 Probes in bytecode. So, methods can be covered in the range of 0.1 - 100. 
 Also, we will add the ability to choose a method of coverage collecting. (By string and etc.)
  
-**Which test types do you support?**  
-<a href='docs/installation/extension' target="_black">- Manual<ExternalLinkIcon/></a><br/>
-<a href='/docs/installation/autotest-agent' target="_black">- Auto (API, UI)<ExternalLinkIcon/></a>
+**Which test types do you support?**<br/>
+We support the following test types:<br/> <a href='docs/installation/extension' target="_black">- Manual<ExternalLinkIcon/></a><br/><a href='/docs/installation/autotest-agent' target="_black">- Auto (API, UI)<ExternalLinkIcon/></a>
 
 **Why do I need it?**  
 Probably, if your project is small and doesn't have a lot of tests, then you don't need it. BUT, if it's a legacy project with a lot of tests, the tool saves your testing time via Test gap analysis and minimizing of regression suite.
@@ -39,7 +38,11 @@ By default, **UPSTREAM** value is **drill-admin:8090**
 Yes, but you need to move the **/work** directory to the volume
 
 **Where can I find API requests?**  
-Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at <a href='http://localhost:8090' target="_black">http://localhost:8090<ExternalLinkIcon/></a>
+Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at <a href='http://localhost:8090' target="_black">http://localhost:8090<ExternalLinkIcon/></a><br/>
+Also, you can download the Postman collection with sample requests:<br/> <a href='https://github.com/Drill4J/example-configs/blob/main/postman/drill.postman_collection.json' target="_black">- Postman Collection<ExternalLinkIcon/></a><br/><a href='https://github.com/Drill4J/example-configs/blob/main/postman/drill.postman_environment.json' target="_black">- Postman Environment<ExternalLinkIcon/></a>
+
+
+
 
 **My application has https connection. Does it suitable case for Drill?**   
 Yes, Drill supports https connection. See <a href='/docs/installation/drill-admin#https-setup' target="_black">HTTPS Setup<ExternalLinkIcon/></a>
