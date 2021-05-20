@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, {
+  useState, useRef, useEffect, useLayoutEffect,
+} from 'react';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 
 import Expand from '../../../static/img/expand.svg';
@@ -25,22 +26,25 @@ export const Table = ({ columns = [], children }: Props) => {
   }, [ref.current?.scrollWidth]);
 
   useLockBodyScroll(isExpand);
-  const className = `table-${uuidv4(6)}`;
-  const columnsWidth = columns.map((column, index) => `
-    .${className} td:nth-child(${index + 1}), .${className} th:nth-child(${index + 1}) {
-      width: ${column};
+
+  useLayoutEffect(() => {
+    if (ref.current && columns?.length) {
+      const table = ref.current.children[0];
+      table.style.tableLayout = 'fixed';
+      const colgroup = document.createElement('colgroup');
+      columns?.forEach((width) => {
+        const col = document.createElement('col');
+        col.width = width;
+        col.span = 1;
+        colgroup.appendChild(col);
+        return col;
+      });
+      table.prepend(colgroup);
     }
-  `);
-  const css = `
-  ${columnsWidth.length > 0 && `
-   .${className} table {
-     table-layout: fixed;
-   }
-  `}
-  
-  ${columnsWidth.join(' ')}`;
+  }, []);
+
   return (
-    <div className={`${className} ${styles.table} relative mb-4`}>
+    <div className={`${styles.table} relative mb-4`}>
       {isShowExpand && (
         <button
           className="absolute top-2 right-2 z-10"
@@ -51,10 +55,7 @@ export const Table = ({ columns = [], children }: Props) => {
           <Expand />
         </button>
       )}
-      <style type="text/css">
-        {css}
-      </style>
-      <div className={styles.customScroll} ref={ref}>
+      <div ref={ref} className={styles.customScroll}>
         {children}
       </div>
       {isShowExpand && (
