@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 
@@ -9,13 +9,21 @@ import styles from './styles.module.scss';
 
 interface Props {
   columns?: string[];
-  width?: number;
   children: string;
 }
 
-export const Table = ({ columns = [], children, width = 100 }: Props) => {
+export const Table = ({ columns = [], children }: Props) => {
   const [isExpand, setIsExpand] = useState(false);
-  const isExpandTable = width > 100;
+  const [isShowExpand, setIsShowExpand] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref && ref.current) {
+      const scrollHeight = ref?.current.offsetHeight - ref?.current.clientHeight;
+      setIsShowExpand(scrollHeight > 0);
+    }
+  }, [ref.current?.scrollWidth]);
+
   useLockBodyScroll(isExpand);
   const className = `table-${uuidv4(6)}`;
   const columnsWidth = columns.map((column, index) => `
@@ -24,13 +32,16 @@ export const Table = ({ columns = [], children, width = 100 }: Props) => {
     }
   `);
   const css = `
+  ${columnsWidth.length > 0 && `
    .${className} table {
-        width: ${width}%;
+     table-layout: fixed;
    }
+  `}
+  
   ${columnsWidth.join(' ')}`;
   return (
     <div className={`${className} ${styles.table} relative mb-4`}>
-      {isExpandTable && (
+      {isShowExpand && (
         <button
           className="absolute top-2 right-2 z-10"
           aria-label="open expanded table button"
@@ -43,10 +54,10 @@ export const Table = ({ columns = [], children, width = 100 }: Props) => {
       <style type="text/css">
         {css}
       </style>
-      <div className={styles.customScroll}>
+      <div className={styles.customScroll} ref={ref}>
         {children}
       </div>
-      {isExpandTable && (
+      {isShowExpand && (
         <div
           className={`fixed inset-0 z-50 transition-all duration-300 ${isExpand
             ? 'opacity-100'

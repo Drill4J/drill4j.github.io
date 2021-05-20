@@ -3,9 +3,8 @@ table {
   border: 1px solid #d9dbdc;
   border-radius: 4px;
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
   width: 100%;
-  min-width: 100%;
 
   code {
     display: block;
