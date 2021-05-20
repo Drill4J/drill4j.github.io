@@ -27,7 +27,6 @@ function MDXPage(props: Props): JSX.Element {
     wrapperClassName,
   } = frontMatter;
   const { permalink } = metadata;
-  const { pathname } = useLocation();
 
   return (
     <Layout
@@ -47,7 +46,7 @@ function MDXPage(props: Props): JSX.Element {
             </MDXProvider>
           </div>
         </div>
-        {pathname.replace(/\//g, '') === 'how-to-start' && <ContactUsViaTelegramBanner />}
+        {title === '3 Easy steps to integrate Drill4J' && <ContactUsViaTelegramBanner />}
       </main>
     </Layout>
   );
