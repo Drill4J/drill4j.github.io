@@ -5,9 +5,9 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/logo.svg',
+  favicon: '/img/logo.svg',
   organizationName: 'Drill4J',
-  projectName: 'drill4j-website',
+  projectName: 'drill4j.github.io',
   themeConfig: {
     algolia: {
       apiKey: '47ecd3b21be71c5822571b9f59e52544',
