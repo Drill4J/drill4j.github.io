@@ -30,7 +30,7 @@ const Navbar = () => {
           <Link
             to={useBaseUrl('/')}
           >
-            <img src={useBaseUrl('img/drill4j-logo.svg')} alt="drill-logo" />
+            <img src={useBaseUrl('/img/drill4j-logo.svg')} alt="drill-logo" />
           </Link>
           <div className="md:flex items-center">
             <ul className="invisible md:visible fixed md:static flex flex-row gap-6 items-center">

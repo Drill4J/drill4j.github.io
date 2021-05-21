@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'My Site',
+  title: 'Drill4J',
   tagline: 'The tagline of my site',
   url: 'https://Drill4J.github.io',
-  baseUrl: '/drill4j-website/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.svg',
   organizationName: 'Drill4J',
   projectName: 'drill4j-website',
   themeConfig: {

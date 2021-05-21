@@ -22,13 +22,11 @@ const Figure: React.FC = ({ children }) => (
 
 function Home() {
   const context = useDocusaurusContext();
-  const { siteConfig = {} } = context;
   const { navbar: { items } } = useThemeConfig();
   const { label, to }: any = items[items.length - 1];
 
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
       <main className={styles.mainPageWrapper}>
