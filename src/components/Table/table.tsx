@@ -16,6 +16,7 @@ interface Props {
 export const Table = ({ columns = [], children }: Props) => {
   const [isExpand, setIsExpand] = useState(false);
   const [isShowExpand, setIsShowExpand] = useState(false);
+  const [size, setSize] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,9 +24,27 @@ export const Table = ({ columns = [], children }: Props) => {
       const scrollHeight = ref?.current.offsetHeight - ref?.current.clientHeight;
       setIsShowExpand(scrollHeight > 0);
     }
-  }, [ref.current?.scrollWidth]);
+  }, [size]);
 
   useLockBodyScroll(isExpand);
+
+  useEffect(() => {
+    const element = ref && ref.current;
+    function handleResize() {
+      if (element) {
+        setSize(element.getBoundingClientRect().width);
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(() => handleResize());
+    // @ts-ignore
+    resizeObserver.observe(element);
+
+    return () => {
+      // @ts-ignore
+      resizeObserver.disconnect(element);
+    };
+  }, [ref]);
 
   useLayoutEffect(() => {
     if (ref.current && columns?.length) {
