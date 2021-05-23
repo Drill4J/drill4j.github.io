@@ -13,6 +13,10 @@ module.exports = {
       apiKey: '47ecd3b21be71c5822571b9f59e52544',
       indexName: 'docusaurus-2',
     },
+    gtag: {
+      trackingID: 'UA-147653671-1',
+      anonymizeIP: true,
+    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,
