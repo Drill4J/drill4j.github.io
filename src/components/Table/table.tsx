@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, {
+  useState, useRef, useEffect, useLayoutEffect,
+} from 'react';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 
 import Expand from '../../../static/img/expand.svg';
@@ -9,28 +10,53 @@ import styles from './styles.module.scss';
 
 interface Props {
   columns?: string[];
-  width?: number;
   children: string;
 }
 
-export const Table = ({ columns = [], children, width = 100 }: Props) => {
+export const Table = ({ columns = [], children }: Props) => {
   const [isExpand, setIsExpand] = useState(false);
-  const isExpandTable = width > 100;
+  const [isShowExpand, setIsShowExpand] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
   useLockBodyScroll(isExpand);
-  const className = `table-${uuidv4(6)}`;
-  const columnsWidth = columns.map((column, index) => `
-    .${className} td:nth-child(${index + 1}), .${className} th:nth-child(${index + 1}) {
-      width: ${column};
+
+  useEffect(() => {
+    const element = ref && ref.current;
+    function handleResize() {
+      if (element) {
+        setIsShowExpand(element.offsetHeight - element.clientHeight > 0);
+      }
     }
-  `);
-  const css = `
-   .${className} table {
-        width: ${width}%;
-   }
-  ${columnsWidth.join(' ')}`;
+
+    const resizeObserver = new ResizeObserver(() => handleResize());
+    // @ts-ignore
+    resizeObserver.observe(element);
+
+    return () => {
+      // @ts-ignore
+      resizeObserver.disconnect(element);
+    };
+  }, [ref]);
+
+  useLayoutEffect(() => {
+    if (ref.current && columns?.length) {
+      const table = ref.current.children[0];
+      table.style.tableLayout = 'fixed';
+      const colgroup = document.createElement('colgroup');
+      columns?.forEach((width) => {
+        const col = document.createElement('col');
+        col.width = width;
+        col.span = 1;
+        colgroup.appendChild(col);
+        return col;
+      });
+      table.prepend(colgroup);
+    }
+  }, []);
+
   return (
-    <div className={`${className} ${styles.table} relative mb-4`}>
-      {isExpandTable && (
+    <div className={`${styles.table} relative mb-4`}>
+      {isShowExpand && (
         <button
           className="absolute top-2 right-2 z-10"
           aria-label="open expanded table button"
@@ -40,13 +66,10 @@ export const Table = ({ columns = [], children, width = 100 }: Props) => {
           <Expand />
         </button>
       )}
-      <style type="text/css">
-        {css}
-      </style>
-      <div className={styles.customScroll}>
+      <div ref={ref} className={styles.customScroll}>
         {children}
       </div>
-      {isExpandTable && (
+      {isShowExpand && (
         <div
           className={`fixed inset-0 z-50 transition-all duration-300 ${isExpand
             ? 'opacity-100'

@@ -10,7 +10,7 @@ In this section, you find the list of all params which can be used to customize 
 
 ## Introduction - How to Pass Params
 
-<Table columns={['200px', '160px']} width={120}>
+<Table columns={['200px', '160px', '280px']}>
 
 |Type                      |Additional Info      |Example                       |
 |:------------------------ |:------------------- |:---------------------------- |
@@ -23,6 +23,9 @@ In this section, you find the list of all params which can be used to customize 
 </Table>
 
 ## Java Agent
+
+<Table>
+
 | Parameter            | Description                                                                                                                       | Required | Example / Format                                                                                              |
 |:---------------------|:----------------------------------------------------------------------------------------------------------------------------------|:---------|:--------------------------------------------------------------------------------------------------------------|
 | agentpath            | the file stores the agent                                                                                                         | yes      | a relative or absolute path, for example: mingwX64-0.7.0-20/drill_agent.dll                                   |
@@ -41,11 +44,18 @@ In this section, you find the list of all params which can be used to customize 
 | classScanDelay       | start scanning after waiting of duration in milliseconds                                                                          | no       | 5000                                                                                                          |
 | configPath           | the file stores the config file                                                                                                   | no       |                                                                                                               |
 
+</Table>
+
 ### System Variables
+
+<Table>
+
 |                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
 |:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
 | DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
 | DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+</Table>
 
 ### Example of How to Pass Parameters
 You can list params by properties file:
@@ -64,6 +74,9 @@ java -agentpath:%DISTR%/drill_agent.dll=configPath=%DISTR%/configFile.properties
 Or use the system variable **DRILL_AGENT_CONFIG_PATH**.
 
 ## Autotest Agent
+
+<Table>
+
 | Parameter | Default value |      Example      |    Description    |
 |:--------- |:------------- |:----------------- |:----------------- |
 | agentId   | ""            |                   |                   |
@@ -73,7 +86,13 @@ Or use the system variable **DRILL_AGENT_CONFIG_PATH**.
 | sessionId | null          |                   |                   |
 | logFile   |               | file("debug.log") | create a log file |
 
+</Table>
+
+
 additionalParams:
+
+<Table>
+
 
 |       Parameter      | Default value |         Input Example         | Description |
 |:-------------------- |:------------- |:----------------------------- |:----------- |
@@ -85,7 +104,13 @@ additionalParams:
 | isGlobal             | false         |                               |             |
 | rawFrameworkPlugins  | ""            | cucumber-v4;cucumber-v5;junit |             |
 
+</Table>
+
+
 ## Drill Admin
+
+<Table columns={['260px','180px', '200px', '80px', '300px']}>
+
 |           Parameter          | Default value |                  Description                 | Required |               Example / Format               |
 |:---------------------------- |:------------- |:-------------------------------------------- |:-------- |:-------------------------------------------- |
 | {PLUGIN_NAME}_PLUGIN_VERSION |               |                                              | no       | key=TEST2CODE_PLUGIN_VERSION value=0.7.0-107 |
@@ -98,11 +123,17 @@ additionalParams:
 | DRILL_DEVMODE                | false         |                                              | no       |                                              |
 | DRILL_PLUGINS_REMOTE_ENABLED |               |                                              | no       | It can be true/false. By default = false     |
 
+</Table>
+
 ## Test2Code Plugin
 Runtime config:
+
+<Table>
 
 |                    Parameter                    |                             Default value                            | Description | Required | Example / Format |
 |:----------------------------------------------- |:-------------------------------------------------------------------- |:----------- |:-------- |:---------------- |
 | drill.plugins.test2code.features.realtime       | true                                                                 |             | no       |                  |
 | drill.plugins.test2code.features.realtime.cache | depends on drill.plugins.test2code.features.realtime  default value  |             | no       |                  |
 | drill.plugins.test2code.send.packages           | true                                                                 |             | no       |                  |
+
+</Table>
