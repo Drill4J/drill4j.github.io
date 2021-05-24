@@ -4,6 +4,7 @@ title: FAQ
 ---
 import ExternalLinkIcon from '/static/img/external-link.svg';
 import {Image} from '../src/components'
+import {Table} from '../src/components'
 
 **Does Drill work only with JVM?**
 Currently yes, but we're working on .Net agent and JavaScript agent. Python and Ruby agents are also possible in the future.
@@ -45,11 +46,15 @@ Yes, Drill supports https connection. See <a href='/docs/installation/drill-admi
 **When is a method considered new or modified?** <br/>
 You can find rules in the table:
 
+<Table>
+
 | Result                         |   New   |   New   | Modified |   New   |   New   |   New   |   New   |
 |--------------------------------|:-------:|:-------:|:--------:|:-------:|:-------:|:-------:|:-------:|
 | Name                           | changed |    -    |     -    | changed | changed |    -    | changed |
 | Descriptor                     |    -    | changed |     -    | changed |    -    | changed | changed |
 | Body                           |    -    |    -    |  changed |    -    | changed | changed | changed |
+
+</Table>
 
 ### Auto Testing Scheme
 <Image src="/img/auto-testing-diagram.png"/>
