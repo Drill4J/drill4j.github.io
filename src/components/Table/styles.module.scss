@@ -9,6 +9,8 @@
 .customScroll {
   max-width: 100%;
   overflow-x: auto;
+  border: 1px solid #d9dbdc;
+  border-radius: 4px;
 
   &::-webkit-scrollbar {
     max-height: 8px;
@@ -17,10 +19,12 @@
 
   &::-webkit-scrollbar-thumb {
     background-color: map-get($monochrome, dark-tint);
+    border-radius: 4px;
   }
 
   &::-webkit-scrollbar-track {
     background-color: map-get($monochrome, medium-tint);
+    border-radius: 0 0 4px 4px;
   }
 }
 
