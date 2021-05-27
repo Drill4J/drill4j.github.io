@@ -193,7 +193,7 @@ function Home() {
                 <p className="h-12 xs:h-auto">Deploy Drill4J Admin</p>
               </li>
               <li className="relative pl-20 md:pl-0 md:pt-20">
-                <h3 className="md:mb-2">Run Application</h3>
+                <h3 className="md:mb-2">Deploy Application</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
               <li className="relative pl-20 md:pl-0 md:pt-20">
