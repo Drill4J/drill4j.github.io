@@ -3,7 +3,7 @@
     width: 100%;
     height: 40px !important;
     margin: 0 !important;
-    background: linear-gradient(239.25deg, #F8F9FB 10.49%, #FFFFFF 73.67%) !important;
+    background: linear-gradient(270deg, #F8F9FB, #F8F9FB) !important;
     box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3) !important;
     border-radius: 4px !important;
 
@@ -19,11 +19,14 @@
       flex-grow: 1;
       font-weight: $normal;
       color: map-get($monochrome, dark-tint);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
 
       .DocSearch-Search-Icon {
         width: 16px;
         height: 16px;
-        color: map-get($monochrome, dark-tint)
+        color: map-get($monochrome, dark-tint) !important;
       }
     }
 
@@ -33,6 +36,9 @@
       visibility: hidden;
       display: block !important;
       flex-grow: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
 
       &:after {
         content: 'Search in Documentation';
@@ -47,8 +53,20 @@
     }
 
     &-Key {
+      background: map-get($monochrome, light-tint) !important;
+      box-shadow: inset 0 -2px 0 0 map-get($monochrome, medium-tint),inset 0 0 1px 1px #fff,0px 2px 5px 0px #A4ACB3 !important;
+
       @media screen and (max-width: 1024px) {
         display: none !important;
+      }
+
+      &:first-child {
+        content: url("/img/ctrl.svg");
+        padding: 4px;
+      }
+      &:last-child {
+        content: url("/img/k.svg");
+        padding: 5px;
       }
     }
   }
