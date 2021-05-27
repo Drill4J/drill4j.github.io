@@ -16,6 +16,10 @@
     }
 
     &-Container {
+      display: grid !important;
+      grid-template-columns: 16px 1fr;
+      column-gap: 6px;
+      margin-right: 10px;
       flex-grow: 1;
       font-weight: $normal;
       color: map-get($monochrome, dark-tint);
@@ -36,11 +40,10 @@
       visibility: hidden;
       display: block !important;
       flex-grow: 1;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      padding: 0 !important;
 
       &:after {
+        width: 100%;
         content: 'Search in Documentation';
         visibility: visible;
         display: block;
@@ -49,6 +52,9 @@
         transform: translateY(-50%);
         font-size: 12px;
         font-style: italic;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
     }
 
@@ -62,11 +68,11 @@
 
       &:first-child {
         content: url("/img/ctrl.svg");
-        padding: 4px;
+        padding: 5px;
       }
       &:last-child {
         content: url("/img/k.svg");
-        padding: 5px;
+        padding: 5px 7px;
       }
     }
   }
