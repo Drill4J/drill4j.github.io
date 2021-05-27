@@ -119,7 +119,7 @@ function Home() {
                 alt="coverage background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center md:col-start-7  col-span-full order-2">
+            <figcaption className="flex flex-col justify-center md:col-start-7 col-span-full order-2 w-5/6">
               <h3 className="mb-4">Measure Code Coverage</h3>
               <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
