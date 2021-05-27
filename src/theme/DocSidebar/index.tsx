@@ -18,6 +18,7 @@ import IconMenu from '@theme/IconMenu';
 import SearchBar from '@theme/SearchBar';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
+import { Icon } from '../../components';
 
 const MOBILE_TOGGLE_SIZE = 24;
 
@@ -232,10 +233,7 @@ function DocSidebar({
                 &times;
               </span>
             ) : (
-              <IconMenu
-                height={MOBILE_TOGGLE_SIZE}
-                width={MOBILE_TOGGLE_SIZE}
-              />
+              <Icon src="/img/open-menu.svg" width={24} height={24} />
             )}
           </button>
         )}
