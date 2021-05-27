@@ -38,7 +38,7 @@ const Footer = () => {
         <section className="flex flex-col gap-y-4 py-6 border-t border-monochrome-medium-tint sm:flex-row justify-between">
           <span className="flex flex-col gap-y-2 items-center gap-x-2 text-16 leading-24 text-monochrome-default sm:flex-row">
             Sponsored by
-            <Link to="https://www.epam-group.ru/">
+            <Link to="https://www.epam.com/">
               <img src={useBaseUrl('img/epam-logo.svg')} alt="Epam" />
             </Link>
             Licensed under Apache v2.0
