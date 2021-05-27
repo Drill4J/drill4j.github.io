@@ -10,10 +10,11 @@ import Layout from '@theme/Layout';
 import { MDXProvider } from '@mdx-js/react';
 import MDXComponents from '@theme/MDXComponents';
 import type { Props } from '@theme/MDXPage';
+import clsx from 'clsx';
 
-import { useLocation } from '@docusaurus/router';
 import { ContactUsViaTelegramBanner } from './contact-us-via-telegram-banner';
 import { Banner } from '../../components';
+import styles from './styles.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -40,7 +41,7 @@ function MDXPage(props: Props): JSX.Element {
           <h1 className="text-monochrome-white text-32">{title}</h1>
         </Banner>
         <div className="container pt-12 pb-24">
-          <div className="markdown">
+          <div className={clsx(styles.mdx, 'markdown w-auto mx-auto')}>
             <MDXProvider components={MDXComponents}>
               <MDXPageContent />
             </MDXProvider>
