@@ -62,7 +62,7 @@
       background: map-get($monochrome, light-tint) !important;
       box-shadow: inset 0 -2px 0 0 map-get($monochrome, medium-tint),inset 0 0 1px 1px #fff,0px 2px 5px 0px #A4ACB3 !important;
 
-      @media screen and (max-width: 1024px) {
+      @media screen and (max-width: 1023px) {
         display: none !important;
       }
 
