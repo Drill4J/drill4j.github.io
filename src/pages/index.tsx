@@ -60,7 +60,7 @@ function Home() {
             <RellaxWrapper speed={0} className={`${styles.cube8} hidden md:block`} />
             <RellaxWrapper speed={0} className={`${styles.cube9} hidden md:block`} />
             <RellaxWrapper speed={3} className={`${styles.cube10} hidden lg:block`} />
-            <RellaxWrapper speed={1} className={`${styles.cube11} hidden lg:block`} />
+            <RellaxWrapper speed={1} className={`${styles.cube11} hidden md:block`} />
             <RellaxWrapper speed={0} className={`${styles.cube12} hidden md:block`} />
           </div>
         </div>
