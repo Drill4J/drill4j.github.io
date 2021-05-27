@@ -60,6 +60,21 @@
 }
 
 .xs\:container {
+  max-width: 960px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  @media screen and  (min-width: 361px) and (max-width: 1024px){
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+  }
+
+  @media screen and (min-width: 1280px){
+    box-sizing: content-box !important;
+  }
+}
+
+.xs\:container {
   margin-left: auto;
   margin-right: auto;
 }
@@ -67,4 +82,24 @@
 .markdown {
   --ifm-tabs-color-active: #007FFF;
   --ifm-hover-overlay: #F8F9FB;
+}
+
+.container {
+  max-width: 960px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  @media screen and (max-width: 1024px) {
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+  }
+
+  @media screen and (max-width: 360px) {
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  @media screen and (min-width: 1280px){
+    box-sizing: content-box !important;
+  }
 }

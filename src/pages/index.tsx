@@ -211,7 +211,7 @@ function Home() {
         <section className={clsx(styles.features, 'mb-24 lg:mb-32 xs:container')}>
           <h2 className="mb-8 md:mb-12 lg:mb-18 px-4 md:px-0 text-left md:text-center">Commercial Services</h2>
           <div className="relative grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5 mx-auto">
-            <div className="relative md:col-span-4 lg:col-start-2 lg:col-span-4 pt-4 px-4 lg:px-0">
+            <div className="relative md:col-span-4 lg:col-start-2 lg:col-span-4 pt-4 px-6 lg:px-0">
               <h3 className="mb-6 md:mb-10">Basic</h3>
               <p className="mb-6">Functionality and features:</p>
               <ul className="mb-9 pl-8">
@@ -220,7 +220,7 @@ function Home() {
                 <li className={styles.basicFeature}>Microservices Support</li>
                 <li className={styles.basicFeature}>Chrome Browser Extension</li>
               </ul>
-              <a href="/how-to-start" className="button-ghost md:absolute bottom-8 left-4 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
+              <a href="/how-to-start" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
             </div>
             <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pb-9')}>
               <h3 className="py-4 px-4 md:px-8 border-b border-monochrome-medium-tint">Individual</h3>
