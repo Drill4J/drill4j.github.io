@@ -195,4 +195,7 @@ module.exports = {
       addUtilities(newUtilities);
     }),
   ],
+  corePlugins: {
+    container: false,
+  },
 };

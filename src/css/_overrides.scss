@@ -98,23 +98,6 @@ body.mac-os {
   --docsearch-highlight-color: #007fff;
 }
 
-.xs\:container {
-  max-width: 960px !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin-left: auto;
-  margin-right: auto;
-
-  @media screen and (min-width: 361px) and (max-width: 1024px) {
-    padding-right: 24px !important;
-    padding-left: 24px !important;
-  }
-
-  @media screen and (min-width: 1280px) {
-    box-sizing: content-box !important;
-  }
-}
-
 .markdown {
   --ifm-tabs-color-active: #007FFF;
   --ifm-hover-overlay: #F8F9FB;
@@ -146,10 +129,25 @@ body.mac-os {
   }
 }
 
+.xs\:container {
+  max-width: 960px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media screen and (min-width: 361px) and (max-width: 1024px) {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  @media screen and (min-width: 1280px) {
+    box-sizing: content-box;
+  }
+}
+
 .container {
   max-width: 960px !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 
   @media screen and (max-width: 1024px) {
     padding-right: 24px !important;
@@ -162,6 +160,8 @@ body.mac-os {
   }
 
   @media screen and (min-width: 1280px) {
-    box-sizing: content-box !important;
+    padding-left: 160px !important;
+    padding-right: 160px !important;
+    box-sizing: content-box;
   }
 }
