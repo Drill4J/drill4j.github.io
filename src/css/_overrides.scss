@@ -90,6 +90,8 @@
   max-width: 960px !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
+  margin-left: auto;
+  margin-right: auto;
 
   @media screen and (min-width: 361px) and (max-width: 1024px) {
     padding-right: 24px !important;
@@ -99,11 +101,6 @@
   @media screen and (min-width: 1280px) {
     box-sizing: content-box !important;
   }
-}
-
-.xs\:container {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .markdown {
