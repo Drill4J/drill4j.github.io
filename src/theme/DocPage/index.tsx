@@ -5,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { ReactNode, useState, useCallback } from 'react';
+import React, {
+  ReactNode, useState, useCallback, useEffect,
+} from 'react';
 import { MDXProvider } from '@mdx-js/react';
 
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -92,6 +94,11 @@ function DocPage(props: Props): JSX.Element {
   if (!currentDocRoute) {
     return <NotFound {...props} />;
   }
+  useEffect(() => {
+    if (navigator.userAgent.indexOf('Mac') > 0) {
+      document.querySelector('body')?.classList.add('mac-os');
+    }
+  }, []);
   return (
     <DocPageContent
       currentDocRoute={currentDocRoute}
