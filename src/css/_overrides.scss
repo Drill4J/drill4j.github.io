@@ -1,3 +1,5 @@
+@import "colors";
+
 .DocSearch {
   &-Button {
     width: 100%;
@@ -60,7 +62,7 @@
 
     &-Key {
       background: map-get($monochrome, light-tint) !important;
-      box-shadow: inset 0 -2px 0 0 map-get($monochrome, medium-tint),inset 0 0 1px 1px #fff,0px 2px 5px 0px #A4ACB3 !important;
+      box-shadow: inset 0 -2px 0 0 map-get($monochrome, medium-tint), inset 0 0 1px 1px #fff, 0px 2px 5px 0px #A4ACB3 !important;
 
       @media screen and (max-width: 1023px) {
         display: none !important;
@@ -70,6 +72,7 @@
         content: url("/img/ctrl.svg");
         padding: 5px;
       }
+
       &:last-child {
         content: url("/img/k.svg");
         padding: 5px 7px;
@@ -88,12 +91,12 @@
   padding-left: 0 !important;
   padding-right: 0 !important;
 
-  @media screen and  (min-width: 361px) and (max-width: 1024px){
+  @media screen and (min-width: 361px) and (max-width: 1024px) {
     padding-right: 24px !important;
     padding-left: 24px !important;
   }
 
-  @media screen and (min-width: 1280px){
+  @media screen and (min-width: 1280px) {
     box-sizing: content-box !important;
   }
 }
@@ -106,6 +109,32 @@
 .markdown {
   --ifm-tabs-color-active: #007FFF;
   --ifm-hover-overlay: #F8F9FB;
+
+  button[aria-label="Copy code to clipboard"] {
+    padding: 0 8px !important;
+    color: map-get($monochrome, white);
+    font-size: 12px !important;
+    line-height: 24px;
+    background-color: rgba(map-get($monochrome, dark-tint), 0.5) !important;
+    border-radius: 4px;
+  }
+
+  .thin-scrollbar {
+    &::-webkit-scrollbar {
+      max-height: 8px;
+      max-width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: map-get($monochrome, dark-tint);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: map-get($monochrome, default);
+      border-radius: 0 0 4px 4px;
+    }
+  }
 }
 
 .container {
@@ -123,7 +152,7 @@
     padding-left: 16px !important;
   }
 
-  @media screen and (min-width: 1280px){
+  @media screen and (min-width: 1280px) {
     box-sizing: content-box !important;
   }
 }
