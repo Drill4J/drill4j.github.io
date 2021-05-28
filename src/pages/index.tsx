@@ -21,13 +21,12 @@ const Figure: React.FC = ({ children }) => (
 );
 
 function Home() {
-  const context = useDocusaurusContext();
   const { navbar: { items } } = useThemeConfig();
   const { label, to }: any = items[items.length - 1];
 
   return (
     <Layout
-      description="Description will go into a meta tag in <head />"
+      description="Minimize Your Regression Suite with Drill4J"
     >
       <main className={styles.mainPageWrapper}>
         <div className={clsx(styles.parallax)}>
@@ -80,7 +79,7 @@ function Home() {
           </Figure>
           <Figure>
             <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
-              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 lg:w-auto')}>
+              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 ')}>
                 <img
                   className="rounded-full w-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
@@ -130,7 +129,7 @@ function Home() {
           <Figure>
             <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2 lg:w-auto')}
+                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2')}
               >
                 <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
@@ -163,7 +162,7 @@ function Home() {
                   alt="browser extension"
                 />
                 <img
-                  className={clsx(styles.drillLogoShadow, 'absolute top-0 right-0 z-10 rounded-full')}
+                  className={clsx(styles.drillLogoShadow, 'absolute top-0 -right-1 z-10 rounded-full')}
                   style={{ width: '17%' }}
                   src={useBaseUrl('img/drill-rounded-logo.svg')}
                   alt="drill logo"
@@ -187,21 +186,21 @@ function Home() {
         <section className={clsx(styles.integrateStepsWrapper, 'py-18 mb-18 lg:mb-24 text-left md:text-center')}>
           <div className="container flex flex-col justify-center">
             <h2 className="mb-12">Easy to integrate</h2>
-            <ol className="grid grid-cols-1 md:grid-cols-4 md:gap-x-5 lg:gap-x-12 gap-y-8 p-0 mb-14 md:mb-20">
-              <li className="relative pl-20 md:pl-0 md:pt-20">
-                <h3 className="md:mb-2">Run Drill4J</h3>
+            <ol className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 md:gap-x-5 gap-y-8 p-0 mb-14 md:mb-20">
+              <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
+                <h3 className="md:mb-2 text-20">Run Drill4J</h3>
                 <p className="h-12 xs:h-auto">Deploy Drill4J Admin</p>
               </li>
-              <li className="relative pl-20 md:pl-0 md:pt-20">
-                <h3 className="md:mb-2">Deploy Application</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
+                <h3 className="md:mb-2 text-20">Deploy App</h3>
                 <p>Start your application with Drill4J Agent</p>
               </li>
-              <li className="relative pl-20 md:pl-0 md:pt-20">
-                <h3 className="md:mb-2">Register Agent</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
+                <h3 className="md:mb-2 text-20">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
-              <li className="relative pl-20 md:pl-0 md:pt-20">
-                <h3 className="md:mb-2">Done</h3>
+              <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
+                <h3 className="md:mb-2 text-20">Done</h3>
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
