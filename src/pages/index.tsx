@@ -14,7 +14,7 @@ import '../css/index.css';
 const Figure: React.FC = ({ children }) => (
   <figure
     className={clsx(styles.figure,
-      'grid grid-cols-12 items-center justify-items-start gap-x-5 py-12 md:py-0')}
+      'grid grid-cols-8 lg:grid-cols-12 items-center justify-items-start gap-x-5 py-12 md:py-0')}
   >
     {children}
   </figure>
@@ -66,11 +66,11 @@ function Home() {
         <section className="container pb-12 md:pb-24">
           <Figure>
             <img
-              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12')}
+              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-4 lg:col-span-6 mb-10 md:mb-0 w-full md:w-11/12')}
               src={useBaseUrl('img/time-savings.png')}
               alt="time savings"
             />
-            <figcaption className="flex flex-col justify-center md:col-start-7 md:col-end-12 col-span-full order-2">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
               <h3 className="mb-4">Time Savings</h3>
               <p className="text-monochrome-shade">
                 It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
@@ -78,7 +78,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
+            <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
               <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 ')}>
                 <img
                   className="rounded-full w-full"
@@ -92,7 +92,7 @@ function Home() {
                 alt="risks and tests to run background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Risk and Test to Run</h3>
               <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
                 Drill4J advises which test you need to run to cover theese Risk methods.
@@ -100,7 +100,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
+            <div className="relative order-1 col-span-full md:col-span-4 lg:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
               <div
                 className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
                 style={{ borderRadius: '14px' }}
@@ -118,7 +118,7 @@ function Home() {
                 alt="coverage background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center md:col-start-7 col-span-full order-2 lg:w-5/6">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
               <h3 className="mb-4">Measure Code Coverage</h3>
               <p className="text-monochrome-shade">
                 Code coverage is a tricky metric, but Drill4J provides it with actionable feedback. It allows map tests
@@ -127,7 +127,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 md:order-2 col-span-full md:col-start-7 z-10 mb-10 md:mb-0 w-full">
+            <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
               <div
                 className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2')}
               >
@@ -139,7 +139,7 @@ function Home() {
                 alt="quality gate background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full md:col-span-5 order-2 md:order-1">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Quality Gate</h3>
               <p className="text-monochrome-shade">
                 You can configure 3 key metrics: Code Coverage, Risks and Tests to Run
@@ -148,7 +148,7 @@ function Home() {
             </figcaption>
           </Figure>
           <Figure>
-            <div className="relative order-1 col-span-full md:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
+            <div className="relative order-1 col-span-full md:col-span-4 lg:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
               <img
                 className={clsx(styles.shadowImg, 'w-5/6 invisible')}
                 src={useBaseUrl('img/browser-extension-background.png')}
@@ -174,7 +174,7 @@ function Home() {
                 alt="browser extension background"
               />
             </div>
-            <figcaption className="flex flex-col justify-center col-span-full md:col-start-7 order-2 lg:w-5/6">
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
               <h3 className="mb-4">Chrome Browser Extension</h3>
               <p className="text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
