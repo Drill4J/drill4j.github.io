@@ -175,7 +175,7 @@ function Home() {
               />
             </div>
             <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
-              <h3 className="mb-4">Chrome Browser Extension</h3>
+              <h3 className="mb-4">Chrome Extension</h3>
               <p className="text-monochrome-shade">
                 Browser extension allows gather manual Code Coverage for several users
                 on the one test environment at the same time.
@@ -217,7 +217,7 @@ function Home() {
                 <li className={styles.basicFeature}>Test Impact Analytics</li>
                 <li className={styles.basicFeature}>Test Gap Analysis</li>
                 <li className={styles.basicFeature}>Microservices Support</li>
-                <li className={styles.basicFeature}>Chrome Browser Extension</li>
+                <li className={styles.basicFeature}>Chrome Extension</li>
               </ul>
               <a href="/how-to-start" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
             </div>
@@ -229,7 +229,7 @@ function Home() {
                   <li className={styles.basicFeature}>Test Impact Analytics</li>
                   <li className={styles.basicFeature}>Test Gap Analysis</li>
                   <li className={styles.basicFeature}>Microservices Support</li>
-                  <li className={styles.basicFeature}>Chrome Browser Extension</li>
+                  <li className={styles.basicFeature}>Chrome Extension</li>
                 </ul>
                 <ul className="pl-8 md:pl-12">
                   <li className={styles.individualFeature}>

@@ -62,7 +62,7 @@ module.exports = {
               href: '/docs/installation/autotest-agent',
             },
             {
-              label: 'Browser Extension',
+              label: 'Chrome Extension',
               href: '/docs/installation/extension',
             },
           ],
