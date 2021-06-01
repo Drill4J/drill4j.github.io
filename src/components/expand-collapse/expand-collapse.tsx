@@ -11,7 +11,7 @@ interface Props {
 export const ExpandCollapse = ({ children, title, Icon }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
-  const { push, location: { pathname, hash } } = useHistory();
+  const { location: { hash } } = useHistory();
 
   useEffect(() => {
     if (hash.split('#').join('') === title.toLowerCase().replace(/\s/g, '-')) {
@@ -30,8 +30,7 @@ export const ExpandCollapse = ({ children, title, Icon }: Props) => {
     >
       <summary onClick={(e) => {
         e.preventDefault();
-        !isOpen ? push(`${pathname}#${title.toLowerCase().replace(/\s/g, '-')}`)
-          : push(pathname);
+        setIsOpen(!isOpen);
       }}
       >
         {Icon}
