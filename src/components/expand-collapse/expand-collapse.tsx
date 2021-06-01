@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation } from '@docusaurus/router';
+import { useHistory } from '@docusaurus/router';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -9,14 +9,16 @@ interface Props {
 }
 
 export const ExpandCollapse = ({ children, title, Icon }: Props) => {
-  const { hash } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
+  const { push, location: { pathname, hash } } = useHistory();
 
   useEffect(() => {
     if (hash.split('#').join('') === title.toLowerCase().replace(/\s/g, '-')) {
       setIsOpen(true);
       ref && ref.current && ref.current.scrollIntoView({ block: 'center' });
+    } else {
+      setIsOpen(false);
     }
   }, [hash]);
 
@@ -28,7 +30,8 @@ export const ExpandCollapse = ({ children, title, Icon }: Props) => {
     >
       <summary onClick={(e) => {
         e.preventDefault();
-        setIsOpen(!isOpen);
+        !isOpen ? push(`${pathname}#${title.toLowerCase().replace(/\s/g, '-')}`)
+          : push(pathname);
       }}
       >
         {Icon}
