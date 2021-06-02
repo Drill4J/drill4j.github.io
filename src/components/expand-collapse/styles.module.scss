@@ -2,7 +2,6 @@
 
 .expandCollapse {
   margin-bottom: 16px;
-
   &[open] {
     summary::after {
       transform: rotate(180deg);

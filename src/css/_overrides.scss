@@ -100,8 +100,12 @@ body.mac-os {
 .markdown {
   --ifm-tabs-color-active: #007FFF;
   --ifm-hover-overlay: #F8F9FB;
+  --ifm-pre-padding: 24px;
+  --ifm-navbar-height: 100px;
 
   button[aria-label="Copy code to clipboard"] {
+    top: 8px;
+    right: 8px;
     padding: 0 8px !important;
     color: map-get($monochrome, white);
     font-size: 12px !important;

@@ -22,7 +22,7 @@ module.exports = {
       disableSwitch: true,
     },
     prism: {
-      additionalLanguages: ['java', 'kotlin'],
+      additionalLanguages: ['java', 'kotlin', 'bash', 'git'],
     },
     navbar: {
       items: [
@@ -72,7 +72,7 @@ module.exports = {
           items: [
             {
               label: 'Java+JS App',
-              href: '/try-demo/#java+js-app',
+              href: '/try-demo/#java-+-js-app',
             },
             {
               label: 'Java App',

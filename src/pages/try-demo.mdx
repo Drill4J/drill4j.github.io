@@ -5,73 +5,129 @@ title: Try Drill4J Demo Examples
 import JavaJSLogo from '../../static/img/java-js-logo.svg';
 import JavaLogo from '../../static/img/java-logo.svg';
 import JsLogo from '../../static/img/javascript-logo.svg';
-import ExternalLinkIcon from '../../static/img/external-link.svg';
-import { AdditionalInformation, ExpandCollapse } from '../../src/components';
-import DownloadIcon from '../../static/img/download-icon.svg';
-import Link from '@docusaurus/Link';
-
-
-
+import {AdditionalInformation, Badge, ExpandCollapse, Image, ListItem} from '../../src/components';
 
 We have prepared a demo environment for different agent types:
 <!-- JAVA+JS BLOCK -->
 
-<ExpandCollapse Icon={<JavaJSLogo />} title="Java+JS App">
+<ExpandCollapse Icon={<JavaJSLogo />} title="Java + JS App">
 
-Clone the following repository: <a href='https://github.com/Drill4J/realworld-java-and-js-coverage' target="_black">Realworld Java and JS Coverage<ExternalLinkIcon/></a>
+## 1. Clone the example repository:
 
-1. Start docker containers:
+```bash
+git clone https://github.com/Drill4J/realworld-java-and-js-covera
+```
 
-```java
+## 2. Start Drill4J Admin
+
+<ListItem number={'2.1.'}>Start docker containers using the following command in the terminal:</ListItem>
+
+```bash
 ./demo-up.sh
 ```
 
-2. Go to <a href='http://localhost:8080' target="_black">http://localhost:8080<ExternalLinkIcon/></a>and wait for application up.
+<ListItem number={'2.2.'}>
 
-3. Go to Drill Admin <a href='http://localhost:8091' target="_black">http://localhost:8091<ExternalLinkIcon/></a> and register agents.
+After the installation finished go to Drill4J Admin: [http://localhost:8091](http://localhost:8091)
 
-    <AdditionalInformation className="space-y-2">
+</ListItem>
 
-    Don't forget to set target host "http://localhost:8080/" for frontend agent.
+<ListItem number={'2.3.'}>
 
-    </AdditionalInformation>
+Press “Continue as a Guest” and **register agents**
 
-4. Run tests:
-    ```java
-    ./gradlew clean :build1:test
-    ```
-    See results in the Drill Admin and finish scopes.
+</ListItem>
 
-5. Deploy the second build of the app:
-    ```java
-    ./demo-deploy-build2.sh
-    ```
-    See new build notifications and diffs in the Drill Admin.
+<Image src={'/img/java-plus-js-agents-table.png'}/>
 
-6. Run tests:
-    ```java
-    ./gradlew clean :build2:test
-    ```
-    See results in the Drill Admin and finish scopes.
+<ListItem number={'2.4.'}>
 
-7. Deploy the third build of the app:
-    ```java
-    ./demo-deploy-build3.sh
-    ```
-    See new build notifications and diffs in the Drill Admin.
+Click through Step 1 and Step 2, but make sure that Test2Code plugin is **enabled** at Step 3
 
-8. Run tests:
-    ```java
-    ./gradlew clean :build3:test
-    ```
-    See results in the Drill Admin and finish scopes.
+</ListItem>
 
-9. Use browser extension for manual testing: <a href='/docs/installation/extension' target="_black">Chrome Browser Extension Installation<ExternalLinkIcon/></a>
+<AdditionalInformation >
 
-    Also, you can down demo setup:
-    ```java
-    ./demo-down.sh
-    ```
+**Important!** Don't forget to set target host "http://localhost:8080/" on the second step for frontend agent.
+
+</AdditionalInformation>
+
+<ListItem number={'2.5.'}>
+
+Open sample application at [http://localhost:8080](http://localhost:8080)
+
+</ListItem>
+
+<ListItem number={'2.6.'}>
+
+To collect coverage run tests using this command:
+
+</ListItem>
+
+```bash
+./gradlew clean :build1:test
+```
+
+See the testing results on Test2Code plugin’s page and finish active scope to add collected coverage to your build.
+
+
+## 3. Deploy additional builds
+
+To discover Drill4J more, you have to deploy additional builds.
+
+<ListItem number={'3.1.'}>
+
+Deploy the second build of the app using this command:
+
+</ListItem>
+
+```bash
+./demo-deploy-build2.sh
+```
+
+Wait for notification about new build arrival will apear in the notification panel and navigate to it.
+
+<ListItem number={'3.2.'}>
+
+To collect coverage for the second build run tests using this command:
+
+</ListItem>
+
+```bash
+./gradlew clean :build2:test
+```
+
+Now, when you will finish the active scope, you will be able to see the list of **Risks** (uncovered new and modified methods) and suggested Tests to Run
+
+<ListItem number={'3.3.'}>
+
+Deploy the third build using this command:
+
+</ListItem>
+
+```bash
+./demo-deploy-build3.sh
+```
+
+<ListItem number={'3.4.'}>
+
+To collect coverage for the third build run tests using this command:
+
+</ListItem>
+
+```bash
+./gradlew clean :build3:test
+```
+
+## Also, you can down demo setup:
+
+```bash
+./demo-down.sh
+```
+
+## Use browser extension for manual testing
+
+Install the latest version of [Chrome Extension](/docs/installation/extension)
 
 </ExpandCollapse>
 
@@ -79,26 +135,30 @@ Clone the following repository: <a href='https://github.com/Drill4J/realworld-ja
 
 <ExpandCollapse Icon={<JavaLogo />} title="Java App">
 
-1. You need to download a special **docker-compose-file:**<a href='https://github.com/Drill4J/example-configs/blob/main/demo/docker-compose.yml' target="_black">    Docker-compose File<ExternalLinkIcon/></a>
+## 1. Start Drill4J Admin
 
-2. Start Drill Admin:
+First, you need to download a special [Docker-compose file](https://github.com/Drill4J/example-configs/blob/main/demo/docker-compose.yml)
 
-    ```java
-    docker-compose up -d drill-admin admin-ui agent-files
-    ```
+Start Drill4J using the following command in the terminal:
 
-3. Start Example App with Drill Agent:
+```bash
+docker-compose up -d drill-admin admin-ui agent-files
+```
 
-    ```java
-    docker-compose up -d example-app
-    ```
-4. Use browser extension for manual testing: <a href='/docs/installation/extension' target="_black">Chrome Browser Extension Installation<ExternalLinkIcon/></a>
+## 2. Start example Application
 
-    You can find Drill Admin on <a href='http://localhost:8091' target="_black">http://localhost:8091<ExternalLinkIcon/></a>
+To start the example App with Drill4J Agent use this command:
 
-    And Application UI is located here: <a href='http://localhost:8087' target="_black">http://localhost:8087<ExternalLinkIcon/></a>
+```bash
+docker-compose up -d example-app
+```
+After that you can find **Drill Admin** on [http://localhost:8091](http://localhost:8091)
 
-    Application is based on <a href='https://github.com/spring-projects/spring-petclinic' target="_black">Spring Petclinic<ExternalLinkIcon/></a>
+And **Application UI** is located here: [http://localhost:8087](http://localhost:8087)
+
+## Use browser extension for manual testing
+
+Install the latest version of [Chrome Extension](/docs/installation/extension)
 
 </ExpandCollapse>
 
@@ -106,37 +166,85 @@ Clone the following repository: <a href='https://github.com/Drill4J/realworld-ja
 
 <ExpandCollapse Icon={<JsLogo />} title="JS App">
 
-**Clone the example repository:**
+<AdditionalInformation>
 
-```java
+Pay attention that work on JavaScript agent is still in progress, but we are pleased to provide you with the opportunity to try it out.
+
+</AdditionalInformation>
+
+## 1. Clone the example repository:
+
+```bash
 git clone https://github.com/Drill4J/todomvc
 ```
 
-**Run Drill4J services**:
+## 2. Run Drill4J services:
 
-1. Run:
-    ```java
-    docker-compose -f docker-compose.services.yml up -d
-    ```
+<ListItem number={'2.1.'}>
 
-2. Run `docker ps` and check that all services have started: `drill-admin`, `admin-ui`, `jsagent` and  `mongo`.
+Run Docker compose file using the following command in the terminal:
 
-3. Open Drill Admin UI at <a href='http://localhost:9091' target="_black">http://localhost:9091<ExternalLinkIcon/></a>
+</ListItem>
 
-**Run sample application**:
-1. Run:
+```bash
+docker-compose -f docker-compose.services.yml up -d
+```
 
-    ```java
-    docker-compose up -d
-    ```
-2. Wait for "todomvc-typescript-angular" agent to appear in Admin UI at <a href='http://localhost:9091' target="_black">http://localhost:9091<ExternalLinkIcon/></a>
+<ListItem number={'2.2.'}>
 
-3. Press **Register** button.
+Run **docker ps** and check that all services have started: **drill-admin** , **admin-ui** , **jsagent** and **mongo**
 
-4. Click through *Step 1* and *Step 2*, but **make sure to enable** Test2Code plugin at *Step 3*.
+</ListItem>
 
-5. Open sample application at <a href='http://localhost:8080' target="_black">http://localhost:8080<ExternalLinkIcon/></a>
+<ListItem number={'2.3.'}>
 
-6. Use browser extension for manual testing: <a href='/docs/installation/extension' target="_black">Chrome Browser Extension Installation<ExternalLinkIcon/></a>
+Open Drill Admin UI at [http://localhost:9091](http://localhost:9091)
+
+</ListItem>
+
+## 3. Run sample application:
+
+<ListItem number={'3.1.'}>
+
+Run the following command in the terminal:
+
+</ListItem>
+
+```bash
+docker-compose up -d
+```
+
+<ListItem number={'3.2.'}>
+
+Wait for **todomvc-typescript-angular** agent to appear in Drill4J Admin UI at [http://localhost:9091](http://localhost:9091)
+
+</ListItem>
+
+<Image src={'/img/js-agents-table.png'}/>
+
+<ListItem number={'3.3.'}>
+
+Press **Register** button
+
+</ListItem>
+
+<ListItem number={'3.4.'}>
+
+Click through Step 1 and Step 2, but make sure that Test2Code plugin is **enabled** at Step 3
+
+</ListItem>
+
+<Image src={'/img/enabled-plugin.png'}/>
+
+
+<ListItem number={'3.5.'}>
+
+Open sample application at [http://localhost:8080](http://localhost:8080)
+
+</ListItem>
+
+## Use browser extension for manual testing
+
+Install the latest version of [Chrome Extension](/docs/installation/extension)
 
 </ExpandCollapse>

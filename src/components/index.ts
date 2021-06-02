@@ -6,3 +6,4 @@ export { Banner } from './banner';
 export { Image } from './image-viewer';
 export { Table } from './Table';
 export { ExpandCollapse } from './expand-collapse';
+export { ListItem } from './list-item';

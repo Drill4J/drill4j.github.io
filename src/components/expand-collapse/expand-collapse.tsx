@@ -36,7 +36,9 @@ export const ExpandCollapse = ({ children, title, Icon }: Props) => {
         {Icon}
         {title}
       </summary>
-      {children}
+      <div className="md:my-10 md:px-8">
+        {children}
+      </div>
     </details>
   );
 };

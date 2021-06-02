@@ -196,7 +196,7 @@ function Home() {
                 <p>Start your application with Drill4J Agent</p>
               </li>
               <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
-                <h3 className="md:mb-2 text-20">Register Agent</h3>
+                <h3 className="md:mb-2">Register Agent</h3>
                 <p>Open Drill4J and register the Agent</p>
               </li>
               <li className="relative pl-20 md:pl-0 md:pt-20 lg:col-span-3">
