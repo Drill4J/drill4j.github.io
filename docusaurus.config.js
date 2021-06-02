@@ -10,8 +10,8 @@ module.exports = {
   projectName: 'drill4j.github.io',
   themeConfig: {
     algolia: {
-      apiKey: '47ecd3b21be71c5822571b9f59e52544',
-      indexName: 'docusaurus-2',
+      apiKey: '6893440cddb296d0faf1399850200fc6',
+      indexName: 'drill4j',
     },
     gtag: {
       trackingID: 'UA-147653671-1',
@@ -62,7 +62,7 @@ module.exports = {
               href: '/docs/installation/autotest-agent',
             },
             {
-              label: 'Browser Extension',
+              label: 'Chrome Extension',
               href: '/docs/installation/extension',
             },
           ],

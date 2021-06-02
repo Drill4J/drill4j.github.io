@@ -1,13 +1,14 @@
 .docPageContainer {
   max-width: 1120px;
-  padding: 0 60px;
+  padding: 0 24px;
   box-sizing: initial;
 
   @media screen and (max-width: 360px) {
     padding: 0 16px;
   }
 
-  @media screen and (max-width: 768px) {
-    padding: 0 24px;
+  @media screen and (max-width: 1024px) {
+    box-sizing: border-box;
+    max-width: 960px;
   }
 }

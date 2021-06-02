@@ -12,8 +12,10 @@ export const ContactUsViaTelegramBanner = () => (
     <a
       className="flex items-center gap-x-2 py-1 px-8 text-blue-default bg-monochrome-white rounded-3xl font-bold hover:outline-none"
       href="https://t.me/drill4j"
+      target="_blank"
+      rel="noreferrer"
     >
-      <Icon src="img/telegram-logo.svg" /> Telegram
+      <Icon src="img/telegram-logo.svg" width={16} height={12} /> Telegram
     </a>
   </div>
 );

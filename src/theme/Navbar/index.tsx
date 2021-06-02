@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 h-22">
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
-        <nav className="flex items-center justify-between py-5 container">
+        <nav className="flex items-center justify-between h-22 container">
           <Link
             to={useBaseUrl('/')}
           >
@@ -35,12 +35,12 @@ const Navbar = () => {
           <div className="md:flex items-center">
             <ul className="invisible md:visible fixed md:static flex flex-row gap-6 items-center">
               {links.map(({ to = '', label = '' }: any) => (
-                <li>
+                <li key={to}>
                   <Link
                     style={{ textDecoration: 'none' }}
-                    className={`
-                      text-16 font-normal leading-24 text-monochrome-default hover:text-blue-default 
-                      ${pathname.includes(to) ? styles.activeTab : styles.tab}
+                    className={`flex items-center h-22
+                      text-16 text-monochrome-default hover:text-blue-default
+                      ${pathname.includes(to.split('/')[0]) ? styles.activeTab : styles.tab}
                       `}
                     to={useBaseUrl(to)}
                   >

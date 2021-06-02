@@ -228,6 +228,11 @@
   position: absolute;
   left: 65%;
   top: -5%;
+
+  @media screen and (max-width: 1023px) {
+    top: -6%;
+    left: 80%;
+  }
 }
 
 .cube2 {
@@ -238,6 +243,10 @@
   position: absolute;
   left: 42%;
   top: 4%;
+
+  @media screen and (max-width: 1023px) {
+    top:0;
+  }
 }
 
 .cube3 {
@@ -278,6 +287,10 @@
   position: absolute;
   left: 52%;
   top: 40%;
+
+  @media screen and (max-width: 1023px) {
+    left: 60%;
+  }
 }
 
 .cube7 {
@@ -298,6 +311,10 @@
   position: absolute;
   left: 66%;
   top: 60%;
+
+  @media screen and (max-width: 1023px) {
+    left: 86%;
+  }
 }
 
 .cube9 {
@@ -308,6 +325,10 @@
   position: absolute;
   left: 27%;
   top: 65%;
+
+  @media screen and (max-width: 1023px) {
+    left: 15%;
+  }
 }
 
 .cube10 {
@@ -330,6 +351,10 @@
   position: absolute;
   left: 48%;
   top: 80%;
+
+  @media screen and (max-width: 1023px) {
+    left: 60%;
+  }
 }
 
 .cube12 {
@@ -340,4 +365,9 @@
   position: absolute;
   left: 25%;
   top: 3%;
+
+  @media screen and (max-width: 1023px) {
+    top: 1%;
+    left: 10%;
+  }
 }

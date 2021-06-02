@@ -14,7 +14,7 @@ interface Props {
 export const Card = ({
   children, iconSrc, href,
 }: Props) => (
-  <a href={useBaseUrl(href)} className={styles.card}>
+  <a href={useBaseUrl(href)} className={styles.card} target="_blank" rel="noreferrer">
     <Icon src={iconSrc} width={48} height={48} />
     {children}
     <Icon src="img/external-link.svg" className={styles.externalLinkIcon} />
