@@ -21,11 +21,14 @@ const Footer = () => {
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
           {links.map(({ title = '', items }, index) => (
-            <div className={clsx('space-y-3', `md:col-span-${index === 2 ? 2 : 3} lg:col-span-3 lg:col-start-${5 + index * 3}`)}>
+            <div
+              key={title}
+              className={clsx('space-y-3', `md:col-span-${index === 2 ? 2 : 3} lg:col-span-3 lg:col-start-${5 + index * 3}`)}
+            >
               <h5>{title}</h5>
               <ul>
                 {items.map(({ label, href }) => (
-                  <li className="mb-2">
+                  <li key={label} className="mb-2">
                     <Link className="gray-link" to={href}>
                       {label}
                     </Link>
@@ -45,7 +48,7 @@ const Footer = () => {
           </span>
           <ul className="flex justify-center gap-x-4 items-center">
             {socialLinks.map(({ bg, link }) => (
-              <li>
+              <li key={link}>
                 <Link to={link} className={`${bg} block w-6 h-6 cursor-pointer`} />
               </li>
             ))}

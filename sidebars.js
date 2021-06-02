@@ -33,14 +33,6 @@ const docs = [
   'faq',
 ];
 
-if (process.env.NODE_ENV !== 'production') {
-  docs.push({
-    type: 'category',
-    label: 'Examples',
-    items: ['usage-exapmle'],
-  });
-}
-
 module.exports = {
   docs,
 };
