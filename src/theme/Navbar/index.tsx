@@ -80,6 +80,7 @@ const Navbar = () => {
                         style={{ textDecoration: 'none' }}
                         className="gray-link inline-flex py-4 w-full h-full"
                         to={useBaseUrl(to)}
+                        onClick={() => setIsNavbarVisible(false)}
                       >
                         {label}
                       </Link>
@@ -97,6 +98,7 @@ const Navbar = () => {
                       style={{ textDecoration: 'none' }}
                       className="button-primary w-full"
                       to={useBaseUrl((tryDemoButton as any).to)}
+                      onClick={() => setIsNavbarVisible(false)}
                     >
                       {tryDemoButton.label}
                     </Link>
