@@ -14,13 +14,11 @@ import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
-import IconMenu from '@theme/IconMenu';
 import SearchBar from '@theme/SearchBar';
+import { useLocation } from '@docusaurus/router';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
 import { Icon } from '../../components';
-
-const MOBILE_TOGGLE_SIZE = 24;
 
 function usePrevious(value) {
   const ref = useRef(value);
@@ -194,6 +192,7 @@ function DocSidebar({
 }: Props): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
   const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
+  const { pathname } = useLocation();
 
   useLockBodyScroll(showResponsiveSidebar);
   const isWindowLg = useBreakpoint('lg');
@@ -201,6 +200,10 @@ function DocSidebar({
   useEffect(() => {
     setShowResponsiveSidebar(false);
   }, [isWindowLg]);
+
+  useEffect(() => {
+    setShowResponsiveSidebar(false);
+  }, [pathname]);
 
   return (
     <div className={clsx('flex flex-col lg:mt-6', {
