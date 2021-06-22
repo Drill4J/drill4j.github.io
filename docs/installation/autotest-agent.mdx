@@ -4,14 +4,15 @@ title: Autotest Agent
 ---
 import { AdditionalInformation, Badge } from '../../src/components';
 
-To use Drill **Test2Code plugin** with autotests (RESTful API and Selenium-based UI [*](#notes)) 
+To use Drill **Test2Code plugin** with autotests (RESTful API and Selenium-based UI [*](#notes))
 add a special autotest agent to your test automation framework.
 
 Supported test runners: <br/>
 
  ●   **junit4** <br/>
- ●   **junit5** (5.5.0+) <br/>
+ ●   **junit5** <br/>
  ●   **testNG** <br/>
+ ●   **cucumber** <br/>
 
 ## Gradle
 Add the following lines to your project **settings.gradle**:
@@ -146,7 +147,7 @@ browser-proxy:
     ports:
       - 7777:7777
 ```
-and add additional param **browserProxyAddress** to autotests agent config:  
+and add additional param **browserProxyAddress** to autotests agent config:
 
 **Gradle**
 
