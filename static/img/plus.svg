@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <mask id="b" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16" fill="#000">
+        <path fill="#fff" d="M0 0h16v16H0z"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M8 2a1 1 0 0 0-1 1v4H3a1 1 0 1 0 0 2h4v4a1 1 0 1 0 2 0V9h4a1 1 0 1 0 0-2H9V3a1 1 0 0 0-1-1z"/>
+    </mask>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M8 2a1 1 0 0 0-1 1v4H3a1 1 0 1 0 0 2h4v4a1 1 0 1 0 2 0V9h4a1 1 0 1 0 0-2H9V3a1 1 0 0 0-1-1z" fill="url(#a)"/>
+    <path d="M7 7v2h2V7H7zm0 2h2V7H7v2zm2 0V7H7v2h2zm0-2H7v2h2V7zm0-4a1 1 0 0 1-1 1V0a3 3 0 0 0-3 3h4zm0 4V3H5v4h4zM3 9h4V5H3v4zm1-1a1 1 0 0 1-1 1V5a3 3 0 0 0-3 3h4zM3 7a1 1 0 0 1 1 1H0a3 3 0 0 0 3 3V7zm4 0H3v4h4V7zm2 6V9H5v4h4zm-1-1a1 1 0 0 1 1 1H5a3 3 0 0 0 3 3v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3H7zm0-4v4h4V9H7zm6-2H9v4h4V7zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zM9 9h4V5H9v4zM7 3v4h4V3H7zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4z"
+          fill="#fff" mask="url(#b)"/>
+    <defs>
+        <linearGradient id="a" x1="8" y1="2" x2="9.506" y2="13.808" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#68ADF4"/>
+            <stop offset="1" stop-color="#3F88E2"/>
+        </linearGradient>
+    </defs>
+</svg>
