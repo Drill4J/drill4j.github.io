@@ -22,7 +22,8 @@ module.exports = {
       disableSwitch: true,
     },
     prism: {
-      additionalLanguages: ['java', 'kotlin', 'bash', 'git'],
+      theme: require('prism-react-renderer/themes/github'),
+      additionalLanguages: ['java'],
     },
     navbar: {
       items: [
