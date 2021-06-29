@@ -35,8 +35,8 @@ module.exports = {
           label: 'Documentation',
         },
         {
-          to: 'try-demo/',
-          label: 'Try demo',
+          to: 'install-demo/',
+          label: 'Install demo',
         },
       ],
     },
@@ -72,15 +72,7 @@ module.exports = {
           items: [
             {
               label: 'Java+JS App',
-              href: '/try-demo/#java-+-js-app',
-            },
-            {
-              label: 'Java App',
-              href: '/try-demo/#java-app',
-            },
-            {
-              label: 'JS App',
-              href: '/try-demo/#js-app',
+              href: '/install-demo',
             },
           ],
         },
