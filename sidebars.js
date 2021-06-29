@@ -30,7 +30,7 @@ const docs = [
     label: 'API',
     items: ['api/builds-summary'],
   },
-  'faq',
+  'supported-frameworks', 'faq',
 ];
 
 module.exports = {
