@@ -1,0 +1,142 @@
+---
+id: try-demo
+title: Try Drill4J with Java+JS demo example
+---
+import JavaJSLogo from '../../static/img/java-js-logo.svg';
+import JavaLogo from '../../static/img/java-logo.svg';
+import JsLogo from '../../static/img/javascript-logo.svg';
+import {AdditionalInformation, Badge, ExpandCollapse, Image, ListItem, JavaPlusJsHeader} from '../../src/components';
+
+
+<JavaPlusJsHeader/>
+
+
+## Step 1. Clone the example repository:
+
+```
+git clone https://github.com/Drill4J/realworld-java-and-js-coverage
+```
+
+## Step 2. Start Drill4J Admin
+
+<ListItem number={'2.1.'}>Start docker containers using the following command:</ListItem>
+
+```
+./demo-up.sh
+```
+
+<ListItem number={'2.2.'}>
+
+After the installation go to Drill4J Admin: [http://localhost:8091](http://localhost:8091)
+
+</ListItem>
+
+<ListItem number={'2.3.'}>
+
+Press “Continue as a Guest” and **register agents** (both Java and Node.js)
+
+</ListItem>
+
+<Image src={'/img/java-plus-js-agents-table.png'}/>
+
+<ListItem number={'2.4.'}>
+
+Go through the first two steps of the registration wizard and make sure that Test2Code plugin is **enabled** at Step 3
+
+</ListItem>
+
+<AdditionalInformation >
+
+**Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent.
+
+</AdditionalInformation>
+
+<ListItem number={'2.5.'}>
+
+Open sample application at: [http://localhost:8080](http://localhost:8080)
+
+</ListItem>
+
+<ListItem number={'2.6.'}>
+
+To collect coverage run tests using this command:
+
+</ListItem>
+
+```
+./gradlew clean :build1:test
+```
+
+Tests will be started in a few seconds. Please wait untill the testing process finish. <br/>
+See the testing results on [Test2Code plugin’s page](http://localhost:8080/full-page/spring-realworld-backrnd/0.1.0/test2code/dashboard/methods) and **finish active scope** <br/>
+to add collected coverage to your build.
+
+
+## Step 3. Deploy additional builds
+
+You have to deploy additional builds to discover Drill4J features: 
+
+* Tests to run;
+* Risks Management;
+* Time Savings;
+* Baseline builds.
+
+<ListItem number={'3.1.'}>
+
+Deploy the **second build** of "realworld" example app using this command:
+
+</ListItem>
+
+```
+./demo-deploy-build2.sh
+```
+<AdditionalInformation >
+
+Wait for the new build arrival notification in the notification panel and navigate to it.
+
+</AdditionalInformation>
+
+Now you are able to see the list of **Risks** (uncovered new and modified methods) <br/>
+and suggested **Tests to Run**
+
+<ListItem number={'3.2.'}>
+
+To collect coverage for the second build run tests using this command:
+
+</ListItem>
+
+```
+./gradlew clean :build2:test
+```
+
+<ListItem number={'3.3.'}>
+
+Deploy the **third build** using this command (optional):
+
+</ListItem>
+
+```
+./demo-deploy-build3.sh
+```
+
+<ListItem number={'3.4.'}>
+
+To collect coverage for the third build run tests using this command:
+
+</ListItem>
+
+```
+./gradlew clean :build3:test
+```
+Below you can find a command to **shut down** the “realworld” demo example:
+
+```
+./demo-down.sh
+```
+
+## For manual testing use Chrome Extension
+
+Install the latest version of [Chrome Extension](/docs/installation/extension)
+
+
+

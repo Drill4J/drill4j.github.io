@@ -51,7 +51,7 @@ const Navbar = () => {
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
-                  className="button-primary w-44 ml-5"
+                  className="button-primary ml-5 px-8"
                   to={useBaseUrl((tryDemoButton as any).to)}
                 >
                   {tryDemoButton.label}
