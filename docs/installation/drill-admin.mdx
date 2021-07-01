@@ -109,15 +109,15 @@ ssl-proxy-admin:
       TARGET_PORT: 8080
 
   drill-admin:
-    image: drill4j/admin:0.7.0-95
+    image: drill4j/admin:0.7.0
     environment:
-      - TEST2CODE_PLUGIN_VERSION=0.7.0-126
+      - TEST2CODE_PLUGIN_VERSION=0.7.0
       - LOG_LEVEL=INFO
     ports:
       - 8090:8090
 
   admin-ui:
-    image: drill4j/admin-ui:0.7.0-267
+    image: drill4j/admin-ui:0.7.1
     ports:
       - 8091:8080
 ```
