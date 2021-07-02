@@ -27,7 +27,7 @@ services:
       - JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=drillInstallationDir=/data,adminAddress=host.docker.internal:8090,agentId=ExampleAgentId,buildVersion=0.1.0,logLevel=INFO"
 
   agent-files:
-    image: drill4j/java-agent:0.7.0-28
+    image: drill4j/java-agent:0.7.0
     volumes:
       - agent-files:/java-agent
 
@@ -49,7 +49,7 @@ volumes:
 
 If you use a .jar for running you can download the archive with the agent distribution for your OS:
 
-<a href='https://github.com/Drill4J/java-agent/releases/tag/v0.7.0-28' target="_black">
+<a href='https://github.com/Drill4J/java-agent/releases/tag/v0.7.0' target="_black">
     Java Agent
     <ExternalLinkIcon/>
 </a>

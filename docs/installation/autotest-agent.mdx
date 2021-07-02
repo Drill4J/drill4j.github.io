@@ -20,7 +20,7 @@ Add the following lines to your project **settings.gradle**:
 ```java
 pluginManagement {
     repositories {
-        maven { url 'https://oss.jfrog.org/artifactory/oss-release-local' }
+        maven { url "https://drill4j.jfrog.io/artifactory/drill" }
     }
 }
 ```
@@ -28,12 +28,12 @@ Add the following lines to your project **build.gradle**:
 ```java
 plugins {
     id 'java'
-    id 'com.epam.drill.agent.runner.autotest' version '0.2.2'
+    id 'com.epam.drill.agent.runner.autotest' version '0.2.3'
 }
 ```
 ```java
 drill {
-    version = "0.15.6"
+    version = "0.16.2"
     adminHost = "localhost"
     agentId = "ExampleAgentId"
     adminPort = 8090
@@ -46,7 +46,7 @@ Add the following lines to your project **POM**:
 <pluginRepositories>
     <pluginRepository>
         <id>drill</id>
-        <url>https://oss.jfrog.org/artifactory/list/oss-release-local</url>
+        <url>https://drill4j.jfrog.io/artifactory/drill</url>
     </pluginRepository>
 </pluginRepositories>
 <build>
@@ -54,7 +54,7 @@ Add the following lines to your project **POM**:
         <plugin>
             <groupId>com.epam.drill.agent.runner</groupId>
             <artifactId>maven</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.3</version>
             <executions>
                 <execution>
                     <goals>
@@ -64,7 +64,7 @@ Add the following lines to your project **POM**:
             </executions>
             <configuration>
                 <drill>
-                    <version>0.15.6</version>
+                    <version>0.16.2</version>
                     <agentId>ExampleAgentId</agentId>
                     <adminHost>localhost</adminHost>
                     <adminPort>8090</adminPort>
@@ -98,7 +98,7 @@ or set Drill **profile**:
     <pluginRepositories>
         <pluginRepository>
             <id>drill</id>
-            <url>https://oss.jfrog.org/artifactory/list/oss-release-local</url>
+            <url>https://drill4j.jfrog.io/artifactory/drill</url>
         </pluginRepository>
     </pluginRepositories>
     <build>
@@ -106,7 +106,7 @@ or set Drill **profile**:
             <plugin>
                 <groupId>com.epam.drill.agent.runner</groupId>
                 <artifactId>maven</artifactId>
-                <version>0.2.2</version>
+                <version>0.2.3</version>
                 <executions>
                     <execution>
                         <goals>
@@ -116,7 +116,7 @@ or set Drill **profile**:
                 </executions>
                 <configuration>
                     <drill>
-                        <version>0.15.6</version>
+                        <version>0.16.2</version>
                         <agentId>ExampleAgentId</agentId>
                         <adminHost>localhost</adminHost>
                         <adminPort>8090</adminPort>
@@ -143,7 +143,7 @@ run it:
 If you use the **remote** setup for UI autotests run (Selenium GRID, SELENOID and etc.), you need to deploy proxy service:
 ```java
 browser-proxy:
-    image: drill4j/browser-proxy:0.1.0
+    image: drill4j/browser-proxy:0.2.0
     ports:
       - 7777:7777
 ```
@@ -154,7 +154,7 @@ and add additional param **browserProxyAddress** to autotests agent config:
 ```java
 drill {
     additionalParams = ["browserProxyAddress" : "proxyHost:7777"]
-    version = "0.15.6"
+    version = "0.16.2"
     adminHost = "localhost"
     agentId = "ExampleAgentId"
     adminPort = 8090
@@ -168,7 +168,7 @@ drill {
         <additionalParams>
             <browserProxyAddress>proxyHost:7777</browserProxyAddress>
         </additionalParams>
-        <version>0.15.6</version>
+        <version>0.16.2</version>
         <agentId>ExampleAgentId</agentId>
         <adminHost>localhost</adminHost>
         <adminPort>8090</adminPort>
