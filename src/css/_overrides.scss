@@ -107,10 +107,10 @@ body.mac-os {
     top: 8px;
     right: 8px;
     padding: 0 8px !important;
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, default);
     font-size: 12px !important;
     line-height: 24px;
-    background-color: rgba(map-get($monochrome, dark-tint), 0.5) !important;
+    background-color: rgba(map-get($monochrome, medium-tint), 0.5) !important;
     border-radius: 4px;
   }
 
@@ -121,12 +121,12 @@ body.mac-os {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: map-get($monochrome, dark-tint);
+      background-color: map-get($monochrome, default);
       border-radius: 4px;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: map-get($monochrome, default);
+      background-color: map-get($monochrome, light-tint);
       border-radius: 0 0 4px 4px;
     }
   }
@@ -170,5 +170,8 @@ body.mac-os {
 }
 
 .prism-code > div {
-  background-color: #E3E6E8 !important;
+  background-color: map-get($monochrome, light-tint) !important;
+  .token.plain {
+    color: map-get($monochrome, default) !important;
+  }
 }
