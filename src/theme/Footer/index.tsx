@@ -25,7 +25,7 @@ const Footer = () => {
               key={title}
               className={clsx('space-y-3', `md:col-span-${index === 2 ? 2 : 3} lg:col-span-3 lg:col-start-${5 + index * 3}`)}
             >
-              <h5>{title}</h5>
+              <h5>{title === ' ' ? <span>&nbsp;</span> : title}</h5>
               <ul>
                 {items.map(({ label, href }) => (
                   <li key={label} className="mb-2">

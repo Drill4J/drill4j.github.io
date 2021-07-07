@@ -22,7 +22,8 @@ module.exports = {
       disableSwitch: true,
     },
     prism: {
-      additionalLanguages: ['java', 'kotlin', 'bash', 'git'],
+      theme: require('prism-react-renderer/themes/github'),
+      additionalLanguages: ['java'],
     },
     navbar: {
       items: [
@@ -54,24 +55,23 @@ module.exports = {
               href: '/docs/installation/java-agent',
             },
             {
-              label: 'Microservices',
-              href: '/docs/installation/microservices',
-            },
-            {
               label: 'Autotest Agent',
               href: '/docs/installation/autotest-agent',
-            },
-            {
-              label: 'Chrome Extension',
-              href: '/docs/installation/extension',
             },
           ],
         },
         {
-          title: 'Demo Examples',
+          title: ' ',
           items: [
             {
-              label: 'Java+JS App',
+              label: 'Microservices',
+              href: '/docs/installation/microservices',
+            }, {
+              label: 'Chrome Extension',
+              href: '/docs/installation/extension',
+            },
+            {
+              label: 'Java + JS example App',
               href: '/install-demo',
             },
           ],
