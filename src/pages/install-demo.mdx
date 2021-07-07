@@ -47,7 +47,7 @@ Go through the first two steps of the registration wizard and make sure that Tes
 
 <AdditionalInformation >
 
-**Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent.
+**Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent. It is necessary to collect manual coverage via extension.
 
 </AdditionalInformation>
 
@@ -59,7 +59,7 @@ Open sample application at: [http://localhost:8080](http://localhost:8080)
 
 <ListItem number={'2.6.'}>
 
-To collect coverage run tests using this command:
+To collect coverage run tests:
 
 </ListItem>
 
@@ -68,7 +68,7 @@ To collect coverage run tests using this command:
 ```
 
 Tests will be started in a few seconds. Please wait untill the testing process finish. <br/>
-See the testing results on [Test2Code plugin’s page](http://localhost:8080/full-page/spring-realworld-backrnd/0.1.0/test2code/dashboard/methods) and **finish active scope** <br/>
+See the testing results on [Test2Code plugin’s page](http://localhost:8091/service-group-full-page/realworld-app/test2code) and **finish active scope** <br/>
 to add collected coverage to your build.
 
 
@@ -83,7 +83,7 @@ You have to deploy additional builds to discover Drill4J features:
 
 <ListItem number={'3.1.'}>
 
-Deploy the **second build** of "realworld" example app using this command:
+Deploy the **2nd build** of Realworld example app:
 
 </ListItem>
 
@@ -92,7 +92,7 @@ Deploy the **second build** of "realworld" example app using this command:
 ```
 <AdditionalInformation >
 
-Wait for the new build arrival notification in the notification panel and navigate to it.
+Wait for build notification to appear (click the icon in the top-right corner).
 
 </AdditionalInformation>
 
@@ -101,7 +101,7 @@ and suggested **Tests to Run**
 
 <ListItem number={'3.2.'}>
 
-To collect coverage for the second build run tests using this command:
+To collect coverage for the 2nd build run tests:
 
 </ListItem>
 
@@ -111,7 +111,7 @@ To collect coverage for the second build run tests using this command:
 
 <ListItem number={'3.3.'}>
 
-Deploy the **third build** using this command (optional):
+Deploy the **3rd build** (optional):
 
 </ListItem>
 
@@ -121,14 +121,14 @@ Deploy the **third build** using this command (optional):
 
 <ListItem number={'3.4.'}>
 
-To collect coverage for the third build run tests using this command:
+To collect coverage for the 3rd build run tests:
 
 </ListItem>
 
 ```
 ./gradlew clean :build3:test
 ```
-Below you can find a command to **shut down** the “realworld” demo example:
+Below you can find a command to **remove** RealWorld demo example:
 
 ```
 ./demo-down.sh

@@ -21,8 +21,8 @@ docker-compose up -d
 ## Using Jar
 ### Drill Admin Backend
 
-1. Go to artifactory: <a href='https://oss.jfrog.org/artifactory/oss-release-local/com/epam/drill/admin-core/' target="_black">
-    https://oss.jfrog.org/artifactory/oss-release-local/com/epam/drill/admin-core/
+1. Go to artifactory: <a href='https://drill4j.jfrog.io/artifactory/drill/com/epam/drill/admin-core/0.7.0/' target="_black">
+    https://drill4j.jfrog.io/artifactory/drill/com/epam/drill/admin-core/0.7.0/
 <ExternalLinkIcon/>
 </a>
 
@@ -31,12 +31,12 @@ docker-compose up -d
 
 <AdditionalInformation className="space-y-2">
 
-E.g. admin-core-0.7.0-98-all.jar
+E.g. admin-core-0.7.0-all.jar
 </AdditionalInformation>
 
 3. Run it:
 ```java
- java -jar admin-core-0.7.0-98-all.jar
+ java -jar admin-core-0.7.0-all.jar
 ```
 
 4. Drill Admin Backend is on <a href='http://localhost:8090/apidocs/index.html?url=./openapi.json' target="_black">
@@ -109,15 +109,15 @@ ssl-proxy-admin:
       TARGET_PORT: 8080
 
   drill-admin:
-    image: drill4j/admin:0.7.0-95
+    image: drill4j/admin:0.7.0
     environment:
-      - TEST2CODE_PLUGIN_VERSION=0.7.0-126
+      - TEST2CODE_PLUGIN_VERSION=0.7.0
       - LOG_LEVEL=INFO
     ports:
       - 8090:8090
 
   admin-ui:
-    image: drill4j/admin-ui:0.7.0-267
+    image: drill4j/admin-ui:0.7.1
     ports:
       - 8091:8080
 ```
