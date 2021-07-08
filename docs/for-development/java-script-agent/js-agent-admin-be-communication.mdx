@@ -19,7 +19,7 @@ Admin backend sends messages in the following format:
 ```
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#BFC7D5">"text"</Badge> field is stringified.
+<Badge>"text"</Badge> field is stringified.
 </AdditionalInformation>
 
 
@@ -35,9 +35,9 @@ Admin backend expects to get a response **for each message**, called "delivery c
 Some messages aren't used in JS agent initialization, so no actions are performed on JS agent side, **but delivery confirmation is still sent**:
 
 
-- <Badge color="#BFC7D5">/agent/change-header-name</Badge> 
-- <Badge color="#BFC7D5">/agent/set-packages-prefixes</Badge> 
-- <Badge color="#BFC7D5">/agent/load-classes-data</Badge> 
+- <Badge>/agent/change-header-name</Badge>
+- <Badge>/agent/set-packages-prefixes</Badge>
+- <Badge>/agent/load-classes-data</Badge>
 
 ### Plugin
 
@@ -55,12 +55,12 @@ Some messages aren't used in JS agent initialization, so no actions are performe
 
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#BFC7D5">"content"</Badge> field is stringified.
+<Badge>"content"</Badge> field is stringified.
 </AdditionalInformation>
 
 ## Agent Registration & Test2Code Plugin Initialization
 
-1. Open WS connection to Admin backend API on the <Badge color="#BFC7D5">/agent/attach</Badge> route (e.g. <Badge color="#BFC7D5">http://localhost:8090/agent/attach</Badge>) with the following headers specified:
+1. Open WS connection to Admin backend API on the <Badge>/agent/attach</Badge> route (e.g. <Badge>http://localhost:8090/agent/attach</Badge>) with the following headers specified:
 
    ```json
    {

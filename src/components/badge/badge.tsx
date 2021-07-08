@@ -5,9 +5,9 @@ interface Props {
   color?: string;
 }
 
-export const Badge = ({ color = '#E3E6E8', children, ...rest }: Props) => (
+export const Badge = ({ color = '#687481', children, ...rest }: Props) => (
   <span
-    className="inline-block px-2 text-14 leading-24 bg-monochrome-black rounded-lg"
+    className="inline-block px-2 text-14 leading-24 bg-monochrome-light-tint rounded-lg"
     style={{ color }}
     {...rest}
   >

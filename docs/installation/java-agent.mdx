@@ -22,7 +22,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - agent-files:/data    
+      - agent-files:/data
     environment:
       - JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=drillInstallationDir=/data,adminAddress=host.docker.internal:8090,agentId=ExampleAgentId,buildVersion=0.1.0,logLevel=INFO"
 
@@ -37,11 +37,11 @@ volumes:
 
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#BFC7D5">agent-files</Badge> — container with drill agent files. <br/>
-<Badge color="#BFC7D5">adminAddress</Badge> — host and backend port of your drill admin. <br/>
-<Badge color="#BFC7D5">8090</Badge> — default port for agent connection. <br/>
-<Badge color="#BFC7D5">agentId </Badge> — ID for drill agent of application. <br/>
-<Badge color="#B6C7D5">buildVersion</Badge> — build version of your application. <br/>
+<Badge>agent-files</Badge> — container with drill agent files. <br/>
+<Badge>adminAddress</Badge> — host and backend port of your drill admin. <br/>
+<Badge>8090</Badge> — default port for agent connection. <br/>
+<Badge>agentId </Badge> — ID for drill agent of application. <br/>
+<Badge>buildVersion</Badge> — build version of your application. <br/>
 
 </AdditionalInformation>
 
@@ -62,10 +62,10 @@ and start an application with the following parameters (example for Windows):
 
 <AdditionalInformation className="space-y-2">
 
-<Badge color="#BFC7D5">distr</Badge> — folder with drill agent files.  <br/>
-Use <Badge color="#BFC7D5">.dll</Badge> for Windows <Badge color="#76A5E3">.so</Badge> for Linux and <Badge color="#76A5E3">.dylib</Badge> agent file for MacOS. <br/>
+<Badge>distr</Badge> — folder with drill agent files.  <br/>
+Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS. <br/>
 <Badge>adminAdress</Badge> — host and backend port of your drill admin.  <br/>
-<Badge color="#BFC7D5">agentId</Badge> — ID for drill agent of application. <br/> 
-<Badge color="#BFC7D5">buildVersion</Badge> — build version of your application. <br/>
+<Badge>agentId</Badge> — ID for drill agent of application. <br/>
+<Badge>buildVersion</Badge> — build version of your application. <br/>
 
 </AdditionalInformation>
