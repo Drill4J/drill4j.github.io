@@ -2,7 +2,7 @@ import React from 'react';
 
 export const JavaPlusJsHeader = () => (
   <>
-    <h2>We're using a “realworld” app example:</h2>
+    <h2>We're using a RealWorld app examples:</h2>
     <div className="flex items-center gap-x-6 mb-12 text-16 leading-20">
       <div className="flex justify-center items-center gap-x-3 leading-20">
         <img style={{ marginBottom: 0 }} src="/img/spring-logo.svg" alt="spring-logo" />
