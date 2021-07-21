@@ -97,7 +97,7 @@ For example, full docker-compose file looks like:
 version: '3'
 
 services:
-ssl-proxy-admin:
+  ssl-proxy-admin:
     image: drill4j/ssl-proxy:0.1.0
     ports:
       - 8443:8443
@@ -106,6 +106,9 @@ ssl-proxy-admin:
       SSL_PORT: 8443
       TARGET_HOST: admin-ui
       TARGET_PORT: 8080
+    networks:
+      drill4j:
+        ipv4_address: 10.250.0.2
 
   drill-admin:
     image: drill4j/admin:0.7.0
@@ -114,11 +117,25 @@ ssl-proxy-admin:
       - LOG_LEVEL=INFO
     ports:
       - 8090:8090
+    networks:
+      drill4j:
+        ipv4_address: 10.250.0.3
 
   admin-ui:
     image: drill4j/admin-ui:0.7.1
     ports:
       - 8091:8080
+    networks:
+      drill4j:
+        ipv4_address: 10.250.0.4
+
+networks:
+  drill4j:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.250.0.0/16
+         gateway: 10.250.0.1
 ```
 Drill Admin is available on **https://drillAdminHost:8443**
 
