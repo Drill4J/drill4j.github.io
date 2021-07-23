@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
 import Layout from '@theme/Layout';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
@@ -9,7 +8,6 @@ import clsx from 'clsx';
 import { RellaxWrapper } from 'react-rellax-wrapper';
 
 import styles from './styles.module.scss';
-import '../css/index.css';
 
 const Figure: React.FC = ({ children }) => (
   <figure
