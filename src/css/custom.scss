@@ -28,10 +28,11 @@
     width: 200px;
     padding: 12px 0;
 
-    @media screen and (max-width: 360px){
+    @media screen and (max-width: 360px) {
       width: 100%;
     }
   }
 }
 
 @import './index';
+@import 'index.css';
