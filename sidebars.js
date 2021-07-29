@@ -30,6 +30,11 @@ const docs = [
     label: 'API',
     items: ['api/builds-summary'],
   },
+  {
+    type: 'category',
+    label: 'Schemas',
+    items: ['schemas/auto-test-agent-schemas', 'schemas/testing-schemas'],
+  },
   'supported-frameworks', 'faq',
 ];
 
