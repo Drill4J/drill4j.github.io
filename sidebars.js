@@ -35,6 +35,11 @@ const docs = [
     label: 'Schemas',
     items: ['schemas/auto-test-agent-schemas', 'schemas/testing-schemas'],
   },
+  {
+    type: 'category',
+    label: 'Releases',
+    items: ['releases/release-0-7-0', 'releases/release-0-6-0', 'releases/release-0-5-0', 'releases/release-0-4-0', 'releases/release-0-3-0', 'releases/release-0-2-0'],
+  },
   'supported-frameworks', 'faq',
 ];
 
