@@ -1,0 +1,32 @@
+---
+id: release-0-5-0
+title: 0.5.0
+---
+
+## New Features
+* Microservices support with all features of monolith applications + scope finishing in bulk
+* Agent registration in bulk
+* New native autotest agent
+* User-friendly Gradle/Maven plugins for autotest agent
+* Real-time coverage receiving.  experimental
+* New Widget for manual testing
+* .war support
+* Notification pane
+* Logout
+
+## Improvements
+* An agent registration process is divided into 3 steps: general settings, system settings and adding a plugin
+* An agent configuration is divided into 3 tabs
+* Drill4J extension supports Microservice apps
+
+## Critical Bug Fixes
+* Unexpected agent reconnection. 
+* Data of agents in a service group is cleared after restart agents
+* Drill plugin topics don't consider agent id
+* Unstable coverage percentage
+* GZIP format exception on apps with drill
+* Wrong Method Count in Package Tree
+
+## Known Issues
+* Real-time works incorrectly if testing is performed on standalone and microservice apps concurrently
+* Performance issues on large datasets
