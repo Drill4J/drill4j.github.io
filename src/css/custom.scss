@@ -6,6 +6,8 @@
  */
 
 /* You can override the default Infima variables here. */
+@import './colors';
+
 :root {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: rgb(33, 175, 144);
@@ -39,6 +41,16 @@
   margin: 0 auto;
   padding-left: 24px;
   padding-right: 24px;
+}
+
+svg {
+  color: map-get($monochrome, default);
+
+  &:hover {
+    color: map-get($primary-blue, default)
+  }
+
+  fill: currentColor;
 }
 
 @import './index';

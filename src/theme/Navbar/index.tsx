@@ -12,7 +12,7 @@ import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import { socialLinks } from '../social-links';
-import GitIcon from '../../../static/img/git-hub.svg';
+import GitHubIcon from '../../../static/img/git-hub.svg';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
@@ -48,7 +48,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li><Link className="cursor-pointer"><GitIcon className="text-red-default fill-current" /></Link></li>
+              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /></Link></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
@@ -88,9 +88,11 @@ const Navbar = () => {
                     </li>
                   ))}
                   <div className="flex gap-x-6 mt-9 mb-30">
-                    {socialLinks.map(({ bg, link }) => (
+                    {socialLinks.map(({ link, Icon }) => (
                       <li>
-                        <Link to={link} className={`${bg} bg-no-repeat bg-center transform scale-150 block w-9 h-9 cursor-pointer`} />
+                        <Link to={link} className="cursor-pointer">
+                          <Icon className="w-9 h-9" />
+                        </Link>
                       </li>
                     ))}
                   </div>

@@ -51,9 +51,9 @@ const Footer = () => {
             Licensed under Apache v2.0
           </span>
           <ul className="flex justify-center gap-x-4 items-center">
-            {socialLinks.map(({ bg, link }) => (
+            {socialLinks.map(({ Icon, link }) => (
               <li key={link}>
-                <Link to={link} className={`${bg} block w-6 h-6 cursor-pointer`} />
+                <Link to={link} className="cursor-pointer"><Icon /></Link>
               </li>
             ))}
           </ul>
