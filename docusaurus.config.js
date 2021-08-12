@@ -44,7 +44,7 @@ module.exports = {
     footer: {
       links: [
         {
-          title: 'Installation',
+          title: ' ',
           items: [
             {
               label: 'Drill Admin',
@@ -77,7 +77,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Drill4J',
+          title: ' ',
           items: [
             {
               label: 'Contact us',

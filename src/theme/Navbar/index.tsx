@@ -12,7 +12,7 @@ import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import { socialLinks } from '../social-links';
-
+import GitHubIcon from '../../../static/img/git-hub.svg';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 h-22">
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
-        <nav className="flex items-center justify-between h-22 container">
+        <nav className="flex items-center justify-between h-22 navigationContainer">
           <Link
             to={useBaseUrl('/')}
           >
@@ -48,6 +48,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
+              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /></Link></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
@@ -72,7 +73,7 @@ const Navbar = () => {
         isNavbarVisible && (
           <nav className="visible md:invisible fixed w-full h-full left-0 top-22">
             <div className="bg-monochrome-white">
-              <div className="container pt-2 pb-6">
+              <div className="navigationContainer pt-2 pb-6">
                 <ul>
                   {links.map(({ to = '', label = '' }: any) => (
                     <li className="text-16 leading-24 border-b border-monochrome-medium-tint">
@@ -87,9 +88,11 @@ const Navbar = () => {
                     </li>
                   ))}
                   <div className="flex gap-x-6 mt-9 mb-30">
-                    {socialLinks.map(({ bg, link }) => (
+                    {socialLinks.map(({ link, Icon }) => (
                       <li>
-                        <Link to={link} className={`${bg} bg-no-repeat bg-center transform scale-150 block w-9 h-9 cursor-pointer`} />
+                        <Link to={link} className="cursor-pointer">
+                          <Icon className="w-9 h-9" />
+                        </Link>
                       </li>
                     ))}
                   </div>
