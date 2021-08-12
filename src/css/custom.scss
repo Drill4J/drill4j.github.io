@@ -34,5 +34,12 @@
   }
 }
 
+.navigationContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 @import './index';
 @import 'index.css';

@@ -15,9 +15,14 @@ const Footer = () => {
   const { footer: { links } } = useThemeConfig();
   return (
     <footer className="bg-monochrome-light-tint">
-      <div className="container">
-        <section className="grid py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-y-12 gap-x-5">
-          <a href="https://github.com/Drill4J" target="_blank" rel="noreferrer noopener" className="col-span-full lg:col-span-4">
+      <div className="navigationContainer">
+        <section className="grid py-12 lg:py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5">
+          <a
+            href="https://github.com/Drill4J"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="col-span-full lg:col-span-4 mb-12 lg:mb-0"
+          >
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
           {links.map(({ title = '', items }, index) => (
@@ -25,10 +30,9 @@ const Footer = () => {
               key={title}
               className={clsx('space-y-3', `md:col-span-${index === 2 ? 2 : 3} lg:col-span-3 lg:col-start-${5 + index * 3}`)}
             >
-              <h5>{title === ' ' ? <span>&nbsp;</span> : title}</h5>
               <ul>
                 {items.map(({ label, href }) => (
-                  <li key={label} className="mb-2">
+                  <li key={label} className="mb-4 md:mb-2">
                     <Link className="gray-link" to={href}>
                       {label}
                     </Link>

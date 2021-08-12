@@ -29,28 +29,25 @@
   border-radius: 14px;
 }
 
-.borderedImgWrapper {
-  padding: 4px;
-  background-color: map-get($monochrome, white);
+.imgWrapper {
   filter: drop-shadow(0px 20px 64px rgba(16, 33, 64, 0.12));
   box-sizing: border-box;
 
   img {
-    border: 1px solid map-get($monochrome, medium-tint);
     box-sizing: border-box;
   }
 }
 
 .integrateStepsWrapper {
-  background-color: map-get($monochrome, black);
+  background: linear-gradient(177.8deg, #F5FAFF 1.95%, #FFFFFF 98.34%);
 
-  h3 {
+  li > h3 {
     font-size: 20px;
   }
 
   h2,
   h3 {
-    color: map-get($monochrome, white);
+    color: map-get($monochrome, black);
   }
 
   p {
