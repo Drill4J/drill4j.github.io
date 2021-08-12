@@ -2,14 +2,20 @@
 id: install-demo
 title: Try Drill4J with Java+JS demo example
 ---
-import JavaJSLogo from '../../static/img/java-js-logo.svg';
-import JavaLogo from '../../static/img/java-logo.svg';
-import JsLogo from '../../static/img/javascript-logo.svg';
-import {AdditionalInformation, Badge, ExpandCollapse, Image, ListItem, JavaPlusJsHeader} from '../../src/components';
 
+import {AdditionalInformation, Image, ListItem, JavaPlusJsHeader, Warning, Info} from '../../src/components';
+
+<div className='mb-12'>
+<Warning>
+
+**Please note that at the moment:** <br/>
+– This demo works only for Windows 10. <br/>
+– Frontend JavaScript coverage collection for automated tests works only when running headful Chrome.
+
+</Warning>
+</div>
 
 <JavaPlusJsHeader/>
-
 
 ## Step 1. Clone the example repository:
 
@@ -74,7 +80,7 @@ to add collected coverage to your build.
 
 ## Step 3. Deploy additional builds
 
-You have to deploy additional builds to discover Drill4J features: 
+You have to deploy additional builds to discover Drill4J features:
 
 * Tests to run;
 * Risks Management;
