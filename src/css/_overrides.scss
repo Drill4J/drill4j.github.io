@@ -9,8 +9,11 @@
     box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3) !important;
     border-radius: 4px !important;
 
-    @media screen and (min-width: 640px) and (max-width: 1024px) {
+    @media screen and (min-width: 640px)  {
       width: 200px;
+    }
+    @media screen and (min-width: 1024px) {
+      width: 100%;
     }
 
     &:hover {
@@ -175,3 +178,49 @@ body.mac-os {
     color: map-get($monochrome, default) !important;
   }
 }
+
+.table-of-contents {
+  position: relative;
+  margin-top: 24px;
+  padding:  0 0 0 8px;
+
+  li {
+    padding-left: 8px;
+    margin: 0;
+
+    .table-of-contents__link {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: $semibold;
+      color: map-get($monochrome, dark-tint);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &--active {
+        color: map-get($primary-blue, default);
+
+        &:after {
+          content: '';
+          position: absolute;
+          left: -1px;
+          width: 2px;
+          height: 20px;
+          background-color: map-get($primary-blue, default);
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+
+a.hash-link {
+  visibility: hidden;
+  &:before {
+    content: url('/img/header-link.svg');
+    visibility: visible;
+  }
+}
+

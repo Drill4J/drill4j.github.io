@@ -1,14 +1,20 @@
 .docPageContainer {
-  max-width: 1120px;
+  display: grid;
   padding: 0 24px;
   box-sizing: initial;
+  grid-template-columns: 0 1fr;
 
   @media screen and (max-width: 360px) {
     padding: 0 16px;
   }
 
   @media screen and (max-width: 1024px) {
+    grid-template-columns: 0 1fr;
     box-sizing: border-box;
-    max-width: 960px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 312px 1fr;
+    padding: 0 24px 0 0;
   }
 }
