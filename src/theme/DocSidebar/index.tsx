@@ -145,7 +145,6 @@ function DocSidebarItemLink({
   item,
   onItemClick,
   activePath,
-  collapsible: _collapsible,
   ...props
 }) {
   const { href, label } = item;
@@ -203,7 +202,7 @@ function DocSidebar({
 
   return (
     <div
-      className={clsx('flex flex-col lg:mt-6 lg:border-r border-monochrome-medium-tint', {
+      className={clsx('flex flex-col lg:pt-6 lg:pl-6 lg:border-r border-monochrome-medium-tint bg-monochrome-light-tint', {
         'fixed inset-0 z-50 mt-0 bg-monochrome-white': showResponsiveSidebar,
       })}
       role="complementary"
