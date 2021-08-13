@@ -11,12 +11,9 @@ import Head from '@docusaurus/Head';
 import { useTitleFormatter } from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import DocPaginator from '@theme/DocPaginator';
 import type { Props } from '@theme/DocItem';
-import TOC from '@theme/TOC';
+import { TOC } from '../../components';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
-
-import './styles.scss';
 
 function DocItem(props: Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
