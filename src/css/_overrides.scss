@@ -215,3 +215,12 @@ body.mac-os {
     }
   }
 }
+
+a.hash-link {
+  visibility: hidden;
+  &:before {
+    content: url('/img/header-link.svg');
+    visibility: visible;
+  }
+}
+
