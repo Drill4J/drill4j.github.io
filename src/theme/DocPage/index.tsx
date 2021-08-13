@@ -61,22 +61,17 @@ function DocPageContent({
         tag: docVersionSearchTag(pluginId, version),
       }}
     >
-      <div className={clsx(styles.docPageContainer, 'grid grid-cols-12 gap-x-5 mx-auto')}>
-        <div
-          className={clsx('lg:col-span-3 col-span-0 mr-4 border-r border-monochrome-medium-tint')}
-          role="complementary"
-        >
-          <DocSidebar
-            key={sidebarName}
-            sidebar={sidebar}
-            path={currentDocRoute.path}
-            sidebarCollapsible={
-              siteConfig.themeConfig?.sidebarCollapsible ?? true
-            }
-            onCollapse={toggleSidebar}
-            isHidden={hiddenSidebar}
-          />
-        </div>
+      <div className={clsx(styles.docPageContainer)}>
+        <DocSidebar
+          key={sidebarName}
+          sidebar={sidebar}
+          path={currentDocRoute.path}
+          sidebarCollapsible={
+            siteConfig.themeConfig?.sidebarCollapsible ?? true
+          }
+          onCollapse={toggleSidebar}
+          isHidden={hiddenSidebar}
+        />
         <MDXProvider components={MDXComponents}>{children}</MDXProvider>
       </div>
     </Layout>
