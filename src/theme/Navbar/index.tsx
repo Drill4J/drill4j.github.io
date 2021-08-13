@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
@@ -19,9 +19,22 @@ const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   const { pathname } = useLocation();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
+  const [startCount, setStartCount] = useState(0);
   useLockBodyScroll(isNavbarVisible);
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j');
+        const data = await res.json();
+        setStartCount(data?.stargazers_count);
+      })();
+    } catch (e) {
+      console.log(e.message);
+    }
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 h-22">
@@ -48,7 +61,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /></Link></li>
+              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /> stars:{startCount}</Link></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
