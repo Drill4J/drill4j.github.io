@@ -2,8 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import WarningIcon from '../../../static/img/warning.svg';
 import styles from './styles.module.scss';
+import { Icon } from '../icon';
 
 interface Props {
   children: React.ReactNode
@@ -13,12 +13,12 @@ export const Warning = ({ children }: Props) => (
   <div
     className={clsx(
       styles.wrapper,
-      'flex gap-x-3 py-4 pl-3 pr-4 mb-4',
-      'rounded-lg border-l-8 border-orange-default bg-orange-default bg-opacity-5',
+      'flex gap-x-3 py-4 px-4 mb-4',
+      'rounded-lg bg-orange-default bg-opacity-5',
       'text-monochrome-default text-16 leading-24',
     )}
   >
-    <WarningIcon className="mt-1" />
+    <Icon src="img/warning.svg" width={16} height={16} className="mt-1 h-4 text-orange-default" />
     <div>{children}</div>
   </div>
 );
