@@ -39,7 +39,7 @@ const Navbar = () => {
                   <Link
                     style={{ textDecoration: 'none' }}
                     className={`flex items-center h-22
-                      text-16 text-monochrome-default hover:text-blue-default
+                      text-16 text-monochrome-default
                       ${pathname.includes(to.split('/')[0]) ? styles.activeTab : styles.tab}
                       `}
                     to={useBaseUrl(to)}
