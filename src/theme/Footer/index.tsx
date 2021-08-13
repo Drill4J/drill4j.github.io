@@ -17,12 +17,7 @@ const Footer = () => {
     <footer className="bg-monochrome-light-tint">
       <div className="navigationContainer">
         <section className="grid py-12 lg:py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5">
-          <a
-            href="https://github.com/Drill4J"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="col-span-full lg:col-span-4 mb-12 lg:mb-0"
-          >
+          <a href="/" className="col-span-full lg:col-span-4 mb-12 lg:mb-0">
             <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
           {links.map(({ title = '', items }, index) => (
