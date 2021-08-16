@@ -14,7 +14,7 @@ import useHideableNavbar from '@theme/hooks/useHideableNavbar';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import clsx from 'clsx';
 import { socialLinks } from '../social-links';
-import GitHubIcon from '../../../static/img/git-hub.svg';
+import { GitHubLink } from './git-hub-link';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
@@ -68,7 +68,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /> stars:{startCount}</Link></li>
+              <li><GitHubLink>{startCount}</GitHubLink></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
