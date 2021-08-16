@@ -5,26 +5,46 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
+import useHideableNavbar from '@theme/hooks/useHideableNavbar';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
+import clsx from 'clsx';
 import { socialLinks } from '../social-links';
-import GitHubIcon from '../../../static/img/git-hub.svg';
+import { GitHubLink } from './git-hub-link';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   const { pathname } = useLocation();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
+  const [startCount, setStartCount] = useState(0);
   useLockBodyScroll(isNavbarVisible);
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
+  const { navbarRef, isNavbarVisible: isHeaderVisibleAfterScroll } = useHideableNavbar(true);
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j');
+        const data = await res.json();
+        setStartCount(data?.stargazers_count);
+      })();
+    } catch (e) {
+      console.log(e.message);
+    }
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 h-22">
+    <header
+      ref={navbarRef}
+      className={clsx('sticky top-0 z-50 h-22', styles.header, {
+        [styles.headerHidden]: !isHeaderVisibleAfterScroll,
+      })}
+    >
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
         <nav className="flex items-center justify-between h-22 navigationContainer">
           <Link
@@ -39,7 +59,7 @@ const Navbar = () => {
                   <Link
                     style={{ textDecoration: 'none' }}
                     className={`flex items-center h-22
-                      text-16 text-monochrome-default hover:text-blue-default
+                      text-16 text-monochrome-default
                       ${pathname.includes(to.split('/')[0]) ? styles.activeTab : styles.tab}
                       `}
                     to={useBaseUrl(to)}
@@ -48,7 +68,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li><Link to="https://github.com/Drill4J/drill4j" className="cursor-pointer"><GitHubIcon /></Link></li>
+              <li><GitHubLink>{startCount}</GitHubLink></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
@@ -78,7 +98,7 @@ const Navbar = () => {
                   {links.map(({ to = '', label = '' }: any) => (
                     <li className="text-16 leading-24 border-b border-monochrome-medium-tint">
                       <Link
-                        style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: 'none', fontWeight: pathname.includes(to.split('/')[0]) ? '600' : '400' }}
                         className="gray-link inline-flex py-4 w-full h-full"
                         to={useBaseUrl(to)}
                         onClick={() => setIsNavbarVisible(false)}

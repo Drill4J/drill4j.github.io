@@ -49,6 +49,18 @@
   svg {
     fill: map-get($primary-blue, default);
   }
+
+  &:hover {
+    border: 2px solid #EDF6FF;
+    background-color: #EDF6FF;
+    color: map-get($primary-blue, medium-tint) !important;
+  }
+
+  &:active {
+    border: 2px solid #B3D9FF;
+    background-color: #B3D9FF;
+    color: map-get($primary-blue, medium-tint) !important;
+  }
 }
 
 .button-ghost {
@@ -59,6 +71,25 @@
 
   svg {
     fill: map-get($primary-blue, default);
+  }
+
+  &:hover {
+    border: 2px solid map-get($primary-blue, medium-tint);
+    color: map-get($primary-blue, medium-tint) !important;
+    background-color: map-get($monochrome, white);
+
+    svg {
+      fill: map-get($primary-blue, medium-tint);
+    }
+  }
+
+  &:active {
+    border: 2px solid map-get($primary-blue, shade);
+    color: map-get($primary-blue, shade) !important;
+
+    svg {
+      fill: map-get($primary-blue, shade);
+    }
   }
 }
 

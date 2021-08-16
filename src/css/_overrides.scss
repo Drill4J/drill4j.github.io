@@ -9,7 +9,7 @@
     box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3) !important;
     border-radius: 4px !important;
 
-    @media screen and (min-width: 640px)  {
+    @media screen and (min-width: 640px) {
       width: 200px;
     }
     @media screen and (min-width: 1024px) {
@@ -124,13 +124,19 @@ body.mac-os {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: map-get($monochrome, default);
+      background-color: map-get($monochrome, dark-tint);
       border-radius: 4px;
     }
 
     &::-webkit-scrollbar-track {
       background-color: map-get($monochrome, light-tint);
       border-radius: 0 0 4px 4px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        background-color: map-get($monochrome, dark-tint);
+      }
     }
   }
 }
@@ -174,15 +180,22 @@ body.mac-os {
 
 .prism-code > div {
   background-color: map-get($monochrome, light-tint) !important;
+
   .token.plain {
     color: map-get($monochrome, default) !important;
+  }
+  .docusaurus-highlight-code-line {
+    background-color: #E3E6E9;
+    display: block;
+    margin: 0 calc(-1 * var(--ifm-pre-padding));
+    padding: 0 var(--ifm-pre-padding);
   }
 }
 
 .table-of-contents {
   position: relative;
   margin-top: 24px;
-  padding:  0 0 0 8px;
+  padding: 0 0 0 8px;
 
   li {
     padding-left: 8px;
@@ -212,12 +225,17 @@ body.mac-os {
           cursor: default;
         }
       }
+
+      &:hover {
+        color: map-get($primary-blue, default);
+      }
     }
   }
 }
 
 a.hash-link {
   visibility: hidden;
+
   &:before {
     content: url('/img/header-link.svg');
     visibility: visible;
