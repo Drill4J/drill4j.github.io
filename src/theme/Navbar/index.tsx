@@ -98,7 +98,7 @@ const Navbar = () => {
                   {links.map(({ to = '', label = '' }: any) => (
                     <li className="text-16 leading-24 border-b border-monochrome-medium-tint">
                       <Link
-                        style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: 'none', fontWeight: pathname.includes(to.split('/')[0]) ? '600' : '400' }}
                         className="gray-link inline-flex py-4 w-full h-full"
                         to={useBaseUrl(to)}
                         onClick={() => setIsNavbarVisible(false)}
