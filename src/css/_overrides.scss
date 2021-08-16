@@ -225,6 +225,10 @@ body.mac-os {
           cursor: default;
         }
       }
+
+      &:hover {
+        color: map-get($primary-blue, default);
+      }
     }
   }
 }
