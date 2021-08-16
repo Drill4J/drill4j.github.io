@@ -10,7 +10,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
+import useHideableNavbar from '@theme/hooks/useHideableNavbar';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
+import clsx from 'clsx';
 import { socialLinks } from '../social-links';
 import GitHubIcon from '../../../static/img/git-hub.svg';
 import styles from './styles.module.scss';
@@ -23,7 +25,7 @@ const Navbar = () => {
   useLockBodyScroll(isNavbarVisible);
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
-
+  const { navbarRef, isNavbarVisible: isHeaderVisibleAfterScroll } = useHideableNavbar(true);
   useEffect(() => {
     try {
       (async () => {
@@ -37,7 +39,12 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 h-22">
+    <header
+      ref={navbarRef}
+      className={clsx('sticky top-0 z-50 h-22', styles.header, {
+        [styles.headerHidden]: !isHeaderVisibleAfterScroll,
+      })}
+    >
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
         <nav className="flex items-center justify-between h-22 navigationContainer">
           <Link

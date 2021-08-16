@@ -32,3 +32,11 @@
     color: map-get($primary-blue, default);
   }
 }
+
+.header {
+  transition: transform 0.3s ease;
+}
+
+.headerHidden {
+  transform: translate3d(0, calc(-100% - 2px), 0);
+}
