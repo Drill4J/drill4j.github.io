@@ -62,6 +62,7 @@ function DocPageContent({
       }}
     >
       <div className={clsx(styles.docPageContainer)}>
+        <div className={styles.background} />
         <DocSidebar
           key={sidebarName}
           sidebar={sidebar}

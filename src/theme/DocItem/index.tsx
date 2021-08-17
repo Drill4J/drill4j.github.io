@@ -12,6 +12,7 @@ import { useTitleFormatter } from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import type { Props } from '@theme/DocItem';
+import clsx from 'clsx';
 import { TOC } from '../../components';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 
@@ -34,6 +35,7 @@ function DocItem(props: Props): JSX.Element {
     permalink,
   } = metadata;
   const isWindowLg = useBreakpoint('lg');
+  const isLaptopWindow = useBreakpoint('laptop');
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -56,8 +58,11 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
-      <main className="grid grid-cols-12 gap-x-5 mb-22">
-        <article className="col-span-12 lg:col-start-2 lg:col-span-8">
+      <main className="grid grid-cols-12 gap-x-5 mb-22 bg-monochrome-white">
+        <article className={clsx('col-span-12 lg:col-start-2 lg:col-span-8', {
+          'lg:col-span-12 pr-16': isLaptopWindow,
+        })}
+        >
           {!hideTitle && (
             <header><h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1></header>
           )}
@@ -65,12 +70,17 @@ function DocItem(props: Props): JSX.Element {
             <DocContent />
           </div>
         </article>
-        {!hideTableOfContents && DocContent.toc && isWindowLg && (
+        {!hideTableOfContents && DocContent.toc && isWindowLg && !isLaptopWindow && (
           <aside className="col-span-3">
             <TOC toc={DocContent.toc} />
           </aside>
         )}
       </main>
+      {!hideTableOfContents && DocContent.toc && isWindowLg && isLaptopWindow && (
+        <aside>
+          <TOC toc={DocContent.toc} />
+        </aside>
+      )}
     </>
   );
 }0;
