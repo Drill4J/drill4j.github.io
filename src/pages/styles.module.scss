@@ -21,6 +21,10 @@
   @media screen and (min-width: 1024px) {
     height: 400px;
   }
+
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
 }
 
 .shadowImg {
