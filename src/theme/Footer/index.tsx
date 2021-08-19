@@ -14,7 +14,7 @@ import { socialLinks } from '../social-links';
 const Footer = () => {
   const { footer: { links } } = useThemeConfig();
   return (
-    <footer className="bg-monochrome-light-tint">
+    <footer className="bg-monochrome-light-tint border-t border-monochrome-medium-tint">
       <div className="navigationContainer">
         <section className="grid py-12 lg:py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5">
           <a href="/" className="col-span-full lg:col-span-4 mb-12 lg:mb-0">
