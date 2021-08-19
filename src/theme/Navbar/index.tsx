@@ -45,7 +45,7 @@ const Navbar = () => {
   return (
     <header
       ref={navbarRef}
-      className={clsx('sticky top-0 z-50 h-22', styles.header, {
+      className={clsx('fixed top-0 inset-x-0 z-50 h-22', styles.header, {
         [styles.headerHidden]: !isHeaderVisibleAfterScroll,
       })}
     >

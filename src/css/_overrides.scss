@@ -1,5 +1,9 @@
 @import "colors";
 
+body {
+  margin-top: 88px; // fixed header height
+}
+
 .DocSearch {
   &-Button {
     width: 100%;
