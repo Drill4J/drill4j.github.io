@@ -29,7 +29,11 @@ const Navbar = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j');
+        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j', {
+          headers: {
+            'User-Agent': 'Drill4J',
+          },
+        });
         const data = await res.json();
         setStartCount(data?.stargazers_count);
       })();
