@@ -2,7 +2,8 @@ const docs = [
   {
     type: 'category',
     label: 'Installation',
-    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices', 'installation/autotest-agent', 'installation/extension'],
+    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices',
+      'installation/autotest-agent', 'installation/extension'],
   },
   {
     type: 'category',
@@ -38,9 +39,15 @@ const docs = [
   {
     type: 'category',
     label: 'Releases',
-    items: ['releases/release-0-7-0', 'releases/release-0-6-0', 'releases/release-0-5-0', 'releases/release-0-4-0', 'releases/release-0-3-0', 'releases/release-0-2-0'],
+    items: ['releases/release-0-7-0', 'releases/release-0-6-0', 'releases/release-0-5-0',
+      'releases/release-0-4-0', 'releases/release-0-3-0', 'releases/release-0-2-0'],
   },
   'supported-frameworks', 'faq',
+  {
+    type: 'category',
+    label: 'Microfrontend',
+    items: ['microfront'],
+  },
 ];
 
 module.exports = {
