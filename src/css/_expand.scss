@@ -1,39 +1,32 @@
-@import "mixins";
+@import "../css/colors";
 
 details {
-  &[open] {
-    summary::after {
-      transform: rotate(180deg);
+  summary {
+    position: relative;
+    padding-left: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: map-get($primary-blue, default);
+    cursor: pointer;
+
+    &::after {
+      fill: map-get($primary-blue, default);
+      content: url("/img/small-blue-arrow.svg");
+      position: absolute;
+      left: 0;
+      z-index: 5;
+      transform: rotate(90deg);
+    }
+
+    &::marker {
+      content: none;
     }
   }
 
-  summary {
-    @include card-shadow;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 24px;
-    font-family: OpenSans-Semibold, sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 24px;
-    color: map-get($monochrome, default);
-    background-color: map-get($monochrome, white);
-    border-radius: 8px;
-    cursor: pointer;
-
-    &:hover{
-      outline: none;
-      text-decoration: none;
-      color: map-get($monochrome, default);
-    }
-
-    &::after{
-      content: url("/static/img/arrow.svg");
-      position: absolute;
-      right: 28px;
-      z-index: 5;
+  &[open] {
+    summary::after {
+      top: 4px;
+      transform: rotate(180deg);
     }
   }
 }
