@@ -60,25 +60,6 @@ Pay attention that work on JavaScript agent is still in progress, but we are ple
 </AdditionalInformation>
 ```
 
-
-<AdditionalInformation >
-
-<Badge>distr</Badge> — folder with drill agent files.  <br/>
-Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS.
-
-</AdditionalInformation>
-
-```jsx
-import { AdditionalInformation } from '@components';
-
-<AdditionalInformation >
-
-<Badge>distr</Badge> — folder with drill agent files.  <br/>
-Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS.
-
-</AdditionalInformation>
-```
-
 ## Info
 
 <Info>
@@ -176,3 +157,21 @@ import TabItem from '@theme/TabItem';
   <TabItem value="banana">This is a banana 🍌</TabItem>
 </Tabs>
 ```
+
+## Code block
+You can:
+1. Add a title to the code block by adding **title** key after the language (leave a space between them).
+2. Bring emphasis to certain lines of code by specifying line ranges after the language meta string (leave a space after the language).
+
+
+```jsx title="/src/components/HelloCodeTitle.js",{2}
+function HelloCodeTitle(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+```
+
+    ```jsx title="/src/components/HelloCodeTitle.js",{2}
+    function HelloCodeTitle(props) {
+      return <h1>Hello, {props.name}</h1>;
+    }
+    ```
