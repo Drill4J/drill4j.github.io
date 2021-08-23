@@ -4,6 +4,8 @@ title: Usage examples
 ---
 import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard } from '@components'
 import DockerIcon from '@static/img/docker-logo.svg';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Warning>
 Important! All imports must be at the beginning of the file.
@@ -77,17 +79,6 @@ Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dyl
 </AdditionalInformation>
 ```
 
-
-## Card
-
-<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
-
-```jsx
-import { Card } from '@components';
-
-<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
-```
-
 ## Info
 
 <Info>
@@ -126,6 +117,16 @@ import { Image } from '@components';
 <Image src="/img/enabled-plugin.png" />
 ```
 
+## Card
+
+<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
+
+```jsx
+import { Card } from '@components';
+
+<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
+```
+
 ## Expand/Collapse card
 
 <ExpandCollapseCard Icon={<DockerIcon/>} title="Title">
@@ -143,4 +144,35 @@ import DockerIcon from '@static/img/docker-logo.svg';
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam asperiores, at, consectetur culpa, cum dolor dolorem enim facere molestiae natus officiis soluta unde? Architecto blanditiis delectus distinctio excepturi incidunt quos sit, soluta veritatis. Minima.
 
 </ExpandCollapseCard>
+```
+
+## Tabs
+
+<Tabs
+    defaultValue="apple"
+    values={[
+        {label: 'Apple', value: 'apple'},
+        {label: 'Orange', value: 'orange'},
+        {label: 'Banana', value: 'banana'},
+    ]}>
+    <TabItem value="apple">This is an apple 🍎</TabItem>
+    <TabItem value="orange">This is an orange 🍊</TabItem>
+    <TabItem value="banana">This is a banana 🍌</TabItem>
+</Tabs>
+
+```jsx
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="apple"
+  values={[
+    {label: 'Apple', value: 'apple'},
+    {label: 'Orange', value: 'orange'},
+    {label: 'Banana', value: 'banana'},
+  ]}>
+  <TabItem value="apple">This is an apple 🍎</TabItem>
+  <TabItem value="orange">This is an orange 🍊</TabItem>
+  <TabItem value="banana">This is a banana 🍌</TabItem>
+</Tabs>
 ```
