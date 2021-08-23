@@ -2,10 +2,12 @@
 id: examples
 title: Usage examples
 ---
-import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard } from '@components'
+import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard, NoIndex } from '@components'
 import DockerIcon from '@static/img/docker-logo.svg';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+<NoIndex/>
 
 <Warning>
 Important! All imports must be at the beginning of the file.
@@ -188,4 +190,12 @@ function HelloCodeTitle(props) {
     <summary>Click here to see more</summary>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi assumenda consequatur ducimus, error esse facilis laudantium libero nisi quas ratione repudiandae sequi similique voluptates! Fugiat in natus odit officiis sint!20
 </details>
+```
+
+## Badge
+
+<Badge>Title</Badge>
+
+```jsx
+<Badge>Title</Badge>
 ```
