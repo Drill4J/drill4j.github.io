@@ -29,7 +29,11 @@ const Navbar = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j');
+        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j', {
+          headers: {
+            'User-Agent': 'Drill4J',
+          },
+        });
         const data = await res.json();
         setStartCount(data?.stargazers_count);
       })();
@@ -41,7 +45,7 @@ const Navbar = () => {
   return (
     <header
       ref={navbarRef}
-      className={clsx('sticky top-0 z-50 h-22', styles.header, {
+      className={clsx('fixed top-0 inset-x-0 z-50 h-22', styles.header, {
         [styles.headerHidden]: !isHeaderVisibleAfterScroll,
       })}
     >

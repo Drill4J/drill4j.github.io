@@ -11,3 +11,4 @@ export { JavaPlusJsHeader } from './java-plus-js-header';
 export { Warning } from './warning';
 export { Info } from './info';
 export { TOC } from './TOC';
+export { SearchBar } from './SearchBar';
