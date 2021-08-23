@@ -2,7 +2,7 @@
 id: examples
 title: Usage examples
 ---
-import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard, NoIndex } from '@components'
+import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard, Table ,NoIndex } from '@components'
 import DockerIcon from '@static/img/docker-logo.svg';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -44,6 +44,57 @@ import DockerIcon from '@static/img/docker-logo.svg';
 <a href="/" className="button-primary w-24">Primary</a> //preferred way
 <a href="/" className="button-primary" style={{width: '96px'}}>Primary</a>
 ```
+
+## Table
+
+### Automatically generated column width
+
+<Table>
+
+|                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
+|:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
+| DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
+| DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+</Table>
+
+```jsx
+import { Table } from '@components';
+
+<Table>
+
+|                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
+|:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
+| DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
+| DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+</Table>
+```
+
+### Fixed column width
+
+<Table columns={['250px', '270px', '80px', '250px']}>
+
+|                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
+|:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
+| DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
+| DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+</Table>
+
+```jsx
+import { Table } from '@components';
+
+<Table columns={['250px', '270px', '80px', '250px']}>
+
+|                    Parameter                    |                       Description                      | Required |                         Example / Format                         |
+|:----------------------------------------------- |:------------------------------------------------------ |:-------- |:---------------------------------------------------------------- |
+| DRILL_HTTP_HOOK_ENABLED drill.http.hook.enabled | It can be true/false. By default = true.               | no       |                                                                  |
+| DRILL_AGENT_CONFIG_PATH                         | The file stores the config file                        | no       | a relative or absolute path, for example:  configFile.properties |
+
+</Table>
+```
+
 
 ## Addition information
 
