@@ -2,7 +2,7 @@
 id: release-0-7-0
 title: 0.7.0
 ---
-import {Table} from '../../src/components'
+import {Table} from '@components'
 
 ## Artifacts
 
@@ -46,9 +46,9 @@ import {Table} from '../../src/components'
 * Incorrect coverage and tests numbers in parallel testing
 
 ## Known Issues
-* Agent/Admin reconnecting deletes the active session 
+* Agent/Admin reconnecting deletes the active session
 * If User changes Project Packages or Target host, Finished Scopes are lost in the latest build
-* Tests duration for manual tests is always =  00:00:00 
+* Tests duration for manual tests is always =  00:00:00
 * Flaky coverage: percentages for the same test may vary in a small range (+/- 5%)
 * To collect manual coverage on a new build of JS agent you need to refresh the page with a cache reset (Ctrl+F5)
 * The "Sessions Management" doesn't work with the JS agent

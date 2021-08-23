@@ -2,8 +2,8 @@
 id: examples
 title: Usage examples
 ---
-import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard } from '../src/components'
-import DockerIcon from '../static/img/docker-logo.svg';
+import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard } from '@components'
+import DockerIcon from '@static/img/docker-logo.svg';
 
 <Warning>
 Important! All imports must be at the beginning of the file.
@@ -25,7 +25,7 @@ Important! All imports must be at the beginning of the file.
 <a href="/" className="button-ghost"><DockerIcon/>With Docker</a>
 
 ```jsx
-import DockerIcon from '../static/img/docker-logo.svg';
+import DockerIcon from '@static/img/docker-logo.svg';
 
 <a href="/" className="button-ghost"><DockerIcon/>With Docker</a>
 ```
@@ -50,6 +50,7 @@ Pay attention that work on JavaScript agent is still in progress, but we are ple
 </AdditionalInformation>
 
 ```jsx
+import { AdditionalInformation } from '@components';
 <AdditionalInformation>
 
 Pay attention that work on JavaScript agent is still in progress, but we are pleased to provide you with the opportunity to try it out.
@@ -66,6 +67,8 @@ Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dyl
 </AdditionalInformation>
 
 ```jsx
+import { AdditionalInformation } from '@components';
+
 <AdditionalInformation >
 
 <Badge>distr</Badge> — folder with drill agent files.  <br/>
@@ -80,6 +83,8 @@ Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dyl
 <Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
 
 ```jsx
+import { Card } from '@components';
+
 <Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
 ```
 
@@ -90,6 +95,8 @@ At that point, Test2Code plugin dashboard should be available in the Admin Panel
 </Info>
 
 ```jsx
+import { Info } from '@components';
+
 <Info>
 At that point, Test2Code plugin dashboard should be available in the Admin Panel. Check that methods table reflects actual packages, classes and methods.
 </Info>
@@ -102,6 +109,8 @@ At that point, Test2Code plugin dashboard should be available in the Admin Panel
 </Warning>
 
 ```jsx
+import { Warning } from '@components';
+
 <Warning>
     Important! Don't forget to set target host "http://localhost:8080/" on the 2nd step for Node.js agent. It’s necessary to collect manual coverage via extension.
 </Warning>
@@ -112,6 +121,8 @@ At that point, Test2Code plugin dashboard should be available in the Admin Panel
 <Image src="/img/enabled-plugin.png" />
 
 ```jsx
+import { Image } from '@components';
+
 <Image src="/img/enabled-plugin.png" />
 ```
 
@@ -124,7 +135,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam asperiores, 
 </ExpandCollapseCard>
 
 ```jsx
-import DockerIcon from '../static/img/docker-logo.svg';
+import { ExpandCollapseCard } from '@components';
+import DockerIcon from '@static/img/docker-logo.svg';
 
 <ExpandCollapseCard Icon={<DockerIcon/>} title="Title">
 

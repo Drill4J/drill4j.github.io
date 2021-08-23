@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   title: 'Drill4J',
   tagline: 'The tagline of my site',
@@ -105,5 +107,13 @@ module.exports = {
       },
     ],
   ],
-  plugins: ['docusaurus-plugin-sass'],
+  plugins: ['docusaurus-plugin-sass', [
+    'docusaurus-plugin-module-alias',
+    {
+      alias: {
+        '@components': path.resolve(__dirname, './src/components/index.ts'),
+        '@static': path.resolve(__dirname, './static'),
+      },
+    },
+  ]],
 };
