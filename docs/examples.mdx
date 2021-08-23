@@ -2,14 +2,133 @@
 id: examples
 title: Usage examples
 ---
+import { AdditionalInformation, Badge, Card, Warning, Info, Image, ExpandCollapseCard } from '../src/components'
 import DockerIcon from '../static/img/docker-logo.svg';
 
-## Buttons
+<Warning>
+Important! All imports must be at the beginning of the file.
+</Warning>
 
+## Buttons
+### Simple buttons
 <a href="/" className="button-primary">Primary</a>
 <a href="/" className="button-secondary">Secondary</a>
 <a href="/" className="button-ghost">Secondary Ghost</a>
 
-## Button with icon
-Import icon see at the beginning of the file
-<a href="/" class="button-ghost"><DockerIcon/>With Docker</a>
+```jsx
+<a href="/" className="button-primary">Primary</a>
+<a href="/" className="button-secondary">Secondary</a>
+<a href="/" className="button-ghost">Secondary Ghost</a>
+```
+
+### Button with icon
+<a href="/" className="button-ghost"><DockerIcon/>With Docker</a>
+
+```jsx
+import DockerIcon from '../static/img/docker-logo.svg';
+
+<a href="/" className="button-ghost"><DockerIcon/>With Docker</a>
+```
+### Button with fixed width
+
+[Utility classes for setting the width of an element](https://tailwindcss.com/docs/width)
+
+<a href="/" className="button-primary w-24">Primary</a>
+<a href="/" className="button-primary" style={{width: '96px'}}>Primary</a>
+
+```jsx
+<a href="/" className="button-primary w-24">Primary</a> //preferred way
+<a href="/" className="button-primary" style={{width: '96px'}}>Primary</a>
+```
+
+## Addition information
+
+<AdditionalInformation>
+
+Pay attention that work on JavaScript agent is still in progress, but we are pleased to provide you with the opportunity to try it out.
+
+</AdditionalInformation>
+
+```jsx
+<AdditionalInformation>
+
+Pay attention that work on JavaScript agent is still in progress, but we are pleased to provide you with the opportunity to try it out.
+
+</AdditionalInformation>
+```
+
+
+<AdditionalInformation >
+
+<Badge>distr</Badge> — folder with drill agent files.  <br/>
+Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS.
+
+</AdditionalInformation>
+
+```jsx
+<AdditionalInformation >
+
+<Badge>distr</Badge> — folder with drill agent files.  <br/>
+Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS.
+
+</AdditionalInformation>
+```
+
+
+## Card
+
+<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
+
+```jsx
+<Card href="/" iconSrc="/img/javascript-logo.svg">JavaScript Agent</Card>
+```
+
+## Info
+
+<Info>
+At that point, Test2Code plugin dashboard should be available in the Admin Panel. Check that methods table reflects actual packages, classes and methods.
+</Info>
+
+```jsx
+<Info>
+At that point, Test2Code plugin dashboard should be available in the Admin Panel. Check that methods table reflects actual packages, classes and methods.
+</Info>
+```
+
+## Warning
+
+<Warning>
+    Important! Don't forget to set target host "http://localhost:8080/" on the 2nd step for Node.js agent. It’s necessary to collect manual coverage via extension.
+</Warning>
+
+```jsx
+<Warning>
+    Important! Don't forget to set target host "http://localhost:8080/" on the 2nd step for Node.js agent. It’s necessary to collect manual coverage via extension.
+</Warning>
+```
+
+## Image
+
+<Image src="/img/enabled-plugin.png" />
+
+```jsx
+<Image src="/img/enabled-plugin.png" />
+```
+
+## Expand/Collapse card
+
+<ExpandCollapseCard Icon={<DockerIcon/>} title="Title">
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam asperiores, at, consectetur culpa, cum dolor dolorem enim facere molestiae natus officiis soluta unde? Architecto blanditiis delectus distinctio excepturi incidunt quos sit, soluta veritatis. Minima.
+
+</ExpandCollapseCard>
+
+```jsx
+import DockerIcon from '../static/img/docker-logo.svg';
+
+<ExpandCollapseCard Icon={<DockerIcon/>} title="Title">
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam asperiores, at, consectetur culpa, cum dolor dolorem enim facere molestiae natus officiis soluta unde? Architecto blanditiis delectus distinctio excepturi incidunt quos sit, soluta veritatis. Minima.
+
+</ExpandCollapseCard>
+```

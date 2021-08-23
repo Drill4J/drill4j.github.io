@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode | React.ReactNode[];
 }
 
-export const ExpandCollapse = ({ children, title, Icon }: Props) => {
+export const ExpandCollapseCard = ({ children, title, Icon }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const { location: { hash } } = useHistory();
