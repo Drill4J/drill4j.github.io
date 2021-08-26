@@ -15,7 +15,7 @@ import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import clsx from 'clsx';
 import { socialLinks } from '../social-links';
 import { GitHubLink } from './git-hub-link';
-import { useLocalStorage } from '../../hooks/use-local-storage';
+import { useSessionStorage } from '../../hooks/use-session-storage';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
@@ -26,7 +26,7 @@ const Navbar = () => {
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
   const { navbarRef, isNavbarVisible: isHeaderVisibleAfterScroll } = useHideableNavbar(true);
-  const [starsCount, setStarsCount] = useLocalStorage<number>('starsCount', 0);
+  const [starsCount, setStarsCount] = useSessionStorage<number>('starsCount', 0);
   useEffect(() => {
     if (starsCount === 0) {
       try {
@@ -37,7 +37,8 @@ const Navbar = () => {
             },
           });
           const data = await res.json();
-          setStarsCount(data?.stargazers_count);
+
+          data?.stargazers_count && setStarsCount(data.stargazers_count);
         })();
       } catch (e) {
         console.log(e.message);
