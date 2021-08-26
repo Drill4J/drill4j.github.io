@@ -15,30 +15,33 @@ import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import clsx from 'clsx';
 import { socialLinks } from '../social-links';
 import { GitHubLink } from './git-hub-link';
+import { useLocalStorage } from '../../hooks/use-local-storage';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
   const { navbar: { items } } = useThemeConfig();
   const { pathname } = useLocation();
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
-  const [startCount, setStartCount] = useState(0);
   useLockBodyScroll(isNavbarVisible);
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
   const { navbarRef, isNavbarVisible: isHeaderVisibleAfterScroll } = useHideableNavbar(true);
+  const [starsCount, setStarsCount] = useLocalStorage<number>('starsCount', 0);
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await fetch('https://api.github.com/repos/Drill4J/drill4j', {
-          headers: {
-            'User-Agent': 'Drill4J',
-          },
-        });
-        const data = await res.json();
-        setStartCount(data?.stargazers_count);
-      })();
-    } catch (e) {
-      console.log(e.message);
+    if (starsCount === 0) {
+      try {
+        (async () => {
+          const res = await fetch('https://api.github.com/repos/Drill4J/drill4j', {
+            headers: {
+              'User-Agent': 'Drill4J',
+            },
+          });
+          const data = await res.json();
+          setStarsCount(data?.stargazers_count);
+        })();
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   }, []);
 
@@ -72,7 +75,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li><GitHubLink>{startCount}</GitHubLink></li>
+              <li><GitHubLink>{starsCount}</GitHubLink></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
