@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 export const GitHubLink: React.FC = ({ children }) => (
   <Link to="https://github.com/Drill4J/drill4j" className={styles.githubLink}>
     <GitHubIcon />
-    <div className={styles.githubStartCount}>
+    <div className={styles.githubStarsCount}>
       <Star />
       <span className="text-monochrome-default font-regular">{children}</span>
     </div>
