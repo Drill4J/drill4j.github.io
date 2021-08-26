@@ -117,7 +117,7 @@ body.mac-os {
     color: map-get($monochrome, default);
     font-size: 12px !important;
     line-height: 24px;
-    background-color: rgba(map-get($monochrome, medium-tint), 0.5) !important;
+    background-color: rgba(map-get($monochrome, dark-tint), 0.25) !important;
     border-radius: 4px;
   }
 
@@ -179,20 +179,6 @@ body.mac-os {
     padding-left: 160px !important;
     padding-right: 160px !important;
     box-sizing: content-box;
-  }
-}
-
-.prism-code > div {
-  background-color: map-get($monochrome, light-tint) !important;
-
-  .token.plain {
-    color: map-get($monochrome, default) !important;
-  }
-  .docusaurus-highlight-code-line {
-    background-color: #E3E6E9;
-    display: block;
-    margin: 0 calc(-1 * var(--ifm-pre-padding));
-    padding: 0 var(--ifm-pre-padding);
   }
 }
 
