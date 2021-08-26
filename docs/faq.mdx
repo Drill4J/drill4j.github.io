@@ -2,8 +2,6 @@
 id: faq
 title: FAQ
 ---
-import ExternalLinkIcon from '/static/img/external-link.svg';
-import {Image} from '../src/components'
 import {Table} from '../src/components'
 
 **Why do I need it?** <br/>
@@ -16,7 +14,7 @@ Currently yes, but we're working on .Net agent and JavaScript agent. Python and 
 Java 8+
 
 **Can I use Microservice applications?** <br/>
-Yes, we're supporting microservice applications. See <a href='/docs/installation/microservices' target="_black">Microservices<ExternalLinkIcon/></a>
+Yes, we're supporting microservice applications. See [Microservices](/docs/installation/microservices)
 
 **Can I use Drill for Android applications?** <br/>
 Yes, it is possible, but it's necessary to implement an agent for android application.
@@ -28,7 +26,7 @@ Yes, but only monolith applications on Tomcat, Jetty, WildFly. Java 8+
 Probes in bytecode. So, methods can be covered in the range of 0.1 - 100.
 Also, we will add the ability to choose a method of coverage collecting. (By string and etc.)
 
-**Which test types do you support?** <br/>  <a href='docs/installation/extension' target="_black">- Manual<ExternalLinkIcon/></a><br/><a href='/docs/installation/autotest-agent' target="_black">- Auto (API, UI)<ExternalLinkIcon/></a>
+**Which test types do you support?** <br/> - [Manual](docs/installation/extension)<br/>- [Auto (API, UI)](/docs/installation/autotest-agent)
 
 **How can I specify a backend host for a frontend container?** <br/>
 You need to set the **UPSTREAM** env variable for a frontend container.
@@ -38,10 +36,10 @@ By default, **UPSTREAM** value is **drill-admin:8090**
 Yes, but you need to move the **/work** directory to the volume.
 
 **Where can I find API requests?** <br/>
-Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at <a href='http://localhost:8090' target="_black">http://localhost:8090<ExternalLinkIcon/></a>
+Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at [http://localhost:8090](http://localhost:8090)
 
 **What to do if my agent is not displayed in the Drill Admin after connection?** <br/>
-Make sure that you use lowercase Latin letters, digits and dashes in the Agent ID parameter. 
+Make sure that you use lowercase Latin letters, digits and dashes in the Agent ID parameter.
 
 **What to do if methods\tests in Covered Methods\Associated tests pane are not displayed in active scope?** <br/>
 Make sure that the test session is finished (the calculation is done after the test session is finished).
@@ -50,11 +48,11 @@ Make sure that the test session is finished (the calculation is done after the t
 Yes, the operation is performed in the background.
 
 **My application has https connection. Does it suitable case for Drill?** <br/>
-Yes, Drill supports https connection. See <a href='/docs/installation/drill-admin#https-setup' target="_black">HTTPS Setup<ExternalLinkIcon/></a>
+Yes, Drill supports https connection. See [HTTPS Setup](/docs/installation/drill-admin#https-setup)
 
 **Do you have prepared Postman collection with API requests?** <br/>
-Yes, you can find it <a href='https://github.com/Drill4J/example-configs/tree/main/postman' target="_black">here<ExternalLinkIcon/></a>
- 
+Yes, you can find it [here](https://github.com/Drill4J/example-configs/tree/main/postman)
+
 **When is a method considered new or modified?** <br/>
 You can find rules in the table:
 
@@ -71,18 +69,7 @@ You can find rules in the table:
 
 ## Development Installation
 ### Frontend
-<p>
-See <a href='https://github.com/Drill4J/admin-ui/tree/develop/dev-guide' target="_black">
-    https://github.com/Drill4J/admin-ui/tree/develop/dev-guide
-    <ExternalLinkIcon/>
-</a>
-</p>
-
+[https://github.com/Drill4J/admin-ui/tree/develop/dev-guide](https://github.com/Drill4J/admin-ui/tree/develop/dev-guide)
 
 ### Backend
-<p>
-See <a href='https://github.com/Drill4J/Drill4J/blob/develop/README.md' target="_black">
-    https://github.com/Drill4J/Drill4J/blob/develop/README.md
-    <ExternalLinkIcon/>
-</a>
-</p>
+See [https://github.com/Drill4J/Drill4J/blob/develop/README.md](https://github.com/Drill4J/Drill4J/blob/develop/README.md)
