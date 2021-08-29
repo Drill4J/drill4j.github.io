@@ -5,6 +5,7 @@
   padding: 0 24px;
   box-sizing: initial;
   grid-template-columns: 0 1fr;
+  min-height: calc(100vh - 300px); // footer height
 
   @media screen and (max-width: 360px) {
     padding: 0 16px;

@@ -3,7 +3,7 @@ id: install-demo
 title: Java+JS demo example
 ---
 
-import {AdditionalInformation, Image, ListItem, JavaPlusJsHeader, Warning, Info} from '../../src/components';
+import {AdditionalInformation, Image, ListItem, JavaPlusJsHeader, Warning} from '../../src/components';
 
 <div className='mb-12'>
 <Warning>
@@ -49,13 +49,13 @@ Press “Continue as a Guest” and **register agents** (both Java and Node.js)
 
 Go through the first two steps of the registration wizard and make sure that Test2Code plugin is **enabled** at Step 3
 
-</ListItem>
-
-<AdditionalInformation >
+<Warning>
 
 **Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent. It is necessary to collect manual coverage via extension.
 
-</AdditionalInformation>
+</Warning>
+
+</ListItem>
 
 <ListItem number={'2.5.'}>
 
