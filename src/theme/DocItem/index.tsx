@@ -59,9 +59,11 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
       <main className="grid grid-cols-12 gap-x-5 mb-22 bg-monochrome-white">
-        <article className={clsx('col-span-12 lg:col-start-2 lg:col-span-8', {
-          'lg:col-span-12 pr-16': isLaptopWindow,
-        })}
+        <article
+          className={clsx('col-span-12 lg:col-start-2 lg:col-span-8', {
+            'lg:col-span-12 pr-16': isLaptopWindow,
+          })}
+          style={{ maxWidth: '100%' }}
         >
           {!hideTitle && (
             <header><h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1></header>
