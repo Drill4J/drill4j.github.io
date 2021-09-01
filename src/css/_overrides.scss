@@ -122,6 +122,9 @@ body.mac-os {
   }
 
   .thin-scrollbar {
+    scrollbar-color: map-get($monochrome, dark-tint) map-get($monochrome, medium-tint);
+    scrollbar-width: thin;
+
     &::-webkit-scrollbar {
       max-height: 8px;
       max-width: 8px;

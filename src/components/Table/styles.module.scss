@@ -11,6 +11,8 @@
   overflow-x: auto;
   border: 1px solid #d9dbdc;
   border-radius: 4px;
+  scrollbar-color: map-get($monochrome, dark-tint) map-get($monochrome, medium-tint);
+  scrollbar-width: thin;
 
   &::-webkit-scrollbar {
     max-height: 8px;
