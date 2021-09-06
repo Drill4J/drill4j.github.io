@@ -18,6 +18,10 @@
   line-height: 24px;
   cursor: pointer;
 
+  &:visited {
+    color: map-get($monochrome, white) !important;
+  }
+
   &:hover {
     border: 2px solid map-get($primary-blue, medium-tint);
     background-color: map-get($primary-blue, medium-tint);
@@ -46,6 +50,10 @@
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default);
 
+  &:visited {
+    color: map-get($primary-blue, default) !important;
+  }
+
   svg {
     fill: map-get($primary-blue, default);
   }
@@ -68,6 +76,10 @@
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default);
+
+  &:visited {
+    color: map-get($primary-blue, default) !important;
+  }
 
   svg {
     fill: map-get($primary-blue, default);

@@ -154,7 +154,7 @@ ol[class] {
   }
 
   a {
-    color: map-get($primary-blue, default) !important;
+    color: map-get($primary-blue, default) ;
 
     svg {
       margin-left: 4px;
@@ -162,7 +162,7 @@ ol[class] {
     }
 
     &:visited {
-      color: #632ED1 !important;
+      color: #632ED1;
     }
   }
 }
