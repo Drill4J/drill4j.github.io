@@ -63,44 +63,9 @@ function Home() {
         </div>
         <section className="container pb-12 md:pb-24">
           <Figure>
-            <img
-              className={clsx(styles.shadowImg, 'order-1 col-span-full md:col-span-4 lg:col-span-6 mb-10 md:mb-0 w-full md:w-11/12')}
-              src={useBaseUrl('img/time-savings.png')}
-              alt="time savings"
-            />
-            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
-              <h3 className="mb-4">Time Savings</h3>
-              <p className="text-monochrome-shade">
-                It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
-              </p>
-            </figcaption>
-          </Figure>
-          <Figure>
-            <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
-              <div className={clsx(styles.borderedImgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 ')}>
-                <img
-                  className="rounded-full w-full"
-                  src={useBaseUrl('img/risks-and-t2r.png')}
-                  alt="risks and tests to run"
-                />
-              </div>
-              <img
-                className={clsx(styles.shadowImg, 'w-full')}
-                src={useBaseUrl('img/risks-and-t2r-background.png')}
-                alt="risks and tests to run background"
-              />
-            </div>
-            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2 md:order-1">
-              <h3 className="mb-4">Risk and Test to Run</h3>
-              <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
-                Drill4J advises which test you need to run to cover theese Risk methods.
-              </p>
-            </figcaption>
-          </Figure>
-          <Figure>
             <div className="relative order-1 col-span-full md:col-span-4 lg:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
+                className={clsx(styles.imgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
                 style={{ borderRadius: '14px' }}
               >
                 <img
@@ -126,8 +91,56 @@ function Home() {
           </Figure>
           <Figure>
             <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
+              <div className={clsx(styles.imgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 ')}>
+                <img
+                  className="rounded-full w-full"
+                  src={useBaseUrl('img/risks-and-t2r.png')}
+                  alt="risks and tests to run"
+                />
+              </div>
+              <img
+                className={clsx(styles.shadowImg, 'w-full')}
+                src={useBaseUrl('img/risks-and-t2r-background.png')}
+                alt="risks and tests to run background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2 md:order-1">
+              <h3 className="mb-4">Risk and Tests to Run</h3>
+              <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
+                Drill4J advises which test you need to run to cover theese Risk methods.
+              </p>
+            </figcaption>
+          </Figure>
+          <Figure>
+            <div className="relative order-1 col-span-full md:col-span-4 lg:col-span-6 mb-10 md:mb-0 w-full md:w-11/12">
               <div
-                className={clsx(styles.borderedImgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2')}
+                className={clsx(styles.imgWrapper, 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full')}
+                style={{ borderRadius: '14px' }}
+              >
+                <img
+                  className="w-full"
+                  style={{ borderRadius: '14px' }}
+                  src={useBaseUrl('img/time-savings.png')}
+                  alt="time savings"
+                />
+              </div>
+              <img
+                className={clsx(styles.shadowImg, 'w-5/6 mx-auto')}
+                src={useBaseUrl('img/time-savings-background.png')}
+                alt="time savings background"
+              />
+            </div>
+            <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2">
+              <h3 className="mb-4">Time Savings</h3>
+              <p className="text-monochrome-shade">
+                It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application.
+              </p>
+            </figcaption>
+          </Figure>
+          <Figure>
+            <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
+              <div
+                className={clsx(styles.imgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2')}
               >
                 <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
@@ -250,7 +263,7 @@ function Home() {
         </section>
         <section className={clsx(styles.quickStart, 'pt-16 pb-16 md:pb-14')}>
           <div className="container flex flex-col justify-center text-center">
-            <h2 className="mb-2 leading-48">Get a quick start with Drill4J today</h2>
+            <h2 className="mb-2 leading-48">Start with Drill4J today</h2>
             <p className="mb-9 md:mb-8 leading-32">Try easy installation of demo examples for Java and JS agents.</p>
             <a href="/install-demo" className="button-secondary mx-auto">Install demo</a>
           </div>

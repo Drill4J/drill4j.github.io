@@ -1,5 +1,15 @@
 .prism-code {
   & > div {
-    background-color: map-get($monochrome, black) !important;
+    background-color: map-get($monochrome, light-tint) !important;
+
+    .token.plain {
+      color: map-get($monochrome, default) !important;
+    }
+    .docusaurus-highlight-code-line {
+      background-color: #E3E6E9;
+      display: block;
+      margin: 0 calc(-1 * var(--ifm-pre-padding));
+      padding: 0 var(--ifm-pre-padding);
+    }
   }
 }

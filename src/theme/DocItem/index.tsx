@@ -11,12 +11,10 @@ import Head from '@docusaurus/Head';
 import { useTitleFormatter } from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import DocPaginator from '@theme/DocPaginator';
 import type { Props } from '@theme/DocItem';
-import TOC from '@theme/TOC';
+import clsx from 'clsx';
+import { TOC } from '../../components';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
-
-import './styles.scss';
 
 function DocItem(props: Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -37,6 +35,7 @@ function DocItem(props: Props): JSX.Element {
     permalink,
   } = metadata;
   const isWindowLg = useBreakpoint('lg');
+  const isLaptopWindow = useBreakpoint('laptop');
   const metaTitle = useTitleFormatter(title);
   const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
   return (
@@ -59,8 +58,13 @@ function DocItem(props: Props): JSX.Element {
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
-      <main className="lg:col-span-7 col-span-12 mb-22">
-        <article>
+      <main className="grid grid-cols-12 gap-x-5 mb-22 bg-monochrome-white">
+        <article
+          className={clsx('col-span-12 lg:col-start-2 lg:col-span-8', {
+            'lg:col-span-12 pr-16': isLaptopWindow,
+          })}
+          style={{ maxWidth: '100%' }}
+        >
           {!hideTitle && (
             <header><h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1></header>
           )}
@@ -68,11 +72,16 @@ function DocItem(props: Props): JSX.Element {
             <DocContent />
           </div>
         </article>
+        {!hideTableOfContents && DocContent.toc && isWindowLg && !isLaptopWindow && (
+          <aside className="col-span-3">
+            <TOC toc={DocContent.toc} />
+          </aside>
+        )}
       </main>
-      {!hideTableOfContents && DocContent.toc && isWindowLg && (
-        <div className="col-span-2">
+      {!hideTableOfContents && DocContent.toc && isWindowLg && isLaptopWindow && (
+        <aside>
           <TOC toc={DocContent.toc} />
-        </div>
+        </aside>
       )}
     </>
   );

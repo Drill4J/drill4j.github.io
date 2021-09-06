@@ -5,7 +5,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: '/img/logo.svg',
+  favicon: '/img/favicon.ico',
   organizationName: 'Drill4J',
   projectName: 'drill4j.github.io',
   themeConfig: {
@@ -44,7 +44,7 @@ module.exports = {
     footer: {
       links: [
         {
-          title: 'Installation',
+          title: ' ',
           items: [
             {
               label: 'Drill Admin',
@@ -77,7 +77,7 @@ module.exports = {
           ],
         },
         {
-          title: 'Drill4J',
+          title: ' ',
           items: [
             {
               label: 'Contact us',

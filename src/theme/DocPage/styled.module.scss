@@ -1,14 +1,36 @@
+@import '../../css/index';
+
 .docPageContainer {
-  max-width: 1120px;
+  display: grid;
   padding: 0 24px;
   box-sizing: initial;
+  grid-template-columns: 0 1fr;
+  min-height: calc(100vh - 300px); // footer height
 
   @media screen and (max-width: 360px) {
     padding: 0 16px;
   }
 
   @media screen and (max-width: 1024px) {
+    grid-template-columns: 0 1fr;
     box-sizing: border-box;
-    max-width: 960px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 312px 1fr;
+    padding: 0 24px 0 0;
+  }
+
+  @media screen and (min-width: 1440px) {
+    grid-template-columns: 1fr 330px 813px 270px 1fr;
+  }
+}
+
+
+.background {
+  display: none;
+  background-color: map-get($monochrome, light-tint);
+  @media screen and (min-width: 1440px) {
+    display: block;
   }
 }

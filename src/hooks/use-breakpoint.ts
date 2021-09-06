@@ -6,6 +6,7 @@ export const windowSizes = {
   lg: 1024,
   xl: 1280,
   '2xl': 1536,
+  laptop: 1440,
 };
 
 export const useBreakpoint = (size: keyof typeof windowSizes) => {

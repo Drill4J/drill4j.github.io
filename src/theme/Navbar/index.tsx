@@ -5,14 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
+import useHideableNavbar from '@theme/hooks/useHideableNavbar';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
+import clsx from 'clsx';
 import { socialLinks } from '../social-links';
-
+import { GitHubLink } from './git-hub-link';
+import { useSessionStorage } from '../../hooks/use-session-storage';
 import styles from './styles.module.scss';
 
 const Navbar = () => {
@@ -22,11 +25,36 @@ const Navbar = () => {
   useLockBodyScroll(isNavbarVisible);
   const links = [...items];
   const [tryDemoButton] = links.splice(-1, 1);
+  const { navbarRef, isNavbarVisible: isHeaderVisibleAfterScroll } = useHideableNavbar(true);
+  const [starsCount, setStarsCount] = useSessionStorage<number>('starsCount', 0);
+  useEffect(() => {
+    if (starsCount === 0) {
+      try {
+        (async () => {
+          const res = await fetch('https://api.github.com/repos/Drill4J/drill4j', {
+            headers: {
+              'User-Agent': 'Drill4J',
+            },
+          });
+          const data = await res.json();
+
+          data?.stargazers_count && setStarsCount(data.stargazers_count);
+        })();
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 h-22">
+    <header
+      ref={navbarRef}
+      className={clsx('fixed top-0 inset-x-0 z-50 h-22', styles.header, {
+        [styles.headerHidden]: !isHeaderVisibleAfterScroll,
+      })}
+    >
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
-        <nav className="flex items-center justify-between h-22 container">
+        <nav className="flex items-center justify-between h-22 navigationContainer">
           <Link
             to={useBaseUrl('/')}
           >
@@ -39,7 +67,7 @@ const Navbar = () => {
                   <Link
                     style={{ textDecoration: 'none' }}
                     className={`flex items-center h-22
-                      text-16 text-monochrome-default hover:text-blue-default
+                      text-16 text-monochrome-default
                       ${pathname.includes(to.split('/')[0]) ? styles.activeTab : styles.tab}
                       `}
                     to={useBaseUrl(to)}
@@ -48,6 +76,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
+              <li><GitHubLink>{starsCount}</GitHubLink></li>
               <li>
                 <Link
                   style={{ textDecoration: 'none' }}
@@ -72,12 +101,12 @@ const Navbar = () => {
         isNavbarVisible && (
           <nav className="visible md:invisible fixed w-full h-full left-0 top-22">
             <div className="bg-monochrome-white">
-              <div className="container pt-2 pb-6">
+              <div className="navigationContainer pt-2 pb-6">
                 <ul>
                   {links.map(({ to = '', label = '' }: any) => (
                     <li className="text-16 leading-24 border-b border-monochrome-medium-tint">
                       <Link
-                        style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: 'none', fontWeight: pathname.includes(to.split('/')[0]) ? '600' : '400' }}
                         className="gray-link inline-flex py-4 w-full h-full"
                         to={useBaseUrl(to)}
                         onClick={() => setIsNavbarVisible(false)}
@@ -87,9 +116,11 @@ const Navbar = () => {
                     </li>
                   ))}
                   <div className="flex gap-x-6 mt-9 mb-30">
-                    {socialLinks.map(({ bg, link }) => (
+                    {socialLinks.map(({ link, Icon }) => (
                       <li>
-                        <Link to={link} className={`${bg} bg-no-repeat bg-center transform scale-150 block w-9 h-9 cursor-pointer`} />
+                        <Link to={link} className="cursor-pointer">
+                          <Icon className="w-9 h-9" />
+                        </Link>
                       </li>
                     ))}
                   </div>

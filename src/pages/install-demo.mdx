@@ -1,15 +1,21 @@
 ---
 id: install-demo
-title: Try Drill4J with Java+JS demo example
+title: Java+JS demo example
 ---
-import JavaJSLogo from '../../static/img/java-js-logo.svg';
-import JavaLogo from '../../static/img/java-logo.svg';
-import JsLogo from '../../static/img/javascript-logo.svg';
-import {AdditionalInformation, Badge, ExpandCollapse, Image, ListItem, JavaPlusJsHeader} from '../../src/components';
 
+import {AdditionalInformation, Image, ListItem, JavaPlusJsHeader, Warning} from '../../src/components';
+
+<div className='mb-12'>
+<Warning>
+
+**Please note that at the moment:** <br/>
+– This demo works only for Windows 10. <br/>
+– Frontend JavaScript coverage collection for automated tests works only when running headful Chrome.
+
+</Warning>
+</div>
 
 <JavaPlusJsHeader/>
-
 
 ## Step 1. Clone the example repository:
 
@@ -43,13 +49,13 @@ Press “Continue as a Guest” and **register agents** (both Java and Node.js)
 
 Go through the first two steps of the registration wizard and make sure that Test2Code plugin is **enabled** at Step 3
 
-</ListItem>
-
-<AdditionalInformation >
+<Warning>
 
 **Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent. It is necessary to collect manual coverage via extension.
 
-</AdditionalInformation>
+</Warning>
+
+</ListItem>
 
 <ListItem number={'2.5.'}>
 
@@ -74,7 +80,7 @@ to add collected coverage to your build.
 
 ## Step 3. Deploy additional builds
 
-You have to deploy additional builds to discover Drill4J features: 
+You have to deploy additional builds to discover Drill4J features:
 
 * Tests to run;
 * Risks Management;

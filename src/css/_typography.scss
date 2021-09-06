@@ -88,6 +88,17 @@ ol[class] {
 }
 
 .markdown {
+  h1, h2, h3, h4, h5 {
+    & > a.hash-link {
+      display: none;
+    }
+
+    &:hover {
+      & > a.hash-link {
+        display: initial;
+      }
+    }
+  }
   h1 {
     margin-bottom: 16px;
     margin-top: 0;
@@ -148,6 +159,10 @@ ol[class] {
     svg {
       margin-left: 4px;
       margin-bottom: 3px;
+    }
+
+    &:visited {
+      color: #632ED1 !important;
     }
   }
 }

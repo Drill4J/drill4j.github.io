@@ -14,11 +14,10 @@ import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import type { Props } from '@theme/DocSidebar';
-import SearchBar from '@theme/SearchBar';
 import { useLocation } from '@docusaurus/router';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
 import './styles.scss';
-import { Icon } from '../../components';
+import { Icon, SearchBar } from '../../components';
 
 function usePrevious(value) {
   const ref = useRef(value);
@@ -145,7 +144,6 @@ function DocSidebarItemLink({
   item,
   onItemClick,
   activePath,
-  collapsible: _collapsible,
   ...props
 }) {
   const { href, label } = item;
@@ -191,7 +189,6 @@ function DocSidebar({
   sidebarCollapsible = true,
 }: Props): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
-  const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
   const { pathname } = useLocation();
 
   useLockBodyScroll(showResponsiveSidebar);
@@ -199,24 +196,19 @@ function DocSidebar({
 
   useEffect(() => {
     setShowResponsiveSidebar(false);
-  }, [isWindowLg]);
-
-  useEffect(() => {
-    setShowResponsiveSidebar(false);
-  }, [pathname]);
+  }, [isWindowLg, pathname]);
 
   return (
-    <div className={clsx('flex flex-col lg:mt-6', {
-      'fixed inset-0 z-50 mt-0 bg-monochrome-white': showResponsiveSidebar,
-    })}
+    <div
+      className={clsx('flex flex-col lg:pt-6 lg:pl-6 lg:border-r border-monochrome-medium-tint bg-monochrome-light-tint', {
+        'fixed inset-0 z-50 mt-0 bg-monochrome-white': showResponsiveSidebar,
+      })}
+      role="complementary"
     >
       {(isWindowLg || showResponsiveSidebar) && (
         <div className="flex justify-between items-center mb-3 lg:mb-4 py-3 lg:py-0 lg:pr-3 pt-6 lg:pt-0 px-6 lg:px-0">
           <h3 className="hidden sm:inline lg:hidden text-monochrome-default">Documentation</h3>
-          <SearchBar
-            handleSearchBarToggle={setIsSearchBarExpanded}
-            isSearchBarExpanded={isSearchBarExpanded}
-          />
+          <SearchBar closeDocsSidebar={() => setShowResponsiveSidebar(false)} />
         </div>
       )}
       <div
