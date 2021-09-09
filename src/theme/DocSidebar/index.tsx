@@ -234,7 +234,7 @@ function DocSidebar({
         )}
         {(isWindowLg || showResponsiveSidebar) && (
           <ul className="menu__list">
-            {sidebar.map((item) => (
+            {sidebar?.map((item) => (
               <DocSidebarItem
                 key={item.label}
                 item={item}

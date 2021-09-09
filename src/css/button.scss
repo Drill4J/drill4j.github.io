@@ -11,7 +11,7 @@
   border-radius: 8px;
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($primary-blue, default);
-  color: map-get($monochrome, white);
+  color: map-get($monochrome, white) !important;
   text-decoration: none !important;
   font-weight: $bold;
   font-size: 16px;
@@ -48,7 +48,7 @@
   @extend .button-primary;
   border: 2px solid map-get($monochrome, white);
   background-color: map-get($monochrome, white);
-  color: map-get($primary-blue, default);
+  color: map-get($primary-blue, default) !important;
 
   &:visited {
     color: map-get($primary-blue, default) !important;
@@ -75,7 +75,7 @@
   @extend .button-primary;
   border: 2px solid map-get($primary-blue, default);
   background-color: map-get($monochrome, white);
-  color: map-get($primary-blue, default);
+  color: map-get($primary-blue, default) !important;
 
   &:visited {
     color: map-get($primary-blue, default) !important;
