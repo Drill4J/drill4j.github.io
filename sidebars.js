@@ -44,10 +44,6 @@ const docs = [
   'supported-frameworks', 'faq',
 ];
 
-if (process.env.NODE_ENV !== 'production') {
-  docs.push('examples');
-}
-
 module.exports = {
   docs,
 };
