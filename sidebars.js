@@ -2,7 +2,8 @@ const docs = [
   {
     type: 'category',
     label: 'Installation',
-    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices', 'installation/autotest-agent', 'installation/extension'],
+    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices',
+      'installation/autotest-agent', 'installation/extension'],
   },
   {
     type: 'category',
@@ -32,8 +33,8 @@ const docs = [
   },
   {
     type: 'category',
-    label: 'Schemas',
-    items: ['schemas/auto-test-agent-schemas', 'schemas/testing-schemas'],
+    label: 'Diagrams',
+    items: ['diagrams/auto-test-agent-diagrams', 'diagrams/testing-diagrams'],
   },
   {
     type: 'category',
