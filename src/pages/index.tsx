@@ -91,7 +91,7 @@ function Home() {
           </Figure>
           <Figure>
             <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
-              <div className={clsx(styles.imgWrapper, 'absolute -top-4 right-0 rounded-full w-1/2 md:w-1/2 ')}>
+              <div className={clsx(styles.imgWrapper, 'absolute -top-8 right-0 rounded-full w-1/2 md:w-1/2 ')}>
                 <img
                   className="rounded-full w-full"
                   src={useBaseUrl('img/risks-and-t2r.png')}
@@ -99,7 +99,7 @@ function Home() {
                 />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'w-full')}
+                className={clsx(styles.shadowImg, 'w-5/6')}
                 src={useBaseUrl('img/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
@@ -140,12 +140,12 @@ function Home() {
           <Figure>
             <div className="relative order-1 md:order-2 lg:col-start-7 col-span-full md:col-span-4 lg:col-span-6 z-10 mb-10 md:mb-0 w-full">
               <div
-                className={clsx(styles.imgWrapper, 'absolute -top-6 md:-top-7 lg:-top-9 right-5 rounded-full w-1/2 md:w-1/2')}
+                className={clsx(styles.imgWrapper, 'absolute -top-6 sm:-top-9 md:-top-9 lg:-top-11 right-5 rounded-full w-1/2 md:w-1/2')}
               >
                 <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
               </div>
               <img
-                className={clsx(styles.shadowImg, 'w-full')}
+                className={clsx(styles.shadowImg, 'w-5/6')}
                 src={useBaseUrl('img/quality-gate-background.png')}
                 alt="quality gate background"
               />
