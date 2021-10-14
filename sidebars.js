@@ -2,7 +2,8 @@ const docs = [
   {
     type: 'category',
     label: 'Installation',
-    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices', 'installation/autotest-agent', 'installation/extension'],
+    items: ['installation/drill-admin', 'installation/java-agent', 'installation/microservices',
+      'installation/autotest-agent', 'installation/extension'],
   },
   {
     type: 'category',
@@ -32,13 +33,14 @@ const docs = [
   },
   {
     type: 'category',
-    label: 'Schemas',
-    items: ['schemas/auto-test-agent-schemas', 'schemas/testing-schemas'],
+    label: 'Diagrams',
+    items: ['diagrams/auto-test-agent-diagrams', 'diagrams/testing-diagrams'],
   },
   {
     type: 'category',
     label: 'Releases',
-    items: ['releases/release-0-7-0', 'releases/release-0-6-0', 'releases/release-0-5-0', 'releases/release-0-4-0', 'releases/release-0-3-0', 'releases/release-0-2-0'],
+    items: ['releases/pre-release-0-8-0-alpha', 'releases/release-0-7-0', 'releases/release-0-6-0',
+      'releases/release-0-5-0', 'releases/release-0-4-0', 'releases/release-0-3-0', 'releases/release-0-2-0'],
   },
   'supported-frameworks', 'faq',
 ];
