@@ -46,6 +46,7 @@ In this section, you find the list of all params which can be used to customize 
 </Table>
 
 ### System Variables
+Please, don't forget to reopen Command prompt window to apply changes. For more details see this [information](https://www.java.com/en/download/help/path.html).
 
 <Table>
 
@@ -64,6 +65,7 @@ You can list params by properties file:
 drillInstallationDir=mingwX64-0.8.0-15/
 #Drill Admin API URL
 adminAddress=localhost:8090
+#adminAddress=host.docker.internal:8090
 #Name of agent
 agentId=Petclinic
 #This parameter groups your agents in one section. It is helpful if your app is based on a microservices arch.
@@ -84,13 +86,26 @@ logLevel=INFO
 #use ':' as delimiter
 #webAppNames=web1:web2:etc
 ```
-And point to the config file in java args:
+
+**For Windows**: <br/>
+Point to the config file in java args (Command prompt example):
 ```java
 java -agentpath:mingwX64-0.8.0-15/drill_agent.dll=configPath=mingwX64-0.8.0-15/configFile.properties -jar spring-petclinic-0.1.0.BUILD-SNAPSHOT.jar
 ```
 Or use the system variable **DRILL_AGENT_CONFIG_PATH**=mingwX64-0.8.0-15/configFile.properties
 ```java
 java -agentpath:mingwX64-0.8.0-15/drill_agent.dll -jar spring-petclinic-0.1.0.BUILD-SNAPSHOT.jar
+```
+
+**For Docker**: <br/>
+If you are using [docker images example](/docs/installation/java-agent#using-docker-images), change "JAVA_TOOL_OPTIONS" parameter to:
+```java
+- JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=configPath=/data/configFile.properties"
+```
+Or use "DRILL_AGENT_CONFIG_PATH" parameter:
+```java
+- JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so"
+- DRILL_AGENT_CONFIG_PATH=/data/configFile.properties
 ```
 ## Drill Admin
 
