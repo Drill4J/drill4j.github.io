@@ -107,7 +107,7 @@ function Home() {
             <figcaption className="flex flex-col justify-center col-span-full md:col-span-4 lg:col-span-5 order-2 md:order-1">
               <h3 className="mb-4">Risk and Tests to Run</h3>
               <p className="text-monochrome-shade">Risk is a new or modified uncovered method.
-                Drill4J advises which test you need to run to cover theese Risk methods.
+                Drill4J advises which test you need to run to cover these Risk methods.
               </p>
             </figcaption>
           </Figure>
