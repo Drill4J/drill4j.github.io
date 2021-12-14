@@ -19,6 +19,10 @@ module.exports = {
       trackingID: 'UA-147653671-1',
       anonymizeIP: true,
     },
+    googleAnalytics: {
+      trackingID: 'GTM-NGTZFW2',
+      anonymizeIP: true,
+    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,
@@ -103,6 +107,10 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
+        },
+        googleAnalytics: {
+          trackingID: 'GTM-NGTZFW2',
+          anonymizeIP: true,
         },
       },
     ],
