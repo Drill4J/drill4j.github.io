@@ -19,10 +19,6 @@ module.exports = {
       trackingID: 'UA-147653671-1',
       anonymizeIP: true,
     },
-    googleAnalytics: {
-      trackingID: 'GTM-NGTZFW2',
-      anonymizeIP: true,
-    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,
@@ -108,20 +104,25 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.scss'),
         },
-        googleAnalytics: {
-          trackingID: 'GTM-NGTZFW2',
-          anonymizeIP: true,
+      },
+    ],
+  ],
+  plugins: [
+    [
+      require.resolve('docusaurus-gtm-plugin'),
+      {
+        id: 'GTM-NGTZFW2', // GTM Container ID
+      },
+    ],
+    'docusaurus-plugin-sass',
+    [
+      'docusaurus-plugin-module-alias',
+      {
+        alias: {
+          '@components': path.resolve(__dirname, './src/components/index.ts'),
+          '@static': path.resolve(__dirname, './static'),
         },
       },
     ],
   ],
-  plugins: ['docusaurus-plugin-sass', [
-    'docusaurus-plugin-module-alias',
-    {
-      alias: {
-        '@components': path.resolve(__dirname, './src/components/index.ts'),
-        '@static': path.resolve(__dirname, './static'),
-      },
-    },
-  ]],
 };
