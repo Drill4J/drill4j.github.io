@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import mermaid from 'mermaid';
 
 mermaid.initialize({
-  startOnLoad: true
+  startOnLoad: true,
 });
 
 interface Props {
