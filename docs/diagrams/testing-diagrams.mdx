@@ -2,7 +2,7 @@
 id: testing-diagrams
 title: Auto and Manual Testing
 ---
-import {Image} from '@components'
+import {Image, MermaidComponent} from '@components'
 
 ## Auto Testing
 <Image src="/img/auto-testing-diagram.png"/>
@@ -11,7 +11,7 @@ import {Image} from '@components'
 ## Manual Testing
 <Image src="/img/manual-testing-diagram.png"/>
 
-```mermaid
+<MermaidComponent chart={`
 flowchart TD;
       allSides[ stroasdke all sides ];
       allSides2[|borders:ltrb| stroke all sides ];
@@ -19,4 +19,4 @@ flowchart TD;
       ltSides[|borders:lt| stroke left and top sides ];
       lrSides[|borders:lr| stroke left and right sides ];
       noSide[|borders:no| stroke no side ];
-```
+`}/>
