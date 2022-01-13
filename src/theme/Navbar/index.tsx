@@ -13,6 +13,7 @@ import { useThemeConfig } from '@docusaurus/theme-common';
 import useHideableNavbar from '@theme/hooks/useHideableNavbar';
 import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import clsx from 'clsx';
+import Head from '@docusaurus/Head';
 import { socialLinks } from '../social-links';
 import { GitHubLink } from './git-hub-link';
 import { useSessionStorage } from '../../hooks/use-session-storage';
@@ -53,6 +54,9 @@ const Navbar = () => {
         [styles.headerHidden]: !isHeaderVisibleAfterScroll,
       })}
     >
+      <Head>
+        <meta name="google-site-verification" content="Exn7kPLIy4JTsgoCYicqJbRNhglNbVv20lkzpVDzUU0" />
+      </Head>
       <div className="absolute top-0 left-0 z-40 w-full bg-monochrome-white shadow">
         <nav className="flex items-center justify-between h-22 navigationContainer">
           <Link
