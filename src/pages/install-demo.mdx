@@ -49,11 +49,10 @@ Press “Continue as a Guest” and **register agents** (both Java and Node.js)
 
 Go through the first two steps of the registration wizard and make sure that Test2Code plugin is **enabled** at Step 3
 
-<Warning>
+<Info>
 
-**Important!** Don't forget to set target host "http://localhost:8080/" on the second step for Node.js agent. It is necessary to collect manual coverage via extension.
-
-</Warning>
+There is no need to specify any parameters during the registration, just click through steps leaving everything as-is.
+</Info>
 
 </ListItem>
 
@@ -112,7 +111,7 @@ To collect coverage for the 2nd build run tests:
 </ListItem>
 
 ```
-./gradlew clean :build2:test
+./gradlew clean :build2:test2run
 ```
 
 <ListItem number={'3.3.'}>
@@ -132,7 +131,7 @@ To collect coverage for the 3rd build run tests:
 </ListItem>
 
 ```
-./gradlew clean :build3:test
+./gradlew clean :build3:test2run
 ```
 Below you can find a command to **remove** RealWorld demo example:
 
