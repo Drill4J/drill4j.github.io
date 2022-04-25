@@ -1,0 +1,1 @@
+export { MermaidComponent } from './mermaid';
