@@ -1,0 +1,76 @@
+---
+id: core-concept
+title: Core Concept
+---
+import {Image} from '@components'
+import { AdditionalInformation, Badge } from '@components';
+import ExternalLinkIcon from '@static/img/external-link.svg';
+
+<Image src="/img/core-concept-diagram.jpg"/>
+
+## 1. Service Packages Configuration
+The Drill4J Agent sends the application structure (packages\classes\methods) to the Drill admin panel. <br/>
+User is able to configure which service (application) packages will be instrumented. It can be done on the 2nd step of agent registration in the field **Application Packages**.
+<Image src="/img/agent-registration-step2.png"/>
+User has the ability to exclude unnecessary packages or classes via "!" before the package name. <br/>
+The System automatically changes ".", " " to "/". User doesn't have the ability to enter more then one "/" in a row. <br/>
+Line with hyphenation turns into an array of strings for backend.
+
+## 2. JaCoCo Instrumentation by Probes
+	
+Code is instrumented via JaCoCo. Instrumentation allows the Drill4j agent to track code execution during tests. 
+
+### JaCoCo Overview
+
+JaCoCo is a free code coverage library for Java, that calculates coverage by **probes**. <br/>
+**Probes** - boolean massive. <br/>
+For example: <br/>
+**[f,f,f,f,f,f,f.......]**, where **f** - false means that in the process, our thread of execution did not come across a line of code. This probes list exists for each class.
+Probes are placed in different places (e.g.):
+- at the beginning of the method
+- at the beginning of the branch block
+
+### Code Coverage Calculation Algorithm
+
+First, probes are put down with the help of instrumentation in the source code.
+When the code is executed, the probe becomes **TRUE** in the boolean massive.
+Analysis of all probes and coverage calculation is described in [documentation](https://www.jacoco.org/jacoco/trunk/index.html) <br/>
+Bytecode instrumentation is described in [documentation](https://www.baeldung.com/java-instrumentation) 
+	
+## 3. Context Transmission	
+	
+Autotest Agent tracks code execution for each test separately and reports these data to Drill4J Admin Backend. <br/> 
+It integrates with various [testing frameworks](/docs/supported-frameworks) and configures Selenium to add headers to the HTTP requests. <br/> 
+It's necessary to connect a particular test of a User with a Drill4J agent, we need to add additional information in the form of a **User identifier** (session id) and a **test identifier** within HTTP requests. <br/> 
+We implement an interceptor for each (supported) client (e.g. Apache, okhttp, Netty) using instrumentation.
+
+## 4. Metrics Calculation	
+	
+Drill4J Admin Backend calculates the following metrics:
+- test coverage 
+- associated tests
+- covered methods
+- risked methods
+- recommended tests
+- quality gate status
+
+### Risked Methods
+**Risked method** is not 100% covered New and/or Modified methods in a new application build. <br/>
+**E.g.** in the current build 1000 New methods (200 uncovered), 500 modified (101 uncovered), than risked methods number = 200 + 101 = 301 risked methods. <br/> 
+Lambdas aren't displayed as the risked method and not taken in build difference calculation.
+A risked method has 3 states:
+- not covered 
+- partially covered
+- fully covered
+
+### Recommended Tests
+**Recommended test** is a test that should be run at first to check changes of code in a new build version.
+The set of recommended tests is formed by Test to Code mapping. It's a relationship between particular test with the executed part of code.
+<Image src="/img/test-to-code-mapping.png"/>
+
+**E.g.**  In the first application build tests are mapped to code. The second application build has 3 modified methods which were covered by 2 test cases (autotests).
+Related to this information, we recommend to run only 2 test cases in order to check only modified code and don't waste time to run cases that aren't check something useful. <br/> 
+Also, we recommend writing new autotests or modify existing autotests to cover new methods.
+
+<Image src="/img/recommended-tests.png"/>
+
