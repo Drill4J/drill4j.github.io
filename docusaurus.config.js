@@ -46,7 +46,7 @@ module.exports = {
     footer: {
       links: [
         {
-          title: ' ',
+          title: '1',
           items: [
             {
               label: 'Drill Admin',
@@ -63,7 +63,7 @@ module.exports = {
           ],
         },
         {
-          title: ' ',
+          title: '2',
           items: [
             {
               label: 'Microservices',
@@ -79,7 +79,7 @@ module.exports = {
           ],
         },
         {
-          title: ' ',
+          title: '3',
           items: [
             {
               label: 'Contact us',
