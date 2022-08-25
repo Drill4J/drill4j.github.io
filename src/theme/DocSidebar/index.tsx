@@ -131,7 +131,7 @@ function DocSidebarItemCategory({
             key={childItem.label}
             item={childItem}
             onItemClick={onItemClick}
-            collapsible={collapsible}
+            collapsible={String(collapsible)}
             activePath={activePath}
           />
         ))}
@@ -242,7 +242,7 @@ function DocSidebar({
                   e.target.blur();
                   setShowResponsiveSidebar(false);
                 }}
-                collapsible={sidebarCollapsible}
+                collapsible={String(sidebarCollapsible)}
                 activePath={path}
               />
             ))}

@@ -68,7 +68,7 @@ function DocPageContent({
           sidebar={sidebar}
           path={currentDocRoute.path}
           sidebarCollapsible={
-            siteConfig.themeConfig?.sidebarCollapsible ?? true
+            String(siteConfig.themeConfig?.sidebarCollapsible ?? true)
           }
           onCollapse={toggleSidebar}
           isHidden={hiddenSidebar}
