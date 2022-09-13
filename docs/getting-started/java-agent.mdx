@@ -1,0 +1,22 @@
+---
+id: setup-java-agent
+title: Setup Drill4J Java Agent
+sidebar_label: Setup Java Agent
+---
+
+setup java agent
+
+- **<i>Agent ID</i>** - a unique (within Drill4J [instance](/docs/basic-concepts/glossary#drill-instance)) string which identifies _Agent_.
+  :::note
+  Only lowercase latin characters, numbers and dashes ("-") are allowed. No spaces, no uppercase characters.
+
+  <b>Good</b>: my-backend, my-frontend, fizbuz
+  <br />
+  <b>Bad</b>: MyBackend, myFrontend, Fiz Buz
+
+- **<i>Build version</i>** - a unique (within the particular _Agent_) string which identifies the _Build_.
+  For the convinience and readability sake it's better be the actual **version tag**. If it's not available, it may be unique string, which corresponds to the concrete version of the service under test (e.g. a hash of Git commit).
+  See the [setup section](/docs/getting-started/setup) for the specific agent for more details.
+  {' '}
+  <br />
+  <br />

@@ -1,0 +1,57 @@
+---
+id: concepts-glossary
+title: Drill4J Glossary
+---
+
+# Drill4J Glossary
+
+This section explains terms used in Drill4J.
+
+Terms are ordered from general to more Drill4j-specific.
+
+**/** character in term definition means that these words are used interchangeably.
+
+- **<i>Application / Application Under Test / System Under Test</i>** is the complete system we are testing. It may include lots of parts, like backend service(s), web frontend, or be just one thing.
+  <br />
+  <br />
+- **<i>Service</i>** a distinct part of the _Application_. Examples: a monolithic backend service, a microservice, a web frontend.
+  <br />
+  <br />
+- **<i>Tests/Automated tests</i>** - when this term is used, we are referring to any kind of _automated tests_. When talking about _manual tests_ we will specifically include the word _manual_.
+  <br />
+  <br />
+- **<i>Agent</i>** is what represents and individual _Service_ within Drill4J. It's both the entity
+
+- **<i>Build</i>**
+- _Build_ - is a concrete version of the _Service_, identified by _Build version_. _Build_ is always bound to the _Agent_
+- **<i></i>**
+- _Build version_ -
+  <br />
+  <br />
+- **<i></i>**
+- _Packages_ - for Java and JVM languages (as well as .NET) this is exactly what it sounds like - a package a class is contained in.
+  **However** for JavaScript/TypeScript apps it will be just a path to the exact source file within project structure.
+- **<i></i>**
+- _Classes_ -
+- **<i></i>**
+- _Methods_ -
+- **<i></i>**
+  _Service group_
+
+- **<i></i>**
+  Test-to-code (or test2code) mapping
+  Coverage
+  Baseline build
+  Risks
+
+- new
+- modified
+
+Tests to run / aka recommended tests
+Time savings
+
+Autotest agent
+Browser extension
+
+  <!-- These line breaks are required to create vertical gaps -->
+  <!-- because markdown processor fails to produce adequate list formatting from just vertical spaces -->

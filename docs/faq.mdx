@@ -2,13 +2,14 @@
 id: faq
 title: FAQ
 ---
-import {Table} from '@site/src/components'
 
-**Why do I need it?** <br/>
-Probably, if your project is small and doesn't have a lot of tests, then you don't need it. BUT, if it's a legacy project with a lot of tests, the tool saves your testing time via Test gap analysis and minimizing of regression suite.
+import { Table } from '@site/src/components';
 
-**Does Drill work only with JVM?** <br/>
-Currently yes, but we're working on .Net agent and JavaScript agent. Python and Ruby agents are also possible in the future.
+<!-- **Why do I need it?** <br/>
+Probably, if your project is small and doesn't have a lot of tests, then you don't need it. BUT, if it's a legacy project with a lot of tests, the tool saves your testing time via Test gap analysis and minimizing of regression suite. -->
+
+<!-- **Does Drill work only with JVM?** <br/>
+Currently yes, but we're working on .Net agent and JavaScript agent. Python and Ruby agents are also possible in the future. -->
 
 **Which Java versions do you support?** <br/>
 Java 8+
@@ -22,21 +23,22 @@ Yes, it is possible, but it's necessary to implement an agent for android applic
 **Can I use .war?** <br/>
 Yes, but only monolith applications on Tomcat, Jetty, WildFly. Java 8+
 
-**What method of collecting coverage are you using?** <br/>
+<!-- **What method of collecting coverage are you using?** <br/>
 Probes in bytecode. So, methods can be covered in the range of 0.1 - 100.
-Also, we will add the ability to choose a method of coverage collecting. (By string and etc.)
+Also, we will add the ability to choose a method of coverage collecting. (By string and etc.) -->
 
 **Which test types do you support?** <br/> - [Manual](/docs/installation/extension)<br/>- [Auto (API, UI)](/docs/installation/autotest-agent)
 
+<!--
 **How can I specify a backend host for a frontend container?** <br/>
 You need to set the **UPSTREAM** env variable for a frontend container.
-By default, **UPSTREAM** value is **drill-admin:8090**
+By default, **UPSTREAM** value is **drill-admin:8090** -->
 
 **Will information in the DB be saved, if I recreate backend container?** <br/>
 Yes, but you need to move the **/work** directory to the volume.
 
 **Where can I find API requests?** <br/>
-Swagger is available on port **8090** of backend service. For example, if  Drill frontend and backend parts are installed locally, then swagger is available at [http://localhost:8090](http://localhost:8090)
+Swagger is available on port **8090** of backend service. For example, if Drill frontend and backend parts are installed locally, then swagger is available at [http://localhost:8090](http://localhost:8090)
 
 **What to do if my agent is not displayed in the Drill Admin after connection?** <br/>
 Make sure that you use lowercase Latin letters, digits and dashes in the Agent ID parameter.
@@ -58,18 +60,20 @@ You can find rules in the table:
 
 <Table>
 
-| Result                         |   New   |   New   | Modified |   New   |   New   |   New   |   New   |
-|--------------------------------|:-------:|:-------:|:--------:|:-------:|:-------:|:-------:|:-------:|
-| Name                           | changed |    -    |     -    | changed | changed |    -    | changed |
-| Descriptor                     |    -    | changed |     -    | changed |    -    | changed | changed |
-| Body                           |    -    |    -    |  changed |    -    | changed | changed | changed |
+| Result     |   New   |   New   | Modified |   New   |   New   |   New   |   New   |
+| ---------- | :-----: | :-----: | :------: | :-----: | :-----: | :-----: | :-----: |
+| Name       | changed |    -    |    -     | changed | changed |    -    | changed |
+| Descriptor |    -    | changed |    -     | changed |    -    | changed | changed |
+| Body       |    -    |    -    | changed  |    -    | changed | changed | changed |
 
 </Table>
 
-
 ## Development Installation
+
 ### Frontend
+
 [https://github.com/Drill4J/admin-ui/tree/develop/dev-guide](https://github.com/Drill4J/admin-ui/tree/develop/dev-guide)
 
 ### Backend
+
 See [https://github.com/Drill4J/Drill4J/blob/develop/README.md](https://github.com/Drill4J/Drill4J/blob/develop/README.md)
