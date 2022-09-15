@@ -55,6 +55,10 @@ em {
   line-height: 24px;
 }
 
+a > em {
+  color: map-get($primary-blue, default);
+}
+
 //inline link
 a {
   outline: none;
