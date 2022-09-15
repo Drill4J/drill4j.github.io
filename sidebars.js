@@ -1,17 +1,53 @@
 const docs = [
   {
     type: 'category',
-    label: 'Overview',
-    items: ['overview/why-drill4j', 'overview/key-differences'],
+    label: 'Introduction',
+    items: [
+      {
+        type: 'doc',
+        label: 'What is Drill4J',
+        id: 'overview/why-drill4j',
+      },
+      {
+        type: 'doc',
+        label: 'Key Differences',
+        id: 'overview/key-differences',
+      },
+      {
+        type: 'doc',
+        label: 'Does it fit your project?',
+        id: 'overview/overview-ideas',
+      },
+    ],
   },
   {
     type: 'category',
-    label: 'Concepts',
+    label: 'Basics',
     items: [
       {
         type: 'doc',
         label: 'Glossary',
         id: 'basic-concepts/glossary',
+      },
+      {
+        type: 'doc',
+        label: 'General Approach',
+        id: 'basic-concepts/general-architecture',
+      },
+      {
+        type: 'doc',
+        label: 'Metrics Calculation',
+        id: 'basic-concepts/metrics-calculation',
+      },
+      {
+        type: 'doc',
+        label: 'Admin Panel Basics',
+        id: 'basic-concepts/admin-panel-basics',
+      },
+      {
+        type: 'doc',
+        label: 'Limitations',
+        id: 'basic-concepts/overview-limitations',
       },
       {
         type: 'doc',
@@ -24,10 +60,68 @@ const docs = [
     type: 'category',
     label: 'Installation',
     items: [
-      'installation/setup',
-      'installation/setup-java-agent',
-      'installation/setup-javascript-agent',
-      'installation/setup-service-group',
+      {
+        type: 'doc',
+        id: 'installation/setup',
+        label: 'Read first',
+      },
+      {
+        type: 'doc',
+        id: 'installation/setup-drill4j-services',
+        label: 'Setup Drill4J services',
+      },
+      {
+        type: 'doc',
+        id: 'installation/setup-java-agent',
+        label: 'Setup Java / JVM Agent',
+      },
+      {
+        type: 'doc',
+        id: 'installation/setup-javascript-agent',
+        label: 'Setup JavaScript Agent',
+      },
+      {
+        type: 'doc',
+        id: 'installation/setup-java-agent-for-android',
+        label: 'Setup Java Agent for Android',
+      },
+      {
+        type: 'doc',
+        id: 'installation/setup-service-group',
+        label: 'Service Group',
+      },
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Configuration',
+    items: [
+      {
+        type: 'doc',
+        label: 'Configuration',
+        id: 'configuration/configuration',
+      },
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Advanced Topics',
+    items: [
+      {
+        type: 'doc',
+        label: 'Performance impact',
+        id: 'advanced/performance-considerations',
+      },
+      {
+        type: 'doc',
+        label: 'Scaleability',
+        id: 'advanced/system-requirements-and-scaleability',
+      },
+      {
+        type: 'doc',
+        label: 'Coverage Implementations',
+        id: 'advanced/coverage-implementations',
+      },
     ],
   },
   'faq',
