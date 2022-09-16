@@ -10,13 +10,13 @@ const docs = [
       },
       {
         type: 'doc',
-        label: 'Key Differences',
-        id: 'overview/key-differences',
+        label: 'Use cases',
+        id: 'overview/overview-ideas',
       },
       {
         type: 'doc',
-        label: 'Does it fit your project?',
-        id: 'overview/overview-ideas',
+        label: 'Key Differences',
+        id: 'overview/key-differences',
       },
     ],
   },
@@ -67,8 +67,8 @@ const docs = [
       },
       {
         type: 'doc',
-        id: 'installation/setup-drill4j-services',
-        label: 'Setup Drill4J services',
+        id: 'installation/deploy-drill4j-services',
+        label: 'Deploy Drill4J services',
       },
       {
         type: 'doc',

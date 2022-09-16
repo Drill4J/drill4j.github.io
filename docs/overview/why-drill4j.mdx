@@ -7,10 +7,28 @@ import { Table } from '@site/src/components';
 
 # What is Drill4J
 
+Drill4J is an open-source tool[\*](#license) to identify testing gaps and reduce time spent on regression testing.
+
+Drill4J provides you with a straight path to incorporate Test Gap Analysis and Test Impact Analysis into your SDLC.
+
+- It integrates with all parts of system under test, including backend and frontend services.
+- It tracks all types of tests, including automated and manual;
+- It detects changes in application code;
+- It tracks code execution in runtime.
+
+Based on that Drill4J:
+
+- shows code not touched by any tests. Both in percentage and down to exact place in code;
+- detects risks - modified or new code which needs to be tested;
+- recommends minimal and sufficient set of tests;
+- tracks if tests really covered aformentioned risks;
+- provides comprehensive metrics which can be easily integrated with Quality Gate with just a single API call.
+
+All the above allows to speed up testing by eliminating guesswork and backing tests results with hard data.
+
+<p id="license">
+  <b>License</b>: Drill4J is open-source and licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.
+</p>
+
 - Look at the [key differences of Drill4J from other technologies](/docs/overview/key-differences)
 - Check out [ideas on how Drill4J might fit your project](/docs/overview/overview-ideas)
-
-:::note
-Drill4J is <b>flexible</b> - setup it for the backend, or just the frontend, or both. For all services, or just for one. <br/>
-The same thing applies for integrating with tests - you can target manual tests, E2E UI test, API, or only one of these. <br />
-:::
