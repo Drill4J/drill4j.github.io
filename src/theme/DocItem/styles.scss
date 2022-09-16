@@ -1,0 +1,7 @@
+
+@import "../../../src/css/index";
+
+.pagination-nav__link:hover {
+  border-color: map-get($primary-blue, default);
+}
+

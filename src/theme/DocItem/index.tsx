@@ -8,6 +8,8 @@
 import React from 'react';
 
 import Head from '@docusaurus/Head';
+import DocPaginator from '@theme/DocPaginator';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useTitleFormatter } from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -15,6 +17,7 @@ import type { Props } from '@theme/DocItem';
 import clsx from 'clsx';
 import { TOC } from '../../components';
 import { useBreakpoint } from '../../hooks/use-breakpoint';
+import './styles.scss';
 
 function DocItem(props: Props): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -22,18 +25,10 @@ function DocItem(props: Props): JSX.Element {
   const { content: DocContent } = props;
   const {
     metadata,
-    frontMatter: {
-      image: metaImage,
-      keywords,
-      hide_title: hideTitle,
-      hide_table_of_contents: hideTableOfContents,
-    },
+    docsMetadata,
+    frontMatter: { image: metaImage, keywords, hide_title: hideTitle, hide_table_of_contents: hideTableOfContents },
   } = DocContent;
-  const {
-    description,
-    title,
-    permalink,
-  } = metadata;
+  const { description, title, permalink } = metadata;
   const isWindowLg = useBreakpoint('lg');
   const isLaptopWindow = useBreakpoint('laptop');
   const metaTitle = useTitleFormatter(title);
@@ -44,17 +39,11 @@ function DocItem(props: Props): JSX.Element {
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
         {description && <meta name="description" content={description} />}
-        {description && (
-          <meta property="og:description" content={description} />
-        )}
-        {keywords && keywords.length && (
-          <meta name="keywords" content={keywords.join(',')} />
-        )}
+        {description && <meta property="og:description" content={description} />}
+        {keywords && keywords.length && <meta name="keywords" content={keywords.join(',')} />}
         {metaImage && <meta property="og:image" content={metaImageUrl} />}
         {metaImage && <meta name="twitter:image" content={metaImageUrl} />}
-        {metaImage && (
-          <meta name="twitter:image:alt" content={`Image for ${title}`} />
-        )}
+        {metaImage && <meta name="twitter:image:alt" content={`Image for ${title}`} />}
         {permalink && <meta property="og:url" content={siteUrl + permalink} />}
         {permalink && <link rel="canonical" href={siteUrl + permalink} />}
       </Head>
@@ -66,11 +55,15 @@ function DocItem(props: Props): JSX.Element {
           style={{ maxWidth: '100%' }}
         >
           {!hideTitle && (
-            <header><h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1></header>
+            <header>
+              <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
+            </header>
           )}
           <div className="markdown">
             <DocContent />
           </div>
+          <br />
+          <DocPaginator docsMetadata={docsMetadata} metadata={metadata} />
         </article>
         {!hideTableOfContents && DocContent.toc && isWindowLg && !isLaptopWindow && (
           <aside className="col-span-3">
@@ -85,6 +78,7 @@ function DocItem(props: Props): JSX.Element {
       )}
     </>
   );
-}0;
+}
+0;
 
 export default DocItem;
