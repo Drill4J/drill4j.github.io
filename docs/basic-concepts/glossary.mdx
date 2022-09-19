@@ -34,7 +34,7 @@ These definitions do not claim absolute correctness outside of this documentatio
 - **<i id="tests-api">API tests</i>** - tests which call API endpoints directly.
   <br />
   <br />
-- **<i id="tests-ui">UI tests / E2E tests</i>** [\*](#ui-tests-note) - tests which manipulate web browser, simulating user actions.
+- **<i id="tests-ui">UI tests / E2E tests</i>** [\*](#ui-tests-note) - tests which manipulate web browser by simulating user actions.
   <br />
   <br />
 - **<i id="tests-manual">Manual tests</i>** - tests performed manually in the web browser.
@@ -69,13 +69,13 @@ This list is not exhaustive and intended for introductory use.
 - **<i id="admin-backend">Admin Backend</i>** - the core Drill4J backend service which stores and processes information about all [_Agents_](#agent).
   <br />
   <br />
-- **<i id="agent">Agent</i>** - a component (or set of components) responsible for **tracking code execution** during tests and reporting this data to [_Admin Backend_](#admin-backend). Each such _Agent_ has a corresponding [_Agent_](#agent-entity) entity within Drill4J Admin Panel.
+- **<i id="agent">Agent</i>** - a component (or set of components) responsible for **tracking code execution** during tests and reporting this data to [_Admin Backend_](#admin-backend). Each such _Agent_ has a corresponding [_Agent_](#agent-entity) entity.
   <br />
   <br />
-- **<i id="agent-java">Java Agent</i>** - [native agent](https://github.com/Drill4J/java-agent) for JVM based on [JVM TI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/) integrated with the target [_Service_](#service).
+- **<i id="agent-java">Java Agent</i>** - [an agent implementation for Java/JVM applications](https://github.com/Drill4J/java-agent) which integrates with the target [_Service_](#service) through [JVM TI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/).
   <br />
   <br />
-- **<i id="autotest-agent">Autotest Agent</i>** - a component that **integrates with testing framework**. It extracts [_Test context_](#test-context), then sends it to the [_Admin Backend_](#admin-backend) and propagates it through test actions (e.g. by adding custom headers to HTTP request). Learn more in [general architecture](/docs/basic-concepts/general-architecture) section.
+- **<i id="autotest-agent">Autotest Agent</i>** - a component that **integrates with the testing framework**. It extracts [_Test context_](#test-context), then sends it to the [_Admin Backend_](#admin-backend) and propagates it through test actions (e.g. by adding custom headers to HTTP request). Learn more in [general architecture](/docs/basic-concepts/general-architecture) section.
   <br />
   <br />
 - **<i id="java-autotest-agent">Java Autotest Agent</i>** - [autotest agent implementation](https://github.com/Drill4J/autotest-agent) written for tests implemented in Java or other JVM language. It as available both as a [Maven or Gradle plugin](/docs/installation/setup-java-autotests).
