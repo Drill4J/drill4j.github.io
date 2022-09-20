@@ -10,6 +10,11 @@ const docs = [
       },
       {
         type: 'doc',
+        label: 'Motivation',
+        id: 'overview/motivation',
+      },
+      {
+        type: 'doc',
         label: 'Use cases',
         id: 'overview/overview-ideas',
       },
@@ -32,7 +37,7 @@ const docs = [
       {
         type: 'doc',
         label: 'General Approach',
-        id: 'basic-concepts/general-architecture',
+        id: 'basic-concepts/general-approach',
       },
       {
         type: 'doc',
