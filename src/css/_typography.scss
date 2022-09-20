@@ -151,6 +151,10 @@ ol[class] {
     list-style: inside;
   }
 
+  blockquote ul {
+    margin-bottom: unset;
+  }
+
   ol {
     margin-bottom: 24px;
     padding-left: 16px;
