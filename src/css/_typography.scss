@@ -173,6 +173,29 @@ ol[class] {
       color: #632ED1;
     }
   }
+
+  // bring back padding for nested ul-s
+  ol {
+    ul {
+      padding-left: 16px;
+      ul {
+        list-style-type: circle;
+        ul {
+          list-style-type: square;
+        }
+      }
+    }
+  }
+  ul {
+    ul {
+      padding-left: 16px;
+      list-style-type: circle;
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
 }
 
 svg {
