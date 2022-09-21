@@ -135,7 +135,6 @@ ol[class] {
   }
 
   p {
-    margin-bottom: 16px;
     margin-top: 0;
   }
 
@@ -177,6 +176,7 @@ ol[class] {
   // bring back padding for nested ul-s
   ol {
     ul {
+      margin: 0;
       padding-left: 16px;
       ul {
         list-style-type: circle;
@@ -188,6 +188,7 @@ ol[class] {
   }
   ul {
     ul {
+      margin: 0;
       padding-left: 16px;
       list-style-type: circle;
       ul {
