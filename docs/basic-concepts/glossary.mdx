@@ -69,21 +69,37 @@ This list is not exhaustive and intended for introductory use.
 - **<i id="admin-backend">Admin Backend</i>** - the core Drill4J backend service which stores and processes information about all [_Agents_](#agent).
   <br />
   <br />
-- **<i id="agent">Agent</i>** - a component (or set of components) responsible for **tracking code execution** during tests and reporting this data to [_Admin Backend_](#admin-backend). Each such _Agent_ has a corresponding [_Agent_](#agent-entity) entity.
+- **<i id="agent">Agent</i>**[\*](#note-on-agents) - a component (or set of components) responsible for **tracking code execution** during tests. Each such _Agent_ has a corresponding [_Agent_](#agent-entity) entity.
   <br />
   <br />
-- **<i id="agent-java">Java Agent</i>** - [an agent implementation for Java/JVM applications](https://github.com/Drill4J/java-agent) which integrates with the target [_Service_](#service) through [JVM TI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/).
-  <br />
-  <br />
-- **<i id="autotest-agent">Autotest Agent</i>** - a component that **integrates with the testing framework**. It extracts [_Test context_](#test-context), then sends it to the [_Admin Backend_](#admin-backend) and propagates it through test actions (e.g. by adding custom headers to HTTP request). Learn more in [general architecture](/docs/basic-concepts/general-architecture) section.
-  <br />
-  <br />
-- **<i id="java-autotest-agent">Java Autotest Agent</i>** - [autotest agent implementation](https://github.com/Drill4J/autotest-agent) written for tests implemented in Java or other JVM language. It as available both as a [Maven or Gradle plugin](/docs/installation/setup-java-autotests).
+- **<i id="autotest-agent">Autotest Agent</i>**[\*\*](#note-on-autotest-agents) - a component that **integrates with the testing framework**. Learn more in [data collection](/docs/basic-concepts/data-collection) section.
   <br />
   <br />
 - **<i id="browser-extension">Browser extension</i>** - a Drill4J's [Chrome Browser extension](https://github.com/Drill4J/browser-extension) for recording [_Manual Tests_](#tests-manual) coverage.
   <br />
   <br />
+
+:::note
+Don't get discouraged if something sounds a bit confusing at the moment and keep reading. The further sections will expand on terms and topics described here in greater detail.
+:::
+
+<i id="note-on-agents"> </i>
+
+> \* Note on agents
+>
+> - for Java/JVM applications agent is a [single component](https://github.com/Drill4J/java-agent) which integrates with the target [_Service_](#service) through [JVM TI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/)
+> - in case of Web JavaScript there are multiple components involved. See more in [JavaScript Implementation](/docs/advances/javascript-implementation) section.
+
+<i id="note-on-autotest-agents"> </i>
+<br />
+
+> \*\* Note on autotest agents
+>
+> - for tests written in Java/JVM languages there is [Java Autotest Agent](https://github.com/Drill4J/autotest-agent) It as available both as a [Maven or Gradle plugin](/docs/installation/setup-java-autotests).
+> - for tests written in JavaScript/TypeScript there is [a library](https://www.npmjs.com/package/@drill4j/js-auto-test-agent) which needs to be integrated with testing frameworks of choice
+> - for POSTMAN tests there is a [cli wrapper](https://github.com/Drill4J/pwad)
+
+<br />
 
 ### Features
 
@@ -118,7 +134,7 @@ This section describes terms used specifically in Admin Backend and Admin Panel.
 - **<i>Agent Registration</i>** - a one-time configuration process. Whenever the [_Agent_](#agent), previously unknown to Drill4J, is added, user must navigate to [_Admin Panel_](#admin-ui) and go through registration procedure.
   <br />
   <br />
-- **<i id="build">Build</i>** - is a concrete version of the [_Service_](#service), identified by _Build version_ string. _Build_ is always associated with the _Agent_.
+- **<i id="build">Build</i>** - is a concrete version of the [_Service_](#service), identified by _Build version_ string. _Build_ is always associated with the [_Agent_](#agent).
   <br />
   <br />
 - **<i id="packages-classes-methods">Packages, Classes and Methods</i>** - for Java and JVM languages (as well as .NET) all these terms are exactly what they are.

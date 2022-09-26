@@ -36,8 +36,8 @@ const docs = [
       },
       {
         type: 'doc',
-        label: 'General Approach',
-        id: 'basic-concepts/general-approach',
+        label: 'Data collection',
+        id: 'basic-concepts/data-collection',
       },
       {
         type: 'doc',
@@ -56,7 +56,12 @@ const docs = [
       },
       {
         type: 'doc',
-        label: 'Microservices Guide',
+        label: 'Supported Technologies',
+        id: 'basic-concepts/supported-technologies',
+      },
+      {
+        type: 'doc',
+        label: 'Microservices',
         id: 'basic-concepts/microservices',
       },
     ],
@@ -119,8 +124,8 @@ const docs = [
       },
       {
         type: 'doc',
-        label: 'Scaleability',
-        id: 'advanced/system-requirements-and-scaleability',
+        label: 'Scalability',
+        id: 'advanced/system-requirements-and-scalability',
       },
       {
         type: 'doc',
