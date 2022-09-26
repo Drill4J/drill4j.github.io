@@ -16,7 +16,7 @@ const docs = [
       {
         type: 'doc',
         label: 'Use cases',
-        id: 'overview/overview-ideas',
+        id: 'overview/use-cases',
       },
       {
         type: 'doc',
