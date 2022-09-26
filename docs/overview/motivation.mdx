@@ -15,7 +15,7 @@ Imagine a system under test, a black box. We perform a set of actions on applica
 
 <Image
   alt="A diagram with two entities: the first is labeled 'System Under Test', the second is labeled 'Test performer'. They are connected with an arrow labeled 'test actions'"
-  src="/img/placeholder.png"
+  src="/img/motivation-blackbox.png"
 />
 
 Once all actions are completed, we get a list of tests, each assined with either "passed" or "failed" status.
@@ -24,9 +24,9 @@ Based on that list we decide if the system satisfies our requirements.
 There are multiple issues which stem from this approach:
 
 1. **Blind spots** - we have no idea of how deeply or broadly we've tested the system. Since it's a blackbox, there might exist code areas which where tested only partially or skipped entirely.
-2. **Redundant tests** - there might be tests which do nothing at all or are duplicates of other existing tests. This problem is especially prominent in projects with legacy code.
-3. **Dead code** - a legacy code that is never used, but still kept in the codebase.
-4. **Growing regression scope** - as amount of code and tests increases so does the effort.
+2. **Growing regression testing scope** - as amount of code and tests increases so does the effort.
+3. **Redundant tests** - there might be tests which do nothing at all or are duplicates of other existing tests. This problem is especially prominent in legacy projects.
+4. **Dead code** - a code that is never executed, but is still kept in the codebase.
 
 These are not breaking news and we deal with issues by:
 
@@ -71,7 +71,7 @@ Testing it by performing these obvious steps yeilds only 80.7% coverage.
 />
 
 That does not look bad, and one might pass that as "good enough".
-But Drill4J reveals that we have under-tested a number of classes, including the main one - TodoCtrl class. There are gaps in methods and others are not covered at all.
+But Drill4J reveals that we have under-tested a number of classes, including the main one - TodoCtrl class. There are gaps in some methods, while others are not covered at all.
 
 <Image
   alt="A screenshot of Drill4J Admin Panel. It demonstrates which methods were covered by tests and which were not"
@@ -105,16 +105,16 @@ And there is code unreachable by any actions (it might be redundant or there mig
 
 ## The solution
 
-The answer to described problems is data. We have to know what each test on each stage is doing exactly.
+The solution for these problem is data. We have to know what each test on each stage is doing exactly.
 
-**Important disclaimer**: We are not advocating for 100% coverage for one concrete testing type.
+**Important disclaimer**: We are not advocating for 100% coverage for one testing type.
 Some code is better checked with unit tests, or with e2e, or with manual tests, and so on.
 The idea is to check all code with at least some kind of tests.
 
 Drill4J is created to:
 
 - Make each testing stage as transparent as possible;
-- Analyze data to create **the complete picture** of what is tested and what is not;
-- Highlight blind spots and the best areas to make improvements to, both in code and tests.
+- Accumulate data to create **the complete picture** of coverage from all tests;
+- Highlight blind spots and the best areas to make improvements to, both in tests and code.
 
-Our goal is to answer questions like "Should we write more tests?", "What we should test first?", "Is our automation suite is sufficient?" **based on concrete evidence**.
+Our goal is to answer questions "Should we write more tests?", "What we should test first?" and "Is our automation suite is sufficient?" **based on concrete evidence**.
