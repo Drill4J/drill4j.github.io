@@ -20,7 +20,7 @@ This is not an installation guide. For direct instructions please refer to the [
 
 ## The abstract task
 
-There are are two key points of integration: **tests** / test runner and **target application**.
+There are are two key points of integration: **tests** and **target application**.
 
 Supporting any kind of tests for any application includes following tasks:
 
@@ -55,10 +55,10 @@ Let's look how these concepts map to some of the real world cases.
 />
 
 1. Autotest Agent
-   - Instruments TestNG classes to extract current test context
-   - Each test is assigned with unique TestID
+   - Instruments TestNG classes to extract current test context. Each test is assigned with unique TestID
    - Instruments HTTP Client classes to inject TestID to request headers
 2. Agent - code structure analysis
+   - Hooks into class loading process to extract code structure
    - Instruments classes handling HTTP Requests to recognize TestID header
    - Instruments application classes to track code execution
 
@@ -111,8 +111,12 @@ This time tests are executed by a person - Manual QA Engineer. Task of context p
 
 ## Summary
 
-There are many more configurations of applications and testing environments than we could possibly list here.
+Overall integration principles are similar regardless of the platform and stack. Typical integration involves:
 
-**The key takeaway** is while the general principles are very much the same, **the specific** test runners, testing frameworks and transports might require separate implementations.
+- test context propagation;
+- app structure analysis;
+- code execution tracking.
 
-For the complete list of supported technologies refer to the [Supported Technologies](/docs/basic-concepts/supported-technologies) section.
+Out of the box, Drill4J provides ready to use components for **Java / JVM** applications and **Web JavaScript** applications.
+
+For the complete list refer to the [Supported Technologies](/docs/basic-concepts/supported-technologies) section.

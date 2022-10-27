@@ -7,13 +7,27 @@ import { Table } from '@site/src/components';
 
 # Key Differences
 
-## But's
+## Drill4J is not just about coverage
+
+## Drill4J does not require changes to code or artifacts
+
+## Drill4J
+
+## Frequent objections
 
 ### we got unit tests coverage
 
-### we got API tests coverage"
+### we got API tests coverage
 
-### we got e2e coverage already
+### we got e2e coverage
 
-Jacoco
-Instanbul JS
+|                                                                          | Does no changes to code/build artifact | Instrumentation method                                                                                               | Test Gap Analysis | Test Impact Analysis |
+| ------------------------------------------------------------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------------- |
+| Java / JVM                                                               |
+| Drill4J Java Agent                                                       | ✔️                                     | Runtime class file instrumentation ([JVMTI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/) + JaCoCo) | ✔️                | ✔️                   |
+| [JaCoCo](https://www.eclemma.org/jacoco/trunk/index.html)                | ✔️                                     | Runtime class file instrumentation                                                                                   | ✔️                | ❌                   |
+|                                                                          |
+| Web JavaScript                                                           |
+| Drill4J JavaScript agent                                                 | ✔️                                     | [V8 (Chrome's JS engine) CDP Profiler](https://chromedevtools.github.io/devtools-protocol/tot/Profiler/)             | ✔️                | ✔️                   |
+| [IstanbulJS](https://istanbul.js.org/)                                   | ❌                                     | Bundle file instrumentation                                                                                          | ✔️                | ❌                   |
+| [Cypress coverage](https://docs.cypress.io/guides/tooling/code-coverage) | ❌                                     | Bundle file instrumentation (via IstanbulJs)                                                                         | ✔️                | ❌                   |

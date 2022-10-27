@@ -31,6 +31,11 @@ const docs = [
     items: [
       {
         type: 'doc',
+        label: 'Read First',
+        id: 'basic-concepts/basics-read-first',
+      },
+      {
+        type: 'doc',
         label: 'Glossary',
         id: 'basic-concepts/glossary',
       },
@@ -51,13 +56,13 @@ const docs = [
       },
       {
         type: 'doc',
-        label: 'Limitations',
-        id: 'basic-concepts/overview-limitations',
+        label: 'Supported Technologies',
+        id: 'basic-concepts/supported-technologies',
       },
       {
         type: 'doc',
-        label: 'Supported Technologies',
-        id: 'basic-concepts/supported-technologies',
+        label: 'Limitations',
+        id: 'basic-concepts/overview-limitations',
       },
       {
         type: 'doc',
@@ -80,21 +85,36 @@ const docs = [
         id: 'installation/deploy-drill4j-services',
         label: 'Deploy Drill4J services',
       },
-      {
-        type: 'doc',
-        id: 'installation/setup-java-agent',
-        label: 'Setup Java / JVM Agent',
-      },
-      {
-        type: 'doc',
-        id: 'installation/setup-javascript-agent',
-        label: 'Setup JavaScript Agent',
-      },
-      {
-        type: 'doc',
-        id: 'installation/setup-java-agent-for-android',
-        label: 'Setup Java Agent for Android',
-      },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-java-agent',
+      //   label: 'Java / JVM Agent',
+      // },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-javascript-agent',
+      //   label: 'JavaScript Agent',
+      // },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-autotest-java-agent',
+      //   label: 'Autotest Java Agent',
+      // },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-browser-extension',
+      //   label: 'Browser extension',
+      // },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-pwad',
+      //   label: 'Postman',
+      // },
+      // {
+      //   type: 'doc',
+      //   id: 'installation/setup-cypress',
+      //   label: 'Postman',
+      // },
       {
         type: 'doc',
         id: 'installation/setup-service-group',
