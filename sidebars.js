@@ -33,6 +33,11 @@ const docs = [
   },
   {
     type: 'category',
+    label: 'Drill4Net',
+    items: ['drill4net/drill4j-admin-installation', 'drill4net/ci-cd-integration', 'drill4net/quick-start-guide', 'drill4net/configuration', 'drill4net/drill4net-scanner-parameters', 'drill4net/known-issues'],
+  },
+  {
+    type: 'category',
     label: 'Diagrams',
     items: ['diagrams/auto-test-agent-diagrams', 'diagrams/testing-diagrams'],
   },
