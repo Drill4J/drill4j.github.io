@@ -3,4 +3,10 @@ id: drill4j-admin-installation
 title: Drill4J Admin Installation
 ---
 
-Drill4J Admin installation process is described [here](./../installation/drill-admin.mdx).
+1. Make sure you have Docker installed.
+2. Download [docker-compose file](https://github.com/Drill4J/example-configs/raw/main/0.8.0/prerelease/api-tests/docker-compose-admin.yml)
+and [.env file](https://github.com/Drill4J/example-configs/raw/main/0.8.0/prerelease/api-tests/.env)
+3. Run the following command in the folder where you saved the *docker-compose-admin.yml* and *.env* files.
+```
+docker-compose -f ./docker-compose-admin.yml up -d
+```
