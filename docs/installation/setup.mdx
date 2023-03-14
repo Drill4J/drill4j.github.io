@@ -21,8 +21,8 @@ Before diving into setup, read the [Overview](/docs/overview/why-drill4j) sectio
 
 2. **Step 2** Integrate application(s) agent
 
-   - Java or any JVM language
-   - Frontend JavaScript/TypeScript
+   - For apps in Java or any JVM language
+   - For web frontend in JavaScript/TypeScript
 
 3. **Step 3** Integrate with tests
 
@@ -34,7 +34,7 @@ Read further for detailed instructions.
 
 ## Step 1 - Deploying Drill4J services
 
-Refer to [Deploy Drill4J services](/docs/installation/deploy-drill4j-services) section
+Refer to <a target="_blank" href="/docs/installation/deploy-drill4j-services">Deploy Drill4J services</a> section
 
 ## Step 2 - Integrating application agent
 
@@ -118,64 +118,84 @@ Refer to [Deploy Drill4J services](/docs/installation/deploy-drill4j-services) s
 ## Step 3 - Integrating with tests
 
 <div style={{ 'border-bottom': '2px solid lightgrey' }}>
-<Tabs
-  defaultValue="e2e"
-  values={[
-  { label: 'API', value: 'API' },
-  { label: 'UI (Selenium)', value: 'selenium' },
-  { label: 'UI (Cypress)', value: 'cypress' },
-  { label: 'Postman', value: 'postman' },
-  { label: 'Manual', value: 'manual' },
-  { label: 'Unit', value: 'unit' },
-  ]}
->
-<TabItem value="e2e">
-
-<ul>
-  <li>Java, Selenium, JUnit, TestNg, Selenide, Cucumber</li>
-  <li>Selenium Hub, Selenium Grid, Selenoid</li>
-</ul>
-If this sounds familiar - use <a href="/docs/installation/setup-java-autotest-agent">Java Auto Test Agent</a>
-
-<ul>
-  <li>JavaScript, TypeScript, Mocha, Junit, Jasmine, Cucumber, Protractor</li>
-</ul>
-If that sounds familiar - use <a href="/docs/installation/setup-js-auto-test-agent">JavaScript Auto Test Agent</a>
-
-<ul>
-  <li>You are using Cypress</li>
-</ul>
-Refer to Cypress configuration guide <a href="/docs/installation/setup-cypress">JavaScript Auto Test Agent</a>
-
-</TabItem>
-<TabItem value="api">
-</TabItem>
-</Tabs>
+  <Tabs
+    defaultValue="java"
+    values={[
+      { label: 'Java', value: 'java' },
+      { label: 'JavaScript', value: 'javascript' },
+      { label: 'Selenium', value: 'selenium' },
+      { label: 'Cypress', value: 'cypress' },
+      { label: 'Postman', value: 'postman' },
+      { label: 'Manual', value: 'manual' },
+    ]}
+  >
+    <TabItem value="java">
+      <ul>
+        <li>Java, Selenium, JUnit, TestNg, Selenide, Cucumber</li>
+      </ul>
+      Use <a href="/docs/installation/setup-java-autotest-agent">Java Auto Test Agent</a>
+    </TabItem>
+    <TabItem value="javascript">
+      <ul>
+        <li>JavaScript, TypeScript, Mocha, Junit, Jasmine, Cucumber, Protractor</li>
+      </ul>
+      If that sounds familiar - use <a href="/docs/installation/setup-js-auto-test-agent">JavaScript Auto Test Agent</a>
+    </TabItem>
+    <TabItem value="selenium">
+      <ul>
+        <li>You are using Selenium</li>
+      </ul>
+      Depending on what your tests are implemented with please refer to:
+      <ul>
+        <li>
+          <a href="/docs/installation/setup-selenium-java">Drill4J - Selenium - Java</a> guide
+        </li>
+        <li>
+          <a href="/docs/installation/setup-selenium-node-js">Drill4J - Selenium - Node.js</a> guide
+        </li>
+      </ul>
+    </TabItem>
+    <TabItem value="postman">
+      <ul>
+        <li>
+          You are using{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://www.postman.com/">
+            Postman
+          </a>
+        </li>
+      </ul>
+      Use <a href="/docs/installation/setup-postman">PWAD</a> - Drill4J wrapper for <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman"
+      >
+        Newman
+      </a> (Postman's CLI runner).
+    </TabItem>
+    <TabItem value="cypress">
+      <ul>
+        <li>You are using Cypress</li>
+      </ul>
+      Refer to <a href="/docs/installation/setup-cypress">Cypress integration guide</a>
+    </TabItem>
+    <TabItem value="manual">
+      <ul>
+        <li>
+          You are manually testing web applications in{' '}
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/chrome/">
+            Chrome
+          </a>
+          , <a target="_blank" rel="noopener noreferrer" href="https://www.microsoft.com/edge">
+            Edge
+          </a> or other <a target="_blank" rel="noopener noreferrer" href="https://www.chromium.org/Home/">
+            Chromium
+          </a>
+          -based browsers
+        </li>
+      </ul>
+      Use the <a href="/docs/installation/setup-browser-extension">Chrome browser extension</a>
+      <br />
+      We do not support manual testing metrics collection for other browsers at the moment.
+    </TabItem>
+  </Tabs>
 </div>
-
-- Record manual tests
-
-- Chrome/Chromium-based browsers
-- Electron app - it could work
-- Firefox, Safari - not supported
-
-- Record API tests
-
-  - Java
-  - JavaScript
-  - Postman
-
-- Record e2e tests
-
-  - Selenium
-
-    - Java
-
-      - Chrome
-      - Firefox
-
-    - JavaScript
-
-      - Chrome/Chromium only
-
-  - Cypress

@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "npm run tailwind:css && docusaurus start",
-    "build": "NODE_ENV=production npm run tailwind:css && docusaurus build",
+    "build": "set NODE_ENV=production&& npm run tailwind:css && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",

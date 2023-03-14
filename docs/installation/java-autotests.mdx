@@ -3,6 +3,118 @@ id: setup-java-autotest-agent
 title: Java Autotest Agent
 ---
 
+import { Table } from '@site/src/components';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Setup Java Autotest Agent
 
-`
+This page describes how to setup Autotest Agent to collect metrics for automated API and E2E tests written in Java / other JVM language.
+
+> TODO move to "global" supported tehcnologies section?
+
+## Supported tehcnologies
+
+While Drill4J provides plugins both for [Maven](#maven-config) and [Gradle](#gradle-config), for Autotest Agent to work it has to also support both test runner and transport.
+Why: refer to [Data Collection](/docs/basic-concepts/data-collection) section for the detailed explanation.
+
+### Supported testing frameworks / runners
+
+> TODO add exact versions
+
+- TestNG
+- JUnit
+- JMeter
+- Spock
+- Cucumber
+
+> Support quality for future versions may vary. Good thing is it's either going to work or not.
+> Please make sure to <a target="_blank" rel="noopener noreferrer" href="https://github.com/Drill4J/drill4j/issues">report issue</a> if you encounter problems with the listed framework/runner.
+
+### Transports
+
+- HTTP clients
+
+  > TODO add the exact list
+
+- Kafka
+- Cadence
+
+**WebSockets** are not supported at the moment.
+
+## Maven config
+
+Add the following lines to `pom.xml` configuration file in test project.
+Remember to enter the appropriate values for agentId (or groupId, if using groups), adminPort, adminHost.
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.agent.runner</groupId>
+            <artifactId>maven</artifactId>
+            <version>0.3.3</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>autotest</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <drill>
+                    <version>0.22.1</version>
+                    <agentId><!--YOUR AGENT ID--></agentId>
+                    <adminHost><!--DRILL-ADMIN SERVICE HOST--></adminHost>
+                    <adminPort><!--DRILL-ADMIN SERVICE PORT--></adminPort>
+
+                    <!-- <groupId>YOUR GROUP ID</groupId> -->
+
+                    <!-- optional logging -->
+                    <!-- <logLevel>TRACE</logLevel>
+                    <logFile>./drill4j-autotest-agent.log</logFile> -->
+                </drill>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+## Gradle config
+
+Add the following lines to `build.gradle` configuration file in test project.
+Remember to enter the appropriate values for agentId (or groupId, if using groups), adminPort, adminHost.
+
+```ini
+plugins {
+    id 'java'
+    id 'com.epam.drill.agent.runner.autotest' version '0.3.3'
+}
+
+group 'com.epam'
+version '1.0-SNAPSHOT'
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        apply plugin: 'java'
+        apply plugin: 'com.epam.drill.agent.runner.autotest'
+    }
+
+    drill {
+        version = "0.22.1"
+        agentId = /*YOUR AGENT ID*/
+        adminHost = /* DRILL-ADMIN SERVICE HOST */
+        adminPort = /* DRILL-ADMIN SERVICE PORT */
+        // groupId = /*YOUR GROUP ID*/
+
+        // optional logging
+        // logLevel= "TRACE"
+        // logFile = "./drill4j-autotest-agent.log"
+    }
+}
+```

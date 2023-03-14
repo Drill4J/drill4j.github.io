@@ -31,8 +31,8 @@ const docs = [
     items: [
       {
         type: 'doc',
-        label: 'Read First',
-        id: 'basic-concepts/basics-read-first',
+        label: 'Drill4J in CI/CD',
+        id: 'basic-concepts/place-in-ci-cd',
       },
       {
         type: 'doc',
@@ -95,11 +95,11 @@ const docs = [
       //   id: 'installation/setup-javascript-agent',
       //   label: 'JavaScript Agent',
       // },
-      // {
-      //   type: 'doc',
-      //   id: 'installation/setup-autotest-java-agent',
-      //   label: 'Autotest Java Agent',
-      // },
+      {
+        type: 'doc',
+        id: 'installation/setup-java-autotest-agent',
+        label: 'Java Autotest Agent',
+      },
       // {
       //   type: 'doc',
       //   id: 'installation/setup-browser-extension',

@@ -36,7 +36,7 @@ module.exports = {
           label: 'How to start',
         },
         {
-          to: 'docs/installation/drill-admin',
+          to: 'docs/overview/why-drill4j',
           label: 'Documentation',
         },
         {
@@ -52,15 +52,15 @@ module.exports = {
           items: [
             {
               label: 'Drill Admin',
-              href: '/docs/installation/drill-admin',
+              href: '/docs/setup/drill-admin',
             },
             {
               label: 'Java Agent',
-              href: '/docs/installation/java-agent',
+              href: '/docs/setup/java-agent',
             },
             {
               label: 'Autotest Agent',
-              href: '/docs/installation/autotest-agent',
+              href: '/docs/setup/autotest-agent',
             },
           ],
         },
@@ -69,10 +69,11 @@ module.exports = {
           items: [
             {
               label: 'Microservices',
-              href: '/docs/installation/microservices',
-            }, {
+              href: '/docs/setup/microservices',
+            },
+            {
               label: 'Chrome Extension',
-              href: '/docs/installation/extension',
+              href: '/docs/setup/extension',
             },
             {
               label: 'Java + JS example App',
