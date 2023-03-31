@@ -1,0 +1,22 @@
+---
+id: tests-project-setup
+title: Tests Project Setup
+---
+
+## Supported Tests
+1. Integration Tests
+2. Selenium Tests
+
+## Integration Tests Setup
+1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
+in *assembly with tests* based on test framework used in your *assembly with tests*.
+
+## Selenium Tests Setup
+1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
+in *assembly with tests* based on test framework used in your *assembly with tests*.
+2. Install [Drill4Net.Selenium](https://www.nuget.org/packages/Drill4Net.Selenium) in *assembly with tests*.
+3. Add `UseDrill4Net` extention method call for Selenium web driver. Example:
+```
+var driver = new ChromeDriver().UseDrill4Net();
+```
+Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.

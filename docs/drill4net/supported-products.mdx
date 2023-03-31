@@ -1,0 +1,48 @@
+---
+id: supported-products
+title: Supported Products
+---
+
+Currently Drill4Net supports the following products:
+- [Integration tests](#integration-tests)
+- [Selenium](#selenium)
+
+Below are the required changes to *the application under test* and *the test project*.
+
+# Integration tests
+## Application Under Tests Changes
+
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.WebApi](https://www.nuget.org/packages/Drill4Net.Receiver.WebApi) in *application under test* start up project.
+3. Add the following line in you `Startup.Configure` method:
+```
+app.UseDrill4NetReceiverWebApi();
+``` 
+Make sure you added `using Drill4Net.Receiver.WebApi;`.
+
+### Test Project Changes
+
+1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
+in *assembly with tests* based on test framework used in your *assembly with tests*.
+
+# Selenium
+## Application Under Tests Changes
+
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.WebApi](https://www.nuget.org/packages/Drill4Net.Receiver.WebApi) in *application under test* start up project.
+3. Add the following line in you `Startup.Configure` method:
+```
+app.UseDrill4NetReceiverWebApi();
+``` 
+Make sure you added `using Drill4Net.Receiver.WebApi;`.
+
+### Test Project Changes
+
+1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
+in *assembly with tests* based on test framework used in your *assembly with tests*.
+2. Install [Drill4Net.Selenium](https://www.nuget.org/packages/Drill4Net.Selenium) in *assembly with tests*.
+3. Add `UseDrill4Net` extention method call for Selenium web driver. Example:
+```
+var driver = new ChromeDriver().UseDrill4Net();
+```
+Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.

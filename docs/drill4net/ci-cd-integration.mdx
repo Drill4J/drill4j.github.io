@@ -6,97 +6,37 @@ title: CI/CD Integration
 import { Image } from '@components';
 import { Table } from '@components';
 
+## Prerequisites
+Perform a [one time setup](./one-time-setup) before you continue with CI/CD integration.
+
+## CI/CD Integration
+
 The Drill4Net agent should run after the build step in CI/CD pipeline:
 <Image src="/img/drill4net/drill4net-build-pipeline.svg"/>
 
-## 1. One Time Setup
-
-### 1.1. Install Required NuGet Packages
-1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
-2. Install [Drill4Net.Receiver.WebApi](https://www.nuget.org/packages/Drill4Net.Receiver.WebApi) in *application under test* start up project.
-3. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
-in *assembly with tests* based on test framework used in your *assembly with tests*.
-
-### 1.2. Use Drill4Net Middleware
-Add the following line in you `Startup.Configure` method:
-```
-app.UseDrill4NetReceiverWebApi();
-``` 
-Make sure you added `using Drill4Net.Receiver.WebApi;`.
-
-### 1.3. Install Drill4J Admin
-First of all you need to install *Drill4J Admin*. Follow [this guide](./drill4j-admin-installation)
-to see the different installation ways and find the right one for you.
-
-### 1.4. Configure Test Agent
-1. Download *Test Agent (drill4net-injector-app)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases/tag/v1.0.0).
-2. Configure *Test Agent* as described [here](./configuration#test-agent-configuration).
-
-### 1.5. Build Application Under Test
-Build application under tests, so you can proceed with following steps
-
-### 1.6. Run Drill4Net Scanner
-You need to run *Drill4Net Scanner* to prepare application under tests.
-1. Make sure Drill4Net Admin is up and running.
-2. Download *Drill4Net Scanner (drill4net-scanner)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases/tag/v1.0.0).
-3. Configure *Drill4Net Scanner* as described [here](./configuration#drill4net-scanner-configuration).
-4. Run Drill4Net.Scanner. There are two required arguments:
-- Directory with binaries of application under test
-- Application under test executable (`--target`)
-Example for Windows:
-```
-start Drill4Net.Scanner.exe "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1" \
-  --target "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1\Paralel.exe"
-```
-5. There are also optional parameters described [here](./drill4net-scanner-parameters).
-
-### 1.7. Register Agent in Drill4J Admin
-1. After you launched *Drill4Net Scanner*, navigate to *Drill4J Admin UI*.
-2. Click *Select Agent* --> *Add Agent*
-3. You should see agent with name specified in `adminAgentConfig:id` earlier and .NET type. Click *Register*.
-<Image src="/img/drill4net/add-agent.png"/>
-4. Now you can see your agent information. Click *Next*.
-<Image src="/img/drill4net/agent-registration-01.png"/>
-5. Enter arbirtary value in *Target Host* field. This value will not make any effect. This field was made for Java and JavaScript agents.
-In future we are going to implement autoregistration, so this field is not required for .NET Agent. Simply click *Next*.
-<Image src="/img/drill4net/agent-registration-02.png"/>
-6. Check *Test2Code* and click *Finish*.
-<Image src="/img/drill4net/agent-registration-03.png"/>
-7. Now you can select newly created agent and go to *Test2Code*. You should see your class structure:
-<Image src="/img/drill4net/test2code-01.png"/>
-The full agent registration process should look like this:
-<details> 
-    <summary>Click here to view full agent registration process</summary>
-    <Image src="/img/drill4net/agent-registration-process.gif"/>
-</details>
-
-## 2. Integrate in CI/CD Pipeline
-
-Now you can integrate Drill4Net in CI/CD pipeline. Perform the following steps after the build step is finished.
-
-### 2.1. Change Build Version in Configurations
+### 1. Change Build Version in Configurations
 Each build should change build version in *Test Agent* and *Drill4Net Scanner* appsettings.yml.
 1. Change `adminAgentConfig:buildVersion` in *Drill4Net Scanner* appsettings.yml to version of current build.
-2. Change `AdminAgentConfig:BuildVersion` in *Test Agent* drill4netsettings.yml to version of current build.
+2. Change `AdminAgentConfig:BuildVersion` in *Drill4Net Injector* drill4netsettings.yml to version of current build.
 
-### 2.2. Run Drill4Net Scanner
-[Run Drill4Net Scanner](#16-run-drill4net-scanner) for current build.
+### 2. Run Drill4Net Scanner
+[Run Drill4Net Scanner](./one-time-setup#7-run-drill4net-scanner) for current build.
 
-### 2.3. Run Test Agent
+### 3. Run Drill4Net Injector
 Run Drill4Net.Injector.App for current build. Example for Windows:
 ```
 start Drill4Net.Injector.App.exe
 ```
 You can also provide `TestAssemblySourcePath` argument. In this case, value from drill4netsettings.yml will be overriden. Example for Windows:
 ```
-start Drill4Net.Injector.App.exe "d:\Builds\AppUnderTest.Tests\netcoreapp3.1\Ipreo.XUnit.Tests.dll"
+start Drill4Net.Injector.App.exe "d:\Builds\AppUnderTest.Tests\netcoreapp3.1\AppUnderTest.Tests.dll"
 ```
 
-### 2.4. Run Integration Tests
+### 4. Run Integration Tests
 Run your integration tests from assembly provided to *Test Agent*. Note that tests should run only after Drill4Net.Injector.App run is
 successfully finsihed. Make sure you run tests without rebuilding before running tests.
 
-### 2.5. Get Suggested Tests to Run
+### 5. Get Suggested Tests to Run
 You can execute the `curl` command to get suggested tests to run:
 ```
 curl -i -H "accept: application/json" \
