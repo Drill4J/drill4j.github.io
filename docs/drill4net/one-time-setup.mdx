@@ -1,0 +1,61 @@
+---
+id: one-time-setup
+title: One Time Setup
+---
+
+import { Image } from '@components';
+
+### 1. Install Drill4J Admin
+First of all you need to install *Drill4J Admin*. Follow [this guide](./drill4j-admin-installation)
+to see the different installation ways and find the right one for you.
+
+### 2. Configure Drill4Net Injector
+1. Download *Drill4Net Injector (drill4net-injector-app)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases).
+2. Configure *Drill4Net Injector* as described [here](./configuration#test-agent-configuration).
+
+### 3. Configure Drill4Net Scanner
+1. Download *Drill4Net Scanner (drill4net-scanner)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases).
+2. Configure *Drill4Net Scanner* as described [here](./configuration#drill4net-scanner-configuration).
+
+### 4. Setup Application Under Test
+Setup your application under test as described [here](./app-under-test-setup).
+
+### 5. Setup Tests Project
+Setup your project with tests as described [here](./tests-project-setup).
+
+### 6. Build Application Under Test
+Build application under tests, so you can proceed with following steps.
+
+### 7. Run Drill4Net Scanner
+You need to run *Drill4Net Scanner* to prepare application under tests.
+
+There are two required arguments:
+- Directory with binaries of application under test
+- Application under test executable (`--target`)
+Example for Windows:
+```
+start Drill4Net.Scanner.exe "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1" \
+  --target "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1\Paralel.exe"
+```
+
+There are also optional parameters described [here](./drill4net-scanner-parameters).
+
+### 8. Register Agent in Drill4J Admin
+1. After you launched *Drill4Net Scanner*, navigate to *Drill4J Admin UI*.
+2. Click *Select Agent* --> *Add Agent*
+3. You should see agent with name specified in `adminAgentConfig:id` earlier and .NET type. Click *Register*.
+<Image src="/img/drill4net/add-agent.png"/>
+4. Now you can see your agent information. Click *Next*.
+<Image src="/img/drill4net/agent-registration-01.png"/>
+5. Enter arbirtary value in *Target Host* field. This value will not make any effect. This field was made for Java and JavaScript agents.
+In future we are going to implement autoregistration, so this field is not required for .NET Agent. Simply click *Next*.
+<Image src="/img/drill4net/agent-registration-02.png"/>
+6. Check *Test2Code* and click *Finish*.
+<Image src="/img/drill4net/agent-registration-03.png"/>
+7. Now you can select newly created agent and go to *Test2Code*. You should see your class structure:
+<Image src="/img/drill4net/test2code-01.png"/>
+The full agent registration process should look like this:
+<details> 
+    <summary>Click here to view full agent registration process</summary>
+    <Image src="/img/drill4net/agent-registration-process.gif"/>
+</details>

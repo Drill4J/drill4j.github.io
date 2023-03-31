@@ -34,7 +34,9 @@ const docs = [
   {
     type: 'category',
     label: 'Drill4Net',
-    items: ['drill4net/drill4j-admin-installation', 'drill4net/ci-cd-integration', 'drill4net/quick-start-guide', 'drill4net/configuration', 'drill4net/drill4net-scanner-parameters', 'drill4net/known-issues'],
+    items: [ 'drill4net/quick-start-guide', 'drill4net/drill4j-admin-installation', 'drill4net/app-under-test-setup',
+      'drill4net/tests-project-setup', 'drill4net/ci-cd-integration', 'drill4net/configuration', 
+      'drill4net/drill4net-scanner-parameters', 'drill4net/known-issues'],
   },
   {
     type: 'category',
