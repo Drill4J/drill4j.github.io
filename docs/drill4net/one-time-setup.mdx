@@ -4,24 +4,25 @@ title: One Time Setup
 ---
 
 import { Image } from '@components';
+import Link from '@docusaurus/Link';
 
 ### 1. Install Drill4J Admin
-First of all you need to install *Drill4J Admin*. Follow [this guide](./drill4j-admin-installation)
+First of all you need to install *Drill4J Admin*. Follow <Link to="./drill4j-admin-installation" target="_blank">this guide</Link>
 to see the different installation ways and find the right one for you.
 
 ### 2. Configure Drill4Net Injector
 1. Download *Drill4Net Injector (drill4net-injector-app)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases).
-2. Configure *Drill4Net Injector* as described [here](./configuration#test-agent-configuration).
+2. Configure *Drill4Net Injector* as described <Link to="./configuration#test-agent-configuration" target="_blank">here</Link>.
 
 ### 3. Configure Drill4Net Scanner
 1. Download *Drill4Net Scanner (drill4net-scanner)* for your system [here](https://github.com/Drill4J/dotnet-releases/releases).
-2. Configure *Drill4Net Scanner* as described [here](./configuration#drill4net-scanner-configuration).
+2. Configure *Drill4Net Scanner* as described <Link to="./configuration#drill4net-scanner-configuration" target="_blank">here</Link>.
 
 ### 4. Setup Application Under Test
-Setup your application under test as described [here](./app-under-test-setup).
+Setup your application under test as described <Link to="./app-under-test-setup" target="_blank">here</Link>.
 
 ### 5. Setup Tests Project
-Setup your project with tests as described [here](./tests-project-setup).
+Setup your project with tests as described <Link to="./tests-project-setup" target="_blank">here</Link>.
 
 ### 6. Build Application Under Test
 Build application under tests, so you can proceed with following steps.
@@ -38,7 +39,7 @@ start Drill4Net.Scanner.exe "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1" \
   --target "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1\Paralel.exe"
 ```
 
-There are also optional parameters described [here](./drill4net-scanner-parameters).
+There are also optional parameters described <Link to="./drill4net-scanner-parameters" target="_blank">here</Link>.
 
 ### 8. Register Agent in Drill4J Admin
 1. After you launched *Drill4Net Scanner*, navigate to *Drill4J Admin UI*.

@@ -4,13 +4,13 @@ title: Quick Start Guide
 ---
 
 import { Image } from '@components';
-import { Table } from '@components';
+import Link from '@docusaurus/Link';
 
 This quick start guide describes how to get started with Drill4Net.
-For CI/CD integration see [this guide](./ci-cd-integration).
+For CI/CD integration see <Link to="./ci-cd-integration" target="_blank">this guide</Link>.
 
 ## 1. Perform One Time Setup
-Perform a [one time setup](./one-time-setup) before you continue with this guide.
+Perform a <Link to="./one-time-setup" target="_blank">one time setup</Link> before you continue with this guide.
 
 ## 2. Run Drill4Net Injector
 Run Drill4Net.Injector.App for current build. Example for Windows:
@@ -37,7 +37,7 @@ is active.
 ## 4. Run Drill4Net Scanner for New Build
 1. Modify some methods of application under test. 
 2. Make sure application under test is rebuilt.
-3. [Run Drill4Net Scanner](./one-time-setup#7-run-drill4net-scanner) but this time change value of `adminAgentConfig:buildVersion` in appsettings.yml
+3. <Link to="./one-time-setup#7-run-drill4net-scanner" target="_blank">Run Drill4Net Scanner</Link> but this time change value of `adminAgentConfig:buildVersion` in appsettings.yml
 to new build version value (any value that differs from previous build version).
 4. You should see the upadated information about coverage along with *Risks* (method modified since last build) and
 *Tests to run* (tests that should run to cover risks). You can also use `GET` request to retrieve suggested tests to run.
