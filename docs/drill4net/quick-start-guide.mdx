@@ -4,6 +4,7 @@ title: Quick Start Guide
 ---
 
 import { Image } from '@components';
+import { Warning } from '@components';
 import Link from '@docusaurus/Link';
 
 This quick start guide describes how to get started with Drill4Net.
@@ -13,46 +14,43 @@ For CI/CD integration see <Link to="./ci-cd-integration" target="_blank">this gu
 Perform a <Link to="./one-time-setup" target="_blank">one time setup</Link> before you continue with this guide.
 
 ## 2. Run Drill4Net Injector
-Run Drill4Net.Injector.App for current build. Example for Windows:
-```
-start Drill4Net.Injector.App.exe
-```
-You can also provide `TestAssemblySourcePath` argument. In this case, value from drill4netsettings.yml will be overriden. Example for Windows:
-```
-start Drill4Net.Injector.App.exe "d:\Builds\AppUnderTest.Tests\netcoreapp3.1\AppUnderTest.Tests.dll"
-```
+After *application under test* and project with tests are built <Link to="./drill4net-apps#4-usage-1" target="_blank">run Drill4Net Injector</Link>.
 
-## 3. Run Integration Tests
-1. Run your integration tests from assembly provided to *Test Agent*. Note that tests should run only after Drill4Net.Injector.App run is
-successfully finsihed. Now make sure the assembly with tests is not rebuilt before running tests.
+<Warning>
+    Make sure that <i>application under test</i> assembly and <i>assembly with tests</i> are <b>not</b> rebuilt
+    before running tests. <i>Drill4Net Scanner</i> and <i>Drill4Net Injector</i> make some important modifications 
+    to the assembly to make Drill4Net solution work. 
+</Warning>
+
+## 3. Explore Coverage
+1. Run your tests from assembly provided to *Drill4Net Injector*.
 2. A green circle with a checkmark inside should appear next to the agent icon in the *Drill4J Admin*, indicating that the agent
 is active.
 <Image src="/img/drill4net/active-agent.png"/>
-5. Now you can explore covered methods and their associated tests, information about each tests, and coverage percent.
+
+3. Now you can explore covered methods and their associated tests, information about each tests, and coverage percent.
 <details> 
     <summary>Click here to view coverage information</summary>
     <Image src="/img/drill4net/coverage-info.gif"/>
 </details>
 
-## 4. Run Drill4Net Scanner for New Build
-1. Modify some methods of application under test. 
-2. Make sure application under test is rebuilt.
-3. <Link to="./one-time-setup#7-run-drill4net-scanner" target="_blank">Run Drill4Net Scanner</Link> but this time change value of `adminAgentConfig:buildVersion` in appsettings.yml
-to new build version value (any value that differs from previous build version).
-4. You should see the upadated information about coverage along with *Risks* (method modified since last build) and
-*Tests to run* (tests that should run to cover risks). You can also use `GET` request to retrieve suggested tests to run.
-To do this click *Get Suggested Tests*. You can copy `curl` command to clipboard.
+## 4. Explore New Build Coverage and Risks
+Let's say the development team made some modifications to *application under test* code an the new build is ready.
+1. Simply <Link to="./drill4net-apps#4-usage" target="_blank">run Drill4Net Scanner</Link> for new build
+but this time change value of `adminAgentConfig:buildVersion` in appsettings.yml to new build version value
+(any value that differs from previous build version).
+2. You should see the upadated information about coverage along with *Risks* (method modified since last build) and
+*Tests to run* (tests that should run to cover risks).
 <details> 
-    <summary>Click here to view Risks and Tests to run</summary>
+    <summary>Click here to view Risks and Tests to Run</summary>
     <Image src="/img/drill4net/risks-and-tests-to-run.gif"/>
 </details>
 
-## 5. Run Integration Tests for New Build
-1. Make sure integration tests assembly is rebuilt.
-2. [Run Drill4Net Injector](#2-run-drill4net-injector).
-3. Run your integration tests from assembly provided to *Test Agent*. Note that tests should run only after Drill4Net.Injector.App run is
-successfully finsihed. Now make sure the assembly with tests is not rebuilt before running tests.
-4. Now the *risks* are covered with tests and no *risks* are present, while previous ones are covered.
+## 5. Cover Risks
+1. <Link to="./drill4net-apps#4-usage-1" target="_blank">Run Drill4Net Injector</Link> for a new <i>assembly with tests</i> build.
+2. Run your tests from assembly provided to *Drill4Net Injector*. Change value of `AdminAgentConfig:BuildVersion` in
+drill4netsettings.yml to new build version value (the same version, you specified for Drill4Net Scanner in previous step).
+3. Now you can see that the *risks* are covered with tests.
 <details> 
     <summary>Click here to view covered Risks</summary>
     <Image src="/img/drill4net/covered-risks.gif"/>

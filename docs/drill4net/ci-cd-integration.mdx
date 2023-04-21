@@ -4,6 +4,7 @@ title: CI/CD Integration
 ---
 
 import { Image } from '@components';
+import { Warning } from '@components';
 import Link from '@docusaurus/Link';
 
 ## Prerequisites
@@ -14,30 +15,30 @@ Perform a <Link to="./one-time-setup" target="_blank">one time setup</Link> befo
 The Drill4Net agent should run after the build step in CI/CD pipeline:
 <Image src="/img/drill4net/drill4net-build-pipeline.svg"/>
 
-### 1. Change Build Version in Configurations
-Each build should change build version in *Test Agent* and *Drill4Net Scanner* appsettings.yml.
-1. Change `adminAgentConfig:buildVersion` in *Drill4Net Scanner* appsettings.yml to version of current build.
-2. Change `AdminAgentConfig:BuildVersion` in *Drill4Net Injector* drill4netsettings.yml to version of current build.
+### 1. Update Build Version in Configurations
+Each build should update build version in *Drill4Net Scanner* and *Drill4Net Injector* configuration files.
+1. Update `adminAgentConfig:buildVersion` in *Drill4Net Scanner* appsettings.yml to version of current build.
+2. Update `AdminAgentConfig:BuildVersion` in *Drill4Net Injector* drill4netsettings.yml to version of current build.
 
 ### 2. Run Drill4Net Scanner
-[Run Drill4Net Scanner](./one-time-setup#7-run-drill4net-scanner) for current build.
+After each build, you should <Link to="./drill4net-apps#4-usage" target="_blank">run Drill4Net Scanner</Link> for
+*application under test* assembly.
 
 ### 3. Run Drill4Net Injector
-Run Drill4Net.Injector.App for current build. Example for Windows:
-```
-start Drill4Net.Injector.App.exe
-```
-You can also provide `TestAssemblySourcePath` argument. In this case, value from drill4netsettings.yml will be overriden. Example for Windows:
-```
-start Drill4Net.Injector.App.exe "d:\Builds\AppUnderTest.Tests\netcoreapp3.1\AppUnderTest.Tests.dll"
-```
+After each build, you should <Link to="./drill4net-apps#4-usage" target="_blank">run Drill4Net Injector</Link> for
+*assembly with tests*.
 
-### 4. Run Integration Tests
-Run your integration tests from assembly provided to *Test Agent*. Note that tests should run only after Drill4Net.Injector.App run is
-successfully finsihed. Make sure you run tests without rebuilding before running tests.
+### 4. Run Tests
+After *Drill4Net Scanner* and *Drill4Net Injector* finished work, you should run tests from assembly provided to 
+*Drill4Net Injector*.
 
-### 5. Get Suggested Tests to Run
-You can execute the `curl` command to get suggested tests to run:
+<Warning>
+    Make sure that <i>application under test</i> assembly and <i>assembly with tests</i> are <b>not</b> rebuilt before running tests. 
+    <i>Drill4Net Scanner</i> and <i>Drill4Net Injector</i> make some important modifications to the assembly to make Drill4Net solution work. 
+</Warning>
+
+### 5. Get Tests to Run
+You can execute the `curl` command to get tests to run:
 ```
 curl -i -H "accept: application/json" \
   -H "content-type: application/json" \
@@ -46,3 +47,5 @@ curl -i -H "accept: application/json" \
 `drill4j-address` is the address of *Drill4J Admin*, for example `http://localhost:8091`.
 
 `agent-id` is the value of `adminAgentConfig:id` provided in *Drill4Net Scanner* earlier.
+
+To cover new build's *Risks* (methods modified since previous build) it is enough to only run tests returned in thr response.
