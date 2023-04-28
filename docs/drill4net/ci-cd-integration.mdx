@@ -8,7 +8,7 @@ import { Warning } from '@components';
 import Link from '@docusaurus/Link';
 
 ## Prerequisites
-Perform a <Link to="./one-time-setup" target="_blank">one time setup</Link> before you continue with CI/CD integration.
+Perform a <Link to="/docs/drill4net/one-time-setup" target="_blank">one time setup</Link> before you continue with CI/CD integration.
 
 ## CI/CD Integration
 
@@ -21,11 +21,11 @@ Each build should update build version in *Drill4Net Scanner* and *Drill4Net Inj
 2. Update `AdminAgentConfig:BuildVersion` in *Drill4Net Injector* drill4netsettings.yml to version of current build.
 
 ### 2. Run Drill4Net Scanner
-After each build, you should <Link to="./drill4net-apps#4-usage" target="_blank">run Drill4Net Scanner</Link> for
+After each build, you should <Link to="/docs/drill4net/drill4net-apps#4-usage" target="_blank">run Drill4Net Scanner</Link> for
 *application under test* assembly.
 
 ### 3. Run Drill4Net Injector
-After each build, you should <Link to="./drill4net-apps#4-usage-1" target="_blank">run Drill4Net Injector</Link> for
+After each build, you should <Link to="/docs/drill4net/drill4net-apps#4-usage-1" target="_blank">run Drill4Net Injector</Link> for
 *assembly with tests*.
 
 ### 4. Run Tests
