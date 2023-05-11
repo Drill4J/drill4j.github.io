@@ -28,7 +28,7 @@ Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.
 1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
 in *assembly with tests* based on test framework used in your *assembly with tests*.
 2. Install [Drill4Net.Playwright](https://www.nuget.org/packages/Drill4Net.Playwright) in *assembly with tests*.
-3. Add `UseDrill4Net` extention method call for Selenium web driver. Example:
+3. Add `UseDrill4NetAsync` extention method call for Playwright Browser. Example:
 ```
  var browser = await _playwright.Chromium.LaunchAsync().UseDrill4NetAsync();
 ```
