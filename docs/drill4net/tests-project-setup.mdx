@@ -8,7 +8,8 @@ import Link from '@docusaurus/Link';
 ## Supported Tests
 1. Integration Tests
 2. Selenium Tests
-3. Manual Tests
+3. Playwright Tests
+4. Manual Tests
 
 ## Integration Tests Setup
 1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
@@ -23,6 +24,16 @@ in *assembly with tests* based on test framework used in your *assembly with tes
 var driver = new ChromeDriver().UseDrill4Net();
 ```
 Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.
+
+## Playwright Tests Setup
+1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
+in *assembly with tests* based on test framework used in your *assembly with tests*.
+2. Install [Drill4Net.Playwright](https://www.nuget.org/packages/Drill4Net.Playwright) in *assembly with tests*.
+3. Add `UseDrill4NetAsync` extention method call for Playwright Browser. Example:
+```
+ var browser = await _playwright.Chromium.LaunchAsync().UseDrill4NetAsync();
+```
+Make sure you added `using Drill4Net.Playwright.Drill4NetBrowser;`.
 
 ## Manual Tests Setup
 Obviously, you do not need to setup any project with tests to run manual tests.
