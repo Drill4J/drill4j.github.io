@@ -3,7 +3,20 @@ id: glossary
 title: Glossary
 ---
 
+import { Image, MermaidComponent } from '@components';
+
 # Glossary
+
+<MermaidComponent
+  chart={`flowchart TD;
+      allSides[ stroasdke all sides ];
+      allSides2[|borders:ltrb| stroke all sides ];
+      rbSides[|borders:rb| stroke right and bottom sides ];
+      ltSides[|borders:lt| stroke left and top sides ];
+      lrSides[|borders:lr| stroke left and right sides ];
+      noSide[|borders:no| stroke no side ];
+`}
+/>
 
 This section establishes meaning for both general terms used in this documentation and terms specific to Drill4J.
 
