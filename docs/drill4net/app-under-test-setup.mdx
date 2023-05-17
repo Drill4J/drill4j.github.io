@@ -6,6 +6,7 @@ title: Application Under Test Setup
 ## Supported technologies
 1. Web API
 2. Azure Functions (Isolated Worker Process)
+3. Azure Service Bus
 
 ## Web API Application Under Test Setup
 1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
@@ -26,4 +27,13 @@ using Drill4Net.Receiver.WebApi;
 Make sure you added
 ```
 using Drill4Net.Receiver.AzureFunction;
+```
+
+## Azure Service Bus Under Test Setup
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.AzureServiceBus](https://www.nuget.org/packages/Drill4Net.Receiver.AzureServiceBus) in *application under test* start up project.
+3. Add call in Startup/Program `ServiceBusPatcher.Patch();`.
+Make sure you added
+```
+using Drill4Net.Receiver.AzureServiceBus;
 ```
