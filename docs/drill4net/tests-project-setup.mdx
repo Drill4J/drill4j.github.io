@@ -24,7 +24,8 @@ in *assembly with tests* based on test framework used in your *assembly with tes
 var driver = new ChromeDriver();
 SeleniumPatcher.Patch();
 ```
-Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.
+Make sure you added `using Drill4Net.Selenium.Drill4NetDriver;`.  
+We propagate `sessionId` and `testId` by cookies. To propagate by headers instead of cookies, add [sw.js](https://github.com/Drill4J/dotnet-releases/blob/main/sw.js) file to your UI project, in a folder dedicated to a web page source files (e.g., wwwroot) and pass `true` into `Patch()` method: `SeleniumPatcher.Patch(true)`.
 
 ## Playwright Tests Setup
 1. Install [Drill4Net.TestAgent.NUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.NUnit) or [Drill4Net.TestAgent.XUnit](https://www.nuget.org/packages/Drill4Net.TestAgent.XUnit)
