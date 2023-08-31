@@ -49,3 +49,30 @@ curl -i -H "accept: application/json" \
 `agent-id` is the value of `adminAgentConfig:id` provided in *Drill4Net Scanner* earlier.
 
 To cover new build's *Risks* (methods modified since previous build) it is enough to only run tests returned in thr response.
+
+### 6. Creating Environment Variable for SessionId
+
+When running a bunch of tests on different machines, it's essential to maintain consistency in test sessions. To achieve this, you can set up a unique session identifier using **environment variables**. The value for this environment variable can be any string, but it's important to ensure its uniqueness for proper session tracking. Ensure that you maintain this session ID consistency across all test machines.
+
+#### Examples of scripts for creating environment variables:
+
+##### Bash
+
+```bash
+#!/bin/bash
+
+guidValue=$(date +"%Y%m%d%H%M%S")
+
+export Drill4NetSessionId=$guidValue
+```
+
+##### PowerShell
+
+```powershell
+$guidValue = [guid]::NewGuid().ToString()
+
+# This script needs to execute in the same process tree as tests
+[System.Environment]::SetEnvironmentVariable('Drill4NetSessionId', $guidValue, [System.EnvironmentVariableTarget]::Process)
+
+Write-Output "Created/Updated environment variable Drill4NetSessionId with value: $guidValue"
+```
