@@ -49,3 +49,8 @@ curl -i -H "accept: application/json" \
 `agent-id` is the value of `adminAgentConfig:id` provided in *Drill4Net Scanner* earlier.
 
 To cover new build's *Risks* (methods modified since previous build) it is enough to only run tests returned in thr response.
+
+### 6. Creating Environment Variable for SessionId
+
+When running a bunch of tests on different machines, it's essential to maintain consistency in test sessions. To achieve this, you can set up a unique session identifier using environment variables.
+Ensure that you maintain this session ID consistency across all test machines.
