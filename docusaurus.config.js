@@ -47,16 +47,16 @@ module.exports = {
           title: "1",
           items: [
             {
-              label: "Drill Admin",
-              href: "/docs/setup/drill-admin"
+              label: "Intro",
+              href: "/docs/overview/why-drill4j"
+            },
+            {
+              label: "Getting Started",
+              href: "/docs/installation/setup"
             },
             {
               label: "Java Agent",
-              href: "/docs/setup/java-agent"
-            },
-            {
-              label: "Autotest Agent",
-              href: "/docs/setup/autotest-agent"
+              href: "/docs/installation/setup-java-agent"
             }
           ]
         },
@@ -64,12 +64,8 @@ module.exports = {
           title: "2",
           items: [
             {
-              label: "Microservices",
-              href: "/docs/setup/microservices"
-            },
-            {
               label: "Chrome Extension",
-              href: "/docs/setup/extension"
+              href: "/docs/installation/setup-browser-extension"
             },
             {
               label: "Java + JS example App",
@@ -83,10 +79,6 @@ module.exports = {
             {
               label: "Contact us",
               href: "https://t.me/drill4j"
-            },
-            {
-              label: "FAQ",
-              href: "/docs/faq/"
             }
           ]
         }
