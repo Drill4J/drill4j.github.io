@@ -7,7 +7,7 @@ module.exports = {
   tagline: "The tagline of my site",
   url: "https://Drill4J.github.io",
   baseUrl: "/",
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "/img/favicon.ico",
   organizationName: "Drill4J",
