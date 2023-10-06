@@ -35,9 +35,9 @@ function Home() {
                 Suite with Drill4J
               </h1>
               <p className="mb-6 md:mb-0 text-center text-monochrome-default">
-                Drill4J is “feature-on-demand” tool for real-time application profiling that does not
-                affect codebase. It provides the ability to make white box functional testing, via
-                access to application instructions and memory.
+              Drill4J is an open-source tool to identify testing gaps and reduce time spent on regression testing.
+              <br/>
+              It provides you with a straight path to incorporating Test Gap Analysis and Test Impact Analysis into your SDLC.
               </p>
               <Link
                 style={{ textDecoration: 'none' }}
@@ -215,7 +215,7 @@ function Home() {
                 <p>Drill4J is ready to use</p>
               </li>
             </ol>
-            <a href="/how-to-start" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
+            <a href="/docs/installation/setup" className="button-primary md:mx-auto" style={{ padding: '12px 24px' }}>Full instruction</a>
           </div>
         </section>
         <section className={clsx(styles.features, 'mb-24 lg:mb-32 xs:container')}>
@@ -230,7 +230,7 @@ function Home() {
                 <li className={styles.basicFeature}>Microservices Support</li>
                 <li className={styles.basicFeature}>Chrome Extension</li>
               </ul>
-              <a href="/how-to-start" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
+              <a href="/docs/installation/setup" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
             </div>
             <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pb-9')}>
               <h3 className="py-4 px-4 md:px-8 border-b border-monochrome-medium-tint">Individual</h3>
@@ -265,7 +265,7 @@ function Home() {
           <div className="container flex flex-col justify-center text-center">
             <h2 className="mb-2 leading-48">Start with Drill4J today</h2>
             <p className="mb-9 md:mb-8 leading-32">Try easy installation of demo examples for Java and JS agents.</p>
-            <a href="/install-demo" className="button-secondary mx-auto">Install demo</a>
+            <a href="https://github.com/Drill4J/realworld-java-and-js-coverage/" className="button-secondary mx-auto">Install demo</a>
           </div>
         </section>
       </main>
