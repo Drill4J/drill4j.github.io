@@ -1,0 +1,92 @@
+---
+id: one-time-setup
+title: One Time Setup
+---
+
+import { Image } from '@components';
+import { Info } from '@components';
+import Link from '@docusaurus/Link';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+This page describes one time setup steps to start using Drill4Net to minimize your regression suite.
+Once you performed these steps, you can move forward with <Link to="/docs/drill4net/quick-start-guide" target="_blank">quick start guide</Link>
+or <Link to="/docs/drill4net/ci-cd-integration" target="_blank">CI/CD integration</Link>.
+
+## 1. Install Drill4J Admin
+First of all you need to install *Drill4J Admin*. Use <Link to="/docs/drill4net/drill4j-admin-installation" target="_blank">this guide</Link>
+to install *Drill4J Admin*.
+
+## 2. Configure Drill4Net Scanner
+Download and configure *Drill4Net Scanner* as described <Link to="/docs/drill4net/drill4net-apps#drill4net-scanner" target="_blank">here</Link>.
+
+<Info>
+  NOTE <br/>
+  If your application under test uses microservices architecture you should configure Drill4Net Scanner
+  separately for each microservice. 
+</Info>
+
+## 3. Configure Drill4Net Injector
+Download and configure *Drill4Net Injector* as described <Link to="/docs/drill4net/drill4net-apps#drill4net-injector" target="_blank">here</Link>.
+
+## 4. Setup Application Under Test
+Setup your application under test as described <Link to="/docs/drill4net/app-under-test-setup" target="_blank">here</Link>.
+
+<Info>
+  NOTE <br/>
+  If your application under test uses microservices architecture you should perform setup
+  for each microservice.
+</Info>
+
+## 5. Setup Project with Tests
+Setup your project with tests as described <Link to="/docs/drill4net/tests-project-setup" target="_blank">here</Link>.
+
+## 6. Run Drill4Net Scanner
+After *application under test* build is finished, run Drill4Net Scanner as described <Link to="/docs/drill4net/drill4net-apps#4-usage" target="_blank">here</Link>.
+
+<Info>
+  NOTE <br/>
+  If your application under test uses microservices architecture you should run Drill4Net Scanner
+  separately for each microservice. 
+</Info>
+
+## 7. Register Agent in Drill4J Admin
+<Info>
+  NOTE <br/>
+  If your application under test uses microservices architecture you should perform the following
+  steps foreach microservice separately.
+</Info>
+
+1. After you launched *Drill4Net Scanner*, navigate to *Drill4J Admin UI*.
+2. Click *Select Agent* --> *Add Agent*
+3. You should see agent with name specified in `adminAgentConfig:id` earlier and .NET type.
+If you are using microservices you will also see `adminAgentConfig:serviceGroupId`.
+Click *Register*.
+
+<Tabs
+  defaultValue="monolith"
+  values={[
+    {label: 'Monolith', value: 'monolith'},
+    {label: 'Microservices', value: 'microservices'},
+  ]}>
+  <TabItem value="monolith">
+    <Image src="/img/drill4net/add-agent.png"/>
+  </TabItem>
+  <TabItem value="microservices">
+    <Image src="/img/drill4net/add-agent-microservices.png"/>
+  </TabItem>
+</Tabs>
+
+4. Now you can see your agent information. Click *Next*.
+<Image src="/img/drill4net/agent-registration-01.png"/>
+5. Enter the *Target Host* on which your application will run and click *Next*. Example: http://localhost:5000.
+<Image src="/img/drill4net/agent-registration-02.png"/>
+6. Make sure *Test2Code* is checked and click *Finish*.
+<Image src="/img/drill4net/agent-registration-03.png"/>
+7. Now you can select newly created agent and go to *Test2Code*. You should see your class structure:
+<Image src="/img/drill4net/test2code-01.png"/>
+The full agent registration process should look like this:
+<details> 
+    <summary>Click here to view full agent registration process</summary>
+    <Image src="/img/drill4net/agent-registration-process.gif"/>
+</details>
