@@ -1,0 +1,81 @@
+## Overall factors
+
+### Languages and Runtimes
+
+Support new JVM language
+
+Suppot new frontend framework in JavaScript/Typescript
+
+### Testing Frameworks / Test runners
+
+Automated API tests (e.g. written in Java with JUnit, TestNg; or in JavaScript with Mocha, Jest, Jasmine)
+
+- hook into lifecycle events before/after, beforeEach/after each
+- learn how to extract test context - name, parameters, status, duration
+
+Selenium tests
+
+- Inject Test ID to requests headers coming from each browser tab
+
+Cypress tests
+
+- hook into lifecycle events
+- learn to extract context
+- inject Test ID into HTTP requests
+
+Manual tests in Chrome
+
+- allow user to specify test context
+- inject headers to requests coming from browser tabs
+
+POSTMAN support
+
+- hook into lifecycle events
+- learn to extract context
+- inject Test ID into HTTP requests
+
+### Transports
+
+HTTP clients support
+
+- inject Test ID into requests
+- headers
+- query params
+
+Non-HTTP clients support (e.g. message bus and message queue systems like Kafka, RabbitMQ, etc)
+
+- inject ?somehow? Test ID into messages
+
+### Case 1: API tests over HTTP for a single backend service
+
+### Case 2: Manual tests performed in web UI
+
+### Case 3: Automated UI tests
+
+### Challenges
+
+#### Test context propagation in asynchronous
+
+#### Test context propagation in microservices
+
+the points of integration diagram
+why plugin architecture
+what is test2code plugin
+test context propagation
+by autotest agent
+by agent
+what agent is doing
+
+Drill4J "Pyramid"
+
+agent
+autotest agent
+runtime
+
+setup drill4j
+run through tests as usual
+find gaps
+make increment
+see risks, get test recommendations
+execute
+assess quality gate

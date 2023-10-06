@@ -1,0 +1,66 @@
+---
+id: java-agent
+title: Java Agent
+sidebar_label: Java Agent
+---
+import { AdditionalInformation, Badge } from '@components';
+import ExternalLinkIcon from '@static/img/external-link.svg';
+
+There are two ways to deploy Java Agent:
+
+## Using Docker Images
+
+
+If you use docker images of app you need to share volume with drill agent files and add JAVA parameters. Try using this example:
+
+```java
+version: '3'
+
+services:
+  example-app:
+    image: repo/example-app:0.1.0
+    ports:
+      - 8080:8080
+    volumes:
+      - agent-files:/data
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=drillInstallationDir=/data,adminAddress=host.docker.internal:8090,agentId=ExampleAgentId,buildVersion=0.1.0,logLevel=INFO"
+
+  agent-files:
+    image: drill4j/java-agent:0.7.0
+    volumes:
+      - agent-files:/java-agent
+
+volumes:
+  agent-files:
+```
+
+<AdditionalInformation className="space-y-2">
+
+<Badge>agent-files</Badge> — container with drill agent files. <br/>
+<Badge>adminAddress</Badge> — host and backend port of your drill admin. <br/>
+<Badge>8090</Badge> — default port for agent connection. <br/>
+<Badge>agentId </Badge> — ID for drill agent of application. <br/>
+<Badge>buildVersion</Badge> — build version of your application. <br/>
+
+</AdditionalInformation>
+
+## Using Jar
+
+If you use a .jar for running you can download the archive with the agent distribution for your OS:
+[Java Agent](https://github.com/Drill4J/java-agent/releases/tag/v0.7.0)
+and start an application with the following parameters (example for Windows):
+
+```
+-agentpath:distr/drill_agent.dll=drillInstallationDir=distr,adminAddress=localhost:8090,agentId=ExampleAgent,buildVersion=0.1.0,logLevel=INFO
+```
+
+<AdditionalInformation className="space-y-2">
+
+<Badge>distr</Badge> — folder with drill agent files.  <br/>
+Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS. <br/>
+<Badge>adminAdress</Badge> — host and backend port of your drill admin.  <br/>
+<Badge>agentId</Badge> — ID for drill agent of application. <br/>
+<Badge>buildVersion</Badge> — build version of your application. <br/>
+
+</AdditionalInformation>

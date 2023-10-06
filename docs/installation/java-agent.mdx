@@ -1,66 +1,81 @@
 ---
-id: java-agent
+id: setup-java-agent
 title: Java Agent
-sidebar_label: Java Agent
 ---
-import { AdditionalInformation, Badge } from '@components';
-import ExternalLinkIcon from '@static/img/external-link.svg';
 
-There are two ways to deploy Java Agent:
+# Java Agent Configuration
 
-## Using Docker Images
+Drill4J Java Agent is using [JVMTI](https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/) interface
+to analyze and instrument _Application Under Test_(_AUT_) in runtime.
+
+## Download
+
+Java Agent has two parts two it - JVM in `.jar` and native in either `.dll` or `.so` depending on the platform. 
+
+Pick the [platform appropriate release](https://github.com/Drill4J/java-agent/releases) depending on where _Application Under Test_ runs:
+- Currently Linux and Windows are supported 
+- There are caveats to Alpine support
 
 
-If you use docker images of app you need to share volume with drill agent files and add JAVA parameters. Try using this example:
+## Start the agent
 
-```java
+You have to provide the following string to `java` command running your _Application Under Test_:
+
+You can either directly bake it into `java` launch like that
+```shell
+java -agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=wss://drill-admin:8090,agentId=my-app-backend,groupId=my-app-under-test,buildVersion=0.1.0,logLevel=INFO,packagePrefixes=io/spring -jar my-app.jar
+# .so is for linux, swap for .dll if running under Windows
+# ! IMPORTANT ! make sure to change value of packagePrefixes=io/spring to your application package prefix
+#               separated by "/" instead of "."
+#               example: your app consists of my.org.project.moon.user, my.org.project.moon.orders, my.org.project.moon.logic
+#                        set package prefixes to my/org/project/moon
+```
+
+But more elegant and handier way is to use [JAVA_TOOL_OPTIONS](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/envvars002.html) env variable which is picked up by Java automatically
+```
+JAVA_TOOL_OPTIONS=-agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=wss://drill-admin:8090,agentId=my-app-backend,groupId=my-app-under-test,buildVersion=0.1.0,logLevel=INFO,packagePrefixes=io/spring"
+```
+
+Using JAVA_TOOL_OPTIONS option also allows to add Drill4J Java Agent to any Java app running inside Docker container __without alterting the image__.<br/>
+This enables you to easily integrate Drill4J into __any testing environment seamlessly__ - no need to rebuild the image, no need to deploy separate env to collect metrics
+
+## Delivery options
+
+### Manual
+You can simply download Drill4J Java Agent from its [github releases page](https://github.com/Drill4J/java-agent/releases) and place them next to _App Under Test_ `jar`
+
+### Docker Shared Volume 
+When running under Docker it can be handier to use our small image, that runs a script to download these files into shared volume:
+```yaml
 version: '3'
-
 services:
-  example-app:
-    image: repo/example-app:0.1.0
-    ports:
-      - 8080:8080
+  
+  # The sole function of this container is to download agent files
+  # according to version specified in AGENT_VERSION env variable
+  # and place them into volume named agent-files
+  agent-files:
+    image: drill4j/java-agent:latest
+    environment:
+      - AGENT_VERSION=${AGENT_VERSION} 
     volumes:
       - agent-files:/data
-    environment:
-      - JAVA_TOOL_OPTIONS="-agentpath:/data/libdrill_agent.so=drillInstallationDir=/data,adminAddress=host.docker.internal:8090,agentId=ExampleAgentId,buildVersion=0.1.0,logLevel=INFO"
-
-  agent-files:
-    image: drill4j/java-agent:0.7.0
-    volumes:
-      - agent-files:/java-agent
 
 volumes:
+  # you can attach this volume to your Application Under Test for ease of access to agent files
   agent-files:
 ```
 
-<AdditionalInformation className="space-y-2">
+### Kubernetes Init Container
 
-<Badge>agent-files</Badge> — container with drill agent files. <br/>
-<Badge>adminAddress</Badge> — host and backend port of your drill admin. <br/>
-<Badge>8090</Badge> — default port for agent connection. <br/>
-<Badge>agentId </Badge> — ID for drill agent of application. <br/>
-<Badge>buildVersion</Badge> — build version of your application. <br/>
+When running in Kubernetes consider using [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+to download agent files [from github](https://github.com/Drill4J/java-agent/releases) and make them available for pod running _App Under Test_
 
-</AdditionalInformation>
+## Purpose 
 
-## Using Jar
+Drill4J Java Agent is responsible for multiple tasks:
 
-If you use a .jar for running you can download the archive with the agent distribution for your OS:
-[Java Agent](https://github.com/Drill4J/java-agent/releases/tag/v0.7.0)
-and start an application with the following parameters (example for Windows):
+1. Analyze application's packages, classes, methods and send _metadata_ (not the actual code) to Drill4J Admin Backend
+2. Instrument _AUT_ code to enable code execution tracking (in other words, code coverage)
+3. Analyze incoming requests to extract tests context (supplied, for example, by either Drill4J Java Agent or Browser Extension) 
 
-```
--agentpath:distr/drill_agent.dll=drillInstallationDir=distr,adminAddress=localhost:8090,agentId=ExampleAgent,buildVersion=0.1.0,logLevel=INFO
-```
-
-<AdditionalInformation className="space-y-2">
-
-<Badge>distr</Badge> — folder with drill agent files.  <br/>
-Use <Badge>.dll</Badge> for Windows <Badge>.so</Badge> for Linux and <Badge>.dylib</Badge> agent file for MacOS. <br/>
-<Badge>adminAdress</Badge> — host and backend port of your drill admin.  <br/>
-<Badge>agentId</Badge> — ID for drill agent of application. <br/>
-<Badge>buildVersion</Badge> — build version of your application. <br/>
-
-</AdditionalInformation>
+See [Data Colletion](http://localhost:3000/docs/basic-concepts/data-collection) for a comprehensive in-depth summary

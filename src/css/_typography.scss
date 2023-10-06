@@ -55,6 +55,10 @@ em {
   line-height: 24px;
 }
 
+a > em {
+  color: map-get($primary-blue, default);
+}
+
 //inline link
 a {
   outline: none;
@@ -131,7 +135,6 @@ ol[class] {
   }
 
   p {
-    margin-bottom: 16px;
     margin-top: 0;
   }
 
@@ -145,6 +148,10 @@ ol[class] {
   ul {
     margin-bottom: 24px;
     list-style: inside;
+  }
+
+  blockquote ul {
+    margin-bottom: unset;
   }
 
   ol {
@@ -165,6 +172,31 @@ ol[class] {
       color: #632ED1;
     }
   }
+
+  // bring back padding for nested ul-s
+  ol {
+    ul {
+      margin: 0;
+      padding-left: 16px;
+      ul {
+        list-style-type: circle;
+        ul {
+          list-style-type: square;
+        }
+      }
+    }
+  }
+  ul {
+    ul {
+      margin: 0;
+      padding-left: 16px;
+      list-style-type: circle;
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
 }
 
 svg {
