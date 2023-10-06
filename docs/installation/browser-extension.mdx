@@ -4,3 +4,52 @@ title: Setup Browser Extension
 ---
 
 # Setup Browser Extension
+
+## Installation
+
+1. Download the archive with [Google Chrome Browser Extension](https://github.com/Drill4J/browser-extension/releases/tag/0.3.40)
+2. Unzip the archive into any folder.
+3. Open Chrome's Extensions page (in the top-right browser corner click small puzzle icon and select "Manage Extensions" option).
+4. Enable Developer Mode in the top-right corner of the screen.
+5. Click on the Load Unpacked button.
+6. Navigate location from step 2 and select "build" folder. Click "Select Folder".
+
+## Configuration
+
+1. Click small puzzle icon the in the top-right browser corner again.
+
+    Find Drill4J Extension and pin it for ease of use
+
+2. Now click Drill4J Extension icon. Widget should appear
+
+3. You have to provide address to Drill4J Admin Backend API.
+
+    __Example__: for locally-deployed Drill4J instance it will be `http://localhost:8090`.
+    
+    __Do not mix it up__ with `http://localhost:8091` which is the address of Drill4J Admin UI Panel
+
+    __But__ the exact address will vary based on environment in question. If you're not sure what to do contact person in your team responsible for Drill4J management
+
+4. Press "Connect" button once address is entered
+
+5. You should see "Connecting..." button with spinner for a few seconds
+
+6. If you did everything correctly you'll be presented with __"Agent not found"__ message.
+
+    __This is the expected behavior__
+
+7. Navigate to _Application Under Test_ page
+   
+   Reload the page if it was open prior to extension installation
+
+8. Press Drill4J Extension icon again
+
+    You should see name of the _Application Under Test_ and "Open Widget" button. Press it
+
+9. Extension Widget should appear on the _Application Under Test_ page
+
+    Use extension controlls to start testing.
+
+    Once you complete your test __make sure__ to __click finish__, __set either passed or failed results__ and then __click finish again__
+
+    You should see your test metrics in Drill4J Admin Panel

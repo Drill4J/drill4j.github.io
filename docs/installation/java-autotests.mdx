@@ -11,16 +11,12 @@ import TabItem from '@theme/TabItem';
 
 This page describes how to setup Autotest Agent to collect metrics for automated API and E2E tests written in Java / other JVM language.
 
-> TODO move to "global" supported tehcnologies section?
-
 ## Supported tehcnologies
 
 While Drill4J provides plugins both for [Maven](#maven-config) and [Gradle](#gradle-config), for Autotest Agent to work it has to also support both test runner and transport.
 Why: refer to [Data Collection](/docs/basic-concepts/data-collection) section for the detailed explanation.
 
 ### Supported testing frameworks / runners
-
-> TODO add exact versions
 
 - TestNG
 - JUnit
@@ -31,6 +27,7 @@ Why: refer to [Data Collection](/docs/basic-concepts/data-collection) section fo
 > Support quality for future versions may vary. Good thing is it's either going to work or not.
 > Please make sure to <a target="_blank" rel="noopener noreferrer" href="https://github.com/Drill4J/drill4j/issues">report issue</a> if you encounter problems with the listed framework/runner.
 
+<!--
 ### Transports
 
 - HTTP clients
@@ -41,6 +38,7 @@ Why: refer to [Data Collection](/docs/basic-concepts/data-collection) section fo
 - Cadence
 
 **WebSockets** are not supported at the moment.
+-->
 
 ## Maven config
 
@@ -63,7 +61,7 @@ Remember to enter the appropriate values for agentId (or groupId, if using group
             </executions>
             <configuration>
                 <drill>
-                    <version>0.22.1</version>
+                    <version>0.22.4</version>
                     <agentId><!--YOUR AGENT ID--></agentId>
                     <adminHost><!--DRILL-ADMIN SERVICE HOST--></adminHost>
                     <adminPort><!--DRILL-ADMIN SERVICE PORT--></adminPort>
@@ -106,7 +104,7 @@ allprojects {
     }
 
     drill {
-        version = "0.22.1"
+        version = "0.22.4"
         agentId = /*YOUR AGENT ID*/
         adminHost = /* DRILL-ADMIN SERVICE HOST */
         adminPort = /* DRILL-ADMIN SERVICE PORT */

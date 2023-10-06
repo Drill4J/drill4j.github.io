@@ -41,33 +41,33 @@ const docs = [
       },
       {
         type: "doc",
+        id: "installation/setup-java-agent",
+        label: "Java / JVM Agent"
+      },
+      {
+        type: "doc",
+        id: "installation/setup-browser-extension",
+        label: "Browser extension"
+      },
+      {
+        type: "doc",
+        id: "installation/setup-java-autotest-agent",
+        label: "Java Autotest Agent"
+      },
+      {
+        type: "doc",
         label: "Glossary",
         id: "basic-concepts/glossary"
-      },
+      }
       // {
       //   type: "doc",
       //   label: "Supported Technologies",
       //   id: "basic-concepts/supported-technologies"
       // },
-      {
-        type: "doc",
-        id: "installation/setup-java-autotest-agent",
-        label: "Java Autotest Agent"
-      }
-      // {
-      //   type: 'doc',
-      //   id: 'installation/setup-java-agent',
-      //   label: 'Java / JVM Agent',
-      // },
       // {
       //   type: 'doc',
       //   id: 'installation/setup-javascript-agent',
       //   label: 'JavaScript Agent',
-      // },
-      // {
-      //   type: 'doc',
-      //   id: 'installation/setup-browser-extension',
-      //   label: 'Browser extension',
       // },
       // {
       //   type: 'doc',

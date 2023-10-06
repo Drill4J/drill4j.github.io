@@ -9,9 +9,8 @@ import TabItem from '@theme/TabItem';
 
 # Steps to setup Drill4J
 
-This page describes general steps required to setup Drill4J for your project.<br/>
-
-**Use it as a checklist and open specific pages for detailed instructions depending on your project needs.**<br/>
+This page describes general steps required to setup Drill4J for your project.
+Use it as a checklist. You can find more specific instructions in further sections.<br/>
 
 :::note
 Before diving into setup, read the [Overview](/docs/overview/why-drill4j) section to get a better grasp on reasons to use Drill4J
@@ -19,18 +18,28 @@ Before diving into setup, read the [Overview](/docs/overview/why-drill4j) sectio
 
 1. **Step 1** Deploy Drill4J services
 
-2. **Step 2** Integrate application(s) agent
+2. **Step 2** Integrate Drill4J Agents with Application Under Test components. Drill4J provides agents:
 
-   - For apps in Java or any JVM language
+   - For apps in Java / JVM languages
    - For web frontend in JavaScript/TypeScript
+   - For .NET apps
 
-3. **Step 3** Integrate with tests
+  That should provide you with [_Code coverage_](http://localhost:3000/docs/basic-concepts/glossary#coverage) and [_Risk_](http://localhost:3000/docs/basic-concepts/glossary#risks) metrics.
 
-   - Manual (in Chrome or Chromium-based browsers)
-   - E2E (with Selenium or Cypress)
-   - API (in Java, JavaScript or Postman)
+  Depending on your project needs you might be satifsfied with results of even basic integration
 
-Read further for detailed instructions.
+  In order to take advantage of [_Recommended tests_](http://localhost:3000/docs/basic-concepts/glossary#recommended-tests) you'll have have peform additional configuration 
+
+3. **Step 3** Configure tests integration. Drill4J provides components to supporting metrics collection from:
+
+   - API test
+   - Manual tests in web
+   - E2E UI tests
+   - Unit tests
+
+See next sections for detailed instructions
+
+<!--
 
 ## Step 1 - Deploying Drill4J services
 
@@ -199,3 +208,5 @@ Refer to <a target="_blank" href="/docs/installation/deploy-drill4j-services">De
     </TabItem>
   </Tabs>
 </div>
+
+-->
