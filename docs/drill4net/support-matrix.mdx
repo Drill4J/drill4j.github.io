@@ -1,0 +1,54 @@
+﻿---
+id: support-matrix
+title: Support Matrix
+---
+import { Image } from '@components';
+import { Info } from '@components';
+import { Table } from '../../src/components'
+
+## Testing Frameworks
+
+<Table>
+
+| Framework |      Supported versions     |
+|:---------:|:---------------------------:|
+| NUnit     |	    - 3.13.3			  |
+| XUnit     | 2.4.2 - 4.13.2              |
+| Selenium  |	    - 4.12.4			  |
+| Playwright|		- 1.32.0			  |
+
+</Table>
+
+## .NET Frameworks
+
+<Table>
+
+| Framework |      Supported versions     |
+|:---------:|:---------------------------:|
+| .NET			 | 5, 6, 7			   	  |
+| .NET Core      | 1.0 - 3.1              |
+| .NET Framework | 4.7.2, 4.8, 4.8.1	  |
+
+</Table>
+
+<Info>
+  NOTE <br/>
+  Currently, Selenium with .NET 7 is not supported 
+</Info>
+
+## Operating systems
+
+- Linux  
+- Windows
+
+## Transport Layers
+
+- HttpClient  
+- Kafka
+- RabbitMQ
+- Azure Service Bus
+
+<Info>
+  NOTE <br/>
+  HttpClient is patched before HTTP request is made. Currently, other HTTP clients such as WebClient, HttpWebRequest, RestSharper are not supported.
+</Info>
