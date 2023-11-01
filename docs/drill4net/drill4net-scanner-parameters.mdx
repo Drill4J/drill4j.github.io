@@ -3,6 +3,21 @@ id: drill4net-scanner-parameters
 title: Drill4Net Scanner Parameters
 ---
 
+## Example
+```
+Drill4Net.Scanner.exe <path that contains executable file> --target <path to executable file> --exclude "[coverlet.*]Coverlet.Core.Coverage"
+```
+Drill4Net goes a step in the other direction by also letting you explicitly set what can be included using the `--include` option.  
+
+Examples
+```
+--include "[*]*" - Includes all types in all assemblies (everything is instrumented)
+--include "[coverlet.*]Coverlet.Core.Coverage" - Includes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
+--include "[coverlet.*.tests?]*" - Includes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
+```
+Both `--exclude` and `--include` options can be used together but `--exclude` takes precedence. You can specify the `--exclude` and `--include` options multiple times to allow for multiple filter expressions.
+You can also include coverage of the test assembly itself by specifying the `--include-test-assembly` flag.
+
 ## Optional Parameters
 
 There are some optional parameters to which you can provide arguments in *Drill4Net Scanner*
@@ -12,36 +27,25 @@ There are some optional parameters to which you can provide arguments in *Drill4
   --exclude-by-file         Glob patterns specifying source files to exclude.
   --include-directory       Include directories containing additional assemblies to be instrumented.
   --exclude-by-attribute    Attributes to exclude from code coverage.
+  --include-test-assembly   Specifies whether to report code coverage of the test assembly.
 ```
-NB. For a multiple value options you have to specify values multiple times i.e.
+NB. For multiple value options, you have to specify values multiple times i.e.
 ```
 --exclude-by-attribute 'Obsolete' --exclude-by-attribute'GeneratedCode' --exclude-by-attribute 'CompilerGenerated'
 ```
 ## Filters
-Dill4Net gives the ability to have fine grained control over what gets excluded using *filter expressions*.
+Dill4Net gives the ability to have fine-grained control over what gets excluded using *filter expressions*.
 Syntax: `--exclude '[Assembly-Filter]Type-Filter'`
 Wildcards
-- \* => matches zero or more characters
-- ? => the prefixed character is optional
-Examples
-```
---exclude "[*]*" => Excludes all types in all assemblies (nothing is instrumented)
---exclude "[coverlet.*]Coverlet.Core.Coverage" => Excludes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
---exclude "[*]Coverlet.Core.Instrumentation.*" => Excludes all types belonging to Coverlet.Core.Instrumentation namespace in any assembly
---exclude "[coverlet.*.tests?]*" => Excludes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
---exclude "[coverlet.*]*" --exclude "[*]Coverlet.Core*" => Excludes assemblies matching coverlet.* and excludes all types belonging to the Coverlet.Core namespace in any assembly
-```
+- \* - matches zero or more characters
+- ? - the prefixed character is optional
 
-## Example
-```
-Drill4Net.Scanner.exe <path that contains executable file> --target <path to executable file> --exclude "[coverlet.*]Coverlet.Core.Coverage"
-```
-Drill4Net goes a step in the other direction by also letting you explicitly set what can be included using the `--include` option.
 Examples
 ```
---include "[*]*" => Includes all types in all assemblies (everything is instrumented)
---include "[coverlet.*]Coverlet.Core.Coverage" => Includes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
---include "[coverlet.*.tests?]*" => Includes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
+--exclude "[*]*" - Excludes all types in all assemblies (nothing is instrumented)
+--exclude "[coverlet.*]Coverlet.Core.Coverage" - Excludes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
+--exclude "[*]Coverlet.Core.Instrumentation.*" - Excludes all types belonging to Coverlet.Core.Instrumentation namespace in any assembly
+--exclude "[coverlet.*.tests?]*" - Excludes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
+--exclude "[coverlet.*]*" --exclude "[*]Coverlet.Core*" - Excludes assemblies matching coverlet.* and excludes all types belonging to the Coverlet.Core namespace in any assembly
+--exclude "[coverlet.core]Coverlet.Core.Coverage" - Excludes the Coverage class in the Coverlet.Core namespace belonging to coverlet.core assembly
 ```
-Both `--exclude` and `--include` options can be used together but `--exclude` takes precedence. You can specify the `--exclude` and `--include` options multiple times to allow for multiple filter expressions.
-You can also include coverage of the test assembly itself by specifying the `--include-test-assembly` flag.

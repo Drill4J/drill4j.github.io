@@ -37,7 +37,6 @@ Table below describes each setting.
 | **communicatorUrl**                                           | Communication URL of Drill4J Admin back-end.                                                                                                                                                       |
 | **coverageCollectionSettings:  schedulerDelayInterval**       | Interval in seconds indicating how often code coverage data is sent to the Drill4J Admin. The default value is 10 seconds.                                                                         |
 | **coverageCollectionSettings:  collectInitProcessesCoverage** | Specifies whether to collect coverage for initial processes (Background jobs, Initialization, Cron). The default value is false.                                                                   |
-| **supportedTechnologies**                                     | An array of supported technologies in application under test. Currently, the only available value is **HttpClient**.                                                                               |
 
 </Table>
 
@@ -52,9 +51,6 @@ communicatorUrl: 'http://localhost:8090'
 coverageCollectionSettings:
   schedulerDelayInterval: 10 
   collectInitProcessesCoverage: false
-
-supportedTechnologies:
-  - HttpClient
 ```
 
 ### 4. Usage
