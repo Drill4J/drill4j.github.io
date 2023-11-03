@@ -40,7 +40,13 @@ Why: refer to [Data Collection](/docs/basic-concepts/data-collection) section fo
 **WebSockets** are not supported at the moment.
 -->
 
-## Maven config
+## Example configuration
+
+We provide plugins for both Maven and Gradle.
+
+First step is to add `com.epam.drill.agent.runner` plugin - it will download autotest agent and launch it accordingly with configuration (see bellow)
+
+### Maven config
 
 Add the following lines to `pom.xml` configuration file in test project.
 Remember to enter the appropriate values for agentId (or groupId, if using groups), adminPort, adminHost.
@@ -51,7 +57,7 @@ Remember to enter the appropriate values for agentId (or groupId, if using group
         <plugin>
             <groupId>com.epam.drill.agent.runner</groupId>
             <artifactId>maven</artifactId>
-            <version>0.3.3</version>
+            <version>0.3.4</version>
             <executions>
                 <execution>
                     <goals>
@@ -78,15 +84,15 @@ Remember to enter the appropriate values for agentId (or groupId, if using group
 </build>
 ```
 
-## Gradle config
+### Gradle config
 
 Add the following lines to `build.gradle` configuration file in test project.
 Remember to enter the appropriate values for agentId (or groupId, if using groups), adminPort, adminHost.
 
-```ini
+```language-groovy
 plugins {
     id 'java'
-    id 'com.epam.drill.agent.runner.autotest' version '0.3.3'
+    id 'com.epam.drill.agent.runner.autotest' version '0.3.4'
 }
 
 group 'com.epam'
@@ -119,45 +125,78 @@ allprojects {
 
 ## Troubleshooting
 
-1. **Issue**: after adding Drill4J Maven/Gradle plugin tests fail with error `"Failed to locate or download autotest agent zip file. Reason: connection refused"`
+### Issue - failed to locate/download Autotest Agent
 
-   **Possible source**: most likely tests are launched in environment that is behind VPN / proxy, where default repository for Drill4J Autotest Agent is unavailable (https://github.com/Drill4J/autotest-agent/releases).
+Tests launch fails with error `"Failed to locate or download autotest agent zip file. Reason: connection refused"`
 
-   **Solution**: either configure VPN/proxy to allow connection to GitHub _or_ supply Autotest Agent release .zip directly.
+Most likely tests are launched in environment that is behind VPN / proxy, where [default repository](https://github.com/Drill4J/autotest-agent/releases) is unavailable.
 
-   Step by step instruction:
+**Solution**: either configure VPN/proxy to allow connection to GitHub **or** supply Autotest Agent directly:
 
-   - Download platform-appropriate release from https://github.com/Drill4J/autotest-agent/releases (e.g. agent-linuxX64-0.22.4.zip)
+1. Make sure `com.epam.drill.agent.runner` is not lower than `0.3.4`
 
-   - Add either `directLocalPathToZip` or `directUrlToZip` to the root level of `drill` section. When both are present `directLocalPathToZip` takes precedence.
+2. Download platform-appropriate release from https://github.com/Drill4J/autotest-agent/releases (e.g. `agent-linuxX64-0.22.4.zip`)
 
-   - Examples
+3. Add either `directLocalPathToZip` or `directUrlToZip` to the root level of the `drill` section.
 
-     - Gradle
+   > When both are present `directLocalPathToZip` takes precedence.
 
-       ```ini
-         drill {
-            /* version = "0.2.24" */
-            /* comment out or remove "version" field - it wont have an effect when direct path/url is specified
+See changes to example configs below
 
-            /* Agent from local path - handy for a one-time launch */
-            /* both relative and absolute paths are allowed */
-            directLocalPathToZip = "agent-mingwX64-0.22.4.zip"
+#### Gradle
 
-            /* Direct url is handier when launching in env w/o access to github */
-            /* host file anywhere you like (e.g. local webserver, corporate artifactory) */
-            directUrlToZip="http://localhost:3000/agent-mingwX64-0.22.4.zip"
+```language-groovy
 
-            /*... rest of te config */
-            agentId = /*YOUR AGENT ID*/
-            adminHost = /* DRILL-ADMIN SERVICE HOST */
-            adminPort = /* DRILL-ADMIN SERVICE PORT */
-        }
-       ```
+plugins {
+    id 'java'
+    /* Make sure com.epam.drill.agent.runner version is equal or greater than 0.3.4 */
+    id 'com.epam.drill.agent.runner.autotest' version '0.3.4'
+}
 
-     - Maven
+group 'com.epam'
+version '1.0-SNAPSHOT'
 
-       ```xml
+allprojects {
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        apply plugin: 'java'
+        apply plugin: 'com.epam.drill.agent.runner.autotest'
+    }
+
+    drill {
+        /* version = "0.2.24" */
+        /* comment out or remove "version" field - it wont have an effect when direct path/url is specified
+
+        /* Agent from local path - handy for a one-time launch */
+        /* both relative and absolute paths are allowed */
+        directLocalPathToZip = "agent-mingwX64-0.22.4.zip"
+
+        /* Direct url is a more approriate solution, if you cannot alter VPN/proxy configuration */
+        /* host file anywhere you like (e.g. local webserver, corporate artifactory) */
+        directUrlToZip="http://localhost:3000/agent-mingwX64-0.22.4.zip"
+
+        /*... rest of the drill section config */
+        agentId = /*YOUR AGENT ID*/
+        adminHost = /* DRILL-ADMIN SERVICE HOST */
+        adminPort = /* DRILL-ADMIN SERVICE PORT */
+    }
+}
+```
+
+#### Maven
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.agent.runner</groupId>
+            <artifactId>maven</artifactId>
+            <!-- Make sure com.epam.drill.agent.runner version is equal or greater than 0.3.4 -->
+            <version>0.3.4</version>
             <configuration>
                 <drill>
                     <!--<version>0.22.4</version>-->
@@ -167,14 +206,17 @@ allprojects {
                     <!-- both relative and absolute paths are allowed -->
                     <directLocalPathToZip>agent-mingwX64-0.22.4.zip</directLocalPathToZip>
 
-                    <!-- Direct url is handier when launching in env w/o access to github -->
+                    <!-- Direct url is a more approriate solution, if you cannot alter VPN/proxy configuration -->
                     <!-- host file anywhere you like (e.g. local webserver, corporate artifactory) -->
                     <directUrlToZip>http://localhost:3000/agent-mingwX64-0.22.4.zip</directUrlToZip>
 
-                    <!--... rest of te config -->
+                    <!--... rest of the drill section config -->
                     <agentId><!--YOUR AGENT ID--></agentId>
                     <adminHost><!--DRILL-ADMIN SERVICE HOST--></adminHost>
                     <adminPort><!--DRILL-ADMIN SERVICE PORT--></adminPort>
                 </drill>
             </configuration>
-       ```
+        </plugin>
+    </plugins>
+</build>
+```
