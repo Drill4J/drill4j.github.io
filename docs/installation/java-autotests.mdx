@@ -116,3 +116,65 @@ allprojects {
     }
 }
 ```
+
+## Troubleshooting
+
+1. **Issue**: after adding Drill4J Maven/Gradle plugin tests fail with error `"Failed to locate or download autotest agent zip file. Reason: connection refused"`
+
+   **Possible source**: most likely tests are launched in environment that is behind VPN / proxy, where default repository for Drill4J Autotest Agent is unavailable (https://github.com/Drill4J/autotest-agent/releases).
+
+   **Solution**: either configure VPN/proxy to allow connection to GitHub _or_ supply Autotest Agent release .zip directly.
+
+   Step by step instruction:
+
+   - Download platform-appropriate release from https://github.com/Drill4J/autotest-agent/releases (e.g. agent-linuxX64-0.22.4.zip)
+
+   - Add either `directLocalPathToZip` or `directUrlToZip` to the root level of `drill` section. When both are present `directLocalPathToZip` takes precedence.
+
+   - Examples
+
+     - Gradle
+
+       ```ini
+         drill {
+            /* version = "0.2.24" */
+            /* comment out or remove "version" field - it wont have an effect when direct path/url is specified
+
+            /* Agent from local path - handy for a one-time launch */
+            /* both relative and absolute paths are allowed */
+            directLocalPathToZip = "agent-mingwX64-0.22.4.zip"
+
+            /* Direct url is handier when launching in env w/o access to github */
+            /* host file anywhere you like (e.g. local webserver, corporate artifactory) */
+            directUrlToZip="http://localhost:3000/agent-mingwX64-0.22.4.zip"
+
+            /*... rest of te config */
+            agentId = /*YOUR AGENT ID*/
+            adminHost = /* DRILL-ADMIN SERVICE HOST */
+            adminPort = /* DRILL-ADMIN SERVICE PORT */
+        }
+       ```
+
+     - Maven
+
+       ```xml
+            <configuration>
+                <drill>
+                    <!--<version>0.22.4</version>-->
+                    <!-- comment out or remove "version" field - it wont have an effect when direct path/url is specified-->
+
+                    <!-- Agent from local path - handy for a one-time launch -->
+                    <!-- both relative and absolute paths are allowed -->
+                    <directLocalPathToZip>agent-mingwX64-0.22.4.zip</directLocalPathToZip>
+
+                    <!-- Direct url is handier when launching in env w/o access to github -->
+                    <!-- host file anywhere you like (e.g. local webserver, corporate artifactory) -->
+                    <directUrlToZip>http://localhost:3000/agent-mingwX64-0.22.4.zip</directUrlToZip>
+
+                    <!--... rest of te config -->
+                    <agentId><!--YOUR AGENT ID--></agentId>
+                    <adminHost><!--DRILL-ADMIN SERVICE HOST--></adminHost>
+                    <adminPort><!--DRILL-ADMIN SERVICE PORT--></adminPort>
+                </drill>
+            </configuration>
+       ```
