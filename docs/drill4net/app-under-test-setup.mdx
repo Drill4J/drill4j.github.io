@@ -14,8 +14,13 @@ title: Application Under Test Setup
 1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
 2. Install [Drill4Net.Receiver.WebApi](https://www.nuget.org/packages/Drill4Net.Receiver.WebApi) in *application under test* start up project.
 3. Add the following line in you `Startup.Configure` method:
+- for .NET Core 3.1, .NET 5, 6, 7 versions
 ```
 app.UseDrill4NetReceiverWebApi();
+``` 
+- for .NET Framework 4.7.2, 4.8, 4.8.1 versions
+```
+app.UseDrill4NetReceiverOwin();
 ``` 
 Make sure you added
 ```
