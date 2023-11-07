@@ -5,15 +5,15 @@ title: Drill4Net Scanner Parameters
 
 ## Example
 ```
-Drill4Net.Scanner.exe <path that contains executable file> --target <path to executable file> --exclude "[coverlet.*]Coverlet.Core.Coverage"
+Drill4Net.Scanner.exe <path that contains executable file> --target <path to executable file> --exclude "[myapplication.*]MyApplication.Core.Coverage"
 ```
-Drill4Net goes a step in the other direction by also letting you explicitly set what can be included using the `--include` option.  
+Drill4Net allows to explicitly set what must be included using the `--include` option.  
 
 Examples
 ```
 --include "[*]*" - Includes all types in all assemblies (everything is instrumented)
---include "[coverlet.*]Coverlet.Core.Coverage" - Includes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
---include "[coverlet.*.tests?]*" - Includes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
+--include "[myapplication.*]MyApplication.Core.Coverage" - Includes the Coverage class in the MyApplication.Core namespace belonging to any assembly that matches "myapplication.*" (e.g "myapplication.core")
+--include "[myapplication.*.tests?]*" - Includes all types in any assembly starting with "myapplication." and ending with ".test" or ".tests" (the ? makes the "s" optional)
 ```
 Both `--exclude` and `--include` options can be used together but `--exclude` takes precedence. You can specify the `--exclude` and `--include` options multiple times to allow for multiple filter expressions.
 You can also include coverage of the test assembly itself by specifying the `--include-test-assembly` flag.
@@ -43,9 +43,9 @@ Wildcards
 Examples
 ```
 --exclude "[*]*" - Excludes all types in all assemblies (nothing is instrumented)
---exclude "[coverlet.*]Coverlet.Core.Coverage" - Excludes the Coverage class in the Coverlet.Core namespace belonging to any assembly that matches coverlet.* (e.g coverlet.core)
---exclude "[*]Coverlet.Core.Instrumentation.*" - Excludes all types belonging to Coverlet.Core.Instrumentation namespace in any assembly
---exclude "[coverlet.*.tests?]*" - Excludes all types in any assembly starting with coverlet. and ending with .test or .tests (the ? makes the s optional)
---exclude "[coverlet.*]*" --exclude "[*]Coverlet.Core*" - Excludes assemblies matching coverlet.* and excludes all types belonging to the Coverlet.Core namespace in any assembly
---exclude "[coverlet.core]Coverlet.Core.Coverage" - Excludes the Coverage class in the Coverlet.Core namespace belonging to coverlet.core assembly
+--exclude "[myapplication.*]MyApplication.Core.Coverage" - Excludes the Coverage class in the MyApplication.Core namespace belonging to any assembly that matches "myapplication.*" (e.g "myapplication.core")
+--exclude "[*]MyApplication.Core.Instrumentation.*" - Excludes all types belonging to MyApplication.Core.Instrumentation namespace in any assembly
+--exclude "[myapplication.*.tests?]*" - Excludes all types in any assembly starting with "myapplication." and ending with ".test" or ".tests" (the ? makes the "s" optional)
+--exclude "[myapplication.*]*" --exclude "[*]MyApplication.Core*" - Excludes assemblies matching "myapplication.*" and excludes all types belonging to the MyApplication.Core namespace in any assembly
+--exclude "[myapplication.core]MyApplication.Core.Coverage" - Excludes the Coverage class in the MyApplication.Core namespace belonging to "myapplication.core" assembly
 ```
