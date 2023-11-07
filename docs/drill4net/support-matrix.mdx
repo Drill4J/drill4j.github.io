@@ -14,8 +14,8 @@ import { Table } from '../../src/components'
 |:---------:|:---------------------------:|
 | [NUnit](https://nunit.org)     |	      3.13.3						|
 | [XUnit](https://xunit.net)     | 2.4.2, 2.5.0, 2.5.1, 2.5.2, 2.5.3	|
-| [Selenium](https://www.selenium.dev)  |	4.8.1, 4.12.2, 4.14.1		|
-| [Playwright](https://playwright.dev)|		  1.32.0					|
+| [Selenium](https://www.nuget.org/packages/Selenium.WebDriver)  |	4.8.1, 4.12.2, 4.14.1		|
+| [Playwright](https://www.nuget.org/packages/Microsoft.Playwright)|		  1.32.0					|
 | [Specflow](https://specflow.org)|		  3.9.40						|
 
 </Table>
@@ -57,7 +57,7 @@ import { Table } from '../../src/components'
 
 | Layer		|	Supported .NET package versions |
 |:---------:|:---------------------------:|
-| HttpClient		| versions provided by supported .NET versions	|
+| [HttpClient](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-7.0)| versions provided by supported .NET versions	|
 | Kafka				| 2.2.0											|
 | RabbitMQ			| 6.5.0											|
 | Azure Service Bus | 7.14.0										|
@@ -66,7 +66,7 @@ import { Table } from '../../src/components'
 
 <Info>
   NOTE <br/>
-  HttpClient is patched on tests launch, prior to any HTTP requests execution. Thus, any library that uses HttpClient is automatically supported. Currently, other HTTP clients such as WebClient, HttpWebRequest, RestSharper are not supported.
+  HttpClient is patched on tests launch, prior to any HTTP requests execution. Thus, any library that uses HttpClient is automatically supported. Currently, other HTTP clients such as <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient?view=net-7.0">WebClient</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.httpwebrequest?view=net-7.0">HttpWebRequest</a>, <a href="https://restsharp.dev">RestClient</a> are not supported.
 </Info>
 
 ## Serverless Computing Services
