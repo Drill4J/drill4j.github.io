@@ -72,10 +72,12 @@ start Drill4Net.Scanner.exe "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1" \
 There are also optional parameters described <Link to="/docs/drill4net/drill4net-scanner-parameters" target="_blank">here</Link>.
 
 <Warning>
-    The Scanner application utilazes Coverlet for code coverage, which relies on Program Database Files (PDB). 
-    These PDB files contain information about the original paths of the source code files.
-    Therefore, ensure that source files remain at their original location after the project build 
-    or rebuild your project after moving the files, so that the PDB files reflect the new paths of the source code files.
+    Make sure not to move source files between the <i>_application build_</i> step and the <i>_Scanner_</i>'s launch<br/>  
+    Why is it important:<br/>
+    1. The Scanner application utilizes Coverlet to collect code coverage.<br/>
+    2. Coverlet relies on Program Database Files (PDB).<br/>
+    3. These PDB files contain the original paths for project sources.<br/>
+    4. Therefore, if you change the source files location after the <i>_application build_</i> step, Scanner won't be able to locate sources and won't work properly
 </Warning>
 
 ## Drill4Net Injector
