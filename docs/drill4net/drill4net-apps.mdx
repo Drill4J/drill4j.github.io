@@ -88,7 +88,6 @@ Table below describes each setting.
 | **Settings:TestAssemblySourcePath** | Path to the assembly with tests, including filename. This value can also be specified as a command line argument to the Drill4Net Injector.                                                                                                                    |
 | **AdminAgentConfig:Id**             | Arbitrary agent name. Example: "test_app_1". Leave this value blank if you are using a microservices architecture.                                                                                                                                             |
 | **AdminAgentConfig:ServiceGroupId** | Arbitrary microservices group identifier to group microservices together. Example: "group_1". Leave this value blank if you are using a monolithic architecture.                                                                                               |
-| **AdminAgentConfig:BuildVersion**   | Version of the build. Should be updated for every new build. Example: "0.0.1".                                                                                                                                                                                 |
 | **CommunicatorUrl**                 | Communication URL of Drill4J Admin back-end.                                                                                                                                                                                                                   |
 | **Serilog:***                       | Logger settings. Detailed information about Serilog configuration is available [here](https://github.com/serilog/serilog-settings-configuration). Note: not all settings are available as we may not have required Serilog package for specific functionality. |
 
@@ -116,7 +115,6 @@ Serilog:
 
 AdminAgentConfig:
   Id: 'appId-1'
-  BuildVersion: '0.0.1'
   ServiceGroupId: ''
 CommunicatorUrl: 'http://localhost:8090'
 ```
