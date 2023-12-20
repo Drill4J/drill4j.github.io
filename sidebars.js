@@ -99,7 +99,8 @@ const docs = [
       "drill4net/tests-project-setup",
       "drill4net/drill4net-scanner-parameters",
       "drill4net/chrome-extention",
-      "drill4net/known-issues"
+      "drill4net/known-issues",
+      "drill4net/support-matrix"
     ]
   },
   {

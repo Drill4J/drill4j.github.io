@@ -1,0 +1,80 @@
+﻿---
+id: support-matrix
+title: Support Matrix
+---
+import { Image } from '@components';
+import { Info } from '@components';
+import { Table } from '../../src/components'
+
+## Testing Frameworks
+
+<Table>
+
+| Framework |      Supported versions     |
+|:---------:|:---------------------------:|
+| [NUnit](https://nunit.org)     |	      3.13.3						|
+| [XUnit](https://xunit.net)     | 2.4.2, 2.5.0, 2.5.1, 2.5.2, 2.5.3	|
+| [Selenium](https://www.nuget.org/packages/Selenium.WebDriver)  |	4.8.1, 4.12.2, 4.14.1		|
+| [Playwright](https://www.nuget.org/packages/Microsoft.Playwright)|		  1.32.0					|
+| [Specflow](https://specflow.org)|		  3.9.40						|
+
+</Table>
+
+- Supported versions list releases that were tested for compatibility
+- Patch/Minor version updates should not break compatibility, but it is possible
+- Major version change have greater chance to break compatibility
+<Info>
+  NOTE <br/>
+  Currently, Selenium with .NET 7 is not supported 
+</Info>
+
+## .NET Frameworks
+
+<Table>
+
+| Framework |      Supported versions     |
+|:---------:|:---------------------------:|
+| .NET			 | 5, 6, 7			   	  |
+| .NET Core      | 3.1              	  |
+| .NET Framework | 4.7.2, 4.8, 4.8.1	  |
+
+</Table>
+
+## Operating systems
+
+<Table>
+
+| System	|      Supported versions	  |
+|:---------:|:---------------------------:|
+| Ubuntu		| 22.04.3, 23.04, 23.10	  |
+| Windows       | 10					  |
+
+</Table>
+
+## Transport Layers
+
+<Table>
+
+| Layer		|	Supported .NET package versions |
+|:---------:|:---------------------------:|
+| [HttpClient](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-7.0)| versions provided by supported .NET versions	|
+| Kafka				| 2.2.0											|
+| RabbitMQ			| 6.5.0											|
+| Azure Service Bus | 7.14.0										|
+
+</Table>
+
+<Info>
+  NOTE <br/>
+  HttpClient is patched on tests launch, prior to any HTTP requests execution. Thus, any library that uses HttpClient is automatically supported. Currently, other HTTP clients such as <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient?view=net-7.0">WebClient</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.httpwebrequest?view=net-7.0">HttpWebRequest</a>, <a href="https://restsharp.dev">RestClient</a> are not supported.
+</Info>
+
+## Serverless Computing Services
+
+<Table>
+
+| Service   |      Supported versions	  |
+|:---------:|:---------------------------:|
+| Azure Functions      | 4                |
+
+</Table>
