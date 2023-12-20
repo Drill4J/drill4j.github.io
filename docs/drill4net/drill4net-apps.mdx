@@ -5,6 +5,7 @@ title: Drill4Net Applications
 
 import { Table } from '@components';
 import { Info } from '@components';
+import { Warning } from '@components';
 import Link from '@docusaurus/Link';
 
 This web page provides an overview of *Drill4Net Scanner* and *Drill4Net Injector* applications,
@@ -69,6 +70,15 @@ start Drill4Net.Scanner.exe "d:\Builds\AppUnderTest\bin\Release\netcoreapp3.1" \
 ```
 
 There are also optional parameters described <Link to="/docs/drill4net/drill4net-scanner-parameters" target="_blank">here</Link>.
+
+<Warning>
+    Make sure not to move source files between the <i>_application build_</i> step and the <i>_Scanner_</i>'s launch<br/>  
+    Why is it important:<br/>
+    1. The Scanner application utilizes Coverlet to collect code coverage.<br/>
+    2. Coverlet relies on Program Database Files (PDB).<br/>
+    3. These PDB files contain the original paths for project sources.<br/>
+    4. Therefore, if you change the source files location after the <i>_application build_</i> step, Scanner won't be able to locate sources and won't work properly
+</Warning>
 
 ## Drill4Net Injector
 
