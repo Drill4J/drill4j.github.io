@@ -7,13 +7,20 @@ title: Application Under Test Setup
 1. Web API
 2. Azure Functions (Isolated Worker Process)
 3. Azure Service Bus
+4. Kafka
+5. RabbitMQ
 
 ## Web API Application Under Test Setup
 1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
 2. Install [Drill4Net.Receiver.WebApi](https://www.nuget.org/packages/Drill4Net.Receiver.WebApi) in *application under test* start up project.
 3. Add the following line in you `Startup.Configure` method:
+- for .NET Core 3.1, .NET 5, 6, 7 versions
 ```
 app.UseDrill4NetReceiverWebApi();
+``` 
+- for .NET Framework 4.7.2, 4.8, 4.8.1 versions
+```
+app.UseDrill4NetReceiverOwin();
 ``` 
 Make sure you added
 ```
@@ -21,8 +28,9 @@ using Drill4Net.Receiver.WebApi;
 ```
 
 ## Azure Function Under Test Setup
-1. Install [Drill4Net.Receiver.AzureFunction](https://www.nuget.org/packages/Drill4Net.Receiver.AzureFunction) in *application under test* start up project.
-2. Use `Drill4NetReceiverAzureFunctionMiddleware` middleware.
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.AzureFunction](https://www.nuget.org/packages/Drill4Net.Receiver.AzureFunction) in *application under test* start up project.
+3. Use `Drill4NetReceiverAzureFunctionMiddleware` middleware.
 Make sure you added
 ```
 using Drill4Net.Receiver.AzureFunction;
@@ -38,8 +46,9 @@ using Drill4Net.Receiver.AzureServiceBus;
 ```
 
 ## Kafka Under Test Setup
-1. Install [Drill4Net.Receiver.Kafka](https://www.nuget.org/packages/Drill4Net.Receiver.Kafka) in *application under test* start up project.
-2. Add call in Startup/Program `KafkaPatcher.PatchSender<TKey, TValue>();` or `KafkaPatcher.PatchReceiver<TKey, TValue>();`.
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.Kafka](https://www.nuget.org/packages/Drill4Net.Receiver.Kafka) in *application under test* start up project.
+3. Add call in Startup/Program `KafkaPatcher.PatchSender<TKey, TValue>();` or `KafkaPatcher.PatchReceiver<TKey, TValue>();`.
 ```
   services.AddSingleton(sp => new ProducerBuilder<Null, string>(config).Build());
   KafkaPatcher.PatchSender<Null, string>();
@@ -47,7 +56,8 @@ using Drill4Net.Receiver.AzureServiceBus;
 Make sure you added `using Drill4Net.Receiver.Kafka;`.
 
 ## RabbitMQ Under Test Setup
-1. Install [Drill4Net.Receiver.RabbitMQ](https://www.nuget.org/packages/Drill4Net.Receiver.RabbitMQ) in *application under test* start up project.
-2. Add call in Startup/Program `RabbitMqPatcher.Patch();`.
+1. Install [Drill4Net.Receiver](https://www.nuget.org/packages/Drill4Net.Receiver) in *application under test* start up project.
+2. Install [Drill4Net.Receiver.RabbitMQ](https://www.nuget.org/packages/Drill4Net.Receiver.RabbitMQ) in *application under test* start up project.
+3. Add call in Startup/Program `RabbitMqPatcher.Patch();`.
 
 Make sure you added `using Drill4Net.Receiver.RabbitMQ;`.
