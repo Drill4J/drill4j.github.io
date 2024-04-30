@@ -2,6 +2,10 @@
 
 Website [Drill4J](https://drill4j.github.io/drill4j-website/).
 
+## Prerequisites
+
+Node.js 16.17.0
+
 ## Installation
 
 ```console
