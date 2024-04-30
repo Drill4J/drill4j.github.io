@@ -17,10 +17,6 @@ module.exports = {
       apiKey: "6893440cddb296d0faf1399850200fc6",
       indexName: "drill4j"
     },
-    gtag: {
-      trackingID: "UA-147653671-1",
-      anonymizeIP: true
-    },
     colorMode: {
       defaultMode: "light",
       disableSwitch: true
