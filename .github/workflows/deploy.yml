@@ -46,6 +46,6 @@ jobs:
         run: |
           git config --global user.email "actions@gihub.com"
           git config --global user.name "gh-actions"
-          npm ci
+          npm ci --legacy-peer-deps
           npm run tailwind:css
           npx docusaurus deploy
