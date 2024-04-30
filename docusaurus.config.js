@@ -92,7 +92,13 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.scss")
-        }
+        },
+        // Will be passed to @docusaurus/plugin-google-gtag (only enabled when explicitly specified)
+        gtag: {},
+        // Will be passed to @docusaurus/plugin-google-tag-manager (only enabled when explicitly specified)
+        googleTagManager: {},
+        // DEPRECATED: Will be passed to @docusaurus/plugin-google-analytics (only enabled when explicitly specified)
+        googleAnalytics: {},
       }
     ]
   ],
