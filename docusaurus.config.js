@@ -38,7 +38,7 @@ module.exports = {
           dropdownActiveClassDisabled: true,
         },
         {
-          to: 'docs/overview/what-is-drill4j',
+          to: 'docs/installation/deploy-drill4j-services',
           label: 'Documentation',
           position: 'right',
         },
