@@ -58,37 +58,19 @@ module.exports = {
       links: [
         {
           title: '1',
-          items: [
-            {
-              label: 'Intro',
-              href: '/docs/overview/what-is-drill4j',
-            },
-            {
-              label: 'Getting Started',
-              href: '/docs/installation/setup',
-            },
-            {
-              label: 'Java Agent',
-              href: '/docs/installation/setup-java-agent',
-            },
-          ],
+          items: [],
         },
         {
           title: '2',
-          items: [
-            {
-              label: 'Chrome Extension',
-              href: '/docs/installation/setup-browser-extension',
-            },
-            {
-              label: 'Java + JS example App',
-              href: 'https://github.com/Drill4J/realworld-java-and-js-coverage/',
-            },
-          ],
+          items: [],
         },
         {
           title: '3',
           items: [
+            {
+              label: 'Demo',
+              href: 'https://github.com/Drill4J/realworld-java-and-js-coverage/',
+            },
             {
               label: 'Contact us',
               href: 'https://t.me/drill4j',
