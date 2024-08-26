@@ -1,0 +1,61 @@
+---
+id: chrome-extention
+title: Chrome Browser Extension
+---
+
+import { Image } from '@components';
+import { Info } from '@components';
+import Link from '@docusaurus/Link';
+
+## Installation
+1. Download the latest Chrome Extension release [here](https://github.com/Drill4J/browser-extension/releases).
+2. Extract **build** folder.
+3. Go to Chrome ellipsis menu (three-dot menu at the top right corner) and go to *More Tools* -> *Extensions*.
+4. Enable *Developer Mode* in the top-right corner of the screen.
+5. Click on the *Load unpacked* button and navigate to build folder and select it.
+
+## Perform Agent One Time Setup
+Perform an <Link to="/docs/drill4net/one-time-setup" target="_blank">agent one time setup</Link> before you continue with this guide.
+
+<Info>
+    NOTE <br/>
+    If you are going to perform <b>only manual</b> tests you can safely ignore any steps from one time setup that are related 
+    to <i>Drill4J Injector</i>. In the case of manual tests there is no need to process <i>assembly with tests</i>, which is 
+    the responsibility of <i>Drill4Net Injector</i>.
+</Info>
+
+## Connect to Drill4J Admin
+1. Open the *Drill4J Browser Extension* while in the browser tab of the application under test.
+2. Enter Drill4J Admin backend address and click *Connect*. For example: *http://localhost:8090*.
+<Image src="/img/drill4net/extension-to-drill4j-admin.png"/>
+3. Click *Open Widget*. By default, the widget opens at the bottom of the screen, but you can move it up by pressing
+*Fix to the top* button on the right.
+
+## Run Manual Tests
+Now you can use browser extention to run your own manual tests. You can run as many tests as you need.
+Here is an example how to run one test.
+1. Enter the test name and click *Start Test*.
+<Image src="/img/drill4net/start-manual-test.png"/>
+2. Perform manual testing.
+3. Click *Finish*. Select whether test *Passed* or *Failed* and click *Finish* once again.
+<Image src="/img/drill4net/finish-manual-test.png"/>
+4. You should see scope code coverage and test duration. Click *Done*.
+<Image src="/img/drill4net/manual-test-finished.png"/>
+
+## Observe Test Outputs in Drill4J Admin
+Output of the manual tests you run using browser extension can be accessed using Drill4J Admin.
+1. Navigate to Drill4J Admin UI and select your agent.
+2. Click *Test2Code* and then click *Finish Scope* to add your scope coverage to the build.
+<Image src="/img/drill4net/manual-tests-test2code.png"/>
+3. Now you can observe coverage per each class or method. Test outputs are also displayed in *Build Tests*.
+
+## Usage Overview
+The following gif image shows how to:
+- Connect to Drill4J Admin
+- Run Manual Tests
+- Observe Test Outputs in Drill4J Admin
+
+<details> 
+    <summary>Click here to explore browser extension usage</summary>
+    <Image src="/img/drill4net/browser-extension-manual-test.gif"/>
+</details>

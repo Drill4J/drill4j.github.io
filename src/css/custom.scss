@@ -9,13 +9,13 @@
 @import './colors';
 
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-color-primary: #007fff;
+    --ifm-color-primary-dark: #0072e6;
+    --ifm-color-primary-darker: #0066cc;
+    --ifm-color-primary-darkest: #0054a6;
+    --ifm-color-primary-light: #3399ff;
+    --ifm-color-primary-lighter: #66b2ff;
+    --ifm-color-primary-lightest: #99ccff;
   --ifm-code-font-size: 95%;
   --ifm-list-margin: 0;
   --ifm-list-left-padding: 0;

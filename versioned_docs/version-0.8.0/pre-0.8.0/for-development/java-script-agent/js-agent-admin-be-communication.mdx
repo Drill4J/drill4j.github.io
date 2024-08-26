@@ -1,0 +1,354 @@
+---
+id: js-agent-admin-be-communication
+title: JS Agent / Admin Backend Communication
+---
+import { AdditionalInformation, Badge } from '@site/src/components';
+
+## Messages
+
+### Admin
+
+Admin backend sends messages in the following format:
+
+```json
+{
+  "type": "MESSAGE",
+  "destination": "/agent/change-header-name",
+  "text": ""
+}
+```
+<AdditionalInformation className="space-y-2">
+
+<Badge>"text"</Badge> field is stringified.
+</AdditionalInformation>
+
+
+Admin backend expects to get a response **for each message**, called "delivery confirmation" in the following format:
+
+```json
+{
+  "type": "MESSAGE_DELIVERED",
+  "destination": "/agent/change-header-name"
+}
+```
+
+Some messages aren't used in JS agent initialization, so no actions are performed on JS agent side, **but delivery confirmation is still sent**:
+
+
+- <Badge>/agent/change-header-name</Badge>
+- <Badge>/agent/set-packages-prefixes</Badge>
+- <Badge>/agent/load-classes-data</Badge>
+
+### Plugin
+
+```json
+{
+  "type": "PLUGIN_DATA",
+  "text": {
+    "pluginId": "test2code",
+    "drillMessage": {
+      "content": "" // set to stringified plugin message
+    }
+  }
+}
+```
+
+<AdditionalInformation className="space-y-2">
+
+<Badge>"content"</Badge> field is stringified.
+</AdditionalInformation>
+
+## Agent Registration & Test2Code Plugin Initialization
+
+1. Open WS connection to Admin backend API on the <Badge>/agent/attach</Badge> route (e.g. <Badge>http://localhost:8090/agent/attach</Badge>) with the following headers specified:
+
+   ```json
+   {
+     "AgentConfig": {
+       "id": "sample-agent-id",
+       "serviceGroupId": "sample-group-id",
+       "buildVersion": "0.0.1",
+       "agentType": "NODEJS",
+       "instanceId": ""
+     },
+     "needSync": true // is set to "true" during the initial connect ("false" if the agent establishes connection after a restart)
+   }
+   ```
+
+<AdditionalInformation className="space-y-2">
+
+At that point, agent should appear in Admin Panel. Register it, make sure to enable Test2Code plugin at step 3.
+</AdditionalInformation>
+
+2. Wait for the following message:
+
+   ```json
+   {
+     "type": "MESSAGE",
+     "destination": "/agent/load",
+     "text": {
+       "meta": {
+         "id": "test2code",
+         "name": "Test2Code",
+         "description": "Test2Code plugin minimizes your regression suite via Test Impact Analytics by suggesting only affected subset of tests to run, and highlight  untested areas via Test Gap Analysis, providing evidence of how changes are tested and which areas and not tested at all.",
+         "type": "Custom",
+         "family": "INSTRUMENTATION",
+         "enabled": true,
+         "config": "{\"message\": \"hello from default plugin config... This is 'plugin_config.json file\"}",
+         "checkSum": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+         "isNative": false
+       },
+       "data": []
+     }
+   }
+   ```
+
+3. In response to **that particular message** JS agent sends 2 delivery confirmations:
+
+   send that first:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/agent/plugin/test2code/loaded"
+   }
+   ```
+   send delivery confirmation for the original destination:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/agent/load"
+   }
+   ```
+
+<AdditionalInformation className="space-y-2">
+
+"AST" data (metadata on packages, classes, methods) are sent during the next steps.
+</AdditionalInformation>
+
+4. Wait for the following message:
+
+   ```json
+   {
+     "destination": "/plugin/togglePlugin",
+     "data": {
+       "text": {
+         "pluginId": "test2code"
+       }
+     }
+   }
+   ```
+
+5. Send containing **"AST"** data:
+
+   ```json
+   {
+     // this is a plugin message, wrap it into plugin message format (stringify, set result to "content" field, see "Messages/Plugin" above)
+     "type": "INIT_DATA_PART",
+     "astEntities": [
+       // each array entry represents a class
+       {
+         "path": "js/directives", // admin groups classes into packages based on that value
+         "name": "TodoBlur.ts",
+         "methods": [
+           {
+             "name": "GLOBAL",
+             "params": [],
+             "returnType": "void",
+             "probes": [3, 4, 17],
+             "count": 3
+           },
+           {
+             "name": "todoBlur",
+             "params": [],
+             "returnType": "void",
+             "probes": [9, 10, 15, 16],
+             "count": 4,
+             "checksum": "9381a3cce26fc23fbbe4e5650486ee0d5454af9792b51cfdfe4361436d2ecfc5"
+           }
+         ]
+       },
+       {
+         /* next class entry */
+       }
+     ]
+   }
+   ```
+
+6. Send delivery confirmation for `/plugin/togglePlugin`:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/plugin/togglePlugin"
+   }
+   ```
+
+<AdditionalInformation className="space-y-2">
+
+At that point, test2code plugin dashboard should be available in the Admin Panel. Check that methods table reflects actual packages, classes and methods.
+</AdditionalInformation>
+
+## Start Session
+
+1. Wait for the **"Start agent session"** message:
+
+   ```json
+   {
+     "type": "MESSAGE",
+     "destination": "/plugin/action",
+     "text": {
+       "id": "test2code",
+       "message": {
+         "type": "START_AGENT_SESSION", // "STOP" in case of stop session action
+         "payload": {
+           "sessionId": "4867e838-51ca-4999-83c6-f68a7c7f279a",
+           "testType": "MANUAL",
+           "testName": "add1",
+           "isRealtime": true,
+           "isGlobal": false
+         }
+       }
+     }
+   }
+   ```
+
+2. Send **"Session started"** message:
+
+   ```json
+   // this is a plugin message, wrap it into plugin message format (stringify, set result to "content" field, see "Messages/Plugin" above)
+   {
+     "type": "SESSION_STARTED",
+     "sessionId": "4867e838-51ca-4999-83c6-f68a7c7f279a",
+     "testType": "MANUAL",
+     "ts": "1616679452533"
+   }
+   ```
+
+3. Send delivery confirmation:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/plugin/action"
+   }
+   ```
+
+## Send Coverage
+
+<AdditionalInformation className="space-y-2">
+
+That might be better to implement it differently for the .NET agent, we've got to discuss that.
+</AdditionalInformation>
+
+1. Send coverage data part message:
+
+   ```json
+   // this is a plugin message, wrap it into plugin message format (stringify, set result to "content" field, see "Messages/Plugin" above)
+   {
+     "type": "COVERAGE_DATA_PART",
+     "sessionId": "4867e838-51ca-4999-83c6-f68a7c7f279a",
+     "data": [
+       {
+         "className": "js/controllers/TodoCtrl.ts",
+         // concatenated array of all class probes (from all methods)
+         "probes": [true, true, true, false, false, false, true, false, false, true],
+         "testName": "Add todo item"
+       },
+       {
+         "className": "js/directives/TodoBlur.ts",
+         // concatenated array of all class probes (from all methods)
+         "probes": [false, false, true, true, true, false, false, false, true, false, false, true],
+         "testName": "Add todo item"
+       },
+       {
+         /*next class coverage entry*/
+       }
+     ]
+   }
+   ```
+
+## Stop/Cancel Session
+
+1. Wait for the **"Stop agent session"** message:
+
+   ```json
+   {
+     "type": "MESSAGE",
+     "destination": "/plugin/action",
+     "text": {
+       "id": "test2code",
+       "message": {
+         "type": "STOP", // "CANCEL"
+         "payload": {
+           "sessionId": "4867e838-51ca-4999-83c6-f68a7c7f279a"
+         }
+       }
+     }
+   }
+   ```
+
+2. Send **"Session finished"** message:
+
+   ```json
+   // this is a plugin message, wrap it into plugin message format (stringify, set result to "content" field, see "Messages/Plugin" above)
+   {
+     "type": "SESSION_FINISHED", // "SESSION_CANCELLED"
+     "sessionId": "4867e838-51ca-4999-83c6-f68a7c7f279a",
+     "ts": "1616679452533"
+   }
+   ```
+
+3. Send delivery confirmation:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/plugin/action"
+   }
+   ```
+
+## Init Active Scope
+
+1. Wait for the **"Init active scope"** message:
+
+   ```json
+   {
+     "type": "MESSAGE",
+     "destination": "/plugin/action",
+     "message": {
+       "id": "test2code",
+       "message": {
+         "type": "INIT_ACTIVE_SCOPE",
+         "payload": {
+           "id": "d525c728-eccb-4eaf-b0a9-be4a2281cafd",
+           "name": "New Scope 2",
+           "prevId": "97bfc5dc-d09d-4240-bf35-dbd999103818"
+         }
+       }
+     }
+   }
+   ```
+
+2. Send the **"Scope initialized"** message:
+
+   ```json
+   // this is a plugin message, wrap it into plugin message format (stringify, set result to "content" field, see "Messages/Plugin" above)
+   {
+     "type": "SCOPE_INITIALIZED",
+     "id": "d525c728-eccb-4eaf-b0a9-be4a2281cafd",
+     "name": "New Scope 2",
+     "prevId": "97bfc5dc-d09d-4240-bf35-dbd999103818",
+     "ts": "1616680302751"
+   }
+   ```
+
+3. Send delivery confirmation:
+
+   ```json
+   {
+     "type": "MESSAGE_DELIVERED",
+     "destination": "/plugin/action"
+   }
+   ```

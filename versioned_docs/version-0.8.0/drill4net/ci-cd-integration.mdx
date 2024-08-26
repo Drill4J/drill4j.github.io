@@ -1,0 +1,78 @@
+---
+id: ci-cd-integration
+title: CI/CD Integration
+---
+
+import { Image } from '@components';
+import { Warning } from '@components';
+import Link from '@docusaurus/Link';
+
+## Prerequisites
+Perform a <Link to="/docs/drill4net/one-time-setup" target="_blank">one time setup</Link> before you continue with CI/CD integration.
+
+## CI/CD Integration
+
+The Drill4Net agent should run after the build step in CI/CD pipeline:
+<Image src="/img/drill4net/drill4net-build-pipeline.svg"/>
+
+### 1. Update Build Version in Configurations
+Each build should update build version in *Drill4Net Scanner* and *Drill4Net Injector* configuration files.
+1. Update `adminAgentConfig:buildVersion` in *Drill4Net Scanner* appsettings.yml to version of current build.
+2. Update `AdminAgentConfig:BuildVersion` in *Drill4Net Injector* drill4netsettings.yml to version of current build.
+
+### 2. Run Drill4Net Scanner
+After each build, you should <Link to="/docs/drill4net/drill4net-apps#4-usage" target="_blank">run Drill4Net Scanner</Link> for
+*application under test* assembly.
+
+### 3. Run Drill4Net Injector
+After each build, you should <Link to="/docs/drill4net/drill4net-apps#4-usage-1" target="_blank">run Drill4Net Injector</Link> for
+*assembly with tests*.
+
+### 4. Run Tests
+After *Drill4Net Scanner* and *Drill4Net Injector* finished work, you should run tests from assembly provided to 
+*Drill4Net Injector*.
+
+<Warning>
+    Make sure that <i>application under test</i> assembly and <i>assembly with tests</i> are <b>not</b> rebuilt before running tests. 
+    <i>Drill4Net Scanner</i> and <i>Drill4Net Injector</i> make some important modifications to the assembly to make Drill4Net solution work. 
+</Warning>
+
+### 5. Get Tests to Run
+You can execute the `curl` command to get tests to run:
+```
+curl -i -H "accept: application/json" \
+  -H "content-type: application/json" \
+  -X GET {drill4j-address}/api/agents/{agent-id}/plugins/test2code/data/tests-to-run
+```
+`drill4j-address` is the address of *Drill4J Admin*, for example `http://localhost:8091`.
+
+`agent-id` is the value of `adminAgentConfig:id` provided in *Drill4Net Scanner* earlier.
+
+To cover new build's *Risks* (methods modified since previous build) it is enough to only run tests returned in thr response.
+
+### 6. Creating Environment Variable for SessionId
+
+When running a bunch of tests on different machines, it's essential to maintain consistency in test sessions. To achieve this, you can set up a unique session identifier using **environment variables**. The value for this environment variable can be any string, but it's important to ensure its uniqueness for proper session tracking. Ensure that you maintain this session ID consistency across all test machines.
+
+#### Examples of scripts for creating environment variables:
+
+##### Bash
+
+```bash
+#!/bin/bash
+
+guidValue=$(date +"%Y%m%d%H%M%S")
+
+export Drill4NetSessionId=$guidValue
+```
+
+##### PowerShell
+
+```powershell
+$guidValue = [guid]::NewGuid().ToString()
+
+# This script needs to execute in the same process tree as tests
+[System.Environment]::SetEnvironmentVariable('Drill4NetSessionId', $guidValue, [System.EnvironmentVariableTarget]::Process)
+
+Write-Output "Created/Updated environment variable Drill4NetSessionId with value: $guidValue"
+```

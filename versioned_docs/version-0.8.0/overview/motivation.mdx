@@ -1,0 +1,119 @@
+---
+id: motivation
+title: Motivation
+---
+
+import { Image } from '@components';
+
+# Motivation
+
+This section describes motivation behind Drill4J implementation.
+
+## The problem statement
+
+Imagine a system under test, a black box. We perform a set of actions on application and assert the outcome. It does not matter right now if these actions are automated or performed by human.
+
+<Image
+  alt="A diagram with two entities: the first is labeled 'System Under Test', the second is labeled 'Test performer'. They are connected with an arrow labeled 'test actions'"
+  src="/img/motivation-blackbox.png"
+/>
+
+Once all actions are completed, we get a list of tests, each assined with either "passed" or "failed" status.
+Based on that list we decide if the system satisfies our requirements.
+
+There are multiple issues which stem from this approach:
+
+1. **Blind spots** - we have no idea of how deeply or broadly we've tested the system. Since it's a blackbox, there might exist code areas which where tested only partially or skipped entirely.
+2. **Growing regression testing scope** - as amount of code and tests increases so does the effort.
+3. **Redundant tests** - there might be tests which do nothing at all or are duplicates of other existing tests. This problem is especially prominent in legacy projects.
+4. **Dead code** - a code that is never executed, but is still kept in the codebase.
+
+These are not breaking news and we deal with issues by:
+
+1. Using Test Management Systems to keep extensive manual test libraries;
+2. Employing various QA tools, metrics and all kinds of reports to ensure maximum coverage;
+3. Automating most time-consuming cases;
+4. Practicing clean code: writing unit tests, performing frequent code reviews.
+
+However, while all of the above helps, there is a fundamental problem.
+
+All these actions are **external** to the system under test. They only allows us to **hope**, that our testing is sufficient and there is no code that will go into production uncheked.
+They heavily rely on humans' ability to analyse and keep track of things. This ability is exhausted by the complexity of modern applications and time constraints.
+
+<details>
+<summary>Illustration to prove the point - testing a Todo list example project</summary>
+<br/>
+Even the most simple example application may pose a challenge.
+
+Let's look at the [Todo](https://todomvc.com/examples/angularjs/#/) application - a pet project that allows to create, edit and delete notes.
+
+<Image alt="A screenshot of a simple TodoMVC application" src="/img/motivation-todomvc-screenshot.png" />
+
+- only JavaScript and Web API
+- no backend at all (except the one that serves the files)
+
+Its AngularJS implementation has 28 functions (including callbacks), which is very timid and one would assume there would be no issue to cover that on 100% or close to that. But reality proves otherwise.
+
+Let's come up with the tests cases:
+
+- create note / multiple notes
+- edit note
+- delete note
+- mark note as completed
+- apply filters - show just completed, show only remaining
+- refresh page to test initial data load
+
+Testing it by performing these obvious steps yeilds only 80.7% coverage.
+
+<Image
+  alt="A screenshot of Drill4J Admin Panel. It demonstrates various application info and the coverage of 80.7%"
+  src="/img/motivation-todomvc-admin-screenshot.png"
+/>
+
+That does not look bad, and one might pass that as "good enough".
+But Drill4J reveals that we have under-tested a number of classes, including the main one - TodoCtrl class. There are gaps in some methods, while others are not covered at all.
+
+<Image
+  alt="A screenshot of Drill4J Admin Panel. It demonstrates which methods were covered by tests and which were not"
+  src="/img/motivation-todomvc-admin-screenshot-2.png"
+/>
+
+On closer inspection we realise, we forgot about "edit and then revert edits" scenario!
+Upon its completion, we can see that there is a coverage, part of which has overlapped with the previous tests, and part is brand new.
+
+<Image
+  alt="A screenshot of Drill4J Admin Panel. It demonstrates an increment in coverage"
+  src="/img/motivation-todomvc-admin-screenshot-3.png"
+/>
+
+We were able to bump coverage to 88.7%, but there are still improvements to be made.
+
+<Image
+  alt="A screenshot of Drill4J Admin Panel. It demonstrates an increment in coverage"
+  src="/img/motivation-todomvc-admin-screenshot-4.png"
+/>
+
+Digging through the code to understand the rest 12.3% reveals more missed cases, such as trying to add an empty todo item.
+
+And there is code unreachable by any actions (it might be redundant or there might be yet another missed case).
+
+</details>
+
+<br />
+
+**TL;DR**: even testing an example Todo application is not as easy as it seems. Average modern application is **a lot** more complex.
+
+## The solution
+
+The solution for these problem is data. We have to know what each test on each stage is doing exactly.
+
+**Important disclaimer**: We are not advocating for 100% coverage for one testing type.
+Some code is better checked with unit tests, or with e2e, or with manual tests, and so on.
+
+Drill4J is created to:
+
+- Make each testing stage as transparent as possible;
+- Accumulate data to create **the complete picture** of coverage from all tests;
+- Highlight blind spots and the best areas to make improvements to, both in tests and code.
+
+Our goal is to answer questions "Should we write more tests?", "What we should test first?" and "Is our automation suite is sufficient?" **based on concrete evidence**.

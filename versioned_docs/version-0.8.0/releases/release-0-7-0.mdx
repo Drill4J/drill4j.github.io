@@ -1,0 +1,58 @@
+---
+id: release-0-7-0
+title: 0.7.0
+---
+import {Table} from '@components'
+
+## Artifacts
+
+<Table>
+
+|        Artifact        |             Version            |                                                                                                                       Link                                                                                                                      |
+|:-----------------------|:-------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Drill Admin [Backend]  | 0.7.0                          | [GitHub](https://github.com/Drill4J/admin/releases/tag/v0.7.0), [DockerHub](https://hub.docker.com/layers/drill4j/admin/0.7.0/images/sha256-17f6a0f60b3e62f42cd5b70255d381bfdfe54c297a7b67e3922caa5bcbbe2706?context=explore)                 |
+| Drill Admin [Frontend] | 0.7.1                          | [GitHub](https://github.com/Drill4J/admin-ui/releases/tag/v0.7.1), [DockerHub](https://hub.docker.com/layers/drill4j/admin-ui/0.7.1/images/sha256-1bea5ad646cb79fbbd7e6c42d199740b262129358471935d323a0b9a358e4ad0?context=explore)           |
+| Test2Code Plugin       | 0.7.0                          | [GitHub](https://github.com/Drill4J/test2code-plugin/releases/tag/v0.7.0)                                                                                                                                                                       |
+| Autotest Agent         | 0.16.2                         | [GitHub](https://github.com/Drill4J/autotest-agent/releases/tag/v0.16.2)                                                                                                                                                                        |
+| Java Agent             | 0.7.0                          | [GitHub](https://github.com/Drill4J/java-agent/releases/tag/v0.7.0), [DockerHub](https://hub.docker.com/layers/drill4j/java-agent/0.7.0/images/sha256-2eca05acd9be644cdc262f9f1733a18786def5d15c052546036cbc719e12e6ee?context=explore)       |
+| JavaScript Agent       | 0.2.0-feature-block-coverage.1 | [DockerHub](https://hub.docker.com/layers/drill4j/js-agent/0.2.0-feature-block-coverage.1/images/sha256-01b8578f48499a45bab2fea4514f82e11f57d0c5c692feb0dac2b0b3572e33f5?context=explore)                                                     |
+| Agent Runner           | 0.2.3                          | [GitHub](https://github.com/Drill4J/agent-runner/releases/tag/v0.2.3)                                                                                                                                                                           |
+| JS AST Parser             | 0.3.15-beta.0                  | [GitHub](https://github.com/Drill4J/js-ast-parser/releases/tag/0.3.15-beta.0), [NPM](https://www.npmjs.com/package/drill4js-cli)                                                                                                                                                                   |
+| Browser Proxy          | 0.2.0                          | [GitHub](https://github.com/Drill4J/browser-proxy/releases/tag/v0.2.0), [DockerHub](https://hub.docker.com/layers/drill4j/browser-proxy/0.2.0/images/sha256-8073bff08dc01d71dbff922527a02e583beea708cbeb7129a532cc301bb0563d?context=explore) |
+| Browser Extension      | 0.3.29.1                         | [GitHub](https://github.com/Drill4J/browser-extension/releases/tag/0.3.29.1)                                                                                                                                                                     |
+
+</Table>
+
+## New Features
+* **Agents PreRegistration** for increasing application sync speed with the agent
+* **Time Savings.** It provides visualization of the Test Impact Analysis. You can check how much time Drill4J saves in each build of your application
+* **Baseline build** contains all project' tests for Test Impact Analysis
+* **Sort and Search** in "Build/Scope methods" and "Suggested tests" tables
+* **Sessions Management** pane for starting, finishing and aborting sessions in Drill Admin
+* **JavaScript** application support
+* **Cucumber** framework support
+* **Scala+Cypress** POC
+
+## Improvements
+* **New transport** for Agent and Drill Admin communication improvement
+* **API** redesign
+* **Extension pop-up** and **widget** were redesigned and manual testing flow was improved
+* **UX improvements:** "Tests to Run" page, Active Scope block, Tables, Dividing of agents registration by types
+
+## Critical Bug Fixes
+* Out of memory if User finishes active scope with large datasets
+* Not getting coverage when running Autotests on a remote selenium driver
+* Real-time works incorrectly if testing is performed on standalone and microservice apps concurrently
+* Incorrect coverage and tests numbers in parallel testing
+
+## Known Issues
+* Agent/Admin reconnecting deletes the active session
+* If User changes Project Packages or Target host, Finished Scopes are lost in the latest build
+* Tests duration for manual tests is always =  00:00:00
+* Flaky coverage: percentages for the same test may vary in a small range (+/- 5%)
+* To collect manual coverage on a new build of JS agent you need to refresh the page with a cache reset (Ctrl+F5)
+* The "Sessions Management" doesn't work with the JS agent
+* Sometimes not all agents are displayed on the "Service Group: Test2Code" page
+* TestNG v7.4.0 isn't supported
+* Manual Testing Browser Extension: in order to record frontend (JavaScript) coverage it is required to perform all test actions in a single tab. Essentially, one must press "Start Test" and "Finish Test" in the same tab, otherwise, JS coverage will be lost
+* Opening multiple tabs of Drill4J Admin Panel may cause UI update issues. Please, consider using only one tab

@@ -1,7 +1,15 @@
 @import "colors";
 
-body {
-  margin-top: 88px; // fixed header height
+@media (min-width: 999px) {
+  .navbar {
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 5.5rem;
+  }
+}
+
+.navbar__brand {
+  height: 3rem;
 }
 
 .DocSearch {

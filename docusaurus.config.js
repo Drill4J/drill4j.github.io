@@ -26,14 +26,31 @@ module.exports = {
       additionalLanguages: ['java'],
     },
     navbar: {
+      logo: {
+        alt: 'Drill4J Logo',
+        src: 'img/drill4j-logo.svg',
+      },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
+          dropdownActiveClassDisabled: true,
+        },
         {
           to: 'docs/overview/why-drill4j',
           label: 'Documentation',
+          position: 'right',
         },
         {
           to: 'https://github.com/Drill4J/realworld-java-and-js-coverage/',
-          label: 'Install demo',
+          label: 'Demo',
+          position: 'right',
+        },
+        {
+          to: 'https://github.com/Drill4J/drill4j',
+          label: 'Github',
+          position: 'right',
         },
       ],
     },
