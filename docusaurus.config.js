@@ -38,7 +38,7 @@ module.exports = {
           dropdownActiveClassDisabled: true,
         },
         {
-          to: 'docs/overview/why-drill4j',
+          to: 'docs/overview/what-is-drill4j',
           label: 'Documentation',
           position: 'right',
         },
@@ -61,7 +61,7 @@ module.exports = {
           items: [
             {
               label: 'Intro',
-              href: '/docs/overview/why-drill4j',
+              href: '/docs/overview/what-is-drill4j',
             },
             {
               label: 'Getting Started',

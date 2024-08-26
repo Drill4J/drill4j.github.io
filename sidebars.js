@@ -6,7 +6,7 @@ const docs = [
       {
         type: 'doc',
         label: 'What is Drill4J',
-        id: 'overview/why-drill4j',
+        id: 'overview/what-is-drill4j',
       },
       {
         type: 'doc',
