@@ -3,6 +3,17 @@
     {
       "collapsed": true,
       "type": "category",
+      "label": "Introduction",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/overview/what-is-drill4j"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
       "label": "Getting Started",
       "items": [
         {

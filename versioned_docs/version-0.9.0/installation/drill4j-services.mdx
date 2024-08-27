@@ -3,53 +3,49 @@ id: deploy-drill4j-services
 title: Deploy Drill4J Services
 ---
 
-# Deploy Drill4J services
+# Deploy Drill4J Services
 
-Drill4J provides docker images for all of its base components 
+These are common services required to run Drill4J:
 
-It is somewhat straightforward to run Drill4J services in [Docker](https://www.docker.com/) or [Kubernetes](https://kubernetes.io/)
+1. __Drill4J Admin Backend__ - The main backend service. It hosts APIs for data collection and metric reporting.
+2. __Drill4J UI__ - The user interface for managing users and API keys.
+3. __PostgreSQL__ - The database for storing data and executing queries to calculate metrics.
 
-## Docker Compose
+We also employ [__Metabase__](https://www.metabase.com/) - a third-party frontend used for displaying metrics.
 
-1. Use the following `docker-compose.yml` to run basic Drill4J services
+## Deploy with docker-compose
 
-   ```yaml
-    version: '3'
+1. Copy the following config to `docker-compose.yml` file
+
+    ```yaml
+    version: '3.8'
 
     services:
 
-      admin-ui:
-        image: drill4j/admin-ui-root-config:${FRONT_VERSION}
+      drill-ui:
+        image: ghcr.io/drill4j/drill4j-ui:${DRILL_UI_VERSION}
         ports:
-          - 8091:8080
-        environment:
-          WAIT_HOSTS: drill-admin:8090
-          UI_PLUGINS_URLS: 'test2code#https://cdn.jsdelivr.net/npm/@drill4j/test2code-ui@${TEST2CODE_UI_VERSION}/dist/Drill4J-test-to-code.js'
-        networks:
-          - drill4j-dev-network
-        depends_on:
-          drill-admin:
-            condition: service_healthy
+          - "8091:8080"
 
       drill-admin:
-        image: drill4j/admin:${BACK_VERSION}
+        image: ghcr.io/drill4j/admin:${DRILL_ADMIN_BACKEND_VERSION}
         environment:
+          - DRILL_METRICS_UI_BASE_URL=${DRILL_UI_BASE_URL}
           - DRILL_DB_PORT=5432
           - DRILL_AGENTS_SOCKET_TIMEOUT=6000
           - DRILL_DB_HOST=${POSTGRES_HOST}
           - DRILL_DB_NAME=${POSTGRES_DB}
           - DRILL_DB_USER_NAME=${POSTGRES_USER}
           - DRILL_DB_PASSWORD=${POSTGRES_PASSWORD}
-          - DRILL_DB_MAX_POOL_SIZE=${DRILL_DB_MAX_POOL_SIZE}
+          - DRILL_DB_MAX_POOL_SIZE=${DRILL_ADMIN_BACKEND_DB_MAX_POOL_SIZE}
           - LOG_LEVEL=info
         healthcheck:
           test: [ "CMD", "curl", "http://localhost:8090" ]
-          interval: 1s
+          interval: 10s
           timeout: 3s
           retries: 30
         ports:
           - 8090:8090
-          - 8453:8453
         networks:
           - drill4j-dev-network
         depends_on:
@@ -65,6 +61,10 @@ It is somewhat straightforward to run Drill4J services in [Docker](https://www.d
           POSTGRES_USER: ${POSTGRES_USER}
           POSTGRES_DB: ${POSTGRES_DB}
         volumes:
+          # Volume to initialize Metabase dashboards 
+          # Place data.sql file from the https://github.com/Drill4J/drill-metabase-dashboards/releases to db-init directory
+          - ./db-init:/docker-entrypoint-initdb.d
+          # Volume to store application metrics
           - drill-data-pg:/var/lib/postgresql/data
         healthcheck:
           test: ['CMD-SHELL', 'pg_isready -U postgres']
@@ -73,44 +73,84 @@ It is somewhat straightforward to run Drill4J services in [Docker](https://www.d
           retries: 5
         networks:
           - drill4j-dev-network
+        command: ["postgres", "-c", "log_statement=all", "-c", "log_min_duration_statement=0"]
+
+      metabase:
+        image: metabase/metabase@sha256:96416c11371d400aecc2073b8d0e8335cc7c413b236ef724e51dda095b2580ea
+        container_name: metabase
+        hostname: metabase
+        volumes:
+          # Required to share urandom from host machine to speedup startup (see https://github.com/metabase/metabase/issues/10175, https://ruleoftech.com/2016/avoiding-jvm-delays-caused-by-random-number-generation)
+          - /dev/urandom:/dev/random:ro
+        ports:
+          - 8095:3000
+        environment:
+          MB_DB_TYPE: postgres
+          MB_DB_HOST: postgres
+          MB_DB_PORT: 5432
+          MB_DB_USER: ${POSTGRES_USER}
+          MB_DB_PASS: ${POSTGRES_PASSWORD}
+          MB_DB_DBNAME: ${POSTGRES_DB}
+        networks:
+          - drill4j-dev-network
+        healthcheck:
+          test: curl --fail -I http://localhost:3000/api/health || exit 1
+          interval: 15s
+          timeout: 5s
+          retries: 5
 
     volumes:
       drill-data-pg:
 
     networks:
       drill4j-dev-network:
-   ```
+
+    ```
 
 2. Create the following `.env` file next to it
 
-   ```shell
-    # Drill4J Admin Backend
-    BACK_VERSION=0.8.3
-    POSTGRES_HOST=postgres
-    POSTGRES_DB=postgres
-    POSTGRES_USER=postgres
-    POSTGRES_PASSWORD=mysecretpassword
-    DRILL_DB_MAX_POOL_SIZE=10
+    ```shell
+        DRILL_ADMIN_BACKEND_VERSION=0.9.0
+        DRILL_UI_VERSION=0.1.0
+        DRILL_ADMIN_BACKEND_DB_MAX_POOL_SIZE=50
+        
+        # Points to Metabase UI instance. "http://localhost:8095" value is only fitting for the local deployment. Make sure to set to the appropriate host name
+        DRILL_UI_BASE_URL=http://localhost:8095
 
-    # Drill4J Admin Panel UI
-    FRONT_VERSION=0.1.0-150
-    TEST2CODE_UI_VERSION=0.1.0-136
-   ```
+        # PostgreSQL
+        POSTGRES_HOST=postgres
+        POSTGRES_DB=postgres
+        POSTGRES_USER=postgres
+        # make sure to use the strong password, the following value is added as an example
+        POSTGRES_PASSWORD=mysecretpassword
+    ```
 
-3. Open command line and run `docker-compose up -d`
+3. Setup Metabase dashboards
 
+    1. Create `db-init` folder _next to_ `docker-compose.yml`
+    2. Download `data.sql` from https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/v18 and place in `db-init` folder
 
+4. Open command line in the current folder and run `docker-compose up -d`. Wait for Docker to download images and start all containers 
 
-## Kubernetes / Helm
+## Confirm everything is working
 
-:::note
-TODO - add example charts
-:::
+1. `http://localhost:8090/` must return 
 
-## Manual services deployment
+  ```json
+    {
+      "message": "Drill4J Admin Backend"
+    }
+  ```
 
-One can run Drill4J services without Docker / Kubernetes, yet it is cumbersome and would require to:
-- provide correct env - Java 8, PostgreSQL, Node.js 16 (may vary depending on exact setup).
-- manually deploy and configure all services
+2. `http://localhost:8091` must display Drill4J UI authentication form.
 
-So it's best to use Docker images provided by Drill4J out-of-the-box
+    - Default credentials: user: `admin` passowrd: `admin`.
+    - ___Make sure to change password___ in the account settings
+
+3. `http://localhost:8095` must display Metabase UI.
+
+    - Default credentials: user: `user@user.user` password: `useruser1`
+    - ___Make sure to change password___ in the account settings
+    - After you login to Metabase UI you should see `"Builds"` dashboard being available in Bookmarks section
+
+Now you have Drill4J services working. Next step is to setup Agents to collect metrics from your application and tests.  
