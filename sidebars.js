@@ -10,7 +10,7 @@ const docs = [
       },
       {
         type: 'doc',
-        id: 'installation/setup-java-agent',
+        id: 'installation/what-is-drill4j',
         label: 'Java / JVM Agent',
       },
       {

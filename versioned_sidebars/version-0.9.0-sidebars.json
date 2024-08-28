@@ -1,32 +1,72 @@
 {
   "version-0.9.0/docs": [
     {
+      "type": "doc",
+      "label": "Introduction",
+      "id": "version-0.9.0/overview/what-is-drill4j"
+    },
+    {
+      "type": "doc",
+      "label": "Getting Started",
+      "id": "version-0.9.0/installation/getting-started"
+    },
+    {
       "collapsed": true,
       "type": "category",
-      "label": "Introduction",
+      "label": "Drill4J Services",
       "items": [
         {
           "type": "doc",
-          "id": "version-0.9.0/overview/what-is-drill4j"
+          "id": "version-0.9.0/drill-services/drill-backend"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/drill-ui"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/metabase"
         }
       ]
     },
     {
       "collapsed": true,
       "type": "category",
-      "label": "Getting Started",
+      "label": "Agents",
       "items": [
         {
           "type": "doc",
-          "id": "version-0.9.0/installation/deploy-drill4j-services"
+          "id": "version-0.9.0/agents/java-agent"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Tests integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/tests-integration/unit-tests"
         },
         {
           "type": "doc",
-          "id": "version-0.9.0/installation/setup-java-agent"
+          "id": "version-0.9.0/tests-integration/selenium-tests"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "CI/CD Integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/cicd-integration/github"
         },
         {
           "type": "doc",
-          "id": "version-0.9.0/installation/setup-java-autotest-agent"
+          "id": "version-0.9.0/cicd-integration/gitlab"
         }
       ]
     }
