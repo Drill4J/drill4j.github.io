@@ -3,18 +3,28 @@
     {
       "type": "doc",
       "label": "Introduction",
-      "id": "version-0.9.0/overview/what-is-drill4j"
+      "id": "version-0.9.0/what-is-drill4j"
     },
     {
-      "type": "doc",
+      "collapsed": false,
+      "type": "category",
       "label": "Getting Started",
-      "id": "version-0.9.0/installation/getting-started"
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/getting-started/local-deployment"
+        }
+      ]
     },
     {
       "collapsed": true,
       "type": "category",
       "label": "Drill4J Services",
       "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/overview"
+        },
         {
           "type": "doc",
           "id": "version-0.9.0/drill-services/drill-backend"
@@ -30,20 +40,13 @@
       ]
     },
     {
-      "collapsed": true,
-      "type": "category",
-      "label": "Agents",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-0.9.0/agents/java-agent"
-        }
-      ]
+      "type": "doc",
+      "id": "version-0.9.0/agents/java-agent"
     },
     {
       "collapsed": true,
       "type": "category",
-      "label": "Tests integration",
+      "label": "Tests Integration",
       "items": [
         {
           "type": "doc",
