@@ -1,0 +1,128 @@
+---
+id: api-tests
+title: API Tests
+---
+
+# API Tests
+
+This page walks you through Drill4J integration for Java-based API tests. It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_
+
+## Prerequisites
+
+1. This page assumes you have Application Agent configured for application under test. For instructions see:
+
+    - [Getting Started](/docs/getting-started/local-deployment)
+    - [Application Agent reference](/docs/agents/java-agent)
+
+2. API tests launched with either Maven or Gradle
+
+## Configure Drill4J Plugin 
+
+### Gradle
+
+Add Drill4J CI/CD plugin to your Gradle build file:
+```kotlin
+plugins {
+    id("com.epam.drill.integration.cicd") version "0.1.0"
+}
+```
+
+Add general properties to your Gradle build file:
+
+```kotlin
+drill {
+    # example: "http://localhost:8090/api"
+    drillApiUrl = 
+
+    # example: my-app
+    groupId =
+
+    # Secure way: set DRILL_API_KEY env variable value
+    # Unsecure way: paste the API key value here
+    drillApiKey = "your-drill-api-key-here"
+
+    enableTestAgent {
+        version = "0.23.0"
+    }
+}
+```
+
+### Maven
+
+Add Drill4J CI/CD plugin to your Maven build file:
+
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>0.1.0</version>
+    <configuration>
+        <!-- example: my-app -->
+        <groupId> ... </groupId>
+
+        <!-- example: "http://localhost:8090/api" -->
+        <drillApiUrl> ... </drillApiUrl>
+        
+        <!--  Secure way: set DRILL_API_KEY env variable value -->
+        <!--  Unsecure way: paste the API key value here -->
+        <drillApiKey>your-drill-api-key-here</drillApiKey>
+        
+        <testAgent>
+            <version>0.23.0</version>
+        </testAgent>
+
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableTestAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+## Launch Tests
+
+1. Launch your tests with Gradle/Maven (e.g. `gradle test`, `mvn test`).
+
+    > When running tests in your IDE, double-check that it's picking up the correct configuration file with the Drill4J test agent added (that will be `build.gradle` for Gradle, `pom.xml` for Maven)
+
+2. To confirm test agent is working check tests log. There should be Drill4J ASCII logo followed by test agent version:
+
+    ```log
+    Task :test is modified by Drill
+      ____    ____                 _       _          _  _                _
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
+     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
+     Autotest Agent (v0.23.0)
+    ```
+
+That’s it! Open the Metabase UI and confirm that the new test information is coming through. You should see the Test Launches on the Build Summary dashboard.
+
+## Disabling test agent for specific task
+
+### Gradle
+
+If you want to disable Drill4J for specific test task you can set the following:
+
+```kotlin
+test {
+    // general properties of your test task
+    // ...
+    
+    drill {
+        testAgent {
+            enabled = false
+        }
+    }
+}
+```
+
+### Maven
+
+> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧

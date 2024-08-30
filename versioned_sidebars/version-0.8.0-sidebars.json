@@ -1,0 +1,263 @@
+{
+  "version-0.8.0/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Introduction",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.8.0/overview/what-is-drill4j"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/overview/motivation"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/overview/use-cases"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.8.0/installation/setup"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/installation/deploy-drill4j-services"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/installation/setup-java-agent"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/installation/setup-browser-extension"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/installation/setup-java-autotest-agent"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/basic-concepts/glossary"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": ".NET agent",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/drill4j-admin-installation"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/drill4net-apps"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/one-time-setup"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/quick-start-guide"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/ci-cd-integration"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/app-under-test-setup"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/tests-project-setup"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/drill4net-scanner-parameters"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/chrome-extention"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/known-issues"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/drill4net/support-matrix"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Advanced Topics",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.8.0/basic-concepts/data-collection"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Releases",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/pre-release-0-8-0-alpha"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-7-0"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-6-0"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-5-0"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-4-0"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-3-0"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/releases/release-0-2-0"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Docs Archive (pre 0.8.0)",
+      "items": [
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "setup",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/installation/drill-admin"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/installation/java-agent"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/installation/microservices"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/installation/autotest-agent"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/installation/extension"
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Configuration",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/configuration/launch-parameters"
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "For Development",
+          "items": [
+            {
+              "collapsed": true,
+              "type": "category",
+              "label": "Java Agent",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "version-0.8.0/pre-0.8.0/for-development/java-agent/java-coverage-receiving-event-flow"
+                },
+                {
+                  "type": "doc",
+                  "id": "version-0.8.0/pre-0.8.0/for-development/java-agent/java-switch-scope-event-flow"
+                }
+              ]
+            },
+            {
+              "collapsed": true,
+              "type": "category",
+              "label": "JavaScript Agent",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "version-0.8.0/pre-0.8.0/for-development/java-script-agent/js-agent-admin-be-communication"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "API",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/api/builds-summary"
+            }
+          ]
+        },
+        {
+          "collapsed": true,
+          "type": "category",
+          "label": "Diagrams",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/diagrams/auto-test-agent-diagrams"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.8.0/pre-0.8.0/diagrams/testing-diagrams"
+            }
+          ]
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/pre-0.8.0/supported-frameworks"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.8.0/pre-0.8.0/core-concepts"
+        }
+      ]
+    }
+  ]
+}

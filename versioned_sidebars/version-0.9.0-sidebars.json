@@ -1,0 +1,73 @@
+{
+  "version-0.9.0/docs": [
+    {
+      "type": "doc",
+      "label": "Introduction",
+      "id": "version-0.9.0/what-is-drill4j"
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/getting-started/local-deployment"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Tests Integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/tests-integration/api-tests"
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "version-0.9.0/agents/java-agent"
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Drill4J Services",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/overview"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/drill-backend"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/drill-ui"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/drill-services/metabase"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "CI/CD Integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/cicd-integration/github"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/cicd-integration/gitlab"
+        }
+      ]
+    }
+  ]
+}
