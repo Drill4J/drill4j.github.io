@@ -47,6 +47,41 @@ drill {
 }
 ```
 
+### Maven
+
+Add Drill4J CI/CD plugin to your Maven build file:
+
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>0.1.0</version>
+    <configuration>
+        <!-- example: my-app -->
+        <groupId> ... </groupId>
+
+        <!-- example: "http://localhost:8090/api" -->
+        <drillApiUrl> ... </drillApiUrl>
+        
+        <!--  Secure way: set DRILL_API_KEY env variable value -->
+        <!--  Unsecure way: paste the API key value here -->
+        <drillApiKey>your-drill-api-key-here</drillApiKey>
+        
+        <testAgent>
+            <version>0.23.0</version>
+        </testAgent>
+
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableTestAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
 ## Launch Tests
 
 1. Launch your tests with Gradle/Maven (e.g. `gradle test`, `mvn test`).
@@ -87,3 +122,7 @@ test {
     }
 }
 ```
+
+### Maven
+
+> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
