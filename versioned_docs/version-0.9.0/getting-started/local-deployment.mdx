@@ -1,0 +1,187 @@
+---
+id: local-deployment
+title: Local Deployment
+---
+
+# Local Deployment
+
+This page will walk you through:
+1. Running core Drill4J Services
+2. Drill4J Agent configuration steps to collect metrics for your Java application.
+
+It assumes you're running all services on your local machine.
+
+It's a good starting point to get familiar with Drill4J. For installation and configuration in your actual development and testing environments, refer to the additional documentation (links at the bottom of the page).
+
+## Prerequisites
+
+1. [Docker](https://www.docker.com/)
+2. [Docker Compose](https://docs.docker.com/compose/)
+2. The current release supports `x64` but not `arm`-based machines. Specifically, it won’t work on Apple Silicon CPUs (M-series). Support for ARM-based machines is being worked on.
+
+## Deploy Core Drill4J Services
+
+1. Download the following files and put them in the empty folder:
+
+    - [docker-compose.yml](/files/0.9.0/deploy-drill4j-services/docker-compose.yml)
+    - [.env](/files/0.9.0/deploy-drill4j-services/drill.env)
+
+2. Create `db-init` folder next to `docker-compose.yml`
+
+3. Download `data.sql` from https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/v18 and place in `db-init` folder
+
+4. Your folder structure should match the following:
+
+    ```
+    - docker-compose.yml
+    - .env
+    - db-init/data.sql
+    ```
+
+5. Open terminal in this folder and execute:
+
+    ```shell
+      docker-compose up -d
+    ```
+
+6. Wait for docker-compose to download images and launch containers.
+
+## Check Services Availability
+
+To make sure everything is working:
+
+1. [Drill4J Admin Backend](http://localhost:8090/) must return 
+
+  ```json
+    {
+      "message": "Drill4J Admin Backend"
+    }
+  ```
+
+2. [Drill4J UI](http://localhost:8091) must display  authentication form.
+
+    - Default credentials: user: `admin` password: `admin`.
+
+3. [Metabase](http://localhost:8095) must display Metabase UI authentication form.
+
+    - Default credentials: user: `user@user.user` password: `useruser1`
+    - After you login to Metabase UI you should see `"Builds"` dashboard being available in Bookmarks section
+
+### Troubleshooting
+
+Skip this section if you experience no problems
+
+1. I don't see the Metabase authentication form and instead presented with this message:
+
+    ```
+    "Welcome to Metabase - Looks like everything is working. Now let’s get to know you, connect to your data, and start finding you some answers!
+    ```
+
+    - Reason: Metabase was not propertly initalized. You likely have either skipped downloading `data.sql` file or misplaced it. Make sure to put it in `db-init` folder next to the `docker-compose.yml` file. 
+
+## Generate API Key
+
+Drill4J Backend authenticates incoming data using API keys. To generate new API key:
+
+1. Open Drill4J UI [My API Keys](http://localhost:8091/my-api-keys) section 
+3. At the top of the page, enter description for the new key and click "Generate" button.
+4. New API key row must appear in the table.
+5. The actual key value is copied to your clipboard. Paste it somewhere safe for the next step.
+
+## Setup Java Agent
+
+1. Download the Drill4J Java Agent <https://github.com/Drill4J/java-agent/releases/tag/v0.9.0> release zip file. Pick the release appropriate for your platform (`mingwx64` - Windows; Mac and Linux are called correspondingly)
+
+2. Unzip the file. Change the release-specific folder name  (e..g `linuxX64-0.9.0-beta.5`) to simply `agent`. The folder must contain:
+
+    ```
+    - drill.properties
+    - drill-runtime.jar
+    - libdrill_agent.dll # .so for Linux; .dylib for Mac
+    ```
+
+3. Place this `agent` folder next to __your Java application__ `.jar` file
+
+4. Open `drill.properties` file and set the following properties:
+    
+    ```properties
+      drillApiUrl=http://localhost:8090/api
+
+      # Paste the API key value here
+      # Putting key in .properties file is _not_ the recommended way to handle API keys. See Java Agent documentation section for more info
+      drillApiKey= 
+
+      # These properties identify your application in Drill4J.
+      # For now set to the following:
+      groupId=my-app
+      appId=backend
+      buildVersion=1.0.0
+
+      # IMPORTANT: make sure to set to actual name of your application's _topmost_ package
+      # replace "." with "/"
+      # Example: my.org.something.app -> my/org/something/app
+      packagePrefixes=
+
+    ```
+
+3. Launch your application:
+
+    1. Considering your application is launched with
+   
+        ```shell
+          java -jar my-app.jar
+        ```
+    2. Change it to be
+
+        - Windows
+        ```shell
+          java -agentpath:/agent/libdrill_agent.dll -jar my-app.jar
+        ```
+        - Linux
+        ```shell
+          java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
+        ```
+        -  For Mac
+        ```shell
+          java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
+        ```
+
+4. To confirm Drill4J Java Agent is running check your application log. There must be Drill4J ASCII art followed with agent version and log entry:
+
+    ```log
+      ____    ____                 _       _          _  _                _      
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u   
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/    
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-. 
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/  
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
+    (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
+    Java Agent (v0.9.0)
+    [com.epam.drill.agent.Agent] agentOnLoad: Java Agent has been loaded.
+    ```
+
+## Inspect Metrics
+
+In Metabase UI navigate to [Builds Dashboard](http://localhost:8095/dashboard/1-builds?group=&app=)
+
+You should see Builds table containing a single entry, corresponding to your application.
+
+1. Click on the value of first column `my-app:backend:1.0.0` and you should be taken to [Build - Summary](http://localhost:8095/dashboard/2?group=my-app&app=backend&build=my-app%3Abackend%3A1.0.0&baseline_build=&package_filter=*&class_filter=*) dashboard
+
+2. Scroll down to see application _Coverage_ metrics
+
+    > Some components will display "There was a problem displaying this chart". This is not an error and is expected.
+    > 
+    > This is due to the fact you have to complete additional configuration in order to see complete metrics.
+
+3. Click on piecharts to navigate to detailed coverage dashboards  
+
+Try interacting with your application (execute some tests, call API endpoints) and then check back to Metabase UI to see how your application coverage % changes.
+
+## Next Steps and Further Reading
+
+This guide covered the basics of deploying Drill4J Services and the Application Agent, which gives you basic _Coverage_ metrics.
+
+For more advanced metrics, integrate Drill4J with your tests. For more details, check out the additional documentation:
+
+1. [API tests integration](/docs/tests-integration/api-tests)
