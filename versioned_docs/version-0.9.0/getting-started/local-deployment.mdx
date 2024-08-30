@@ -34,14 +34,14 @@ It's a good starting point to get familiar with Drill4J. For installation and co
 
     ```
     - docker-compose.yml
-    - drill.env
+    - .env
     - db-init/data.sql
     ```
 
 5. Open terminal in this folder and execute:
 
     ```shell
-      docker-compose --env-file drill.env up -d
+      docker-compose up -d
     ```
 
 6. Wait for docker-compose to download images and launch containers.
@@ -116,7 +116,14 @@ Drill4J Backend authenticates incoming data using API keys. To generate new API 
       groupId=my-app
       appId=backend
       buildVersion=1.0.0
+
+      # IMPORTANT: make sure to set to actual name of your application's _topmost_ package
+      # replace "." with "/"
+      # Example: my.org.something.app -> my/org/something/app
+      packagePrefixes=
+
     ```
+
 3. Launch your application:
 
     1. Considering your application is launched with
@@ -139,12 +146,18 @@ Drill4J Backend authenticates incoming data using API keys. To generate new API 
           java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
         ```
 
-4. Check your application log to confirm Drill4J Java Agent is running:
+4. To confirm Drill4J Java Agent is running check your application log. There must be Drill4J ASCII art followed with agent version and log entry:
 
-    - At the very top of the log there must be Drill4J ASCII art followed with agent version and log entry:
     ```log
-        Java Agent (v0.9.0)
-        2024-08-29 16:20:18.000 INFO  [com.epam.drill.agent.Agent] agentOnLoad: Java Agent has been loaded.
+      ____    ____                 _       _          _  _                _      
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u   
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/    
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-. 
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/  
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
+    (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
+    Java Agent (v0.9.0)
+    [com.epam.drill.agent.Agent] agentOnLoad: Java Agent has been loaded.
     ```
 
 ## Inspect Metrics
@@ -165,12 +178,10 @@ You should see Builds table containing a single entry, corresponding to your app
 
 Try interacting with your application (execute some tests, call API endpoints) and then check back to Metabase UI to see how your application coverage % changes.
 
-## Next steps and Further Reading
+## Next Steps and Further Reading
 
 This guide covered the basics of deploying Drill4J Services and the Application Agent, which gives you basic _Coverage_ metrics.
 
-For more advanced metrics, integrate Drill4J with your CI/CD pipeline and tests. For more details, check out the additional documentation:
+For more advanced metrics, integrate Drill4J with your tests. For more details, check out the additional documentation:
 
-1. [Unit tests integration](/docs/tests-integration/unit-tests)
-2. [API tests integration](/docs/tests-integration/api-tests)
-3. [CI/CD integration](/docs/cicd-integration/overview)
+1. [API tests integration](/docs/tests-integration/api-tests)

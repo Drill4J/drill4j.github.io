@@ -19,6 +19,21 @@
     {
       "collapsed": true,
       "type": "category",
+      "label": "Tests Integration",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/tests-integration/api-tests"
+        }
+      ]
+    },
+    {
+      "type": "doc",
+      "id": "version-0.9.0/agents/java-agent"
+    },
+    {
+      "collapsed": true,
+      "type": "category",
       "label": "Drill4J Services",
       "items": [
         {
@@ -36,25 +51,6 @@
         {
           "type": "doc",
           "id": "version-0.9.0/drill-services/metabase"
-        }
-      ]
-    },
-    {
-      "type": "doc",
-      "id": "version-0.9.0/agents/java-agent"
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Tests Integration",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-0.9.0/tests-integration/unit-tests"
-        },
-        {
-          "type": "doc",
-          "id": "version-0.9.0/tests-integration/selenium-tests"
         }
       ]
     },
