@@ -28,8 +28,19 @@
       ]
     },
     {
-      "type": "doc",
-      "id": "version-0.9.0/agents/java-agent"
+      "collapsed": false,
+      "type": "category",
+      "label": "Components Reference",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.9.0/agents/java-agent"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/cicd-integration/cicd-integration-plugin"
+        }
+      ]
     },
     {
       "collapsed": true,

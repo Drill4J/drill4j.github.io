@@ -1,0 +1,35 @@
+services:
+
+  my-app:
+    image: my-app:${MY_APP_VERSION}
+    environment:
+      # Instructs Java to load agent files from shared volume directory.
+      # Remember to set the rest of parameters according to Drill4J Java Agent docs 
+      - "JAVA_TOOL_OPTIONS=-agentpath:/data/agent/libdrill_agent.so"
+    volumes:
+      # Mount volume with agent files to your app's container
+      - agent-files:/data
+    depends_on:
+      download-agent-files:
+        condition: service_completed_successfully
+
+  # Launches script to download agent files and places them in shared volume
+  download-agent-files:
+    image: drill4j/java-agent:0.8.0-38 # ignore this. Its the version for the _download script_, not the agent
+    environment:
+      # ! set the desired agent version here !
+      - AGENT_VERSION=0.9.0
+      # ! set the desired agent version here !
+    volumes:
+      - agent-files:/data
+    healthcheck:
+      # container will return once download is complete
+      test: ["CMD", "sh", "-c", "test -f /data/agent/libdrill_agent.so || exit 1"]
+      interval: 30s
+      retries: 6
+      start_period: 10s
+      timeout: 10s
+
+# remember to add named volume
+volumes:
+  agent-files:
