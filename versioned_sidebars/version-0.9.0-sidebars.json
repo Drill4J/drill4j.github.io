@@ -19,11 +19,22 @@
     {
       "collapsed": true,
       "type": "category",
-      "label": "Tests Integration",
+      "label": "Integration Guides",
       "items": [
         {
           "type": "doc",
+          "label": "API tests (Java)",
           "id": "version-0.9.0/tests-integration/api-tests"
+        },
+        {
+          "type": "doc",
+          "label": "Github",
+          "id": "version-0.9.0/cicd-integration/github"
+        },
+        {
+          "type": "doc",
+          "label": "Gitlab",
+          "id": "version-0.9.0/cicd-integration/gitlab"
         }
       ]
     },
@@ -39,17 +50,6 @@
         {
           "type": "doc",
           "id": "version-0.9.0/cicd-integration/cicd-integration-plugin"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "Drill4J Services",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-0.9.0/drill-services/overview"
         },
         {
           "type": "doc",
@@ -62,21 +62,6 @@
         {
           "type": "doc",
           "id": "version-0.9.0/drill-services/metabase"
-        }
-      ]
-    },
-    {
-      "collapsed": true,
-      "type": "category",
-      "label": "CI/CD Integration",
-      "items": [
-        {
-          "type": "doc",
-          "id": "version-0.9.0/cicd-integration/github"
-        },
-        {
-          "type": "doc",
-          "id": "version-0.9.0/cicd-integration/gitlab"
         }
       ]
     }
