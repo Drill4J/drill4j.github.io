@@ -37,7 +37,7 @@ Refer to [next section](/docs/agents/java-agent#how-to-set-path-to-agent) for fu
 
 ### Use Docker image with a download script
 
-__Use case__: when you are already using Docker Compose to start your application.
+> __Use case__: when you are already using Docker Compose to start your application.
 
 We provide a small Docker image, that executes download script upon startup.
 
@@ -52,7 +52,7 @@ See the example [docker-compose.yml](/files/0.9.0/application-agent/download-age
 
 ### Use Drill4J CI/CD Integration Plugin for Maven and Gradle
 
-__Use cases__: when application (or certain classes of application) is launched with Maven or Gradle. Thats most often the case with __Unit tests__.
+> __Use cases__: when application (or certain classes of application) is launched with Maven or Gradle. Thats most often the case with __Unit tests__.
 
 Drill4J CI/CD Integration Plugin __automatically downloads agent files__ and __passes required parameters to Java__.
 
@@ -73,7 +73,7 @@ There are two way to set this command line argument
 
 ### Pass `-agentpath:` directly to Java process
 
-__Use case__: when you have a direct access to __Java__'s process launch arguments. 
+> __Use case__: when you have a direct access to __Java__'s process launch arguments. 
 
 Considering your application is launched with
 
@@ -94,7 +94,7 @@ Change it to
 
 ### Set `-agentpath` to `JAVA_TOOL_OPTIONS` env variable
 
-__Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
+> __Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
 
 Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version
 
