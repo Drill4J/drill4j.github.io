@@ -62,12 +62,11 @@ Because of that, the next sections of this page are irrelevant in this scenario.
 
 Java allows to load agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
 
-  ```
-  java -agentpath:<path-to-agent>=<options>
-  ```
-  - `<path-to-agent>` - must point to `libdrill_agent` file
-  - `=` - delimiter between path to agent and agent options
-  - `<options>` - parameters passed to the agent. These are described in the [next section](#agent-parameters-reference)
+```shell
+java -agentpath:<path-to-agent>
+```
+
+Where `<path-to-agent>` must point to agent library file
 
 There are two way to set this command line argument
 
@@ -84,11 +83,11 @@ Considering your application is launched with
 Change it to
 
 ```shell
-  # on Linux 
+  # Linux 
   java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
-  # on Windows 
-  java -agentpath:/agent/libdrill_agent.dll -jar my-app.jar
-  # on Mac 
+  # Windows
+  java -agentpath:/agent/drill_agent.dll -jar my-app.jar
+  # macOS 
   java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
 ```
 
@@ -100,10 +99,131 @@ Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/j
 
 ```shell
   JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so
-  # adjust to .dll or .dylib depending on platform
+  # Linux - libdrill_agent.so
+  # Windows - drill_agent.dll
+  # macOS - libdrill_agent.dylib
 ```
 
-### How to confirm that agent is loaded
+To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below
+
+## How to set agent parameters
+
+Drill4J agent supports 3 ways to set agent [parameters](#agent-parameters-reference)
+
+### Set parameters using environment variables
+
+This is the recommended way to set agent parameters
+
+Env variables names are prefixed with `DRILL_` with uppercase snake case. Examples:
+
+- Given `packagePrefixes` parameter the env variable is `DRILL_PACKAGE_PREFIXES`
+
+__Precedence__: parameter values set with env variables have the highest precedence and will override values set in `-agentpath` string or  `drill.properties` file
+
+### Set parameters in `-agentpath` argument string
+
+Append parameters to the `-agentpath` argument string. Add `=<options>` after `<path-to-agent>`:
+```shell
+-agentpath:<path-to-agent>=<options>
+```
+
+Example:
+```
+-agentpath:/agent/libdrill_agent.so=parameter1=hello,parameter2=bar
+```
+
+Parameters are:
+- passed after `<path-to-agent>` (`/agent/libdrill_agent.so` above)
+- start of parameters string is indicated with `=` sign
+- parameters are `<key>=<value>` pairs
+- each pair is separated by comma
+
+__Precedence__: parameter values set with `-agentpath` will override values set in `drill.properties`
+
+### Set parameters in `drill.properties` file
+
+Alternatively, Drill4J agent checks for values in `drill.properties` file. By default it is downloaded with agent files.
+
+```
+parameter1=hello
+parameter2=bar
+```
+
+It adheres to the [properties file syntax](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html)
+
+__Precedence__: parameter values set in `drill.properties` file have the lowest precedence and can be overriden by `-agentpath` and env variables
+
+## Agent parameters reference
+
+| Parameter         | Required | Example Value                                             | Description                                                                                                                                                                |
+|-------------------|-------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiUrl     | yes | `http://localhost/api`      | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
+| apiKey     | yes | `1_01cdf51ff20544ee...`                                                | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
+| groupId         | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
+| appId           | yes | `api-service`                                              | Unique arbitrary string identifying your application.                                                                                                                      |
+| packagePrefixes | yes | `my/org/somecoolapp`                                       | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below. |
+| buildVersion    | no__*__ | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
+| commitSha | no__*__ | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
+
+> TIP: if you are setting parameters with env variables, prefix parameter name with `DRILL_`. For example `apiUrl` will become `DRILL_API_URL`
+
+Although __buildVersion__ and __commitSha__ are not strictly required, we recommend providing at least one (ideally both) because:
+1. It enables Drill4J to group metrics by version or commit.
+2. Without them, metrics are reported separately for each instance, preventing aggregation.
+
+### How to set package prefixes
+
+__packagePrefixes__ is the filter that specifies which packages Drill4J should monitor. It is usually set to the topmost common package of your application.
+
+Avoid setting it to something very broad (like `com` or `org`) - otherwise you will be scanning and collecting metrics for third-party dependencies.
+
+#### Syntax
+
+1. Parts of package names are separated with forward slashes `/` (and not dots `.`)
+2. Multiple packages can be specified using `;` delimiter
+3. To exclude package use `!` prefix
+
+#### Example
+
+Given you app packages are:
+
+1. `my.org.somecoolapp.user`
+2. `my.org.somecoolapp.orders.repository`
+3. `my.org.somecoolapp.db.models`
+
+__packagePrefixes__ parameter should be set to `my/org/somecoolapp`
+
+#### Adding extra package
+
+Add package name separated by `;` - `my/org/somecoolapp;some/other/package`
+
+This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages
+
+#### Excluding package 
+
+Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`
+
+This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`
+
+### API key security
+
+❗ Please avoid hardcoding __apiKey__ and exposing it in plain text. Instead, use environment variables. ❗
+
+Bad example:
+```shell
+  -agentpath:/agent/libdrill_agent.so=drillApiKey=123
+```
+
+Good example:
+```shell
+  # Set DRILL_API_KEY variable prior to application launch
+  DRILL_API_KEY=123
+  # exact syntax for env variables will depend on your environment
+```
+
+## Troubleshooting
+
+### How to confirm agent is loaded
 
 Once loaded Drill4J agent prints the following ASCII logo:
 
@@ -117,9 +237,9 @@ U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
 (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
 Java Agent (v0.9.0)
 ```
-It indicates that you have configured agent path correctly
+It indicates that you have configured agent path correctly and Java picked up and loaded agent files.
 
-### Troubleshooting
+### Cannot load the agent because some agent parameters are set incorrectly
 
 If below Drill4J ASCII logo you see the following message:
 ```
@@ -127,73 +247,7 @@ ERROR [com.epam.drill.agent.configuration.ValidatedParametersProvider] Cannot lo
 check the following parameters:
 ```
 
-It indicates that you have to supply agent with parameters. Please refer to [agent parameters](#agent-parameters-configuration-options) section.
-
-## How to set agent parameters
-
-As described [above](#how-to-set-path-to-agent) parameters are:
-- passed after `<path-to-agent>`
-- start of parameters string is indicated with `=` sign
-- parameters are `<key>=<value>` pairs
-- each pair is separated by comma
-
-> __Adressing possible confusion__: term `agent options` originates from [JVMTI docs](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting).
-> 
-> We prefer to call these `agent parameters`
-
-Drill4J agent supports multiple ways to set agent parameters
-
-### Pass parameters with `-agentpath` argument string
-
-You can add parameters to the argument string like this:
-```
--agentpath:/agent/libdrill_agent.so=parameter1=hello,parameter2=bar
-```
-
-### Use `drill.properties` file
-
-Alternatively, Drill4J agent checks for values in `drill.properties` file. By default it is downloaded with agent files.
-
-It adheres to the [properties file syntax](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html)
-
-Parameters set in `drill.properties` file have lower precedence and can be overwritten by parameters passed directly with `-agentpath` string.
-
-## Agent parameters reference
-
-| Parameter         | Required | Example Value                                             | Description                                                                                                                                                                |
-|-------------------|-------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| drillApiUrl     | yes | `http://localhost/api`      | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
-| drillApiKey     | yes | `1_01cdf51ff20544ee...`                                                | Drill4J Backend API key. Generate it using Drill4J UI. Please see [best practice](#how-to-set-drillapikey) for how to set drill api key                                                                                            |
-| groupId         | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
-| appId           | yes | `api-service`                                              | Unique arbitrary string identifying your application.                                                                                                                      |
-| packagePrefixes | yes | `my/org/somecoolapp`                                       | Topmost common package of your application. For example, if your packages are `"my.org.somecoolapp.user"`, `"my.org.somecoolapp.orders.repository"`, `"my.org.somecoolapp.something.else"`, then set `packagePrefixes=my/org/somecoolapp`. |
-| buildVersion    | no__*__ | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
-| commitSha | no__*__ | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
-
-__*__ while parameters __buildVersion__ and __commitSha__ are not strictly required but we still recommend to supply one or the other (or better - both) because:
-1. It will allow Drill4J to group your application metrics by versions or commits.
-2. Otherwise metrics for each application instance will be grouped into individual reports, without ability to merge
-
-### Recommended Way to Set __drillApiKey__
-
-❗ Avoid hardcoding __drillApiKey__ and exposing it in plain text. Instead, use the environment variables. ❗
-
-Bad example:
-```shell
-  -agentpath:/agent/libdrill_agent.so=drillApiKey=123
-```
-
-Good example:
-```shell
-  # create DRILL_API_KEY variable in your environment beforehand
-  # use this variable to substitute parameter drillApiKey value
-  -agentpath:/agent/libdrill_agent.so=drillApiKey=$DRILL_API_KEY
-  # exact syntax for env variables will depend on your environment
-```
-
-### Recommended way to set __buildVersion__ and __commitSha__
-
-It is best to pass __buildVersion__ and __commitSha__ via env variables too. Thats because they likely will change for each deployment in your CI/CD environment, so it doesn't make sense to hardcode them in a launch script or set in `drill.properties` file.
+It indicates that you are missing some required parameters. Refer to the [agent parameters](#agent-parameters-configuration-options) section.
 
 ## Limitations and Known Issues
 
