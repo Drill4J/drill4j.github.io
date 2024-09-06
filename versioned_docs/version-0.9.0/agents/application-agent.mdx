@@ -104,6 +104,8 @@ Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/j
   # macOS - libdrill_agent.dylib
 ```
 
+### Troubleshooting
+
 To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below
 
 ## How to set agent parameters
@@ -162,14 +164,16 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | groupId         | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
 | appId           | yes | `api-service`                                              | Unique arbitrary string identifying your application.                                                                                                                      |
 | packagePrefixes | yes | `my/org/somecoolapp`                                       | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below. |
-| buildVersion    | no__*__ | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
-| commitSha | no__*__ | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
+| buildVersion    | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
+| commitSha | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
 
-> TIP: if you are setting parameters with env variables, prefix parameter name with `DRILL_`. For example `apiUrl` will become `DRILL_API_URL`
+### Env variables naming
 
-Although __buildVersion__ and __commitSha__ are not strictly required, we recommend providing at least one (ideally both) because:
-1. It enables Drill4J to group metrics by version or commit.
-2. Without them, metrics are reported separately for each instance, preventing aggregation.
+Environment variables start with the prefix `DRILL_`, followed by the parameter name in `UPPERCASE_SNAKE_CASE`.
+
+**Example**:
+1. For `apiUrl`, the env var is `DRILL_API_URL`.
+2. For `packagePrefixes`, the env var is `DRILL_PACKAGE_PREFIXES`.
 
 ### How to set package prefixes
 
@@ -220,6 +224,21 @@ Good example:
   DRILL_API_KEY=123
   # exact syntax for env variables will depend on your environment
 ```
+
+### Considerations regarding `buildVersion` and `commitSha`
+
+While `buildVersion` and `commitSha` are not strictly required, we recommend providing at least one (ideally both) for the following reasons:
+
+1. It allows Drill4J to group metrics by version or commit.
+2. Without `buildVersion` and `commitSha` Drill4J reports each application instance individually. Instances are identified with random UUID.
+
+`buildVersion` typically corresponds to the version tag of your application.
+
+Compliance with [Semver](https://semver.org/) is not required. Drill4J treats the build version as a unique string for grouping metrics, without any added semantics.
+
+> **Q:** What if I don’t have build versions for development builds?
+>
+> **A:** You can omit this parameter. If you provide `commitSha`, Drill4J will still group metrics by commit.
 
 ## Troubleshooting
 
