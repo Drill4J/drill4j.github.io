@@ -90,14 +90,14 @@ Drill4J Backend authenticates incoming data using API keys. To generate new API 
 
 ## Setup Java Agent
 
-1. Download the Drill4J Java Agent <https://github.com/Drill4J/java-agent/releases/tag/v0.9.0> release zip file. Pick the release appropriate for your platform (`mingwx64` - Windows; Mac and Linux are called correspondingly)
+1. Download the Drill4J Java Agent <https://github.com/Drill4J/java-agent/releases/tag/v0.9.1> release zip file. Pick the release appropriate for your platform (`mingwx64` - Windows; Mac and Linux are called correspondingly)
 
-2. Unzip the file. Change the release-specific folder name  (e..g `linuxX64-0.9.0-beta.5`) to simply `agent`. The folder must contain:
+2. Unzip the file. Change the release-specific folder name  (e.g. `linuxX64-0.9.1`) to simply `agent`. The folder must contain:
 
     ```
     - drill.properties
     - drill-runtime.jar
-    - libdrill_agent.dll # .so for Linux; .dylib for Mac
+    - libdrill_agent.so # .dylib for Mac, drill_agent.dll for Windows
     ```
 
 3. Place this `agent` folder next to __your Java application__ `.jar` file
@@ -156,7 +156,7 @@ Drill4J Backend authenticates incoming data using API keys. To generate new API 
      |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/  
       |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
-    Java Agent (v0.9.0)
+    Java Agent (v0.9.1)
     [com.epam.drill.agent.Agent] agentOnLoad: Java Agent has been loaded.
     ```
 
