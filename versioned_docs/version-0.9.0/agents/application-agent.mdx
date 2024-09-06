@@ -1,102 +1,274 @@
 ---
 id: java-agent
-title: Java Application Agent
+title: Application Agent
 ---
 
 # Application Agent
 
 Drill4J Java Agent enables metrics collection for JVM-based applications.
 
-## Download
+General integration steps are:
 
-Download <https://github.com/Drill4J/java-agent/releases/tag/v0.9.0> release zip file.
+1. [Download Drill4J agent files](#how-to-download)
+2. [Set path to agent](#how-to-set-path-to-agent)
+3. [Set agent parameters](#how-to-set-agent-parameters)
 
-Make sure to download release appropriate for the platform your application is running on:
-- Windows - mingwX64
-- Linux - linuxX64
-- Mac on Intel processors - macosX64
-- Mac on Apple Silicon - not supported yet; work in progress
+Due to the diverse tools used in software development — such as CI/CD providers, deployment methods, testing stages — the exact process will depend on the environment.
 
-Unzip the file. Rename unzipped folder to `agent`. It must contain `libdrill_agent.so` (or `.dll`, depending on platform), `drill-runtime.jar` and `drill.properties`
+## How to download
 
-## Starting the agent
+### Download agent files manually
 
-You have to set [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/envvars002.html) env variable to __Java process__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version
+The most basic way to get agent files is to download release .zip manually.
+
+1. Download release appropriate for your platform at  <https://github.com/Drill4J/java-agent/releases/tag/v0.9.1>.
+
+    > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
+
+2. Unzip the file. Rename unzipped folder to `agent`.
+
+3. Inside you'll find the following files:
+
+    -  `libdrill_agent.so` (on Windows - `.dll`, on Mac - `.dylib`)
+    - `drill-runtime.jar`
+    - `drill.properties`
+
+Refer to [next section](/docs/agents/java-agent#how-to-set-path-to-agent) for further steps.
+
+### Use Docker image with a download script
+
+> __Use case__: when you are already using Docker Compose to start your application.
+
+We provide a small Docker image, that executes download script upon startup.
+
+The way it works is:
+1. You add our container to your docker-compose.yml file, passing the desired version to `JAVA_AGENT` env variable.
+2. On startup, the container launches the download script.
+3. Docker's healthcheck waits for it to complete.
+4. Downloaded agent files are placed in a shared volume.
+5. Shared volume is mounted to your application's container.
+
+See the example [docker-compose.yml](/files/0.9.0/application-agent/download-agent-files.docker-compose.yml) file for details.
+
+### Use Drill4J CI/CD Integration Plugin for Maven and Gradle
+
+> __Use cases__: when application (or certain classes of application) is launched with Maven or Gradle. Thats most often the case with __Unit tests__.
+
+Drill4J CI/CD Integration Plugin __automatically downloads agent files__ and __passes required parameters to Java__.
+
+Because of that, the next sections of this page are irrelevant in this scenario. Instead, please refer to [CI/CD Integration Plugin](/docs/cicd-integration/cicd-integration-plugin) page for more info.
+
+## How to set path to agent
+
+Java allows to load agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
 
 ```shell
-  # Set JAVA_TOOL_OPTIONS before running your Java app
-  JAVA_TOOL_OPTIONS=...
-  # This is your application
+java -agentpath:<path-to-agent>
+```
+
+Where `<path-to-agent>` must point to agent library file.
+
+There are two way to set this command line argument.
+
+### Pass `-agentpath:` directly to Java process
+
+> __Use case__: when you have a direct access to __Java__'s process launch arguments. 
+
+Considering your application is launched with:
+
+```shell
   java -jar my-app.jar
 ```
 
-This is the __example string__, see the instructions below:
+Change it to:
 
-`JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so=drillInstallationDir=/agent,drillApiUrl=${DRILL_ADMIN_ADDRESS},appId=${DRILL_API_AGENT_ID},groupId=${DRILL_GROUP_ID},drillApiKey=${DRILL_API_KEY},buildVersion=0.1.0,packagePrefixes=io/spring`
-
-This looks overwhelming, lets break it down:
-
-1. `-agentpath:/agent/libdrill_agent.so=drillInstallationDir=/agent` - path to Drill4J Agent files 
-
-    - in case with Windows-based release pass `libdrill_agent.dll` (not .so)
-
-2. `drillApiUrl=` - URL to Drill4J Admin /api endpoint, example: http://my-host-with-drill4j-admin-behind-it.com/api
-
-3. `groupId=` - Unique arbitrary string identifying your application group (e.g. `groupId=my-cool-app`)
-
-4. `appId=` - Unique arbitrary string identifying your application (e.g. `appId=api-service` )
-
-5. `drillApiKey=` - Drill4J Bakend API key. Generate it using Drill4J UI
-
-6. `buildVersion=` - build version of your application. Typically set to version tag (like `v1.2.3`).
-  
-    - In case you don't have tags for all application builds you can additionally pass `commitSha=` and set it to commit hash value
-
-7. `packagePrefixes=` - topmost common package of your application.
-
-    - For example: if your packages are `"my.org.somecoolapp.user"`, `"my.org.somecoolapp.orders.repository"`, `"my.org.somecoolapp.something.else"`
-    - then you set `packagePrefixes=` to `packagePrefixes=my/org/somecoolapp`
-
-## Delivery options
-
-Besides manual download, there are other ways to provide Drill4J Java Agent files to your application.
-
-### CI/CD integration plugin
-
-Drill4J provides plugin for Maven and Gradle to setup and download Java Agent automatically.
-
-It is the preferred way to run Drill4J Java Agent when dealing with __unit and integration test__
-
-
-### Docker Shared Volume 
-When running under Docker it can be handier to use our small image, that runs a script to download these files into shared volume:
-```yaml
-version: '3.8'
-services:
-
-  # The sole function of this container is to download agent files
-  # according to version specified in AGENT_VERSION env variable
-  # and place them into volume named agent-files
-  agent-files:
-    image: drill4j/java-agent:0.8.0-38
-    environment:
-      - AGENT_VERSION=${JAVA_AGENT_VERSION}
-    volumes:
-      - agent-files:/data
-    healthcheck:
-      # ensures that container returns "healthy" status only when script is finished downloading files. Mind the .so, swap for .dll for Windows-based enviroments
-      test: ["CMD", "sh", "-c", "test -f /data/agent/libdrill_agent.so || exit 1"]
-      interval: 30s
-      retries: 6
-      start_period: 10s
-      timeout: 10s
-
-volumes:
-  # you can attach this volume to your Application Under Test for ease of access to agent files
-  agent-files:
+```shell
+  # Linux 
+  java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
+  # Windows
+  java -agentpath:/agent/drill_agent.dll -jar my-app.jar
+  # macOS 
+  java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
 ```
 
-### Kubernetes Init Container
+### Set `-agentpath` to `JAVA_TOOL_OPTIONS` env variable
 
-When running in Kubernetes consider using [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
-to download agent files [from github](https://github.com/Drill4J/java-agent/releases) and make them available for pod running _App Under Test_
+> __Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
+
+Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version.
+
+```shell
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so
+  # Linux - libdrill_agent.so
+  # Windows - drill_agent.dll
+  # macOS - libdrill_agent.dylib
+```
+
+### Troubleshooting
+
+To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below.
+
+## How to set agent parameters
+
+Drill4J agent supports 3 ways to set agent [parameters](#agent-parameters-reference)
+
+### Set parameters using environment variables
+
+This is the recommended way to set agent parameters.
+
+Env variables names are prefixed with `DRILL_` with uppercase snake case. Examples:
+
+- Given `packagePrefixes` parameter the env variable is `DRILL_PACKAGE_PREFIXES`
+
+__Precedence__: parameter values set with env variables have the highest precedence and will override values set in `-agentpath` string or  `drill.properties` file.
+
+### Set parameters in `-agentpath` argument string
+
+Append parameters to the `-agentpath` argument string. Add `=<options>` after `<path-to-agent>`:
+```shell
+-agentpath:<path-to-agent>=<options>
+```
+
+Example:
+```
+-agentpath:/agent/libdrill_agent.so=parameter1=hello,parameter2=bar
+```
+
+Parameters are:
+- passed after `<path-to-agent>` (`/agent/libdrill_agent.so` above)
+- start of parameters string is indicated with `=` sign
+- parameters are `<key>=<value>` pairs
+- each pair is separated by comma.
+
+__Precedence__: parameter values set with `-agentpath` will override values set in `drill.properties`
+
+### Set parameters in `drill.properties` file
+
+Alternatively, Drill4J agent checks for values in `drill.properties` file. By default it is downloaded with agent files.
+
+```
+parameter1=hello
+parameter2=bar
+```
+
+It adheres to the [properties file syntax](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html)
+
+__Precedence__: parameter values set in `drill.properties` file have the lowest precedence and can be overriden by `-agentpath` and env variables.
+
+## Agent parameters reference
+
+| Parameter         | Required | Example Value                                             | Description                                                                                                                                                                |
+|-------------------|-------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiUrl     | yes | `http://localhost/api`      | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
+| apiKey     | yes | `1_01cdf51ff20544ee...`                                                | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
+| groupId         | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
+| appId           | yes | `api-service`                                              | Unique arbitrary string identifying your application.                                                                                                                      |
+| packagePrefixes | yes | `my/org/somecoolapp`                                       | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below. |
+| buildVersion    | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
+| commitSha | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
+
+### Env variables naming
+
+Environment variables start with the prefix `DRILL_`, followed by the parameter name in `UPPERCASE_SNAKE_CASE`.
+
+**Example**:
+1. For `apiUrl`, the env var is `DRILL_API_URL`.
+2. For `packagePrefixes`, the env var is `DRILL_PACKAGE_PREFIXES`.
+
+### How to set package prefixes
+
+__packagePrefixes__ is the filter that specifies which packages Drill4J should monitor. It is usually set to the topmost common package of your application.
+
+Avoid setting it to something very broad (like `com` or `org`) - otherwise you will be scanning and collecting metrics for third-party dependencies.
+
+#### Syntax
+
+1. Parts of package names are separated with forward slashes `/` (and not dots `.`)
+2. Multiple packages can be specified using `;` delimiter
+3. To exclude package use `!` prefix.
+
+#### Example
+
+Given you app packages are:
+
+1. `my.org.somecoolapp.user`
+2. `my.org.somecoolapp.orders.repository`
+3. `my.org.somecoolapp.db.models`
+
+__packagePrefixes__ parameter should be set to `my/org/somecoolapp`
+
+#### Adding extra package
+
+Add package name separated by `;` - `my/org/somecoolapp;some/other/package`.
+
+This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages.
+
+#### Excluding package 
+
+Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`.
+
+This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`.
+
+### API key security
+
+❗ Please avoid hardcoding __apiKey__ and exposing it in plain text. Instead, use environment variables. ❗
+
+Bad example:
+```shell
+  -agentpath:/agent/libdrill_agent.so=drillApiKey=123
+```
+
+Good example:
+```shell
+  # Set DRILL_API_KEY variable prior to application launch
+  DRILL_API_KEY=123
+  # exact syntax for env variables will depend on your environment
+```
+
+### Considerations regarding `buildVersion` and `commitSha`
+
+1. **Necessity**: While `buildVersion` and `commitSha` are not strictly required, we recommend providing at least one (ideally both) for the following reasons:
+    - It allows Drill4J to group metrics by version or commit.
+    - Without `buildVersion` and `commitSha`, Drill4J reports each application instance individually. Instances are identified with a random UUID.
+
+2. **Uniqueness**: Both `buildVersion` and `commitSha` identify a unique application version, each associated with a specific set of classes and methods.
+
+    To maintain the integrity of metrics, ensure that different application versions do not share the same `buildVersion` or `commitSha` values.
+    
+    Using identical values across different versions will lead to inaccurate metrics due to the mixing of unrelated data.
+
+3. **Semantics**: `buildVersion` typically corresponds to the version tag of your application. 
+
+    Compliance with [Semver](https://semver.org/) is not required. Drill4J treats the build version as a unique string for grouping metrics, without any added semantics.
+
+## Troubleshooting
+
+### How to confirm agent is loaded
+
+Once loaded Drill4J agent prints the following ASCII logo:
+
+```log
+  ____    ____                 _       _          _  _                _      
+  |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u   
+/| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/    
+U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-. 
+  |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/  
+  |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
+(__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
+Java Agent (v0.9.1)
+```
+It indicates that you have configured agent path correctly and Java picked up and loaded agent files.
+
+### Cannot load the agent because some agent parameters are set incorrectly
+
+If below Drill4J ASCII logo you see the following message:
+```
+ERROR [com.epam.drill.agent.configuration.ValidatedParametersProvider] Cannot load the agent because some agent parameters are set incorrectly. Please 
+check the following parameters:
+```
+
+It indicates that you are missing some required parameters. Refer to the [agent parameters](#agent-parameters-configuration-options) section.
+
+## Limitations and Known Issues
+
+1. While __x64__ Macs are supported, __ARM__ Macs (M-series Apple Silicon CPUs) are not yet supported; work is in progress.

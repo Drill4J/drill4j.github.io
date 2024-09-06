@@ -23,7 +23,7 @@ This page walks you through Drill4J integration for Java-based API tests. It wil
 Add Drill4J CI/CD plugin to your Gradle build file:
 ```kotlin
 plugins {
-    id("com.epam.drill.integration.cicd") version "0.1.0"
+    id("com.epam.drill.integration.cicd") version "0.1.1"
 }
 ```
 
@@ -42,7 +42,7 @@ drill {
     drillApiKey = "your-drill-api-key-here"
 
     enableTestAgent {
-        version = "0.23.0"
+        version = "0.23.1"
     }
 }
 ```
@@ -55,7 +55,7 @@ Add Drill4J CI/CD plugin to your Maven build file:
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
         <!-- example: my-app -->
         <groupId> ... </groupId>
@@ -68,7 +68,7 @@ Add Drill4J CI/CD plugin to your Maven build file:
         <drillApiKey>your-drill-api-key-here</drillApiKey>
         
         <testAgent>
-            <version>0.23.0</version>
+            <version>0.23.1</version>
         </testAgent>
 
     </configuration>
@@ -99,7 +99,7 @@ Add Drill4J CI/CD plugin to your Maven build file:
      |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
       |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
      (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
-     Autotest Agent (v0.23.0)
+     Autotest Agent (v0.23.1)
     ```
 
 That’s it! Open the Metabase UI and confirm that the new test information is coming through. You should see the Test Launches on the Build Summary dashboard.
