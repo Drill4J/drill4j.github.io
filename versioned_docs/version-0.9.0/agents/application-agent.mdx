@@ -33,7 +33,7 @@ The most basic way to get agent files is to download release .zip manually.
     - `drill-runtime.jar`
     - `drill.properties`
 
-Refer to [next section](/docs/agents/java-agent#how-to-set-path-to-agent) for further steps
+Refer to [next section](/docs/agents/java-agent#how-to-set-path-to-agent) for further steps.
 
 ### Use Docker image with a download script
 
@@ -66,21 +66,21 @@ Java allows to load agents using [special command line argument](https://docs.or
 java -agentpath:<path-to-agent>
 ```
 
-Where `<path-to-agent>` must point to agent library file
+Where `<path-to-agent>` must point to agent library file.
 
-There are two way to set this command line argument
+There are two way to set this command line argument.
 
 ### Pass `-agentpath:` directly to Java process
 
 > __Use case__: when you have a direct access to __Java__'s process launch arguments. 
 
-Considering your application is launched with
+Considering your application is launched with:
 
 ```shell
   java -jar my-app.jar
 ```
 
-Change it to
+Change it to:
 
 ```shell
   # Linux 
@@ -95,7 +95,7 @@ Change it to
 
 > __Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
 
-Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version
+Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version.
 
 ```shell
   JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so
@@ -106,7 +106,7 @@ Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/j
 
 ### Troubleshooting
 
-To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below
+To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below.
 
 ## How to set agent parameters
 
@@ -114,13 +114,13 @@ Drill4J agent supports 3 ways to set agent [parameters](#agent-parameters-refere
 
 ### Set parameters using environment variables
 
-This is the recommended way to set agent parameters
+This is the recommended way to set agent parameters.
 
 Env variables names are prefixed with `DRILL_` with uppercase snake case. Examples:
 
 - Given `packagePrefixes` parameter the env variable is `DRILL_PACKAGE_PREFIXES`
 
-__Precedence__: parameter values set with env variables have the highest precedence and will override values set in `-agentpath` string or  `drill.properties` file
+__Precedence__: parameter values set with env variables have the highest precedence and will override values set in `-agentpath` string or  `drill.properties` file.
 
 ### Set parameters in `-agentpath` argument string
 
@@ -138,7 +138,7 @@ Parameters are:
 - passed after `<path-to-agent>` (`/agent/libdrill_agent.so` above)
 - start of parameters string is indicated with `=` sign
 - parameters are `<key>=<value>` pairs
-- each pair is separated by comma
+- each pair is separated by comma.
 
 __Precedence__: parameter values set with `-agentpath` will override values set in `drill.properties`
 
@@ -153,7 +153,7 @@ parameter2=bar
 
 It adheres to the [properties file syntax](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html)
 
-__Precedence__: parameter values set in `drill.properties` file have the lowest precedence and can be overriden by `-agentpath` and env variables
+__Precedence__: parameter values set in `drill.properties` file have the lowest precedence and can be overriden by `-agentpath` and env variables.
 
 ## Agent parameters reference
 
@@ -185,7 +185,7 @@ Avoid setting it to something very broad (like `com` or `org`) - otherwise you w
 
 1. Parts of package names are separated with forward slashes `/` (and not dots `.`)
 2. Multiple packages can be specified using `;` delimiter
-3. To exclude package use `!` prefix
+3. To exclude package use `!` prefix.
 
 #### Example
 
@@ -199,15 +199,15 @@ __packagePrefixes__ parameter should be set to `my/org/somecoolapp`
 
 #### Adding extra package
 
-Add package name separated by `;` - `my/org/somecoolapp;some/other/package`
+Add package name separated by `;` - `my/org/somecoolapp;some/other/package`.
 
-This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages
+This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages.
 
 #### Excluding package 
 
-Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`
+Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`.
 
-This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`
+This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`.
 
 ### API key security
 
