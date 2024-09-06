@@ -227,18 +227,19 @@ Good example:
 
 ### Considerations regarding `buildVersion` and `commitSha`
 
-While `buildVersion` and `commitSha` are not strictly required, we recommend providing at least one (ideally both) for the following reasons:
+1. **Necessity**: While `buildVersion` and `commitSha` are not strictly required, we recommend providing at least one (ideally both) for the following reasons:
+    - It allows Drill4J to group metrics by version or commit.
+    - Without `buildVersion` and `commitSha`, Drill4J reports each application instance individually. Instances are identified with a random UUID.
 
-1. It allows Drill4J to group metrics by version or commit.
-2. Without `buildVersion` and `commitSha` Drill4J reports each application instance individually. Instances are identified with random UUID.
+2. **Uniqueness**: Both `buildVersion` and `commitSha` identify a unique application version, each associated with a specific set of classes and methods.
 
-`buildVersion` typically corresponds to the version tag of your application.
+    To maintain the integrity of metrics, ensure that different application versions do not share the same `buildVersion` or `commitSha` values.
+    
+    Using identical values across different versions will lead to inaccurate metrics due to the mixing of unrelated data.
 
-Compliance with [Semver](https://semver.org/) is not required. Drill4J treats the build version as a unique string for grouping metrics, without any added semantics.
+3. **Semantics**: `buildVersion` typically corresponds to the version tag of your application. 
 
-> **Q:** What if I don’t have build versions for development builds?
->
-> **A:** You can omit this parameter. If you provide `commitSha`, Drill4J will still group metrics by commit.
+    Compliance with [Semver](https://semver.org/) is not required. Drill4J treats the build version as a unique string for grouping metrics, without any added semantics.
 
 ## Troubleshooting
 
