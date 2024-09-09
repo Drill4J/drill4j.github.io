@@ -126,7 +126,7 @@ add the `<testAgent>` element and the `enableTestAgent` goal to your Drill4J con
 
 Now, the Test Agent will automatically launch for Maven test goals.
 
-### Agent versions
+### Agent Versions
 
 There are several ways to specify the version of the agent to launch the Test Agent:
 - Download the agent from a GitHub repository using a version pattern.
@@ -191,7 +191,6 @@ enableTestAgent {
 ### Additional Parameters
 
 The plugin allows passing additional parameters to the Test Agent, which will be used during execution.
-You can find more details in the [Test agent parameters](../agents/java-agent#agent-parameters-reference) reference.
 
 ##### Gradle
 ```groovy
@@ -527,7 +526,7 @@ mvn drill:gitlabMergeRequestReport
 
 ## Sending Build Information
 
-You can send information about your application’s build to Drill4J.
+You can send information about your application’s build to the Drill4J Backend.
 The build information includes:
 - Build version
 - Current commit SHA
