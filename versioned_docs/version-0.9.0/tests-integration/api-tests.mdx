@@ -5,7 +5,8 @@ title: API Tests
 
 # API Tests
 
-This page walks you through Drill4J integration for Java-based API tests. It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_
+This page walks you through Drill4J integration for Java-based API tests.
+It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_
 
 ## Prerequisites
 
@@ -16,61 +17,79 @@ This page walks you through Drill4J integration for Java-based API tests. It wil
 
 2. API tests launched with either Maven or Gradle
 
-## Configure Drill4J Plugin 
+This instruction involves making changes to the Gradle/Maven project build file.
 
-### Gradle
+## Install Drill4J Plugin
 
-Add Drill4J CI/CD plugin to your Gradle build file:
+The Drill4J CI/CD integration plugin allows you to run API tests together with the Test Agent.
+Add following changes to your Gradle/Maven project with API tests build file to install the Drill4J plugin:
+
+##### Gradle
 ```kotlin
 plugins {
     id("com.epam.drill.integration.cicd") version "0.1.0"
 }
 ```
 
-Add general properties to your Gradle build file:
+##### Maven
+```xml
+<builds>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.integration</groupId>
+            <artifactId>drill-maven-plugin</artifactId>
+            <version>0.1.0</version>
+        </plugin>
+    </plugins>
+</build>
+```
 
+## Enable Test Agent
+
+To enable the Test Agent set the plugin configuration:
+
+##### Gradle
+Add `drill` section into the bottom of the Gradle build file:
 ```kotlin
 drill {
-    # example: "http://localhost:8090/api"
-    drillApiUrl = 
+    // Set the Drill4J API URL
+    // or set DRILL_API_URL env variable
+    drillApiUrl = "http://localhost:8090/api"
+    // Set the Drill4J API Key
+    // or set DRILL_API_KEY env variable
+    drillApiKey = "1_01cdf51ff20544ee..."
 
-    # example: my-app
-    groupId =
-
-    # Secure way: set DRILL_API_KEY env variable value
-    # Unsecure way: paste the API key value here
-    drillApiKey = "your-drill-api-key-here"
+    // Set the Drill4J Group ID
+    groupId = "my-group"
 
     enableTestAgent {
-        version = "0.23.0"
+        version = "0.23.+"
     }
 }
 ```
 
-### Maven
-
-Add Drill4J CI/CD plugin to your Maven build file:
-
+##### Maven
+Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Maven pom.xml file:
 ```xml
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
     <version>0.1.0</version>
     <configuration>
-        <!-- example: my-app -->
-        <groupId> ... </groupId>
+        <!-- Set the Drill4J API URL -->
+        <!-- or set DRILL_API_URL env variable -->
+        <apiUrl>http://localhost:8090/api</apiUrl>
 
-        <!-- example: "http://localhost:8090/api" -->
-        <drillApiUrl> ... </drillApiUrl>
-        
-        <!--  Secure way: set DRILL_API_KEY env variable value -->
-        <!--  Unsecure way: paste the API key value here -->
-        <drillApiKey>your-drill-api-key-here</drillApiKey>
+        <!-- Set the Drill4J API Key -->
+        <!-- or set DRILL_API_KEY env variable -->
+        <apiKey>1_01cdf51ff20544ee...</apiKey>
+
+        <!-- Set the Drill4J Group ID -->
+        <groupId>my-group</groupId>
         
         <testAgent>
-            <version>0.23.0</version>
+            <version>0.23.+</version>
         </testAgent>
-
     </configuration>
     <executions>
         <execution>
@@ -82,13 +101,15 @@ Add Drill4J CI/CD plugin to your Maven build file:
 </plugin>
 ```
 
-## Launch Tests
+## Run API Tests
 
 1. Launch your tests with Gradle/Maven (e.g. `gradle test`, `mvn test`).
 
-    > When running tests in your IDE, double-check that it's picking up the correct configuration file with the Drill4J test agent added (that will be `build.gradle` for Gradle, `pom.xml` for Maven)
+> *IMPORTANT!*
+When running tests in your IDE, double-check that it's picking up the correct configuration file with the Drill4J test agent added (that will be `build.gradle` for Gradle, `pom.xml` for Maven)
 
-2. To confirm test agent is working check tests log. There should be Drill4J ASCII logo followed by test agent version:
+2. To confirm test agent is working check tests log.
+There should be Drill4J ASCII logo followed by test agent version:
 
     ```log
     Task :test is modified by Drill
@@ -102,27 +123,5 @@ Add Drill4J CI/CD plugin to your Maven build file:
      Autotest Agent (v0.23.0)
     ```
 
-That’s it! Open the Metabase UI and confirm that the new test information is coming through. You should see the Test Launches on the Build Summary dashboard.
-
-## Disabling test agent for specific task
-
-### Gradle
-
-If you want to disable Drill4J for specific test task you can set the following:
-
-```kotlin
-test {
-    // general properties of your test task
-    // ...
-    
-    drill {
-        testAgent {
-            enabled = false
-        }
-    }
-}
-```
-
-### Maven
-
-> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
+That’s it! Open the Metabase UI and confirm that the new test information is coming through.
+You should see the Test Launches on the Build Summary dashboard.
