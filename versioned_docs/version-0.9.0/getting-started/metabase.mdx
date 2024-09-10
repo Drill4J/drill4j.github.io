@@ -3,7 +3,7 @@ id: metabase
 title: Metabase Dashboards
 ---
 
-# How To Use Metabase Dashboards 
+# Metabase Dashboards 
 
 import { Image } from '@components';
 
@@ -13,8 +13,8 @@ This guide will walk you through Metabase dashboards Drill4J provides, without g
 
 ## Prerequisites
 
-1. Drill4J services deployed.
-2. Application agent configured.
+1. [Drill4J services](/docs/getting-started/local-deployment) deployed.
+2. [Application agent](/docs/agents/java-agent) configured.
 3. At least two different version of application under test launched (to enable difference-based metrics).
 
 > __In case you don't have your application configured with Drill4J yet__:
@@ -122,7 +122,9 @@ This guide will walk you through Metabase dashboards Drill4J provides, without g
         
         __“partially tested”__ if it falls between 0% and 100%
 
-    Clicking on either __Code Coverage__ or __Methods__ charts will navigate you to __Build - Code Coverage__ dashboard
+    <Image alt='Metrics - Clickable piecharts' src="/img/0.9.0/metabase/build-1-click-on-code-coverage.PNG" />
+
+    Click on either the __Code Coverage__ or __Methods__ charts (highlighted in green in the image above) to navigate to the __Build - Code Coverage__ dashboard.
 
 ### Code Coverage dashboard
 
@@ -195,21 +197,17 @@ But before we can do that, we have to set __Baseline Build__
     > 
     > Drill4J has selected coverage from `0.1.0` applicable to `0.2.0` and incorporated it in the report. 
 
-### __Recommended Tests__
+### Recommended Tests
 
 <Image alt='Baseline set - Recommended Tests table appears' src="/img/0.9.0/metabase/build-2-baseline-set.PNG" />
 
-12. Once __Baseline Build__ filter is set two things appear - __Baseline Build Info__ card (highlight №1) and __Recommended tests__ table (highlight №2). This table contains tests that Drill4J suggest you to execute in order to test changes between two application versions.
+12. Once the __Baseline Build__ filter is set, three new components become available:
 
-    How it works (by example):
-    1. You have executed tests for version `0.1.0`.
-    2. In these tests, test `"Make Order"` tested method `Cart.addItem`
-    3. Method `Card.addItem` changed between two versions.
-    4. Based on this information, Drill4J suggests you to execute test `"Make Order"` again.
-    5. `"MakeOrder"` is _likely_ the best chance to test changed method. It is not guranteed though.
-    6. Lets say you execute this test, but now its broken or insufficient. You'll notice that thanks to Drill4J's next metric.
+    - __Baseline Build Info__ card (highlight №1) - displays metadata of the __Baseline Build__.
+    - __Recommended tests__ table (highlight №2) - contains tests that Drill4J suggests you execute to test changes between two application versions.
+    - __Changed Or New Methods__ - shows the comparison results between the __Build__ and the __Baseline Build__.
 
-### __Changed Or New Methods__
+### Changed Or New Methods
 
 13. Scrolling down reveals __Changed Or New Methods__ card both in __Aggregate__ and __Isolated__ metrics 
 
