@@ -1,0 +1,241 @@
+---
+id: metabase
+title: Metabase Dashboards
+---
+
+# Metabase Dashboards 
+
+import { Image } from '@components';
+
+Drill4J uses [Metabase](https://www.metabase.com/) to display application metrics.
+
+This guide will walk you through Metabase dashboards Drill4J provides, without going in deeper details on how metrics are calculated. For that refer to the [Metrics overview](https://google.com) page.
+
+## Prerequisites
+
+1. [Drill4J services](/docs/getting-started/local-deployment) deployed.
+2. [Application agent](/docs/agents/java-agent) configured.
+3. At least two different version of application under test launched (to enable difference-based metrics).
+
+> __In case you don't have your application configured with Drill4J yet__:
+> 
+> the easiest way to follow this guide is to deploy [Realworld Demo](https://github.com/Drill4J/realworld-demo), and execute steps up to tests launch for the build1 (including the tests launch).
+
+## How to use
+
+### Login and Home pages
+
+1. Open Metabase UI in browser (<http://localhost:8095> by default in case of local deployment)
+
+    You should be greeted with authentication page.
+    
+    <Image alt="Metabase authentication form" src="/img/0.9.0/metabase/sign-in.PNG" />
+
+    Enter the following credentials:
+
+    ```
+    user@user.user
+    useruser1
+    ```
+
+2. Once logged in, you should see the home page. On the left side there is a sidebar.
+
+    <Image alt='Metabase home page. "Builds" dashboard highlighted in green' src="/img/0.9.0/metabase/home-page.PNG" />
+   
+    In __Bookmarks__ section click on the link to __Builds__ dashboard.
+    
+    > __Builds__ dashboard is the entrypoint to navigate to other dashboards.
+    > 
+    > Otherwise, if you open any other dashboard directly, you won't have filter values filled in - so you won't see metrics.
+
+### Builds dashboard
+
+3. Once on __Builds__ dashboard page, you should see the table with all application builds Drill4J has information on. 
+
+    <Image alt='"Builds" dashboard. Link to the build metrics page is highlighted in green' src="/img/0.9.0/metabase/builds-dashboard.PNG" />
+
+    By default:
+    - builds are sorted from latest to oldest (by date of addition to Drill4J database)
+    - all builds are displayed, regardless of group and app. To filter click on group/app name or set filter value in page header.
+
+    Click on __Build ID__ cell value to navigate to __Build Summary__ metrics page. For the goals of this guide click on the older application version (`realworld:backend:0.1.0` in case of realworld demo).
+
+### Build Summary dashboard
+
+4. The __Build Summary__ dashboard contains various information and metrics regarding the particular build.
+
+    <Image alt='"Build Summary" dashboard header' src="/img/0.9.0/metabase/build-summary-1-header.PNG" />
+
+    There is a lot to take in. Lets go through the basics (please refer to screenshot for highlights):
+
+    1. __Filters area__ (highlighted area №1) - these filters define for which build metrics are displayed.
+
+        > __Package Filter__ and __Class Filter__ are set to `*`. This value sets "display all" behavior. Empty values will result in error and metrics won't be displayed.
+
+    2. __Build information__ (highlighted area №2) - this card display information for the build we are viewing metrics for right now. If there were integration with CI/CD, we would'be seen  Git metadata, such as branch, commit, date message. That is purely informational and does not affect metrics.
+    
+    3. __Tests information__ (highlighted area №3) - these numbers display how many test executions Drill4J has detected. 
+    
+        __Executed Tests__ value refers to overall number of launched tests
+
+        __Unique Tests__ value indicates non-repeating tests (so if you launch same tests multiple times these values will differ.)
+        
+        You can click on the numbers to open __Build - Tests__ dashboard with more details. This dashboard is somewhat self-explainatory so we'll skip it in this guide. 
+
+    > Some components display "There was a problem displaying this chart." message. This is not an error. These components depend on __Baseline Build__ filter value. We'll go through that later in sections below.
+
+### Aggregate and Isolated metrics
+
+5. Scrolling down on __Build Summary__ dashboard reveals two more sections - __Aggregate Metrics__ and __Isolated Metrics__
+
+    <Image alt='"Build Summary" dashboard - Aggregate and Isolated Metrics' src="/img/0.9.0/metabase/build-summary-1-aggregate-and-isolated.PNG" />
+
+    __Aggregate Metrics__ (highlighted area №1) - are metrics derived from __combined data__ from various application versions. For instance, if you tested some code in other version and that code remains unchanged in this version, the coverage from that test will be included in these metrics.
+
+    __Isolated Metrics__ (highlighted area №2) - are metrics calculated from data collected __exclusively__ from a single, specific application version.
+
+6. Lets go trough the specific metrics (these are available both in Isolated and Aggregate variants)
+
+    <Image alt='"Build Summary" dashboard - Isolated Metrics' src="/img/0.9.0/metabase/build-summary-1-metrics-isolated.PNG" />
+
+    1. __Testing Pyramid Chart__ (highlighted area №1) - this chart shows the coverage grouped by tests metadata.
+    
+        In a fully integrated Drill4J setup, encompassing all testing stages, it will show percentages from unit, integration, API, end-to-end (e2e), and manual tests.
+     
+        __TOTAL__ category indicates the overall coverage.
+        
+        __UNGROUPED__ category refers to coverage without test metadata.
+
+        __Other categories__ are formed based on tests metadata associated with coverage. In order for these to work you have to integrate [Test Agent](/docs/agents/test-agent).
+
+    2. __Code Coverage__ (highlighted area №2) - shows __overall coverage percent__ for the whole application.
+
+        __Coverage percentage__ values are based on per-probe coverage, which is more granular than per-line coverage. For example, if multiple statements are on a single line, this metric reflects coverage for each statement individually.
+    
+    3. __Methods__ (highlighted area №3) - this metric calculates coverage percentage based on the number of methods.
+    
+        A method is considered:
+
+        __“fully tested”__ at 100%
+        
+        __“not tested”__ at 0%
+        
+        __“partially tested”__ if it falls between 0% and 100%
+
+    <Image alt='Metrics - Clickable piecharts' src="/img/0.9.0/metabase/build-1-click-on-code-coverage.PNG" />
+
+    Click on either the __Code Coverage__ or __Methods__ charts (highlighted in green in the image above) to navigate to the __Build - Code Coverage__ dashboard.
+
+### Code Coverage dashboard
+
+This dashboard displays detailed coverage in 3 tables - __Packages Table__, __Classes Table__ and __Methods Table__
+
+
+7. __Packages Table__ displays coverage grouped by packages.
+
+    <Image alt='Code Coverage dashboard - packages table' src="/img/0.9.0/metabase/build-1-coverage-packages.PNG" />
+    
+    - __Packages__ column contains name of the package.
+    - __Probes__ column displays package size in probes. You can think of probe as the smallest unit of coverage possible.
+    - __Covered probes__ column displays number of probes covered in tests.
+    - __Coverage__ column displays % of covered probes to overall number of probes.
+
+    Packages are sorted by __coverage and size__ (in probes). This means:
+
+    - Bigger and less covered packages will appear at the top
+    - Smaller and more covered packages will appear at the bottom
+
+    This way you'll immediately see least tested application areas.
+
+    Clickin on package name sets the __Package__ filter, affecting tables below.
+
+8. __Classes Table__ displays coverage grouped by classes
+
+    <Image alt='Code Coverage dashboard - classes table' src="/img/0.9.0/metabase/build-1-coverage-classes.PNG" />
+
+    It is very similar to packages table, so we'll skip repetitive explanations.
+
+    Clikcing on the classname sets __Class__ filter, enabling you to see coverage for class methods in the table below
+
+9. __Methods Table__ displays coverage for methods of particular class.
+
+    <Image alt='Code Coverage dashboard - methods table' src="/img/0.9.0/metabase/build-1-coverage-methods.PNG" />
+
+    It won't display data if __Package__ and __Class__ filters aren't set. You have to set __both__ in order for methods table to work.
+
+> In order to reset filters click "x" on the respective filter and then enter `*` (asterisk) value
+
+### Set Baseline Build
+
+Metrics described above are, in essense, different ways to display  __Coverage__.
+
+Now lets see other two key metrics: __New Or Changed Methods__ and __Recommended Tests__.
+
+But before we can do that, we have to set __Baseline Build__
+
+10. First, lets open dashboard with metrics for more recent application version.
+
+> Following the Realworld Demo: 
+> 1. Open [__Builds__](http://localhost:8095/dashboard/1-builds?group=&app=) page (bookmarked on the left sidebar)
+> 2. Click on __Build ID__ `realworld:backend:0.2.0` 
+> <Image alt='Click on Build ID for realworld:backend:0.2.0' src="/img/0.9.0/metabase/builds-dashboard-2.PNG" />
+
+11. Now, set __Baseline Build__ page filter value.
+
+    Since we're vieing more recent application version, it has some code changes compared to the previous version.
+    Set __Baseline Build__ to compare two versions and show the difference.
+
+    In a typical development workflow, it’s best to set the __Baseline Build__ to the most tested application version, which is usually the previous release.
+
+    <Image alt='Two ways to set Baseline Build filter value' src="/img/0.9.0/metabase/build-2-select-baseline.PNG" />
+
+    Click on __Baseline Build__ filter dropdown and find earlier version (highlight №1, seach by `0.1.0`) or select it from the table with other builds (highlight №2)
+
+    Now you should see additional metrics - __Recommended Tests__ and __Changed Or New Methods__ (in both Aggregate and Isolated metrics)
+
+    > In case of Realworld Demo: note that __Aggregate__ and __Isolated__ metrics are now different.
+    > 
+    > Drill4J has selected coverage from `0.1.0` applicable to `0.2.0` and incorporated it in the report. 
+
+### Recommended Tests
+
+<Image alt='Baseline set - Recommended Tests table appears' src="/img/0.9.0/metabase/build-2-baseline-set.PNG" />
+
+12. Once the __Baseline Build__ filter is set, three new components become available:
+
+    - __Baseline Build Info__ card (highlight №1) - displays metadata of the __Baseline Build__.
+    - __Recommended tests__ table (highlight №2) - contains tests that Drill4J suggests you execute to test changes between two application versions.
+    - __Changed Or New Methods__ - shows the comparison results between the __Build__ and the __Baseline Build__.
+
+### Changed Or New Methods
+
+13. Scrolling down reveals __Changed Or New Methods__ card both in __Aggregate__ and __Isolated__ metrics 
+
+    <Image alt='Changed or new methods metric' src="/img/0.9.0/metabase/build-2-changed-or-new-methods.PNG" />
+
+    This metrics (highlight №1 in the screenshow above) indicates how many changes in methods Drill4J has detected. Similarly to __Methods__ chart, it groups methods into __“fully tested”__ (100% coverage), __“partially tested”__(some coverage) and __“not tested”__ (0% coverage) 
+
+    Clicking on piechart opens dedicated page, where you can see these methods.
+
+    <Image alt='Dedicated page for new or changed methods' src="/img/0.9.0/metabase/build-2-changes-testing.PNG" />
+
+    Methods are sorted by both __size and coverage__, so you will see the biggest gaps in coverage at the top of the page.
+
+    This chart and corresponding page allows you to quickly understand whether you tested all changes between two application versions, or still have some work to do.
+
+    <Image alt='Tabs to switch between Aggregate and Isolated reports' src="/img/0.9.0/metabase/build-2-changes-testing-aggregate-isolated-tabs.PNG" />
+
+    Note that this report has __Aggregate__ and __Isolated__ variants as well (highlighted on the screenshot above).
+    __Aggregate__ report is very handy, whenever your testing efforts are spread across multitude of versions. It most often happens in case with __Manual__ tests, when its unlikely that all manual testing will happen on the same version.
+
+## Conclusion and further reading 
+
+This covers basics of using Metabase dashboards provided with Drill4J out of the box.
+
+### Automating Reports
+
+Although this paged walked you through manually setting filters to get to necessary reports, this process could be automated. Refer to guides below to learn how to link reports to your Pull/Merge requests and branches updates:
+
+1. [Github Integration Guide](/docs/cicd-integration/github)
+1. [Gitlab Integration Guide](/docs/cicd-integration/gitlab)
+3. [CI/CD Plugin Reference](/docs/cicd-integration/cicd-integration-plugin)

@@ -13,6 +13,14 @@
         {
           "type": "doc",
           "id": "version-0.9.0/getting-started/local-deployment"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/getting-started/metabase"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.9.0/getting-started/metrics-overview"
         }
       ]
     },
@@ -49,6 +57,10 @@
         },
         {
           "type": "doc",
+          "id": "version-0.9.0/agents/test-agent"
+        },
+        {
+          "type": "doc",
           "id": "version-0.9.0/cicd-integration/cicd-integration-plugin"
         },
         {
@@ -58,10 +70,6 @@
         {
           "type": "doc",
           "id": "version-0.9.0/drill-services/drill-ui"
-        },
-        {
-          "type": "doc",
-          "id": "version-0.9.0/drill-services/metabase"
         }
       ]
     }

@@ -1,0 +1,20 @@
+---
+id: metrics-overview
+title: Metrics Overview
+---
+
+import { Image } from '@components';
+
+# Metrics Overview
+
+> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
+
+## Recommended Tests
+
+How it works (by example):
+1. You have executed tests for version `0.1.0`.
+2. In these tests, the `"Make Order"` test covered the method `Cart.addItem`.
+3. The method `Cart.addItem` changed between two versions.
+4. Based on this information, Drill4J suggests you execute the `"Make Order"` test again.
+5. `"Make Order"` is _likely_ the best chance to test the changed method, though it is not guaranteed.
+6. Let's say you execute this test, but now it's broken or insufficient. You'll notice this thanks to Drill4J's __Changed Or New Methods__ metric
