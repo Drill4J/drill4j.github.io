@@ -1,10 +1,4 @@
-const docs = [
-  {
-    type: 'category',
-    label: 'Getting Started',
-    items: [],
-  },
-];
+const docs = [];
 
 module.exports = {
   docs,
