@@ -27,7 +27,7 @@ Add following changes to your Gradle/Maven project with API tests build file to 
 ##### Gradle
 ```kotlin
 plugins {
-    id("com.epam.drill.integration.cicd") version "0.1.0"
+    id("com.epam.drill.integration.cicd") version "0.1.1"
 }
 ```
 
@@ -63,7 +63,7 @@ drill {
     groupId = "my-group"
 
     enableTestAgent {
-        version = "0.23.+"
+        version = "0.23.1"
     }
 }
 ```
@@ -74,7 +74,7 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
         <!-- Set the Drill4J API URL -->
         <!-- or set DRILL_API_URL env variable -->
@@ -88,7 +88,7 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         <groupId>my-group</groupId>
         
         <testAgent>
-            <version>0.23.+</version>
+            <version>0.23.1</version>
         </testAgent>
     </configuration>
     <executions>
@@ -120,7 +120,7 @@ There should be Drill4J ASCII logo followed by test agent version:
      |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
       |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
      (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
-     Autotest Agent (v0.23.0)
+     Autotest Agent (v0.23.1)
     ```
 
 That’s it! Open the Metabase UI and confirm that the new test information is coming through.
