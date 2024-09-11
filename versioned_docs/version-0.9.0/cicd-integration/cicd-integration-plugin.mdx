@@ -5,44 +5,70 @@ title: CI/CD Integration Plugin
 
 #  CI/CD Integration Plugin
 
-This plugin enables the integration of Drill4J into your CI/CD pipelines for automated testing and reporting.
+## Overview
 
-## Installation
+The CI/CD integration plugin offers a wide range of capabilities and is available for both Gradle and Maven.
 
-Follow these instructions to install the plugin for Gradle and Maven.
+All these functions are provided under a single tool because they are related to tasks executed within Maven or Gradle.
+
+### Features
+
+CI/CD Integration Plugin functions include:
+
+1. __Downloading and configuring agents__:
+   - [Application agent](#application-agent) - to capture unit tests coverage
+   - [Test agent](#test-agent) - to capture metadata for tests launches (such as runner, test name and result)
+
+2. __Generating change testing reports__:
+   - [With a command](#generating-a-change-testing-report) - useful to call on branch push event.
+   - [On GitHub Pull Request](#github-pull-request-report)
+   - [On GitLab Merge Request](#gitlab-merge-request-report)
+
+3. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
+
+### How to use
+
+The general gist of using the CI/CD integration plugin is:
+1. [Add the plugin](#adding-plugin) to your Maven or Gradle configuration.
+2. Configure the agents (for [application](#application-agent), for [tests](#test-agent))
+3. Use commands provided by CI/CD Integration Plugin and integrate it with your CI/CD scripts
+
+> The exact configuration files and commands you should use depend on the task at hand. This page provides general reference. __For step-by-step guides__ refer to Integration Guides section (see documentation sidebar at the top of the page).
+
+## Adding plugin
+
+This section describes how to add CI/CD integration plugin to your project.
 
 ### Gradle
 
-1. Add the Drill4J CI/CD integration plugin to your Gradle build file in the `plugins` section:
+1. Add the following to Gradle build file `plugins` section:
 
 ```kotlin
 plugins {
-    id("com.epam.drill.integration.cicd") version "0.1.0"
+    id("com.epam.drill.integration.cicd") version "0.1.1"
 }
 ```
 
-2. Configure Drill4J settings at the bottom of your Gradle build file:
-
-```kotlin
-drill {
-    // Drill4J API url
-    apiUrl = "http://localhost:8090/api"
-    // Drill4J Api Key
-    apiKey = "your_api_key_here"
-
-    // Other properties
-    // ...
-}
-```
-> *NOTE:*
-You can also set the `apiUrl` and `apiKey` using environment variables: `DRILL_API_URL` and `DRILL_API_KEY`
-, instead of specifying them directly in the Gradle configuration.
-
-The plugin is now ready for use.
+2. Set Drill4J API address and API key
+    - __Option 1__ (recommended): using environment variables.
+        ```
+        // Exact way to set variables depends on the environment
+        DRILL_API_URL="http://localhost:8090/api"
+        DRILL_API_KEY="your_api_key_here"
+        ```
+    - __Option 2__ (not recommended): using Gradle build file.
+        ```kotlin
+        // Add the following section in `build.gradle` at root level
+        drill {
+            // Set API url and API key
+            apiUrl = "http://localhost:8090/api"
+            apiKey = "your_api_key_here"
+        }
+        ```
 
 ### Maven
 
-Add the Drill4J CI/CD integration plugin to your Maven pom.xml file in the `<build>` section and configure the general parameters:
+1. Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
 
 ```xml
 <build>
@@ -50,70 +76,85 @@ Add the Drill4J CI/CD integration plugin to your Maven pom.xml file in the `<bui
         <plugin>
             <groupId>com.epam.drill.integration</groupId>
             <artifactId>drill-maven-plugin</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
             <configuration>
-                <!-- Drill4J API url -->
-                <apiUrl>http://localhost:8090/api</apiUrl>
-                <!-- Drill4J Api Key -->
-                <apiKey>your_api_key_here</apiKey>
-
-                <!-- Other properties -->
-                <!-- ... -->
+            
             </configuration>
         </plugin>
    </plugins>
 </build>
 ```
 
-> *NOTE:*
-You can also set the `apiUrl` and `apiKey` using environment variables: `DRILL_API_URL` and `DRILL_API_KEY`
-, instead of specifying them directly in the Gradle configuration.
+2. Set Drill4J API address and API key
+    - __Option 1__ (recommended): using environment variables.
+        ```
+        // Exact way to set variables depends on the environment
+        DRILL_API_URL="http://localhost:8090/api"
+        DRILL_API_KEY="your_api_key_here"
+        ```
+    - __Option 2__ (not recommended): using Maven configuration file.
+        ```xml
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.epam.drill.integration</groupId>
+                    <artifactId>drill-maven-plugin</artifactId>
+                    <version>0.1.1</version>
 
-The plugin is now ready for use.
+                    <configuration>
+                        <!-- Set API url and API key -->
+                        <apiUrl>http://localhost:8090/api</apiUrl>
+                        <apiKey>your_api_key_here</apiKey>
+                    </configuration>
 
+                </plugin>
+            </plugins>
+        </build>
+        ```
 
-## Enabling Test Agent
+## Test Agent
 
-The Drill4J Test Agent allows you to track code coverage during tests.
-It performs two main tasks:
-- Downloading the agent
-- Launching the agent during your tests
+Enables Drill4J to map tests to coverage and vice versa. For more details on this feature and its purpose, see the [Test Agent](/docs/agents/test-agent) reference page.
 
-### Gradle
+### Set up
 
-To enable the Drill4J Test Agent for all test tasks in the current project, specify the `groupId` of your application
-and add the `enableTestAgent` block to your Drill4J configuration in the Gradle build file:
+Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
+
+#### Gradle
+
+To enable the Drill4J Test Agent to Gradle project add the following:
 ```kotlin
 drill {
-    // Drill4J group ID
+    // groupId is a required parameter to run test agent
     groupId = "my-group"
-    // Test agent configuration
+
     enableTestAgent {
-        // Test agent version
-        version = "0.23.+"
+        version = "0.23.1"
     }
 }
 ```
 
-Now, the Test Agent will automatically launch for every Gradle test task.
+> Note, that Test Agent will automatically launch for every Gradle test task.
+> If you need to disable Test Agent for specific tasks, refer to [this section](#disabling-the-test-agent)
 
-### Maven
+#### Maven
 
-To enable the Drill4J Test Agent for Maven test goals in the current project,
-add the `<testAgent>` element and the `enableTestAgent` goal to your Drill4J configuration in your Maven pom.xml file:
+To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
 ```xml
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
+    
     <configuration>
-        <!-- Drill4J group ID -->
+        <!-- groupId is a required parameter to run test agent -->
         <groupId>my-group</groupId>
         <testAgent>
-            <!-- Test agent version -->
-            <version>0.23.+</version>
+            <version>0.23.1</version>
         </testAgent>
     </configuration>
+
+    <!-- adds enableTestAgent goal -->
     <executions>
         <execution>
             <goals>
@@ -124,37 +165,91 @@ add the `<testAgent>` element and the `enableTestAgent` goal to your Drill4J con
 </plugin>
 ```
 
-Now, the Test Agent will automatically launch for Maven test goals.
+> Note, that Test Agent will automatically launch for every Maven test goal.
+> If you need to disable Test Agent for specific goals, refer to [this section](#disabling-the-test-agent)
 
-### Agent Versions
+### Disable for specific task
 
-There are several ways to specify the version of the agent to launch the Test Agent:
-- Download the agent from a GitHub repository using a version pattern.
-- Download the agent from a custom URL.
-- Specify the path to a local zip archive.
+By default, the Test Agent will launch for every Gradle task and Maven goal.
+To disable the Test Agent for specific tasks/goals, follow the steps below:
 
-#### Using a Version Pattern
+##### Gradle
 
-The Test agent version is specified as a regular expression.
-For example, using the version `0.23.+` means that the Test Agent will download the latest available version matching this pattern.
+Add the following to configuration of test task:
+```kotlin
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
 
-> *NOTE:* The Test Agent for your current OS and specified version will be downloaded from the
-[https://github.com/Drill4J/autotest-agent/releases](https://github.com/Drill4J/autotest-agent/releases)
+    drill {
+        testAgent {
+            enabled = false // Disables Test agent for this test task
+        }
+    }
+}
+```
+
+##### Maven
+
+There is no way to disable Test Agent for specific Maven goal while keeping it for all others.
+
+Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Test Agent configuration:
+
+```xml
+<profiles>
+    <profile>
+        <!-- profile name, it is totally arbitrary -->
+        <id>profileWithTestAgent</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.epam.drill.integration</groupId>
+                    <artifactId>drill-maven-plugin</artifactId>
+                    <version>0.1.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>enableTestAgent</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+```
+
+This way Test Agent will only launch when the respective profile is launched.
+
+### Agent files download source
+
+There are 3 ways to specify where CI/CD plugin should load agent from:
+- [Automatic download](#automatic-download) by version tag - the default option.
+- [Custom URL download](#custom-url-download) - arbitrary URL to ZIP release. 
+- [Local path to ZIP release](#local-path-to-zip-release) - local path to ZIP release.
+
+#### Automatic download
+
+To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Test Agent GitHub repository](https://github.com/Drill4J/autotest-agent/releases) releases page.
 
 ##### Gradle
 ```kotlin
 enableTestAgent {
-    version = "0.23.+"
+    version = "0.23.1"
 }
 ```
 ##### Maven
 ```xml
 <testAgent>
-    <version>0.23.+</version>
+    <version>0.23.1</version>
 </testAgent>
 ```
 
-#### Downloading from a Custom URL
+#### Custom URL download
 
 To download the Test Agent from a custom URL, set the `downloadUrl` parameter to the desired link:
 
@@ -171,7 +266,7 @@ enableTestAgent {
 </testAgent>
 ```
 
-#### Using a Local Zip Archive
+#### Local path to ZIP release
 
 To use a locally available Test Agent, set the `zipPath` parameter to the path of the local zip archive:
 
@@ -188,9 +283,9 @@ enableTestAgent {
 </testAgent>
 ```
 
-### Additional Parameters
+### Additional parameters
 
-The plugin allows passing additional parameters to the Test Agent, which will be used during execution.
+> 🚧 TODO - add usage scenarios 🚧
 
 ##### Gradle
 ```groovy
@@ -214,69 +309,22 @@ enableTestAgent {
 </testAgent>
 ```
 
-### Disabling the Test Agent
+## Application Agent
 
-By default, the Test Agent will launch for every Gradle or Maven test task.
-To disable the Test Agent for specific test tasks, follow the steps below:
-
-##### Gradle
-
-To disable the Test Agent for a specific test task, add the `drill` block within your standard test configuration:
-```kotlin
-// Standard test configuration in Gradle
-test {
-    useJUnitPlatform() // or any other test runner
-
-    drill {
-        testAgent {
-            enabled = false // Disables Test agent for this test task
-        }
-    }
-}
-```
-
-##### Maven
-
-To disable the Test Agent for specific test goals, move the `<executions>` element of the Drill4J plugin into a Maven profile:
-
-```xml
-<profiles>
-    <profile>
-        <id>enableTestAgent</id>
-        <activation>
-            <activeByDefault>false</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>0.1.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>enableTestAgent</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-```
-
-After this, the Test Agent will only launch when the enableTestAgent profile is activated.
-
-
-## Enabling Application Agent
-
-The Drill4J Application Agent allows you to monitor and analyze the behavior of your application during runtime.
-To enable the agent, configure the following settings in your build configuration.
+Enables Drill4J to collect coverage for application classes. See the [Application Agent](/docs/agents/java-agent) reference page for more details.
 
 > 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
 
-## Generating a Change Testing Report
+### Set up
+Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
+
+### Disable for specific task
+
+### Agent files download source
+
+## Generating a change testing report
+
+> 🚧 TODO - add usage scenarios 🚧
 
 A Change Testing Report provides insights into the code changes that have been tested,
 allowing you to ensure the quality of newly introduced changes.
@@ -286,11 +334,11 @@ allowing you to ensure the quality of newly introduced changes.
 Add the following properties to your Gradle build file:
 ```kotlin
 drill {
-    // Drill4j Group ID
+    // Enter appropriate parameter values
     groupId = "my-group"
-    // Drill4J Application ID
     appId = "my-application"
-    // Baseline strategy configuration
+
+    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
     baseline {
        searchStrategy = "SEARCH_BY_TAG"
     }
@@ -310,13 +358,13 @@ Add the following properties to your Maven pom.xml file:
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
-        <!-- Drill4J group ID -->
+        <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
-        <!-- Drill4J application ID -->
         <appId>my-application</appId>
-        <!-- Baseline strategy configuration -->
+
+        <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
         <baseline>
             <searchStrategy>SEARCH_BY_TAG</searchStrategy>
         </baseline>
@@ -338,14 +386,14 @@ mvn drill:generateChangeTestingReport
 
 The report will be saved in the `/target/drill-reports/` directory.
 
-### Baseline Strategy
+### Baseline strategy
 
 To generate a Change Testing Report, the current build must be compared to a baseline build.
 Drill4J supports multiple strategies to identify the baseline build:
 - Search by tags
 - Search by merge base
 
-#### Search by Tags Strategy
+#### Search by tags
 This strategy compares the current build to a baseline build identified by Git tags.
 
 > *IMPORTANT!*
@@ -354,48 +402,52 @@ You need to have at least one Git tag in your repository for this strategy to wo
 ##### Gradle
 ```kotlin
 baseline {
-    // Strategy used to find a baseline commit
+    // Strategy to find a baseline commit
     searchStrategy = "SEARCH_BY_TAG"
-    // Only consider tags matching the given pattern (optional, '*' by default)
+
+    // Adjust to match your tag naming scheme
     tagPattern = "v[0-9].[0-9].[0-9]*"
 }
 ```
 ##### Maven
 ```xml
 <baseline>
-    <!-- Strategy used to find a baseline commit -->
+    <!-- Strategy to find a baseline commit -->
     <searchStrategy>SEARCH_BY_TAG</searchStrategy>
-    <!-- Only consider tags matching the given pattern (optional, '*' by default) -->
+
+    <!-- Adjust to match your tag naming scheme -->
     <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
 </baseline>
 ```
 
-#### Search by Merge Base Strategy
+#### Search by merge base
 This strategy compares the current build to the baseline based on the common ancestor (merge base) of two branches.
 
 ##### Gradle
 ```kotlin
 baseline {
-    // Strategy used to find a baseline commit
+    // Strategy to find a baseline commit
     searchStrategy = "SEARCH_BY_MERGE_BASE"
-    // A branch, tag, or commit of a baseline version to compare to the current build
+    
+    // Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
     targetRef = "main"
 }
 ```
 ##### Maven
 ```xml
 <baseline>
-    <!-- Strategy used to find a baseline commit -->
+    <!-- Strategy to find a baseline commit -->
     <searchStrategy>SEARCH_BY_MERGE_BASE</searchStrategy>
-    <!-- A branch, tag, or commit of a baseline version to compare to the current build -->
+
+    <!-- Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
     <targetRef>main</targetRef>
 </baseline>
 ```
 
-## GitHub Pull Request Report
+## GitHub Pull Request report
 
 This feature posts a report of the tested changes as a comment on a GitHub Pull Request.
-It compares the current build with the merge base build of the target branch for the pull request.
+It compares the current build with the merge base build of the target branch for the Pull Request.
 
 > *IMPORTANT!*
 This command can only be executed within a GitHub workflow and requires specific environment variables available only in a GitHub Actions job.
@@ -407,13 +459,12 @@ To execute this command, you need to provide a GitHub API token.
 Add the following properties to your Gradle build file:
 ```kotlin
 drill {
-    // Drill4j Group ID
+    // Enter appropriate parameter values
     groupId = "my-group"
-    // Drill4J Application ID
     appId = "my-application"
-    // Github configuration
+
     github {
-        // GitHub API Token
+        // Enter your GitHub Token
         token = "your-github-token-here"
     }
 }
@@ -431,15 +482,14 @@ Add the following properties to the Drill4J plugin configuration in your Maven p
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
-        <!-- Drill4J Group ID -->
+        <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
-        <!-- Drill4J Application ID -->
         <appId>my-application</appId>
-        <!-- Github configuration -->
+
         <github>
-            <!-- GitHub Token -->
+            <!-- Enter your GitHub Token -->
             <token>your-github-token-here</token>
         </github>
     </configuration>
@@ -456,10 +506,10 @@ To leave a comment on a Pull Request, execute the following Maven command:
 mvn drill:githubPullRequestReport
 ```
 
-## Gitlab Merge Request Report
+## Gitlab Merge Request report
 
 This feature posts a report of the tested changes as a comment on a GitLab Merge Request.
-It compares the current build with the merge base build of the target branch for the merge request.
+It compares the current build with the merge base build of the target branch for the Merge Request.
 
 > *IMPORTANT!*
 This command can only be executed within a GitLab CI/CD job and requires specific environment variables available only during GitLab CI/CD execution.
@@ -471,15 +521,14 @@ To execute this command, you need to provide a GitLab private token.
 Add the following properties to your Gradle build file:
 ```kotlin
 drill {
-    // Drill4j Group ID
+    // Enter appropriate parameter values
     groupId = "my-group"
-    // Drill4J Application ID
     appId = "my-application"
-    // Gitlab configuration
+    
     gitlab {
-        // Gitlab API url
-        apiUrl = "https://gitlab.com/api"
-        // Gitlab API Private Token
+        // Adjust if running on a private GitLab instance
+        apiUrl="https://gitlab.com/api/v4/"
+        // Enter your token
         privateToken = "your-gitlab-token-here"
     }
 }
@@ -497,17 +546,18 @@ Add the following properties to your Maven pom.xml file:
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
-        <!-- Drill4J Group ID -->
+        
+        <!-- Set appropriate parameter values -->
         <groupId>my-group</groupId>
-        <!-- Drill4J Application ID -->
         <appId>my-application</appId>
-        <!-- Gitlab configuration-->
+
         <gitlab>
-            <!-- Gitlab API url -->
-            <apiUrl>https://api.github.com</apiUrl>
-            <!-- Gitlab API Private Token -->
+            <!-- Adjust if running on a private GitLab instance-->
+            <apiUrl>https://gitlab.com/api/v4/</apiUrl>
+
+            <!-- Enter your personal token -->
             <privateToken>someToken</privateToken>
         </gitlab>
     </configuration>
@@ -524,25 +574,27 @@ To leave a comment on a Merge Request, execute the following Maven command:
 mvn drill:gitlabMergeRequestReport
 ```
 
-## Sending Build Information
+## Sending Git metadata to Drill4J API
 
-You can send information about your application’s build to the Drill4J Backend.
-The build information includes:
+This enables Drill4J to display additional data on build in the reports, such as:
 - Build version
 - Current commit SHA
 - Current commit message
 - Commit author
+
+It makes reports more readable and allows to easily associate reports with particular commits. 
+
+> 🚧 TODO - explain when to call in CI/CD pipeline 🚧
 
 ### Gradle
 
 Add the following parameters to your Gradle build file:
 ```kotlin
 drill {
-    // Drill4j Group ID
+    // Set appropriate parameter values
     groupId = "my-group"
-    // Drill4J Application ID
     appId = "my-application"
-    // Current build version (optional)
+    // Optional, identifies app version built from checked out commit
     buildVersion = "1.0.0"
 }
 ```
@@ -559,14 +611,16 @@ Add the following parameters to your Maven pom.xml file:
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <configuration>
-        <!-- Drill4J Group ID -->
+        
+        <!-- Set appropriate parameter values -->
         <groupId>my-group</groupId>
-        <!-- Drill4J Application ID -->
         <appId>my-application</appId>
-        <!-- Current build version (optional) -->
+
+        <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
+
     </configuration>
     <executions>
         <goals>
