@@ -825,3 +825,57 @@ To send the build information to the Drill4J backend, execute the following Mave
 ```shell
 mvn drill:sendBuildInfo
 ```
+
+## Troubleshooting
+
+### How to confirm that agents are enabled when running tests?
+
+Once loaded, the Drill4J agent prints the following ASCII logo in the Gradle/Maven console log:
+
+```log
+Task :test is modified by Drill
+      ____    ____                 _       _          _  _                _
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+     Autotest Agent (v0.23.1)
+```
+
+> *IMPORTANT!*
+Maven does not print the Drill4J logs by default, you need to add the `-X` parameter to the command line:
+```shell
+mvn test -X
+```
+
+### Tests does not appear in Drill4J after running in Maven with Java 17
+
+If you run tests in Maven with Java 17 or higher and see the following message:
+```log
+java.lang.reflect.InaccessibleObjectException: Unable to make protected final java.lang.Class java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain) throws java.lang.ClassFormatError accessible: module java.base does not "opens java.lang" to unnamed module @4659191b
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:354)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:297)
+	at java.base/java.lang.reflect.Method.checkCanSetAccessible(Method.java:199)
+	at java.base/java.lang.reflect.Method.setAccessible(Method.java:193)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.SecurityActions.setAccessible(SecurityActions.java:159)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper$JavaOther.defineClass(DefineClassHelper.java:213)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper$Java11.defineClass(DefineClassHelper.java:52)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper.toClass(DefineClassHelper.java:260)
+	at com.epam.drill.autotest.shadow.javassist.ClassPool.toClass(ClassPool.java:1240)
+	at com.epam.drill.autotest.shadow.javassist.CtClass.toClass(CtClass.java:1392)
+```
+
+You should provide `--add-opens` option to the JVM argument line in Maven Surefire Plugin:
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <argLine>@{argLine} --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+    </configuration>
+</plugin>
+```
+> *IMPORTANT!*
+Don't forget to add `@{argLine}` to keep Drill4J agents enabled.
