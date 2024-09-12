@@ -135,7 +135,7 @@ drill {
 ```
 
 > Note, that Test Agent will automatically launch for every Gradle test task.
-> If you need to disable Test Agent for specific tasks, refer to [this section](#disabling-the-test-agent)
+> If you need to disable Test Agent for specific tasks, refer to [this section](#disable-for-specific-task)
 
 #### Maven
 
@@ -166,7 +166,7 @@ To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
 ```
 
 > Note, that Test Agent will automatically launch for every Maven test goal.
-> If you need to disable Test Agent for specific goals, refer to [this section](#disabling-the-test-agent)
+> If you need to disable Test Agent for specific goals, refer to [this section](#disable-for-specific-task)
 
 ### Disable for specific task
 
@@ -313,14 +313,205 @@ enableTestAgent {
 
 Enables Drill4J to collect coverage for application classes. See the [Application Agent](/docs/agents/java-agent) reference page for more details.
 
-> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
-
 ### Set up
 Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
 
+#### Gradle
+To enable the Drill4J Application Agent to Gradle project add the following:
+```groovy
+drill {
+    // Enter appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+
+    // Specifies the java packages for Drill4J to monitor
+    // Use "/" separator for package name parts
+    packagePrefixes = "my/awesome/application"
+    // Optional, identifies app version built from checked out commit
+    buildVersion = "1.0.0"
+
+    enableAppAgent {
+        version = "0.9.1"
+    }
+}
+```
+
+> Note, that Application Agent will automatically launch for every Gradle exec task.
+If you need to disable Application Agent for specific tasks, refer to [this section](#disable-for-specific-task-1)
+
+#### Maven
+To enable the Drill4J Application Agent to Maven project add the following to pom.xml:
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>0.1.1</version>
+
+    <configuration>
+        <!-- Enter appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+
+        <!--  Specifies the java packages for Drill4J to monitor -->
+        <!-- Use "/" separator for package name parts -->
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <!-- Optional, identifies app version built from checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+
+        <testAgent>
+            <version>0.9.1</version>
+        </testAgent>
+    </configuration>
+
+    <!-- adds enableAppAgent goal -->
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAppAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+> Note, that Application Agent will automatically launch for every Maven test goal. If you need to disable Application Agent for specific goals, refer to [this section](#disable-for-specific-task-1)
+
 ### Disable for specific task
+By default, the Application Agent will launch for every Gradle task and Maven goal. To disable the Application Agent for specific tasks/goals, follow the steps below:
+
+##### Gradle
+Add the following to configuration of test task:
+```groovy
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
+
+    drill {
+        appAgent {
+            enabled = false // Disables Application agent for this test task
+        }
+    }
+}
+```
+
+##### Maven
+
+There is no way to disable Application Agent for specific Maven goal while keeping it for all others.
+
+Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Application Agent configuration:
+```xml
+<profiles>
+    <profile>
+        <!-- profile name, it is totally arbitrary -->
+        <id>profileWithAppAgent</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.epam.drill.integration</groupId>
+                    <artifactId>drill-maven-plugin</artifactId>
+                    <version>0.1.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>enableAppAgent</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+```
+
+This way Application Agent will only launch when the respective profile is launched.
 
 ### Agent files download source
+
+There are 3 ways to specify where CI/CD plugin should load agent from:
+- [Automatic download](#automatic-download-1) by version tag - the default option.
+- [Custom URL download](#custom-url-download-1) - arbitrary URL to ZIP release.
+- [Local path to ZIP release](#local-path-to-zip-release-1) - local path to ZIP release.
+
+#### Automatic download
+
+To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Application Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
+
+##### Gradle
+```kotlin
+enableAppAgent {
+    version = "0.9.1"
+}
+```
+##### Maven
+```xml
+<appAgent>
+    <version>0.9.1</version>
+</appAgent>
+```
+
+#### Custom URL download
+
+To download the Application Agent from a custom URL, set the `downloadUrl` parameter to the desired link:
+
+##### Gradle
+```kotlin
+enableAppAgent {
+    downloadUrl = "http://url_to_download_agent.zip"
+}
+```
+##### Maven
+```xml
+<appAgent>
+    <downloadUrl>http://url_to_download_agent.zip</downloadUrl>
+</appAgent>
+```
+
+#### Local path to ZIP release
+
+To use a locally available Application Agent, set the `zipPath` parameter to the path of the local zip archive:
+
+##### Gradle
+```kotlin
+enableAppAgent {
+    zipPath = "path/to/local/agent.zip"
+}
+```
+##### Maven
+```xml
+<appAgent>
+    <zipPath>path/to/local/agent.zip</zipPath>
+</appAgent>
+```
+
+### Additional parameters
+
+> 🚧 TODO - add usage scenarios 🚧
+
+##### Gradle
+```groovy
+enableAppAgent {
+    //Any additional parameters for Application Agent
+    additionalParams = mapOf(
+        "param1" to "value1",
+        "param2" to "value2"
+    )
+}
+```
+
+##### Maven
+```xml
+<appAgent>
+    <additionalParams>
+        <!-- Any additional parameters for Application Agent-->
+        <param1>value1</param1>
+        <param2>value2</param2>
+    </additionalParams>
+</appAgent>
+```
 
 ## Generating a change testing report
 
