@@ -2,8 +2,9 @@
 id: github
 title: Github Integration
 ---
-
 # Github Integration
+
+import { Image } from '@components';
 
 ## Overview
 
@@ -14,17 +15,18 @@ The change testing report provides valuable insights, including:
 - The percentage of modified code that is covered by tests
 
 The integration process typically involves the following steps:
-1. Build your application and send the build information to Drill4J.
-2. Deploy the application with the Drill4J Application Agent.
-3. Execute API tests using the Drill4J Test Agent.
-4. Submit a Drill4J Change Testing Report.
+1. [Build your application and send the build information to Drill4J](#sending-a-build-info-to-drill4j).
+2. [Deploy the application with the Drill4J Application Agent](#deploy-an-application-together-with-app-agent).
+3. [Run API tests using the Drill4J Test Agent](#running-tests-together-with-test-agent).
+4. [Submit a Drill4J Change Testing Report](#submitting-a-change-testing-report).
 
 ## Prerequisites
 
 Before proceeding, please ensure the following:
 1. Familiarity with the [Github workflow](https://docs.github.com/en/actions/writing-workflows).
 2. Your application is built using either Gradle or Maven.
-3. The [set up Drill4J CI/CD Integration plugin](../cicd-integration/cicd-integration-plugin#adding-plugin) is configured in your Gradle or Maven build file.
+3. The [Drill4J Core Services](../getting-started/local-deployment) is deployed.
+4. The [set up Drill4J CI/CD Integration plugin](../cicd-integration/cicd-integration-plugin#adding-plugin) is configured in your Gradle or Maven build file.
 
 ## Sending a build info to Drill4J
 
@@ -62,7 +64,7 @@ For additional details, please refer to the [GitHub documentation](https://docs.
   run: ./mvn drill:sendBuildInfo
 ```
 
-3. Once the build information has been successfully submitted, detailed insights will be available in the Metabase Build Dashboard.
+3. Once the build information has been successfully submitted, detailed insights will be available in the "Build - Summary" Metabase Dashboard.
 
 ## Deploy an application together with App Agent
 
@@ -102,7 +104,7 @@ For push events to protected branches, use the `github.sha` variable:
     DRILL_COMMIT_SHA: ${{ github.sha }}
 ```
 
-3. Ensure that the information about classes and methods is correctly passed to the Drill4J using the "Classes" Metabase dashboard.
+3. Ensure that the information about classes and methods is correctly passed to the Drill4J using the "Classes" Metabase Dashboard.
 
 ## Running tests together with Test Agent
 
@@ -172,6 +174,7 @@ is correctly configured in the CI/CD Integration Plugin.
 ```
 
 5. After the command is successfully executed, check the comments section of the Pull Request for the submitted report.
+<Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
 
 ### As a workflow attachment
 
@@ -212,6 +215,7 @@ For more information on setting up this command, read [documentation](../cicd-in
 ```
 
 5. After successful execution of the commands, check the attachments in the workflow job to verify that the report has been correctly uploaded.
+<Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
 
 ## Next Steps and Further Reading
 
