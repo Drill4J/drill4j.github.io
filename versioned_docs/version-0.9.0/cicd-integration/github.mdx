@@ -37,7 +37,7 @@ Such information is crucial for identifying your build in the Drill4J reports an
 > Typically, the process of submitting build information is executed as part of the build job within your CI/CD workflow.
 
 1. Ensure that the CI/CD Integration Plugin is configured for sending build information.
-For guidance, please refer to the [documentation](/cicd-integration/cicd-integration-plugin#sending-git-metadata-to-drill4j-api).
+For guidance, please refer to the [documentation](../cicd-integration/cicd-integration-plugin#sending-git-metadata-to-drill4j-api).
 
 2. If your workflow is triggered by a Pull Request (PR) event, ensure that the repository is checked out from the `head ref`.
 This can be done by specifying `ref: ${{ github.head_ref }}` in the `checkout@v4` action, as shown below:
