@@ -283,32 +283,6 @@ enableTestAgent {
 </testAgent>
 ```
 
-### Additional parameters
-
-> 🚧 TODO - add usage scenarios 🚧
-
-##### Gradle
-```groovy
-enableTestAgent {
-    //Any additional parameters for Test Agent
-    additionalParams = mapOf(
-        "param1" to "value1",
-        "param2" to "value2"
-    )
-}
-```
-
-##### Maven
-```xml
-<testAgent>
-    <additionalParams>
-        <!-- Any additional parameters for Test Agent-->
-        <param1>value1</param1>
-        <param2>value2</param2>
-    </additionalParams>
-</testAgent>
-```
-
 ## Application Agent
 
 Enables Drill4J to collect coverage for application classes. See the [Application Agent](/docs/agents/java-agent) reference page for more details.
@@ -487,38 +461,14 @@ enableAppAgent {
 </appAgent>
 ```
 
-### Additional parameters
-
-> 🚧 TODO - add usage scenarios 🚧
-
-##### Gradle
-```groovy
-enableAppAgent {
-    //Any additional parameters for Application Agent
-    additionalParams = mapOf(
-        "param1" to "value1",
-        "param2" to "value2"
-    )
-}
-```
-
-##### Maven
-```xml
-<appAgent>
-    <additionalParams>
-        <!-- Any additional parameters for Application Agent-->
-        <param1>value1</param1>
-        <param2>value2</param2>
-    </additionalParams>
-</appAgent>
-```
-
 ## Generating a change testing report
-
-> 🚧 TODO - add usage scenarios 🚧
 
 A Change Testing Report provides insights into the code changes that have been tested,
 allowing you to ensure the quality of newly introduced changes.
+
+For step-by-step integrations guide see:
+1. [GitLab integration](/docs/cicd-integration/gitlab)
+2. [GitHub integration](/docs/cicd-integration/github)
 
 ### Gradle
 
@@ -774,8 +724,6 @@ This enables Drill4J to display additional data on build in the reports, such as
 - Commit author
 
 It makes reports more readable and allows to easily associate reports with particular commits. 
-
-> 🚧 TODO - explain when to call in CI/CD pipeline 🚧
 
 ### Gradle
 
