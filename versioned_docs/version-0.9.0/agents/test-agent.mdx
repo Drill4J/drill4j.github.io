@@ -109,11 +109,13 @@ To know how to use it see the [Application Agent reference](/docs/agents/java-ag
 
 ## Agent parameters reference
 
-| Parameter         | Required | Example Value                                             | Description                                                                                                                                                                |
-|-------------------|-------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| apiUrl     | yes | `http://localhost/api`      | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
-| apiKey     | yes | `1_01cdf51ff20544ee...`                                                | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
-| groupId    | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
+| Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
+|----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiUrl               | yes      | `http://localhost/api`                   | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
+| apiKey               | yes      | `1_01cdf51ff20544ee...`                  | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
+| groupId              | yes      | `my-cool-app`                            | Unique arbitrary string identifying your application group.                                                                                                                |
+| withJsCoverage       | no       | `true`                                   | Enables collecting JS coverage by Chrome DevTools |
+| devToolsProxyAddress | no       | `http://localhost:8092`                  | URL address of [Drill4J DevToolsProxy](#)  |
 
 
 ### API key security
