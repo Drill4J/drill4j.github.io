@@ -10,6 +10,8 @@ import { Image } from '@components';
 
 This guide explains how to modify GitHub Actions workflow file to enable Change Testing reports in [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) and [workflow artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts).
 
+This is a step-by-step instruction, make sure to fulfill [prerequisites](#prerequisites) and then follow [steps for integration](#steps-for-integration)
+
 __Change Testing__ report highlights the number of __new__ and __modified__ methods detected by Drill4J, their coverage status, and identifies untested methods that may pose potential __Risks__.
 
 ### Report on Pull Requests
@@ -36,10 +38,11 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 ## Steps for integration
 
 1. [Configure Drill4J CI/CD Integration plugin](#configure-drill4j-cicd-integration-plugin)
-2. [Configure build step](#send-build-git-metadata-to-drill4j) to send Git metadata to Drill4J
+2. [Configure build step](#modify-build-step-to-send-git-metadata-to-drill4j) to send Git metadata to Drill4J
 3. [Configure deployment step](#deploy-the-app-with-drill4j-application-agent) to enable Drill4J Application Agent
 4. [Configure tests](#run-tests-with-drill4j-test-agent) to enable Drill4J Test Agent
-5. [Modify workflow file to generate Change Testing report](#generate-change-testing-report)
+5. [Generate Change Testing report on Pull request](#generate-report-on-pull-request)
+6. [Generate Change Testing report on branch push event](#generate-report-on-branch-push)
 
 ## Configure Drill4J CI/CD Integration plugin
 
@@ -64,6 +67,8 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 
 Modify build step to call __send build info__ command. It submits commit hash, author, and branch associated with build to Drill4J. It is necessary to identify application build in the Drill4J reports and dashboards.
 
+### Gradle
+
 ```yml
 jobs:
   build:
@@ -75,17 +80,53 @@ jobs:
           # Add this only for Pull Requests, see explanations below
           ref: ${{ github.head_ref }}
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       # Your build step
       - name: Build app
         run: ./gradlew clean build
   
       # Execute command to send data to Drill4J
       - name: Send build info to Drill4J
-        # Gradle
         run: ./gradlew drillSendBuildInfo
-        # Maven
-        # run: ./mvn drill:sendBuildInfo
       
+```
+
+### Maven
+
+```yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Add this only for Pull Requests, see explanations below
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      # Your build step
+      - name: Build app
+        run: mvn clean install
+  
+      # Execute command to send data to Drill4J
+      - name: Send build info to Drill4J
+        run: ./mvn drill:sendBuildInfo
 ```
 
 > The `github.head_ref` property instructs `checkout@v4` action to check out the last commit of the branch.
@@ -100,29 +141,61 @@ jobs:
 
 ## Deploy the app with Drill4J Application Agent
 
-1. Configure Application Agent
+### Option 1 - app is launched with Maven or Gradle
 
-  For cases when application __is launched as a standalone Java process__ - see the [Application Agent](/docs/agents/java-agent) reference
+1. Setup Application Agent with using [CI/CD Integration Plugin - Application Agent](/docs/cicd-integration/cicd-integration-plugin#application-agent) section
 
-  For cases when application __is launched with Maven or Gradle__ - refer to [CI/CD Integration Plugin - Application Agent](/docs/cicd-integration/cicd-integration-plugin#application-agent) section
+2. Add `DRILL_COMMIT_SHA` env varible following [the instruction below](#add-drill_commit_sha-to-env-variables)
 
-2. Set the `DRILL_COMMIT_SHA` environment variable
-  
-  Read [Considerations regarding buildVersion and commitSha](/docs/agents/java-agent#considerations-regarding-buildversion-and-commitsha) for more info
+### Option 2 - application is launched as a standalone Java process
 
-  __For Pull Request__, use the `github.event.pull_request.head.sha` variable:
+1. Add `DRILL_APPLICATION_AGENT_URL` to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository). Set its value to release .zip from <https://github.com/Drill4J/java-agent/releases> (e.g. `https://github.com/Drill4J/java-agent/releases/download/v0.9.1/agent-linuxX64-0.9.1.zip`)
+
+2. Add the following step to download agent files (above the app launch step):
+
+  ```yml
+    - name: Download Drill4J Application Agent
+      run: |
+        # Download 
+        curl -L ${{ vars.DRILL_APPLICATION_AGENT_URL }} -o agent.zip
+        # Prep folders
+        mkdir -p ./temp-agent-dir /agent
+        # Unzip
+        unzip agent.zip -d ./temp-agent-dir
+        # Move files to /agent folder
+        find temp-agent-dir -mindepth 2 -exec mv -t /agent/ {} +
+    
+    - name: Deploy the application
+      run: # your command to deploy application
+      env:
+        JAVA_TOOL_OPTIONS: -agentpath:/agent/libdrill_agent.so # libdrill_agent.so for linux, libdrill_agent.dylib for Mac, drill_agent.dll for Windows
+        # Set Application Agent parameters, see link to reference below
+        DRILL_APP_ID: # ...
+        DRILL_GROUP_ID: # ...
+        DRILL_PACKAGE_PREFIXES: # ...
+  ```
+
+  See [Agent Parameters Reference](/docs/agents/java-agent#agent-parameters-reference) for a full list of parameters
+
+3. Set `DRILL_COMMIT_SHA` env varible following [the instruction below](#add-drill_commit_sha-to-env-variables)
+
+### Add DRILL_COMMIT_SHA to env variables
+
+  __For Pull Request__, set it to the `github.event.pull_request.head.sha`:
   ```yml
     - name: Deploy the application
       run: # your command to deploy application
       env:
+        # ...
         DRILL_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
   ```
 
-  __For branch push__ event, use the `github.sha` variable:
+  __For branch push__ event, set it to `github.sha`:
   ```yml
     - name: Deploy the application
       run: # your command to deploy application
       env:
+        # ...
         DRILL_COMMIT_SHA: ${{ github.sha }}
   ```
 
@@ -130,7 +203,7 @@ jobs:
 
 ## Run tests with Drill4J Test Agent
 
-1. Configure Maven or Gradle project to use [Test Agent](/docs/cicd-integration/cicd-integration-plugin#set-up).
+1. Configure Maven or Gradle project to use [Test Agent](/docs/cicd-integration/cicd-integration-plugin#test-agent).
 
   Once configured, Test Agent is launched with tests tasks automatically.
 
@@ -144,14 +217,18 @@ jobs:
       # run: ./mvn test
   ```
 
-### Confirm Test Agent is working
+## Confirm Test Agent and App Agent are working
 
-> 🚧 TODO: move this to Test Agent reference 🚧 
+At this point, with both Application Agent and Test Agent configured, you should be able to push changes to trigger Github Action. That will launch application, execute tests and send metrics to Drill4J.
 
-Once Test Agent is configure you can see the following in Metabase dashboards:
+These metrics will be available in Metabase, make sure to read [Metabase Dashboards](/docs/getting-started/metabase) getting started page.
 
-  - Number of tests on __Build - Summary__ dashboard for the respective application version
-  - List of test names at the dedicated __Build - Test Launches__ page
+More specifically you should be able to:
+1. See app builds at [Builds](/docs/getting-started/metabase#builds-dashboard) dashboard
+2. See metrics for specific build at [Build Summary](/docs/getting-started/metabase#build-summary-dashboard) dashboard, including number of executed tests.
+3. See detailed coverage at [Code Coverage](/docs/getting-started/metabase#code-coverage-dashboard) dashboard
+
+Next step is to bring these metrics reports to Pull Request comments and branch push events.
 
 ## Generate report on Pull Request
 
@@ -173,10 +250,17 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
-      - name: Validate Gradle
-        uses: gradle/actions/wrapper-validation@v3
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Send Change Testing report
         run: ./gradlew drillGithubPullRequestReport
 ```
@@ -196,6 +280,14 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+      
       - name: Send Change Testing report
         run: ./mvn drill:githubPullRequestReport
 ```
@@ -219,16 +311,24 @@ jobs:
     needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
-      - name: Validate Gradle
-        uses: gradle/actions/wrapper-validation@v3
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Generate Drill4J Change Testing Report
         run: ./gradlew drillGenerateChangeTestingReport
+
       - name: Attach report
         uses: actions/upload-artifact@v4
         with:
@@ -250,8 +350,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
       - name: Generate Drill4J Change Testing Report
         run: ./mvn drill:generateChangeTestingReport
+
       - name: Attach report
         uses: actions/upload-artifact@v4
         with:
