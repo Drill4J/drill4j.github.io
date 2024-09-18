@@ -5,6 +5,161 @@ title: Test Agent
 
 # Test Agent
 
-Drill4J Test Agent for Java enables integration with testing frameworks.
+The Drill4J Test Agent allows you to map tests to code coverage and vice versa.
+Key Features:
+- Test context propagation
+- Control over test execution
 
-> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
+General integration steps are:
+
+1. [Download Drill4J agent files](#how-to-download)
+2. [Set path to agent when running tests](#how-to-set-path-to-agent)
+3. [Set agent parameters](#how-to-set-agent-parameters)
+
+Due to the diverse tools used in software development — such as CI/CD providers, deployment methods, testing stages — the exact process will depend on the environment.
+
+## How to download
+
+### Download agent files manually
+
+The most basic way to get agent files is to download release .zip manually.
+
+1. Download release appropriate for your platform at  <https://github.com/Drill4J/autotest-agent/releases/tag/v0.23.1>.
+
+    > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
+
+2. Unzip the file. Rename unzipped folder to `agent`.
+
+3. Inside you'll find the following files:
+
+    -  `libdrill_agent.so` (on Windows - `.dll`, on Mac - `.dylib`)
+    - `drill-runtime.jar`
+    - `drill.properties`
+
+Refer to [next section](/docs/agents/autotest-agent#how-to-set-path-to-agent) for further steps.
+
+### Use Drill4J CI/CD Integration Plugin for Maven and Gradle
+
+> __Use cases__: when application (or certain classes of application) is launched with Maven or Gradle. That's most often the case with __Unit tests__.
+
+Drill4J CI/CD Integration Plugin __automatically downloads agent files__ and __passes required parameters to Java when running tests__.
+
+Because of that, the next sections of this page are irrelevant in this scenario. Instead, please refer to [CI/CD Integration Plugin](/docs/cicd-integration/cicd-integration-plugin) page for more info.
+
+## How to set path to agent when running tests
+
+Test agent use [-agentpath JVM command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting) to loading when starting java process.
+```shell
+  # Linux
+java -agentpath:/agent/libdrill_agent.so
+  # Windows
+java -agentpath:/agent/drill_agent.dll
+  # macOS
+java -agentpath:/agent/libdrill_agent.dylib
+```
+
+
+In order to pass `-agentpath` command-line argument when running tests, you can configure the [argLine for Maven](https://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html#argLine)
+or [jvmArgs for Gradle](https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html#org.gradle.api.tasks.testing.Test:jvmArgs) parameters.
+
+There are two way to pass `-agentpath` parameter:
+- In command line for running tests
+- Inside the build configuration file
+
+### Pass `-agentpath` in command line for running tests
+
+##### Gradle
+Add `-DjvmArgs` parameter to gradle command line:
+```shell
+./gradlew test -DjvmArgs=-agentpath:/path/to/agent
+```
+
+##### Maven
+Add `-DargLine` parameter to Maven command line:
+```shell
+./mvn test -DargLine=-agentpath:/path/to/agent
+```
+
+### Set `-agentpath` in the build configuration file
+
+##### Gradle
+Add `jvmArgs` to Gradle test configuration:
+```groovy
+test {
+    jvmArgs = '-agentpath:/path/to/agent'
+}
+```
+
+##### Maven
+Add `argLine` to `maven-surefire-plugin` in pom.xml:
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <argLine>-agentpath:/path/to/agent</argLine>
+    </configuration>
+</plugin>
+```
+
+## How to set agent parameters
+
+Drill4J Test Agent has the same ways to set agent parameters that Application Agent.
+To know how to use it see the [Application Agent reference](/docs/agents/java-agent#how-to-set-agent-parameters).
+
+## Agent parameters reference
+
+| Parameter         | Required | Example Value                                             | Description                                                                                                                                                                |
+|-------------------|-------------|-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiUrl     | yes | `http://localhost/api`      | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
+| apiKey     | yes | `1_01cdf51ff20544ee...`                                                | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
+| groupId    | yes | `my-cool-app`                                              | Unique arbitrary string identifying your application group.                                                                                                                |
+
+
+### API key security
+
+❗ Please avoid hardcoding __apiKey__ and exposing it in plain text. Instead, use environment variables. ❗
+
+Bad example:
+```shell
+  -agentpath:/agent/libdrill_agent.so=drillApiKey=123
+```
+
+Good example:
+```shell
+  # Set DRILL_API_KEY variable prior to application launch
+  DRILL_API_KEY=123
+  # exact syntax for env variables will depend on your environment
+```
+
+## Troubleshooting
+
+### How to confirm agent is loaded
+
+Once loaded Drill4J agent prints the following ASCII logo:
+
+```log
+  ____    ____                 _       _          _  _                _
+  |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+/| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+  |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+  |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+(__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+Test Agent (v0.23.1)
+```
+It indicates that you have configured agent path correctly and Java picked up and loaded agent files.
+
+### Cannot load the agent because some agent parameters are set incorrectly
+
+If below Drill4J ASCII logo you see the following message:
+```
+ERROR [com.epam.drill.agent.configuration.ValidatedParametersProvider] Cannot load the agent because some agent parameters are set incorrectly. Please
+check the following parameters:
+```
+
+It indicates that you are missing some required parameters. Refer to the [agent parameters](#agent-parameters-reference) section.
+
+## Limitations and Known Issues
+
+1. While __x64__ Macs are supported, __ARM__ Macs (M-series Apple Silicon CPUs) are not yet supported; work is in progress.
