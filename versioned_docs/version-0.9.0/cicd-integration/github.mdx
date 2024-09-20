@@ -23,7 +23,7 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 <Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
 
 ### Report on branch push
-1. Identifies changes in a branch between the __latest commit__ and the configured [__baseline commit__](#configure-baseline-strategy). Generally, the __baseline commit__ is a tagged commit that follows the `tagPattern` defined in the [configuration file](#generate-report-on-branch-push).
+1. Identifies changes in a branch between the __latest commit__ and the configured __baseline commit__. Generally, the __baseline commit__ is a tagged commit that follows the `tagPattern` defined in the [configuration file](#generate-report-on-branch-push).
 2. Best used in long-living branches such as `main` and `development`
 3. Attached to [artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts) of workflow triggered [on branch push event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#push)
 
@@ -41,8 +41,9 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 2. [Configure build step](#modify-build-step-to-send-git-metadata-to-drill4j) to send Git metadata to Drill4J
 3. [Configure deployment step](#deploy-the-app-with-drill4j-application-agent) to enable Drill4J Application Agent
 4. [Configure tests](#run-tests-with-drill4j-test-agent) to enable Drill4J Test Agent
-5. [Generate Change Testing report on Pull request](#generate-report-on-pull-request)
-6. [Generate Change Testing report on branch push event](#generate-report-on-branch-push)
+5. [Push initial data to Drill4J](#push-initial-data-to-drill4j)
+6. [Generate Change Testing report on Pull request](#generate-report-on-pull-request)
+7. [Generate Change Testing report on branch push event](#generate-report-on-branch-push)
 
 ## Configure Drill4J CI/CD Integration plugin
 
@@ -219,7 +220,7 @@ jobs:
       # run: ./mvn test
   ```
 
-## Push Initial Data to Drill4J
+## Push initial data to Drill4J
 
 By now, both the Application Agent and Test Agent should be configured.
 
