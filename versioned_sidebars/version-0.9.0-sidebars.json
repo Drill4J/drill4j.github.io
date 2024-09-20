@@ -43,6 +43,11 @@
           "type": "doc",
           "label": "GitLab",
           "id": "version-0.9.0/cicd-integration/gitlab"
+        },
+        {
+          "type": "doc",
+          "label": "Tomcat",
+          "id": "version-0.9.0/guides/tomcat"
         }
       ]
     },

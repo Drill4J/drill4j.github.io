@@ -1,0 +1,49 @@
+# Tomcat integration
+
+There is a known issue with Tomcat and the Application Agent:
+
+1. Tomcat has a slight delay upon startup before it loads application files.
+2. The Application Agent scans classes immediately after the Java process starts and the agent is loaded.
+3. Consequently, the Application Agent's scanning algorithm may complete before the application classes are loaded.
+
+Follow the instructions below to work around this issue:
+
+1. __Deploy your application to Tomcat.__ Upon deployment, its files should be available in the `tomcat/webapps` directory.
+
+2. __Place the Application Agent files__ in the `tomcat/bin/agent` directory.
+
+3. __Set the `CATALINA_OPTS` environment variable__ for Tomcat to use the agent files:
+
+    __Windows__
+
+    ```cmd
+    set "CATALINA_OPTS=-agentpath:agent/drill_agent.dll"
+    ```
+
+    __Linux__
+
+    ```bash
+    export CATALINA_OPTS=-agentpath:agent/libdrill_agent.so
+    ```
+
+    Alternatively, you can set this directly in Tomcat's launch script (Windows: `bin/catalina.bat`, Linux: `bin/catalina.sh`).
+
+4. __Add the following setting__ to the `drill.properties` file:
+   ```properties
+   # Adjust to match the actual path to your JAR/WAR/EAR file:
+   scanClassPath=C:\java\tomcat-10\webapps\helloworld.war
+
+   # Delays Application Agent's class scanning by 5 seconds from Tomcat launch.
+   classScanDelay=5000
+   ```
+
+5. __Restart Tomcat and wait.__ Once the `classScanDelay` has elapsed, the Application Agent should detect your application classes and send data to Drill4J.
+
+6. __Check Metabase__ to confirm it has information on the application classes.
+
+## Troubleshooting
+
+If your application classes aren't showing up in Metabase after Tomcat is restarted and your application is loaded:
+
+1. Double-check that you specified the correct `scanClassPath` for your application.
+2. Try a larger `classScanDelay` value (e.g., `classScanDelay=10000` for 10 seconds).
