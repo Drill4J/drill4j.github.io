@@ -1,8 +1,8 @@
 ---
 id: github
-title: Github Integration
+title: GitHub Integration
 ---
-# Github Integration
+# GitHub Integration
 
 import { Image } from '@components';
 
@@ -31,7 +31,7 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 
 ## Prerequisites
 
-1. Familiarity with the [Github Actions](https://docs.github.com/en/actions/writing-workflows)
+1. Familiarity with the [GitHub Actions](https://docs.github.com/en/actions/writing-workflows)
 2. Familiarity with [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
 3. [Drill4J core services](/docs/getting-started/local-deployment) deployed.
 
@@ -52,7 +52,7 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 
 3. Create `DRILL_API_URL` variable in [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository). Set its value to Drill4J Admin Backend service API address (e.g. `https://drill4j.my-host.foo/api`). Remember to add `/api` at the end
 
-4. Create [a personal Github access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+4. Create [a personal GitHub access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
     - Select `repo` scope - that is necessary to post comments on Pull Requests. 
     - Save it to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) with the name `DRILL_BOT_GITHUB_TOKEN`. Reports will be posted in comments from the corresponding user
 
@@ -209,7 +209,7 @@ jobs:
 
   Once configured, Test Agent is launched with tests tasks automatically.
 
-2. Make sure your tests are launched in Github Action workflow. Usually it looks something like this:
+2. Make sure your tests are launched in GitHub Action workflow. Usually it looks something like this:
 
   ```yml
     - name: Run tests
@@ -221,7 +221,7 @@ jobs:
 
 ## Confirm Test Agent and App Agent are working
 
-At this point, with both Application Agent and Test Agent configured, you should be able to push changes to trigger Github Action. That will launch application, execute tests and send metrics to Drill4J.
+At this point, with both Application Agent and Test Agent configured, you should be able to push changes to trigger GitHub Action. That will launch application, execute tests and send metrics to Drill4J.
 
 These metrics will be available in Metabase, make sure to read [Metabase Dashboards](/docs/getting-started/metabase) getting started page.
 
