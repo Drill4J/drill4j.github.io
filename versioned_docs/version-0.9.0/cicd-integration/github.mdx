@@ -15,7 +15,7 @@ This is a step-by-step instruction, make sure to fulfill [prerequisites](#prereq
 __Change Testing__ report highlights the number of __new__ and __modified__ methods detected by Drill4J, their coverage status, and identifies untested methods that may pose potential __Risks__.
 
 ### Report on Pull Requests
-1. Identifies changes between __source__ and __target__ branch
+1. Detects changes between the __source__ and __target__ branches by comparing the latest commit in the __source__ branch with the [merge base](https://git-scm.com/docs/git-merge-base) commit in the __target__ branch.
 2. Displays metrics on how thoroughly __changes__ are tested.
 3. Handy for `feature/*`, `fix/*` branches and other shorter-lived branches
 4. Attached to [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) as comments
@@ -23,9 +23,9 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 <Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
 
 ### Report on branch push
-1. Identifies changes between two commits in __a specific branch__ by comparing current commit with some commit in the past (see [Baseline Strategy](/docs/cicd-integration/cicd-integration-plugin#baseline-strategy))
-3. Best used in long-living branches such as `main` and `development`
-4. Attached to [artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts) of workflow triggered [on branch push event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#push)
+1. Identifies changes in a branch between the __latest commit__ and the configured [__baseline commit__](#configure-baseline-strategy). Generally, the __baseline commit__ is a tagged commit that follows the `tagPattern` defined in the [configuration file](#generate-report-on-branch-push).
+2. Best used in long-living branches such as `main` and `development`
+3. Attached to [artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts) of workflow triggered [on branch push event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#push)
 
 <Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
 
@@ -219,22 +219,23 @@ jobs:
       # run: ./mvn test
   ```
 
-## Confirm Test Agent and App Agent are working
+## Push Initial Data to Drill4J
 
-At this point, with both Application Agent and Test Agent configured, you should be able to push changes to trigger GitHub Action. That will launch application, execute tests and send metrics to Drill4J.
+By now, both the Application Agent and Test Agent should be configured.
 
-These metrics will be available in Metabase, make sure to read [Metabase Dashboards](/docs/getting-started/metabase) getting started page.
+As the name suggests, the Change Testing report identifies changes, so the first step is to push data to Drill4J to establish a baseline for future comparisons. Ideally, this should be an application version built from your primary branch. We'll call it `main`, but the branch name doesn't matter — it could be `develop` or any other long-living branch.
 
-More specifically you should be able to:
-1. See app builds at [Builds](/docs/getting-started/metabase#builds-dashboard) dashboard
-2. See metrics for specific build at [Build Summary](/docs/getting-started/metabase#build-summary-dashboard) dashboard, including number of executed tests.
-3. See detailed coverage at [Code Coverage](/docs/getting-started/metabase#code-coverage-dashboard) dashboard
+1. Push to the `main` branch to trigger the GitHub Action workflow to launch the application.
+2. Wait for the workflow to complete.
+3. Check Metabase to verify that information about the new application build is available.
 
-Next step is to bring these metrics reports to Pull Request comments and branch push events.
 
 ## Generate report on Pull Request
 
-Add additional step to your workflow file:
+Next, you need to configure the command to generate reports on Pull Requests.
+
+1. Add an additional step to your workflow file using either the Gradle or Maven configuration provided.
+2. Push the changes and follow [the instructions](#confirm-pr-report-is-working) to verify that the reports are being generated.
 
 ### Gradle
 
@@ -294,14 +295,74 @@ jobs:
         run: ./mvn drill:githubPullRequestReport
 ```
 
-### Confirm its working
+### Confirm PR Report is Working
 
-Open pull request and wait for workflow to complete. Comments section of the Pull Request should have new comment with the report.
+Now it's time to create a new branch from the `main` branch.
+
+1. Checkout a new branch (e.g., `feature/xyz`).
+2. Make some changes to your application code.
+3. Push the branch and open a Pull Request from `feature/xyz` to `main`.
+4. Wait for the workflow to complete.
+
+The comments section of the Pull Request should include a new comment with the report.
+
 <Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
 
 ## Generate report on Branch push
 
-Add additional step to your workflow file:
+In addition to reports on Pull Requests, it’s useful to have reports on individual branches. These reports are attached as workflow artifacts. To configure them:
+
+1. Add the `baseline` section to CI/CD integration plugin configuration section:
+
+  __Gradle__
+  
+  ```kotlin
+    drill {
+      groupId = "my-group"
+      appId= "my-app"
+      // ... and other agent parameters ...
+
+      // new section
+      baseline {
+          searchStrategy = "SEARCH_BY_TAG"
+
+          // Adjust to match your tag naming scheme
+          tagPattern = "v[0-9].[0-9].[0-9]*"
+      }
+    }
+  ```
+  
+  __Maven__
+
+  ```xml
+    <plugin>
+      <groupId>com.epam.drill.integration</groupId>
+      <artifactId>drill-maven-plugin</artifactId>
+      <version>0.1.1</version>
+      <configuration>
+          <groupId>my-group</groupId>
+          <appId>my-application</appId>
+          <!-- ... and other agent parameters ... -->
+
+          <!-- New section -->
+          <baseline>
+              <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+
+              <!-- Adjust to match your tag naming scheme -->
+              <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
+          </baseline>
+      </configuration>
+      <executions>
+          <execution>
+              <goals>
+                  <goal>generateChangeTestingReport</goal>
+              </goals>
+          </execution>
+      </executions>
+    </plugin>
+  ```
+
+2. Add additional step to your GitHub workflow file:
 
 ### Gradle
 ```yml
