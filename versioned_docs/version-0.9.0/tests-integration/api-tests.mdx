@@ -5,6 +5,9 @@ title: API Tests
 
 # API Tests
 
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+
 This page walks you through Drill4J integration for Java-based API tests.
 It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_
 
@@ -25,32 +28,43 @@ The Drill4J CI/CD integration plugin allows you to run API tests together with t
 Add following changes to your Gradle/Maven project with API tests build file to install the Drill4J plugin:
 
 ##### Gradle
-```kotlin
+<Codeblock language="kotlin">
+{`
 plugins {
-    id("com.epam.drill.integration.cicd") version "0.1.1"
+    id("com.epam.drill.integration.cicd") version "${versions.cicdPlugin}"
 }
-```
+`}
+</Codeblock>
+
 
 ##### Maven
-```xml
-<builds>
+
+<Codeblock language="xml">
+{`
+<build>
     <plugins>
         <plugin>
             <groupId>com.epam.drill.integration</groupId>
             <artifactId>drill-maven-plugin</artifactId>
-            <version>0.1.1</version>
+            <version>${versions.cicdPlugin}</version>
+            <configuration>
+            </configuration>
         </plugin>
-    </plugins>
+   </plugins>
 </build>
-```
+`}
+</Codeblock>
 
 ## Enable Test Agent
 
 To enable the Test Agent set the plugin configuration:
 
 ##### Gradle
+
 Add `drill` section into the bottom of the Gradle build file:
-```kotlin
+
+<Codeblock language="groovy">
+{`
 drill {
     // Set the Drill4J API URL
     // or set DRILL_API_URL env variable
@@ -58,37 +72,34 @@ drill {
     // Set the Drill4J API Key
     // or set DRILL_API_KEY env variable
     drillApiKey = "1_01cdf51ff20544ee..."
-
     // Set the Drill4J Group ID
     groupId = "my-group"
-
     enableTestAgent {
-        version = "0.23.1"
+        version = "${versions.testAgent}"
     }
 }
-```
+`}
+</Codeblock>
 
 ##### Maven
 Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Maven pom.xml file:
-```xml
+<Codeblock language="xml">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
+    <version>${versions.cicdPlugin}</version>
     <configuration>
         <!-- Set the Drill4J API URL -->
         <!-- or set DRILL_API_URL env variable -->
         <apiUrl>http://localhost:8090/api</apiUrl>
-
         <!-- Set the Drill4J API Key -->
         <!-- or set DRILL_API_KEY env variable -->
         <apiKey>1_01cdf51ff20544ee...</apiKey>
-
         <!-- Set the Drill4J Group ID -->
         <groupId>my-group</groupId>
-        
         <testAgent>
-            <version>0.23.1</version>
+            <version>${versions.testAgent}</version>
         </testAgent>
     </configuration>
     <executions>
@@ -99,7 +110,8 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         </execution>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 ## Run API Tests
 

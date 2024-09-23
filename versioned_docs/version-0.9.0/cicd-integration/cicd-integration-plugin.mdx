@@ -5,6 +5,9 @@ title: CI/CD Integration Plugin
 
 #  CI/CD Integration Plugin
 
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+
 ## Overview
 
 The CI/CD integration plugin offers a wide range of capabilities and is available for both Gradle and Maven.
@@ -43,11 +46,13 @@ This section describes how to add CI/CD integration plugin to your project.
 
 1. Add the following to Gradle build file `plugins` section:
 
-```kotlin
+<Codeblock language="kotlin">
+{`
 plugins {
-    id("com.epam.drill.integration.cicd") version "0.1.1"
+    id("com.epam.drill.integration.cicd") version "${versions.cicdPlugin}"
 }
-```
+`}
+</Codeblock>
 
 2. Set Drill4J API address and API key
     - __Option 1__ (recommended): using environment variables.
@@ -70,20 +75,22 @@ plugins {
 
 1. Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
 
-```xml
+<Codeblock language="xml">
+{`
 <build>
     <plugins>
         <plugin>
             <groupId>com.epam.drill.integration</groupId>
             <artifactId>drill-maven-plugin</artifactId>
-            <version>0.1.1</version>
+            <version>${versions.cicdPlugin}</version>
             <configuration>
             
             </configuration>
         </plugin>
    </plugins>
 </build>
-```
+`}
+</Codeblock>
 
 2. Set Drill4J API address and API key
     - __Option 1__ (recommended): using environment variables.
@@ -93,24 +100,25 @@ plugins {
         DRILL_API_KEY="your_api_key_here"
         ```
     - __Option 2__ (not recommended): using Maven configuration file.
-        ```xml
+        
+        <Codeblock language="xml">
+        {`
         <build>
             <plugins>
                 <plugin>
                     <groupId>com.epam.drill.integration</groupId>
                     <artifactId>drill-maven-plugin</artifactId>
-                    <version>0.1.1</version>
-
+                    <version>${versions.cicdPlugin}</version>
                     <configuration>
                         <!-- Set API url and API key -->
                         <apiUrl>http://localhost:8090/api</apiUrl>
                         <apiKey>your_api_key_here</apiKey>
                     </configuration>
-
                 </plugin>
             </plugins>
         </build>
-        ```
+        `}
+        </Codeblock>
 
 ## Test Agent
 
@@ -123,16 +131,17 @@ Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
 #### Gradle
 
 To enable the Drill4J Test Agent to Gradle project add the following:
-```kotlin
+<Codeblock language="kotlin">
+{`
 drill {
     // groupId is a required parameter to run test agent
     groupId = "my-group"
-
     enableTestAgent {
-        version = "0.23.1"
+        version = ${versions.testAgent}
     }
 }
-```
+`}
+</Codeblock>
 
 > Note, that Test Agent will automatically launch for every Gradle test task.
 > If you need to disable Test Agent for specific tasks, refer to [this section](#disable-for-specific-task)
@@ -140,20 +149,19 @@ drill {
 #### Maven
 
 To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
-```xml
+<Codeblock language="xml">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
-    
+    <version>${versions.cicdPlugin}</version>
     <configuration>
         <!-- groupId is a required parameter to run test agent -->
         <groupId>my-group</groupId>
         <testAgent>
-            <version>0.23.1</version>
+            <version>${versions.testAgent}</version>
         </testAgent>
     </configuration>
-
     <!-- adds enableTestAgent goal -->
     <executions>
         <execution>
@@ -163,7 +171,8 @@ To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
         </execution>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 > Note, that Test Agent will automatically launch for every Maven test goal.
 > If you need to disable Test Agent for specific goals, refer to [this section](#disable-for-specific-task)
@@ -195,7 +204,8 @@ There is no way to disable Test Agent for specific Maven goal while keeping it f
 
 Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Test Agent configuration:
 
-```xml
+<Codeblock language="xml">
+{`
 <profiles>
     <profile>
         <!-- profile name, it is totally arbitrary -->
@@ -208,7 +218,7 @@ Instead you can create dedicated Maven profile for both CI/CD Integration Plugin
                 <plugin>
                     <groupId>com.epam.drill.integration</groupId>
                     <artifactId>drill-maven-plugin</artifactId>
-                    <version>0.1.1</version>
+                    <version>${versions.cicdPlugin}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -221,7 +231,8 @@ Instead you can create dedicated Maven profile for both CI/CD Integration Plugin
         </build>
     </profile>
 </profiles>
-```
+`}
+</Codeblock>
 
 This way Test Agent will only launch when the respective profile is launched.
 
@@ -237,17 +248,23 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Test Agent GitHub repository](https://github.com/Drill4J/autotest-agent/releases) releases page.
 
 ##### Gradle
-```kotlin
+<Codeblock language="kotlin">
+{`
 enableTestAgent {
-    version = "0.23.1"
+    version = "${versions.cicdPlugin}"
 }
-```
+`}
+</Codeblock>
+
 ##### Maven
-```xml
+
+<Codeblock language="xml">
+{`
 <testAgent>
-    <version>0.23.1</version>
+    <version>${versions.cicdPlugin}</version>
 </testAgent>
-```
+`}
+</Codeblock>
 
 #### Custom URL download
 
@@ -292,51 +309,48 @@ Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
 
 #### Gradle
 To enable the Drill4J Application Agent to Gradle project add the following:
-```groovy
+<Codeblock language="groovy">
+{`
 drill {
     // Enter appropriate parameter values
     groupId = "my-group"
     appId = "my-application"
-
     // Specifies the java packages for Drill4J to monitor
     // Use "/" separator for package name parts
     packagePrefixes = "my/awesome/application"
     // Optional, identifies app version built from checked out commit
     buildVersion = "1.0.0"
-
     enableAppAgent {
-        version = "0.9.1"
+        version = "${versions.applicationAgent}"
     }
 }
-```
+`}
+</Codeblock>
 
 > Note, that Application Agent will automatically launch for every Gradle exec task.
 If you need to disable Application Agent for specific tasks, refer to [this section](#disable-for-specific-task-1)
 
 #### Maven
 To enable the Drill4J Application Agent to Maven project add the following to pom.xml:
-```xml
+<Codeblock language="xml">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
-
+    <version>${versions.cicdPlugin}</version>
     <configuration>
         <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-
         <!--  Specifies the java packages for Drill4J to monitor -->
         <!-- Use "/" separator for package name parts -->
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-
-        <testAgent>
-            <version>0.9.1</version>
-        </testAgent>
+        <appAgent>
+            <version>${versions.applicationAgent}</version>
+        </appAgent>
     </configuration>
-
     <!-- adds enableAppAgent goal -->
     <executions>
         <execution>
@@ -346,7 +360,8 @@ To enable the Drill4J Application Agent to Maven project add the following to po
         </execution>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 > Note, that Application Agent will automatically launch for every Maven test goal. If you need to disable Application Agent for specific goals, refer to [this section](#disable-for-specific-task-1)
 
@@ -373,7 +388,8 @@ test {
 There is no way to disable Application Agent for specific Maven goal while keeping it for all others.
 
 Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Application Agent configuration:
-```xml
+<Codeblock language="">
+{`
 <profiles>
     <profile>
         <!-- profile name, it is totally arbitrary -->
@@ -386,7 +402,7 @@ Instead you can create dedicated Maven profile for both CI/CD Integration Plugin
                 <plugin>
                     <groupId>com.epam.drill.integration</groupId>
                     <artifactId>drill-maven-plugin</artifactId>
-                    <version>0.1.1</version>
+                    <version>${versions.cicdPlugin}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -399,7 +415,8 @@ Instead you can create dedicated Maven profile for both CI/CD Integration Plugin
         </build>
     </profile>
 </profiles>
-```
+`}
+</Codeblock>
 
 This way Application Agent will only launch when the respective profile is launched.
 
@@ -415,17 +432,22 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Application Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
 
 ##### Gradle
-```kotlin
+<Codeblock language="kotlin">
+{`
 enableAppAgent {
-    version = "0.9.1"
+    version = "${versions.applicationAgent}"
 }
-```
+`}
+</Codeblock>
+
 ##### Maven
-```xml
+<Codeblock language="xml">
+{`
 <appAgent>
-    <version>0.9.1</version>
+    <version>${versions.applicationAgent}</version>
 </appAgent>
-```
+`}
+</Codeblock>
 
 #### Custom URL download
 
@@ -495,16 +517,16 @@ The report will be saved in the `/build/drill-reports/` directory.
 ### Maven
 
 Add the following properties to your Maven pom.xml file:
-```xml
+<Codeblock language="">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
+    <version>${versions.cicdPlugin}</version>
     <configuration>
         <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-
         <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
         <baseline>
             <searchStrategy>SEARCH_BY_TAG</searchStrategy>
@@ -518,7 +540,8 @@ Add the following properties to your Maven pom.xml file:
         </execution>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 To generate the Change Testing Report, execute the following Maven command:
 ```shell
@@ -619,16 +642,16 @@ To leave a comment on a Pull Request, execute the following Gradle command:
 ### Maven
 
 Add the following properties to the Drill4J plugin configuration in your Maven pom.xml file:
-```xml
+<Codeblock language="xml">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
+    <version>${versions.cicdPlugin}</version>
     <configuration>
         <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-
         <github>
             <!-- Enter your GitHub Token -->
             <token>your-github-token-here</token>
@@ -640,7 +663,8 @@ Add the following properties to the Drill4J plugin configuration in your Maven p
        </goals>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 To leave a comment on a Pull Request, execute the following Maven command:
 ```shell
@@ -683,21 +707,19 @@ To post a comment on a Merge Request, execute the following Gradle command:
 ### Maven
 
 Add the following properties to your Maven pom.xml file:
-```xml
+<Codeblock language="">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
+    <version>${versions.cicdPlugin}</version>
     <configuration>
-        
         <!-- Set appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-
         <gitlab>
             <!-- Adjust if running on a private GitLab instance-->
             <apiUrl>https://gitlab.com/api/v4/</apiUrl>
-
             <!-- Enter your personal token -->
             <privateToken>someToken</privateToken>
         </gitlab>
@@ -708,7 +730,8 @@ Add the following properties to your Maven pom.xml file:
         </goals>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 To leave a comment on a Merge Request, execute the following Maven command:
 ```shell
@@ -746,20 +769,18 @@ To send the build information to the Drill4J backend, execute the following Grad
 ### Maven
 
 Add the following parameters to your Maven pom.xml file:
-```xml
+<Codeblock language="xml">
+{`
 <plugin>
     <groupId>com.epam.drill.integration</groupId>
     <artifactId>drill-maven-plugin</artifactId>
-    <version>0.1.1</version>
+    <version>${versions.cicdPlugin}</version>
     <configuration>
-        
         <!-- Set appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-
         <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-
     </configuration>
     <executions>
         <goals>
@@ -767,7 +788,8 @@ Add the following parameters to your Maven pom.xml file:
         </goals>
     </executions>
 </plugin>
-```
+`}
+</Codeblock>
 
 To send the build information to the Drill4J backend, execute the following Maven command
 ```shell

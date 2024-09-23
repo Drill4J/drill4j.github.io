@@ -14,3 +14,4 @@ export { TOC } from './TOC';
 export { SearchBar } from './SearchBar';
 export { NoIndex } from './no-index-page';
 export { MermaidComponent } from './mermaid';
+export { Codeblock } from './codeblock';
