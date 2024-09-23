@@ -5,6 +5,8 @@ title: GitHub Integration
 # GitHub Integration
 
 import { Image } from '@components';
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
 
 ## Overview
 
@@ -152,7 +154,15 @@ jobs:
 
 ### Option 2 - application is launched as a standalone Java process
 
-1. Add `DRILL_APPLICATION_AGENT_URL` to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository). Set its value to release .zip from <https://github.com/Drill4J/java-agent/releases> (e.g. `https://github.com/Drill4J/java-agent/releases/download/v0.9.1/agent-linuxX64-0.9.1.zip`)
+1. Add `DRILL_APPLICATION_AGENT_URL` to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
+
+  Set its value to URL of release's .zip file from <https://github.com/Drill4J/java-agent/releases>
+
+  For example:
+
+  <a href={`https://github.com/Drill4J/java-agent/releases/download/v${versions.applicationAgent}/agent-linuxX64-${versions.applicationAgent}.zip
+  `}> {`https://github.com/Drill4J/java-agent/releases/download/v${versions.applicationAgent}/agent-linuxX64-${versions.applicationAgent}.zip`} </a>
+
 
 2. Add the following step to download agent files (above the app launch step):
 
@@ -334,20 +344,19 @@ In addition to reports on Pull Requests, it’s useful to have reports on indivi
   
   __Maven__
 
-  ```xml
+  <Codeblock language="xml">
+  {`
     <plugin>
       <groupId>com.epam.drill.integration</groupId>
       <artifactId>drill-maven-plugin</artifactId>
-      <version>0.1.1</version>
+      <version>${versions.cicdPlugin}</version>
       <configuration>
           <groupId>my-group</groupId>
           <appId>my-application</appId>
           <!-- ... and other agent parameters ... -->
-
           <!-- New section -->
           <baseline>
               <searchStrategy>SEARCH_BY_TAG</searchStrategy>
-
               <!-- Adjust to match your tag naming scheme -->
               <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
           </baseline>
@@ -360,7 +369,8 @@ In addition to reports on Pull Requests, it’s useful to have reports on indivi
           </execution>
       </executions>
     </plugin>
-  ```
+  `}
+  </Codeblock>
 
 2. Add additional step to your GitHub workflow file:
 
