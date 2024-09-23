@@ -9,7 +9,7 @@ Node.js 16.17.0
 ## Installation
 
 ```console
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## Local Development
