@@ -1,0 +1,88 @@
+# Tomcat integration
+
+For general reference, follow the [Application Agent](/docs/agents/java-agent) page.
+
+This page describes a workaround for a known issue with Tomcat support:
+
+1. Tomcat has a slight delay upon startup before it loads application files.
+2. The Application Agent scans classes immediately after the Java process starts and the agent is loaded.
+3. As a result, the Application Agent's scanning algorithm may finish before the application classes are fully loaded.
+
+There are two ways to work around this issue, described below.
+
+First, proceed with the common step of supplying the agent files to Tomcat.
+
+## Supply agent files to Tomcat
+
+1. __Deploy your application to Tomcat.__ Upon deployment, its files should be available in the `tomcat/webapps` directory.
+
+2. __Place the Application Agent files__ in the `tomcat/bin/agent` directory.
+
+3. __Set the `CATALINA_OPTS` environment variable__ for Tomcat to use the agent files:
+
+    __Windows__
+
+    ```cmd
+    set "CATALINA_OPTS=-agentpath:agent\drill_agent.dll"
+    ```
+
+    __Linux__
+
+    ```bash
+    export CATALINA_OPTS=-agentpath:agent/libdrill_agent.so
+    ```
+
+    Alternatively, you can set this directly in Tomcat's launch script (Windows: `bin/catalina.bat`, Linux: `bin/catalina.sh`).
+
+Now you have two options to ensure the Application Agent successfully locates the application classes:
+
+## Option 1 - Specify path to application archive
+
+Specify the `scanClassPath` parameter to point to your application archive in Tomcat's directory.
+
+You can set this in the `drill.properties` file, which comes with the Application Agent files:
+
+```properties
+# Adjust to match the actual path to your JAR or WAR file:
+scanClassPath=../webapps/my-app.war
+
+# You can specify multiple paths using the ";" delimiter
+# scanClassPath=../webapps/my-app.war;../webapps/other-app.war
+
+# This example uses relative paths, assuming Tomcat is launched
+# with /tomcat/bin/catalina.bat (or .sh) script
+# but absolute paths work too
+# scanClassPath=C:/java/tomcat-10/webapps/helloworld.war
+```
+  
+Or set the `DRILL_SCAN_CLASS_PATH` environment variable, following the same rules
+
+5. __Restart Tomcat and wait.__ The Application Agent should detect your application classes and send data to Drill4J.
+
+6. __Check Metabase__ to confirm it has information on the application classes.
+
+## Option 2 - Delay the class scanning
+
+If specifying the direct path to your application isn't possible or practical (for instance, you manage many apps and the list frequently changes), you can use the Application Agent's `scanClassDelay` parameter to delay the class scanning process.
+
+Configure it in the `drill.properties` file, which is included with the Application Agent files.
+
+```properties
+scanClassDelay=5000
+```
+
+Or set `DRILL_SCAN_CLASS_DELAY` environment variable
+
+## Troubleshooting
+
+If your application classes aren't showing up in Metabase after Tomcat is restarted and your application is loaded:
+
+1. To confirm the agent is loaded, refer to the Application Agent [Troubleshooting](/docs/agents/java-agent#how-to-confirm-agent-is-loaded) section.
+
+2. Double-check that the correct `scanClassPath` is specified.
+
+3. If you're using the `scanClassDelay` approach, ensure the value is large enough for Tomcat to load the application classes, so your app loads before the Application Agent starts scanning.
+
+## Limitations
+
+The Drill4J Application Agent cannot detect new applications deployed to Tomcat while it is already running. To allow the Application Agent to detect new application classes, Tomcat must be restarted.

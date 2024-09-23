@@ -40,7 +40,7 @@ In this section, you find the list of all params which can be used to customize 
 | isAsyncApp           | TODO                                                                                                                                                                                                                                                       | no       | false         | Boolean                                                                                                       |
 | isWebApp             | TODO                                                                                                                                                                                                                                                       | no       | false         | Boolean                                                                                                       |
 | webAppNames          | the list of TODO. use : as delimiter.                                                                                                                                                                                                                      | no       | ""            | web1:web2:etc                                                                                                 |
-| classScanDelay       | start scanning after waiting of duration in milliseconds                                                                                                                                                                                                   | no       | 0             | 5000 / int                                                                                                    |
+| scanClassDelay       | start scanning after waiting of duration in milliseconds                                                                                                                                                                                                   | no       | 0             | 5000 / int                                                                                                    |
 | configPath           | The file where stores the config file                                                                                                                                                                                                                      | no       |               | mingwX64-0.8.0-15/configFile.properties                                                                       |
 
 </Table>
@@ -79,7 +79,7 @@ logLevel=INFO
 #a relative or absolute path for logging
 #logFile=/drill-agent.log
 #start scanning after waiting of duration in milliseconds, for example, 5 sec:
-#classScanDelay=5000
+#scanClassDelay=5000
 #isTlsApp=true
 #isAsyncApp=true
 #isWebApp=true
