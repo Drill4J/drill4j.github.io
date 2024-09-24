@@ -1,1 +1,0 @@
-(self.webpackChunkdrill4j_github_io=self.webpackChunkdrill4j_github_io||[]).push([[53],{9054:function(e){"use strict";e.exports=JSON.parse('{"pluginId":"default","version":"current","label":"Next","isLast":false,"docsSidebars":{"docs":[{"collapsed":true,"type":"category","label":"Getting Started","items":[]}]},"permalinkToSidebar":{}}')}}]);
