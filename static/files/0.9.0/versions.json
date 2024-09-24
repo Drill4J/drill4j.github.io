@@ -1,5 +1,5 @@
 {
-    "applicationAgent": "0.9.1",
-    "testAgent": "0.23.1",
+    "applicationAgent": "0.9.2",
+    "testAgent": "0.23.2",
     "cicdPlugin": "0.1.1"
 }
