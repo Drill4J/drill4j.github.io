@@ -246,6 +246,8 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 #### Automatic download
 
 To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Test Agent GitHub repository](https://github.com/Drill4J/autotest-agent/releases) releases page.
+> *NOTE:*
+> GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
 
 ##### Gradle
 <Codeblock language="kotlin">
@@ -430,6 +432,8 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 #### Automatic download
 
 To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Application Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
+> *NOTE:*
+> GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
 
 ##### Gradle
 <Codeblock language="kotlin">
