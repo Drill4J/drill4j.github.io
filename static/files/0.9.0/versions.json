@@ -1,5 +1,8 @@
 {
     "applicationAgent": "0.9.3",
     "testAgent": "0.23.2",
-    "cicdPlugin": "0.1.3"
+    "cicdPlugin": "0.1.3",
+    "adminBackend": "0.9.1",
+    "ui": "0.1.1",
+    "metabaseDashboards": "v18"
 }
