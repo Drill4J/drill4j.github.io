@@ -1,227 +1,454 @@
 ---
 id: github
-title: Github Integration
+title: GitHub Integration
 ---
-# Github Integration
+# GitHub Integration
 
 import { Image } from '@components';
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
 
 ## Overview
 
-This guide outlines the process for integrating GitHub workflows with Drill4J to publish a change testing report for your application.
-The change testing report provides valuable insights, including:
-- A summary of changes made
-- Identification of changes that have been tested versus those that have not
-- The percentage of modified code that is covered by tests
+This guide explains how to modify GitHub Actions workflow file to enable Change Testing reports in [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) and [workflow artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts).
 
-The integration process typically involves the following steps:
-1. [Build your application and send the build information to Drill4J](#sending-a-build-info-to-drill4j).
-2. [Deploy the application with the Drill4J Application Agent](#deploy-an-application-together-with-app-agent).
-3. [Run API tests using the Drill4J Test Agent](#running-tests-together-with-test-agent).
-4. [Submit a Drill4J Change Testing Report](#submitting-a-change-testing-report).
+This is a step-by-step instruction, make sure to fulfill [prerequisites](#prerequisites) and then follow [steps for integration](#steps-for-integration)
+
+__Change Testing__ report highlights the number of __new__ and __modified__ methods detected by Drill4J, their coverage status, and identifies untested methods that may pose potential __Risks__.
+
+### Report on Pull Requests
+1. Detects changes between the __source__ and __target__ branches by comparing the latest commit in the __source__ branch with the [merge base](https://git-scm.com/docs/git-merge-base) commit in the __target__ branch.
+2. Displays metrics on how thoroughly __changes__ are tested.
+3. Handy for `feature/*`, `fix/*` branches and other shorter-lived branches
+4. Attached to [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) as comments
+
+<Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
+
+### Report on branch push
+1. Identifies changes in a branch between the __latest commit__ and the configured __baseline commit__. Generally, the __baseline commit__ is a tagged commit that follows the `tagPattern` defined in the [configuration file](#generate-report-on-branch-push).
+2. Best used in long-living branches such as `main` and `development`
+3. Attached to [artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts) of workflow triggered [on branch push event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#push)
+
+<Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
 
 ## Prerequisites
 
-Before proceeding, please ensure the following:
-1. Familiarity with the [Github workflow](https://docs.github.com/en/actions/writing-workflows).
-2. Your application is built using either Gradle or Maven.
-3. The [Drill4J Core Services](../getting-started/local-deployment) is deployed.
-4. The [set up Drill4J CI/CD Integration plugin](../cicd-integration/cicd-integration-plugin#adding-plugin) is configured in your Gradle or Maven build file.
+1. Familiarity with the [GitHub Actions](https://docs.github.com/en/actions/writing-workflows)
+2. Familiarity with [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
+3. [Drill4J core services](/docs/getting-started/local-deployment) deployed.
 
-## Sending a build info to Drill4J
+## Steps for integration
 
-The initial step in integrating Drill4J with your application is to submit the build information.
-This data provides key details about the commit, author, and branch associated with your application’s build.
-Such information is crucial for identifying your build in the Drill4J reports and dashboards.
+1. [Configure Drill4J CI/CD Integration plugin](#configure-drill4j-cicd-integration-plugin)
+2. [Configure build step](#modify-build-step-to-send-git-metadata-to-drill4j) to send Git metadata to Drill4J
+3. [Configure deployment step](#deploy-the-app-with-drill4j-application-agent) to enable Drill4J Application Agent
+4. [Configure tests](#run-tests-with-drill4j-test-agent) to enable Drill4J Test Agent
+5. [Push initial data to Drill4J](#push-initial-data-to-drill4j)
+6. [Generate Change Testing report on Pull request](#generate-report-on-pull-request)
+7. [Generate Change Testing report on branch push event](#generate-report-on-branch-push)
 
-> Typically, the process of submitting build information is executed as part of the build job within your CI/CD workflow.
+## Configure Drill4J CI/CD Integration plugin
 
-1. Ensure that the CI/CD Integration Plugin is configured for sending build information.
-For guidance, please refer to the [documentation](../cicd-integration/cicd-integration-plugin#sending-git-metadata-to-drill4j-api).
+1. Follow [CI/CD Integration Plugin - Adding Plugin](/docs/cicd-integration/cicd-integration-plugin#adding-plugin) section to add plugin to your Maven or Gradle project.
 
-2. If your workflow is triggered by a Pull Request (PR) event, ensure that the repository is checked out from the `head ref`.
-This can be done by specifying `ref: ${{ github.head_ref }}` in the `checkout@v4` action, as shown below:
-```yml
-  uses: actions/checkout@v4
-  with:
-    ref: ${{ github.head_ref }}  // Required for Pull Request events
-```
-> By default, during a Pull Request event, the checkout action creates a merge commit with the target branch.
-Since this commit is not pushed, it cannot be compared with other commits.
-For additional details, please refer to the [GitHub documentation](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request).
+2. Generate [API key using Drill4J UI](/docs/drill-services/drill-ui). Save it to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) as `DRILL_API_KEY`
 
-3. Depending on your build tool, use the following commands to submit the build information:
+3. Create `DRILL_API_URL` variable in [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository). Set its value to Drill4J Admin Backend service API address (e.g. `https://drill4j.my-host.foo/api`). Remember to add `/api` at the end
 
-##### Gradle
-```yml
-- name: Send build info to Drill4J
-  run: ./gradlew drillSendBuildInfo
-```
+4. Create [a personal GitHub access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+    - Select `repo` scope - that is necessary to post comments on Pull Requests.
+    - Save it to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) with the name `DRILL_BOT_GITHUB_TOKEN`. Reports will be posted in comments from the corresponding user
 
-##### Maven
-```yml
-- name: Send build info to Drill4J
-  run: ./mvn drill:sendBuildInfo
-```
+5. Set the following environment variables to GitHub workflow file `env` section:
 
-3. Once the build information has been successfully submitted, detailed insights will be available in the "Build - Summary" Metabase Dashboard.
-
-## Deploy an application together with App Agent
-
-Running your application under test together with the Drill4J Application Agent enables the following functionalities:
-- Identification of which classes and methods have changed.
-- Collection of test coverage data.
-
-To deploy an application under test together with the Application Agent, follow these steps:
-
-1. Set Up the Application Agent.
-There are two ways to launch your application alongside the Application Agent:
-- [Set the -agentpath JVM argument](../agents/java-agent#how-to-set-path-to-agent).
-- [Use the CI/CD Integration Plugin](../cicd-integration/cicd-integration-plugin#application-agent).
-
-2. Before starting the application, you need to pass the `commitSha` parameter.
-This helps determine the merge base commit for comparing changes across branches.
-For further information on `commitSha`, refer to the [documentation](http://localhost:3000/docs/agents/java-agent#considerations-regarding-buildversion-and-commitsha).
-
-The simplest way to pass the `commitSha` in a GitHub workflow is by setting the environment variable `DRILL_COMMIT_SHA`.
-The method of setting this variable depends on the GitHub event that triggers the workflow.
-
-##### For Pull Request events
-For Pull Request events, use the `github.event.pull_request.head.sha` variable:
-```yml
-- name: Deploy the application
-  run: [your app launching command here]
+  ```yml
   env:
-    DRILL_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-```
+    DRILL_API_KEY: ${{ secrets.DRILL_API_KEY }}
+    DRILL_API_URL: ${{ vars.DRILL_API_URL }}
+    DRILL_BOT_GITHUB_TOKEN: ${{ secrets.DRILL_BOT_GITHUB_TOKEN }}
+  ```
 
-##### For Push events
-For push events to protected branches, use the `github.sha` variable:
-```yml
-- name: Deploy the application
-  run: [your app launching command here]
-  env:
-    DRILL_COMMIT_SHA: ${{ github.sha }}
-```
+## Modify build step to send Git metadata to Drill4J
 
-3. Ensure that the information about classes and methods is correctly passed to the Drill4J using the "Classes" Metabase Dashboard.
+Modify build step to call __send build info__ command. It submits commit hash, author, and branch associated with build to Drill4J. It is necessary to identify application build in the Drill4J reports and dashboards.
 
-## Running tests together with Test Agent
-
-Running your tests alongside the Drill4J Test Agent provides the following advantages:
-- Track the specific code coverage achieved by each test.
-- Prioritize test execution based on changes made in the application.
-
-To run tests together with Test Agent:
-1. Ensure that the Test Agent is enabled in the CI/CD Integration Plugin. For guidance, please refer to the [documentation](../cicd-integration/cicd-integration-plugin#set-up).
-2. Once the Test Agent is enabled, run your tests as you normally would.
-Use the following commands based on your build tool:
-
-##### Gradle
-```yml
-- name: Run API tests
-  run: ./gradlew test
-```
-
-##### Maven
-```yml
-- name: Run API tests
-  run: ./mvn test
-```
-
-3. After the tests have been executed, you will be able to view which tests impacted your application's code on the "Tests" Metabase dashboard.
-
-## Submitting a change testing report
-
-Once your tests have been completed, Drill4J can generate a report detailing the changes tested in your pull request or those made since the last release.
-
-> Ensure that all tests are fully completed before submitting a change testing report.
-The report submission should not be done before or during the test execution process.
-
-1. Before submitting the report, add the `fetch-depth: 0` parameter to your GitHub `checkout@v4` action:
+### Gradle
 
 ```yml
-  uses: actions/checkout@v4
-  with:
-    fetch-depth: 0
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Add this only for Pull Requests, see explanations below
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # Your build step
+      - name: Build app
+        run: ./gradlew clean build
+
+      # Execute command to send data to Drill4J
+      - name: Send build info to Drill4J
+        run: ./gradlew drillSendBuildInfo
+
 ```
-This ensures that you retrieve the necessary git history, including the merge base commit.
 
-> By default, the `checkout@v4` action fetches only a single commit, which may not include the necessary git history.
+### Maven
 
-2. The command to submit a report differs depending on the type of GitHub event that triggered the workflow:
-- **Pull Request Event:** The report can be posted as a comment on the Pull Request.
-- **Push Event:** The report can be attached as a file within the workflow.
-
-### As a Pull Request comment
-
-3. If you plan to submit the report as a Pull Request comment,
-ensure that the [Github token in CI/CD Integration Plugin](../cicd-integration/cicd-integration-plugin#github-pull-request-report)
-is correctly configured in the CI/CD Integration Plugin.
-
-> You can [](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-
-4. Use the following commands in your GitHub workflow to submit the report as a Pull Request comment:
-
-##### Gradle
 ```yml
-- name: Send a Change Testing Report
-  run: ./gradlew drillGithubPullRequestReport
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Add this only for Pull Requests, see explanations below
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      # Your build step
+      - name: Build app
+        run: mvn clean install
+
+      # Execute command to send data to Drill4J
+      - name: Send build info to Drill4J
+        run: ./mvn drill:sendBuildInfo
 ```
 
-##### Maven
+> The `github.head_ref` property instructs `checkout@v4` action to check out the last commit of the branch.
+>
+> By default GitHub Pull Requests create __local merge commit__ from target branch to the source branch. It exists only inside workflow environment and is never pushed to remote. That makes it impossible to map it to the rest of repo Git history.
+>
+> See GitHub documentation ([#1](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs) and [#2](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request)) and [checkout@v4 Readme](https://github.com/actions/checkout?tab=readme-ov-file#checkout-pull-request-head-commit-instead-of-merge-commit) for more info
+
+> 🚧 TODO: add link to Metabase dashboards to verify Git metadata is submitted and detailed reports are avaialble  🚧
+
+<!-- 4. Once the build information has been successfully submitted, detailed insights will be available in the "Build - Summary" Metabase Dashboard. -->
+
+## Deploy the app with Drill4J Application Agent
+
+### Option 1 - app is launched with Maven or Gradle
+
+1. Setup Application Agent with using [CI/CD Integration Plugin - Application Agent](/docs/cicd-integration/cicd-integration-plugin#application-agent) section
+
+2. Add `DRILL_COMMIT_SHA` env varible following [the instruction below](#add-drill_commit_sha-to-env-variables)
+
+### Option 2 - application is launched as a standalone Java process
+
+1. Add `DRILL_APPLICATION_AGENT_URL` to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
+
+  Set its value to URL of release's .zip file from <https://github.com/Drill4J/java-agent/releases>
+
+  For example:
+
+  <a href={`https://github.com/Drill4J/java-agent/releases/download/v${versions.applicationAgent}/agent-linuxX64-${versions.applicationAgent}.zip
+  `}> {`https://github.com/Drill4J/java-agent/releases/download/v${versions.applicationAgent}/agent-linuxX64-${versions.applicationAgent}.zip`} </a>
+
+
+2. Add the following step to download agent files (above the app launch step):
+
+  ```yml
+    - name: Download Drill4J Application Agent
+      run: |
+        # Download
+        curl -L ${{ vars.DRILL_APPLICATION_AGENT_URL }} -o agent.zip
+        # Prep folders
+        mkdir -p ./temp-agent-dir /agent
+        # Unzip
+        unzip agent.zip -d ./temp-agent-dir
+        # Move files to /agent folder
+        find temp-agent-dir -mindepth 2 -exec mv -t /agent/ {} +
+
+    - name: Deploy the application
+      run: # your command to deploy application
+      env:
+        JAVA_TOOL_OPTIONS: -agentpath:/agent/libdrill_agent.so # libdrill_agent.so for linux, libdrill_agent.dylib for Mac, drill_agent.dll for Windows
+        # Set Application Agent parameters, see link to reference below
+        DRILL_APP_ID: # ...
+        DRILL_GROUP_ID: # ...
+        DRILL_PACKAGE_PREFIXES: # ...
+  ```
+
+  See [Agent Parameters Reference](/docs/agents/java-agent#agent-parameters-reference) for a full list of parameters
+
+3. Set `DRILL_COMMIT_SHA` env varible following [the instruction below](#add-drill_commit_sha-to-env-variables)
+
+### Add DRILL_COMMIT_SHA to env variables
+
+  __For Pull Request__, set it to the `github.event.pull_request.head.sha`:
+  ```yml
+    - name: Deploy the application
+      run: # your command to deploy application
+      env:
+        # ...
+        DRILL_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+  ```
+
+  __For branch push__ event, set it to `github.sha`:
+  ```yml
+    - name: Deploy the application
+      run: # your command to deploy application
+      env:
+        # ...
+        DRILL_COMMIT_SHA: ${{ github.sha }}
+  ```
+
+> 🚧 TODO: add link to Metabase dashboards to verify classes and methods information is available  🚧
+
+## Run tests with Drill4J Test Agent
+
+1. Configure Maven or Gradle project to use [Test Agent](/docs/cicd-integration/cicd-integration-plugin#test-agent).
+
+  Once configured, Test Agent is launched with tests tasks automatically.
+
+2. Make sure your tests are launched in GitHub Action workflow. Usually it looks something like this:
+
+  ```yml
+    - name: Run tests
+      # Gradle
+      run: ./gradlew test
+      # or Maven
+      # run: ./mvn test
+  ```
+
+## Push initial data to Drill4J
+
+By now, both the Application Agent and Test Agent should be configured.
+
+As the name suggests, the Change Testing report identifies changes, so the first step is to push data to Drill4J to establish a baseline for future comparisons. Ideally, this should be an application version built from your primary branch. We'll call it `main`, but the branch name doesn't matter — it could be `develop` or any other long-living branch.
+
+1. Push to the `main` branch to trigger the GitHub Action workflow to launch the application.
+2. Wait for the workflow to complete.
+3. Check Metabase to verify that information about the new application build is available.
+
+
+## Generate report on Pull Request
+Next, you need to configure the command to generate reports on Pull Requests. These reports will include metrics for changes introduced only in the specific Pull Request, allowing you to verify that the changes are tested before merging.
+
+1. Add an additional step to your workflow file using either the Gradle or Maven configuration provided.
+2. Push the changes and follow [the instructions](#confirm-pr-report-is-working) to verify that the reports are being generated.
+
+### Gradle
+
 ```yml
-- name: Send a Change Testing Report
-  run: ./mvn drill:githubPullRequestReport
+jobs:
+  # ... all kinds of build and test jobs above ...
+  # Add this at the very end of workflow file
+  reportByPR:
+    if: github.event_name == 'pull_request'
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Send Change Testing report
+        run: ./gradlew drillGithubPullRequestReport
 ```
 
-5. After the command is successfully executed, check the comments section of the Pull Request for the submitted report.
+### Maven
+```yml
+jobs:
+  # ... all kinds of build and test jobs above ...
+  # Add this at the very end of workflow file
+  reportByPR:
+    if: github.event_name == 'pull_request'
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Send Change Testing report
+        run: ./mvn drill:githubPullRequestReport
+```
+
+### Confirm PR Report is Working
+
+Now it's time to create a new branch from the `main` branch.
+
+1. Checkout a new branch (e.g., `feature/xyz`).
+2. Make some changes to your application code.
+3. Push the branch and open a Pull Request from `feature/xyz` to `main`.
+4. Wait for the workflow to complete.
+
+The comments section of the Pull Request should include a new comment with the report.
+
 <Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
 
-### As a workflow attachment
+## Generate report on Branch push
 
-3. If you prefer to submit the report as a file attachment in your workflow, first generate the report using the following commands:
+In addition to reports on Pull Requests, it’s useful to have reports on individual branches. These reports are attached as workflow artifacts. To configure them:
 
-##### Gradle
+1. Add the `baseline` section to CI/CD integration plugin configuration section:
+
+  __Gradle__
+
+  ```kotlin
+    drill {
+      groupId = "my-group"
+      appId= "my-app"
+      // ... and other agent parameters ...
+
+      // new section
+      baseline {
+          searchStrategy = "SEARCH_BY_TAG"
+
+          // Adjust to match your tag naming scheme
+          tagPattern = "v[0-9].[0-9].[0-9]*"
+      }
+    }
+  ```
+
+  __Maven__
+
+  <Codeblock language="xml">
+  {`
+    <plugin>
+      <groupId>com.epam.drill.integration</groupId>
+      <artifactId>drill-maven-plugin</artifactId>
+      <version>${versions.cicdPlugin}</version>
+      <configuration>
+          <groupId>my-group</groupId>
+          <appId>my-application</appId>
+          <!-- ... and other agent parameters ... -->
+          <!-- New section -->
+          <baseline>
+              <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+              <!-- Adjust to match your tag naming scheme -->
+              <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
+          </baseline>
+      </configuration>
+      <executions>
+          <execution>
+              <goals>
+                  <goal>generateChangeTestingReport</goal>
+              </goals>
+          </execution>
+      </executions>
+    </plugin>
+  `}
+  </Codeblock>
+
+2. Add additional step to your GitHub workflow file:
+
+### Gradle
 ```yml
-- name: Generate a Drill4J Change Testing Report
-  run: ./gradlew drillGenerateChangeTestingReport
+jobs:
+  # ... all kinds of build and test jobs above ...
+  # Add this at the very end of workflow file
+  reportByBranch:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate Drill4J Change Testing Report
+        run: ./gradlew drillGenerateChangeTestingReport
+
+      - name: Attach report
+        uses: actions/upload-artifact@v4
+        with:
+          name: change-testing-report
+          path: ./build/drill-reports/drillReport.md
 ```
 
-##### Maven
+### Maven
 ```yml
-- name: Generate a Drill4J Change Testing Report
-  run: ./mvn drill:generateChangeTestingReport
+jobs:
+  # ... all kinds of build and test jobs above ...
+  # Add this at the very end of workflow file
+  reportByBranch:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # adjust for desired Java distribution and version
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Generate Drill4J Change Testing Report
+        run: ./mvn drill:generateChangeTestingReport
+
+      - name: Attach report
+        uses: actions/upload-artifact@v4
+        with:
+          name: change-testing-report
+          path: ./target/drill-reports/drillReport.md
 ```
 
-For more information on setting up this command, read [documentation](../cicd-integration/cicd-integration-plugin#generating-a-change-testing-report).
+### Confirm its working
 
-4. Once the report is generated, attach it to the workflow using the `upload-artifact` action:
-
-##### Gradle
-```yml
-- name: Attach a report
-  uses: actions/upload-artifact@v4
-  with:
-    name: change-testing-report
-    path: ./build/drill-reports/drillReport.md
-```
-
-##### Maven
-```yml
-- name: Attach a report
-  uses: actions/upload-artifact@v4
-  with:
-    name: change-testing-report
-    path: ./target/drill-reports/drillReport.md
-```
-
-5. After successful execution of the commands, check the attachments in the workflow job to verify that the report has been correctly uploaded.
+Push some changes. Once workflow is complete, check the attachments for uploaded report:
 <Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
 
-## Next Steps and Further Reading
+## Examples
 
-This guide covered the basics of integration GitHub with Drill4J.
-You can check out an example of integrating a [demo repository](https://github.com/Drill4J/realworld-spring-webflux) with GitHub workflow.
+> 🚧 TODO: cleanup example action yml file 🚧
 
-For more advanced metrics, integrate Drill4J with your tests. For more details, check out the additional documentation:
+You can see example GitHub Drill4J integration in a [demo repository](https://github.com/Drill4J/realworld-spring-webflux) with the following [GitHub Action](https://github.com/Drill4J/realworld-spring-webflux/blob/main/.github/workflows/test.yml)
+

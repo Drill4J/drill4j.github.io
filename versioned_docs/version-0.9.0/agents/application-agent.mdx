@@ -5,6 +5,9 @@ title: Application Agent
 
 # Application Agent
 
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+
 Drill4J Java Agent enables metrics collection for JVM-based applications.
 
 General integration steps are:
@@ -21,9 +24,10 @@ Due to the diverse tools used in software development — such as CI/CD provider
 
 The most basic way to get agent files is to download release .zip manually.
 
-1. Download release appropriate for your platform at  <https://github.com/Drill4J/java-agent/releases/tag/v0.9.1>.
+1. Download release appropriate for your platform at
+<a href={`https://github.com/Drill4J/java-agent/releases/tag/v${versions.applicationAgent}`}> {`https://github.com/Drill4J/java-agent/releases/tag/v${versions.applicationAgent}`} </a>
 
-    > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
+  > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
 
 2. Unzip the file. Rename unzipped folder to `agent`.
 
@@ -166,6 +170,8 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | packagePrefixes | yes | `my/org/somecoolapp`                                       | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below. |
 | buildVersion    | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
 | commitSha | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
+| scanClassDelay | no | `5000` | Time in milliseconds to delay the class scanning procedure. If none is specified, the class scanning starts immediately upon JVM startup
+| scanClassPath | no |  | Path(s) to application's .jar/.war/.ear files. If none are specified, the agent attempts to find application classes automatically. See [syntax and examples](#how-to-set-scanclasspath) below.
 
 ### Env variables naming
 
@@ -208,6 +214,23 @@ This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages
 Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`.
 
 This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`.
+
+### How to set scanClassPath
+
+Specifies path(s) for the application agent to look for .jar, .war, or .ear files
+
+Useful when the application agent is unable to locate these automatically  (e.g. when running [Wildfly](/docs/guides/wildfly) or [Tomcat](/docs/guides/tomcat))
+
+```
+# Single path
+scanClassPath=../webapps/my-app.war
+
+# Multiple paths - use the ";" delimiter
+# scanClassPath=../webapps/my-app.war;../webapps/other-app.war
+
+# Absolute paths work too
+# scanClassPath=C:/java/tomcat-10/webapps/helloworld.war
+```
 
 ### API key security
 

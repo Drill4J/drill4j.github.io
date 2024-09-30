@@ -36,13 +36,23 @@
         },
         {
           "type": "doc",
-          "label": "Github",
+          "label": "GitHub",
           "id": "version-0.9.0/cicd-integration/github"
         },
         {
           "type": "doc",
-          "label": "Gitlab",
+          "label": "GitLab",
           "id": "version-0.9.0/cicd-integration/gitlab"
+        },
+        {
+          "type": "doc",
+          "label": "Tomcat",
+          "id": "version-0.9.0/guides/tomcat"
+        },
+        {
+          "type": "doc",
+          "label": "Wildfly",
+          "id": "version-0.9.0/guides/wildfly"
         }
       ]
     },
