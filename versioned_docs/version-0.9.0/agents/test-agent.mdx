@@ -13,7 +13,7 @@ Key Features:
 General integration steps are:
 
 1. [Download Drill4J agent files](#how-to-download)
-2. [Set path to agent when running tests](#how-to-set-path-to-agent)
+2. [Set path to agent when running tests](#how-to-set-path-to-agent-when-running-tests)
 3. [Set agent parameters](#how-to-set-agent-parameters)
 
 Due to the diverse tools used in software development — such as CI/CD providers, deployment methods, testing stages — the exact process will depend on the environment.
@@ -21,6 +21,10 @@ Due to the diverse tools used in software development — such as CI/CD provider
 ## How to download
 
 ### Download agent files manually
+
+> **Note:**
+This is not the most convenient way to get agent files.
+If you are using Maven or Gradle, there is a primary way, see [next section](#use-drill4j-cicd-integration-plugin-for-maven-and-gradle).
 
 The most basic way to get agent files is to download release .zip manually.
 
@@ -36,7 +40,7 @@ The most basic way to get agent files is to download release .zip manually.
     - `drill-runtime.jar`
     - `drill.properties`
 
-Refer to [next section](/docs/agents/autotest-agent#how-to-set-path-to-agent) for further steps.
+Refer to [next section](#how-to-set-path-to-agent-when-running-tests) for further steps.
 
 ### Use Drill4J CI/CD Integration Plugin for Maven and Gradle
 
