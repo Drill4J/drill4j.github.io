@@ -37,4 +37,4 @@ jobs:
           git config --global user.name "github-actions"
           npm ci --legacy-peer-deps
           npm run tailwind:css
-          npx docusaurus deploy -- --token ${{ secrets.GITHUB_TOKEN }}
+          npx docusaurus deploy --token "${{ secrets.GITHUB_TOKEN }}"
