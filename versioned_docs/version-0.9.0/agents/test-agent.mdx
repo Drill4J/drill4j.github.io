@@ -166,6 +166,17 @@ check the following parameters:
 
 It indicates that you are missing some required parameters. Refer to the [agent parameters](#agent-parameters-reference) section.
 
+### Error "Could not create an Appender of type ..."
+
+```
+|-ERROR in com.epam.drill.autotest.shadow.ch.qos.logback.core.joran.action.AppenderAction - Could not create an Appender of type [ch.qos.logback.core.ConsoleAppender].
+|-ERROR in com.epam.drill.autotest.shadow.ch.qos.logback.core.joran.spi.Interpreter@5:73 - ActionException in Action for tag [appender]
+```
+The following error can be safely ignored as it doesn’t impact the functionality of the application or agent.
+It simply indicates that Logback is being used with a logback.xml file, which conflicts with the Drill4J logging configuration. However, logging will still function as expected.
+
 ## Limitations and Known Issues
 
-1. While __x64__ Macs are supported, __ARM__ Macs (M-series Apple Silicon CPUs) are not yet supported; work is in progress.
+1. The Drill4J is not compatible with the [JaCoCo](https://www.jacoco.org/jacoco/) code coverage tool.
+JaCoCo conflicts with the Drill4J Test Agent and Application Agent, so it needs to be removed.
+This should’t be a concern, as Drill4J includes the same functionality along with additional features.
