@@ -8,7 +8,7 @@ title: Unit Tests
 import versions from "@site/static/files/0.9.0/versions.json"
 import { Codeblock } from "@components"
 
-This page walks you through Drill4J integration for Java-based unit tests.
+This page walks you through Drill4J integration for Java-based Unit tests.
 It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_.
 
 ## Prerequisites
@@ -23,7 +23,7 @@ This instruction involves making changes to the Gradle/Maven project build file.
 
 ## Install Drill4J Plugin
 
-The Drill4J CI/CD integration plugin allows you to run unit tests together with the Test Agent and Application Agent.
+Drill4J CI/CD Integration Plugin allows to enable both Test Agent and App Agent to capture metrics from Unit tests execution.
 Add following changes to your Gradle/Maven project with unit tests build file to install the Drill4J plugin:
 
 ##### Gradle
@@ -56,8 +56,7 @@ plugins {
 
 ## Enable agents
 
-Drill4J agents are used to collect code coverage per tests.
-To enable the agents set the plugin configuration:
+To enable the agents add the following lines to configuration:
 
 ##### Gradle
 
@@ -132,7 +131,7 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
 `}
 </Codeblock>
 
-## Run unit tests
+## Run Unit tests
 
 1. Launch your unit tests with Gradle/Maven (e.g. `gradle test`, `mvn test`).
 
