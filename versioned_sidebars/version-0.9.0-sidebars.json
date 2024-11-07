@@ -36,6 +36,11 @@
         },
         {
           "type": "doc",
+          "label": "Unit tests (Java)",
+          "id": "version-0.9.0/tests-integration/unit-tests"
+        },
+        {
+          "type": "doc",
           "label": "GitHub",
           "id": "version-0.9.0/cicd-integration/github"
         },

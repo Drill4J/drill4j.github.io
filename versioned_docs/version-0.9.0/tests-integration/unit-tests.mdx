@@ -1,0 +1,165 @@
+---
+id: unit-tests
+title: Unit Tests
+---
+
+# Unit Tests
+
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+
+This page walks you through Drill4J integration for Java-based Unit tests.
+It will enable you to use such features as _Per Test Coverage_ and _Test Recommendations_.
+
+## Prerequisites
+
+1. This page assumes you have run core Drill4J Services. For instructions see:
+
+    - [Getting Started](/docs/getting-started/local-deployment)
+
+2. Unit tests launched with either Maven or Gradle
+
+This instruction involves making changes to the Gradle/Maven project build file.
+
+## Install Drill4J Plugin
+
+Drill4J CI/CD Integration Plugin allows to enable both Test Agent and App Agent to capture metrics from Unit tests execution.
+Add following changes to your Gradle/Maven project with unit tests build file to install the Drill4J plugin:
+
+##### Gradle
+<Codeblock language="kotlin">
+{`
+plugins {
+    id("com.epam.drill.integration.cicd") version "${versions.cicdPlugin}"
+}
+`}
+</Codeblock>
+
+
+##### Maven
+
+<Codeblock language="xml">
+{`
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.integration</groupId>
+            <artifactId>drill-maven-plugin</artifactId>
+            <version>${versions.cicdPlugin}</version>
+            <configuration>
+            </configuration>
+        </plugin>
+   </plugins>
+</build>
+`}
+</Codeblock>
+
+## Enable agents
+
+To enable the agents add the following lines to configuration:
+
+##### Gradle
+
+Add `drill` section into the bottom of the Gradle build file:
+
+<Codeblock language="groovy">
+{`
+drill {
+    // Set the Drill4J API URL
+    // or set DRILL_API_URL env variable
+    drillApiUrl = "http://localhost:8090/api"
+    // Set the Drill4J API Key
+    // or set DRILL_API_KEY env variable
+    drillApiKey = "1_01cdf51ff20544ee..."
+    // Enter appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+    // Specifies the java packages for Drill4J to monitor
+    // Use "/" separator for package name parts
+    packagePrefixes = "my/awesome/application"
+    // Optional, identifies app version built from checked out commit
+    buildVersion = "1.0.0"
+    enableTestAgent {
+        version = "${versions.testAgent}"
+    }
+    enableTestAgent {
+        version = "${versions.applicationAgent}"
+    }
+}
+`}
+</Codeblock>
+
+##### Maven
+Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Maven pom.xml file:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Set the Drill4J API URL -->
+        <!-- or set DRILL_API_URL env variable -->
+        <apiUrl>http://localhost:8090/api</apiUrl>
+        <!-- Set the Drill4J API Key -->
+        <!-- or set DRILL_API_KEY env variable -->
+        <apiKey>1_01cdf51ff20544ee...</apiKey>
+        <!-- Enter appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <!--  Specifies the java packages for Drill4J to monitor -->
+        <!-- Use "/" separator for package name parts -->
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <!-- Optional, identifies app version built from checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+        <testAgent>
+            <version>${versions.testAgent}</version>
+        </testAgent>
+        <appAgent>
+            <version>${versions.applicationAgent}</version>
+        </appAgent>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableTestAgent</goal>
+                <goal>enableAppAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+## Run Unit tests
+
+1. Launch your unit tests with Gradle/Maven (e.g. `gradle test`, `mvn test`).
+
+> *IMPORTANT!*
+When running tests in your IDE, double-check that it's picking up the correct configuration file with the Drill4J test agent added (that will be `build.gradle` for Gradle, `pom.xml` for Maven)
+
+2. To confirm the agents are working check tests log.
+There should be Drill4J ASCII logos followed by the agent versions:
+
+```log
+    Task :test is modified by Drill
+      ____    ____                 _       _          _  _                _
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+     Autotest Agent (v0.23.3)
+
+      ____    ____                 _       _          _  _                _
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+     Java Agent (v0.9.4)
+```
+That’s it! Open the Metabase UI and confirm that the new test information is coming through.
+You should see the Test Launches on the Build Summary dashboard.
