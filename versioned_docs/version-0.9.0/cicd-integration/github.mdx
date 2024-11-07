@@ -56,7 +56,7 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 3. Create `DRILL_API_URL` variable in [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository). Set its value to Drill4J Admin Backend service API address (e.g. `https://drill4j.my-host.foo/api`). Remember to add `/api` at the end
 
 4. Create [a personal GitHub access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
-    - Select `repo` scope - that is necessary to post comments on Pull Requests. 
+    - Select `repo` scope - that is necessary to post comments on Pull Requests.
     - Save it to [GitHub secrets and variables](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) with the name `DRILL_BOT_GITHUB_TOKEN`. Reports will be posted in comments from the corresponding user
 
 5. Set the following environment variables to GitHub workflow file `env` section:
@@ -98,11 +98,11 @@ jobs:
       # Your build step
       - name: Build app
         run: ./gradlew clean build
-  
+
       # Execute command to send data to Drill4J
       - name: Send build info to Drill4J
         run: ./gradlew drillSendBuildInfo
-      
+
 ```
 
 ### Maven
@@ -128,17 +128,17 @@ jobs:
       # Your build step
       - name: Build app
         run: mvn clean install
-  
+
       # Execute command to send data to Drill4J
       - name: Send build info to Drill4J
         run: ./mvn drill:sendBuildInfo
 ```
 
 > The `github.head_ref` property instructs `checkout@v4` action to check out the last commit of the branch.
-> 
-> By default GitHub Pull Requests create __local merge commit__ from target branch to the source branch. It exists only inside workflow environment and is never pushed to remote. That makes it impossible to map it to the rest of repo Git history. 
 >
-> See GitHub documentation ([#1](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs) and [#2](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request)) and [checkout@v4 Readme](https://github.com/actions/checkout?tab=readme-ov-file#checkout-pull-request-head-commit-instead-of-merge-commit) for more info   
+> By default GitHub Pull Requests create __local merge commit__ from target branch to the source branch. It exists only inside workflow environment and is never pushed to remote. That makes it impossible to map it to the rest of repo Git history.
+>
+> See GitHub documentation ([#1](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs) and [#2](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request)) and [checkout@v4 Readme](https://github.com/actions/checkout?tab=readme-ov-file#checkout-pull-request-head-commit-instead-of-merge-commit) for more info
 
 > 🚧 TODO: add link to Metabase dashboards to verify Git metadata is submitted and detailed reports are avaialble  🚧
 
@@ -169,7 +169,7 @@ jobs:
   ```yml
     - name: Download Drill4J Application Agent
       run: |
-        # Download 
+        # Download
         curl -L ${{ vars.DRILL_APPLICATION_AGENT_URL }} -o agent.zip
         # Prep folders
         mkdir -p ./temp-agent-dir /agent
@@ -177,7 +177,7 @@ jobs:
         unzip agent.zip -d ./temp-agent-dir
         # Move files to /agent folder
         find temp-agent-dir -mindepth 2 -exec mv -t /agent/ {} +
-    
+
     - name: Deploy the application
       run: # your command to deploy application
       env:
@@ -255,7 +255,7 @@ jobs:
   # Add this at the very end of workflow file
   reportByPR:
     if: github.event_name == 'pull_request'
-    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file 
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -270,7 +270,7 @@ jobs:
           # adjust for desired Java distribution and version
           distribution: 'temurin'
           java-version: 17
-      
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -300,7 +300,7 @@ jobs:
           # adjust for desired Java distribution and version
           distribution: 'temurin'
           java-version: 17
-      
+
       - name: Send Change Testing report
         run: ./mvn drill:githubPullRequestReport
 ```
@@ -325,7 +325,7 @@ In addition to reports on Pull Requests, it’s useful to have reports on indivi
 1. Add the `baseline` section to CI/CD integration plugin configuration section:
 
   __Gradle__
-  
+
   ```kotlin
     drill {
       groupId = "my-group"
@@ -341,7 +341,7 @@ In addition to reports on Pull Requests, it’s useful to have reports on indivi
       }
     }
   ```
-  
+
   __Maven__
 
   <Codeblock language="xml">
@@ -381,21 +381,21 @@ jobs:
   # Add this at the very end of workflow file
   reportByBranch:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file 
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
-      
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           # adjust for desired Java distribution and version
           distribution: 'temurin'
           java-version: 17
-      
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -416,14 +416,14 @@ jobs:
   # Add this at the very end of workflow file
   reportByBranch:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file 
+    needs: test  # ensures that tests are completed _before_ this step starts. Adjust name of test step according to your workflow file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # required to fetch complete Git history. Report won't work correctly otherwise
-      
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
