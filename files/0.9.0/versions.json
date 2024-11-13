@@ -3,6 +3,6 @@
     "testAgent": "0.23.3",
     "cicdPlugin": "0.1.6",
     "adminBackend": "0.9.3",
-    "ui": "0.1.1",
+    "ui": "0.1.2",
     "metabaseDashboards": "v20"
 }
