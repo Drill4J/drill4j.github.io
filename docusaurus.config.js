@@ -96,6 +96,12 @@ module.exports = {
     ],
   ],
   plugins: [
+    [
+      require.resolve('docusaurus-gtm-plugin'),
+      {
+        id: 'GTM-NGTZFW2', // GTM Container ID
+      },
+    ],
     'docusaurus-plugin-sass',
     [
       'docusaurus-plugin-module-alias',
@@ -113,6 +119,22 @@ module.exports = {
       type: 'text/css',
       integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
       crossorigin: 'anonymous',
+    },
+  ],
+  scripts: [
+    {
+      src: 'https://cookie-cdn.cookiepro.com/consent/0193cf92-5110-7699-8ea2-b1350ca5e293/OtAutoBlock.js',
+      type: 'text/javascript',
+    },
+    {
+      src: 'https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js',
+      type: 'text/javascript',
+      charset: 'UTF-8',
+      'data-domain-script': '0193cf92-5110-7699-8ea2-b1350ca5e293',
+    },
+    {
+      src: 'data:text/javascript,function%20OptanonWrapper%20()%20{}',
+      type: 'text/javascript',
     },
   ],
 };
