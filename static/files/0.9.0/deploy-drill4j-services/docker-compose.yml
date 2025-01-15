@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   drill-ui:
@@ -56,6 +54,23 @@ services:
       retries: 5
     command: ["postgres", "-c", "log_statement=all", "-c", "log_min_duration_statement=0"]
 
+  # This container launches script to either create or update Metabase dashboards
+  # WARNING: it removes all previously created Metabase dashboards and users
+  # comment this out if you'd like to keep your edits / customizations
+  drill-metabase-dashboards-migration:
+    image: ghcr.io/drill4j/drill-metabase-dashboards:${DRILL_METABASE_DASHBOARDS_VERSION}
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${METABASE_POSTGRES_DB} # its preferable to specify DB different from where Drill4J data is stored. E.g. db-metabase  
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+          postgres:
+            condition: service_healthy
+
   metabase:
     image: metabase/metabase@sha256:96416c11371d400aecc2073b8d0e8335cc7c413b236ef724e51dda095b2580ea
     container_name: metabase
@@ -77,6 +92,9 @@ services:
       interval: 15s
       timeout: 5s
       retries: 5
+    depends_on:
+      drill-metabase-dashboards-migration:    
+        condition: service_completed_successfully
 
 volumes:
   drill-data-pg:
