@@ -27,6 +27,11 @@ services:
       interval: 10s
       timeout: 3s
       retries: 30
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     ports:
       - 8090:8090
     depends_on:
@@ -35,6 +40,7 @@ services:
 
   postgres:
     image: postgres:17.0
+    shm_size: 1g
     ports:
       - '5432:5432'
     environment:
@@ -52,6 +58,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     command: ["postgres", "-c", "log_statement=all", "-c", "log_min_duration_statement=0"]
 
   # This container launches script to either create or update Metabase dashboards
