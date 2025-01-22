@@ -170,6 +170,7 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | packagePrefixes | yes | `my/org/somecoolapp`                                       | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below. |
 | buildVersion    | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
 | commitSha | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
+| envId           | no | `develop`                                              | Environment identifier in which the application is running. |
 | scanClassDelay | no | `5000` | Time in milliseconds to delay the class scanning procedure. If none is specified, the class scanning starts immediately upon JVM startup
 | scanClassPath | no |  | Path(s) to application's .jar/.war/.ear files. If none are specified, the agent attempts to find application classes automatically. See [syntax and examples](#how-to-set-scanclasspath) below.
 

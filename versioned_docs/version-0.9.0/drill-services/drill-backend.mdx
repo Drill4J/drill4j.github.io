@@ -5,4 +5,129 @@ title: Drill4J Backend
 
 # Drill4J Backend
 
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+import { Image } from '@components'
+
+Drill4J Backend is responsible for receiving, processing and authorizing data.
+
+## Installation
+
+There are two ways to install Drill4J Backend:
+
+1. Using Docker
+2. Using JAR file
+
+### Using Docker
+
+1. To install Drill4J Backend using Docker, follow the steps described in [local-deployment](/docs/getting-started/local-deployment).
+2. Additionally, you can also set up the environment variables ([see below](#environment-variables)).
+3. Ensure that Drill4J Backend is running successfully by checking the `http://localhost:8090` endpoint. You should receive a response similar to:
+
+    ```json
+    {
+      "message": "Drill4J Admin Backend"
+    }
+    ```
+
+### Using JAR file
+
+To install Drill4J Backend using a JAR file, follow these steps:
+
+1. Install PostgreSQL 17.
+2. Create a database and a user for Drill4J Backend.
+3. Download the latest Drill4J Backend release (`admin-shadow-<version>.zip` file) from the [releases page](https://github.com/Drill4J/admin/releases).
+4. Unzip the `admin-shadow-<version>.zip` file.
+5. Find the `admin-app-<version>-all.jar` file in the unzipped directory and move it to the root directory of the installation.
+6. Set up the environment variables ([see below](#environment-variables)).
+7. Run the Drill4J Backend using the following command:
+
+    ```shell
+    java -jar admin-app-<version>-all.jar
+    ```
+
+8. Ensure that Drill4J Backend is running successfully by checking the `http://localhost:8090` endpoint. You should receive a response similar to:
+
+    ```json
+    {
+      "message": "Drill4J Admin Backend"
+    }
+    ```
+
+## Configuration
+
+Drill4J Backend is configured using environment variables.
+You can set them in a .env file in the root directory of the project.
+
+### Environment Variables
+
+The following environment variables are used to configure Drill4J Backend with their default values:
+
+#### Server Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| PORT                       | Server port                        | 8090        |
+| SSL_KEY_STORE              | Path to the SSL key store          |               |
+| SSL_KEY_ALIAS              | Alias for the SSL key              |               |
+| SSL_KEY_STORE_PASSWORD     | Password for the SSL key store     |               |
+| SSL_PRIVATE_KEY_PASSWORD   | Password for the private key       |               |
+
+#### Database Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| DRILL_DB_HOST              | Database host                      |  localhost    |
+| DRILL_DB_PORT              | Database port                      |  5432         |
+| DRILL_DB_NAME              | Database name                      |  drill        |
+| DRILL_DB_USER_NAME         | Database username                  |  postgres     |
+| DRILL_DB_PASSWORD          | Database password                  |  postgres     |
+| DRILL_DB_MAX_POOL_SIZE     | Maximum pool size for the database |  20           |
+
+#### Authentication Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| DRILL_JWT_SECRET           | Secret for JWT authentication      |               |
+| DRILL_JWT_LIFETIME         | Lifetime for JWT tokens            | 60 minutes    |
+| DRILL_OAUTH2_ENABLED       | Enable OAuth2 authentication       | false         |
+| DRILL_OAUTH2_AUTHORIZE_URL | OAuth2 authorization URL           |               |
+| DRILL_OAUTH2_ACCESS_TOKEN_URL | OAuth2 access token URL         |               |
+| DRILL_OAUTH2_USERINFO_URL  | OAuth2 user info URL               |               |
+| DRILL_OAUTH2_CLIENT_ID     | OAuth2 client ID                   |               |
+| DRILL_OAUTH2_CLIENT_SECRET | OAuth2 client secret               |               |
+| DRILL_OAUTH2_SCOPES        | OAuth2 scopes                      |               |
+| DRILL_OAUTH2_REDIRECT_URL  | OAuth2 redirect URL                |               |
+| DRILL_OAUTH2_AUTOMATIC_SIGN_IN | Enable automatic sign-in for OAuth2 | false   |
+| DRILL_AUTH_SIMPLE_ENABLED  | Enable simple authentication       | true        |
+| DRILL_AUTH_SIMPLE_SIGN_UP_ENABLED | Enable sign-up for simple authentication | true |
+
+#### Metrics Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| DRILL_METRICS_UI_BASE_URL  | Base URL for the metrics UI        |               |
+| DRILL_METRICS_UI_BUILD_TESTING_REPORT_PATH | Path for the build testing report in the metrics UI | /dashboard/2 |
+
+#### Scheduler Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| DRILL_SCHEDULER_REFRESH_VIEWS_INTERVAL_IN_MINUTES | Interval in minutes for refreshing views | 30 |
+| DRILL_SCHEDULER_DATA_RETENTION_JOB_CRON | Cron expression for the data retention job | 0 0 1 * * ? |
+
+## Swagger UI
+
+Drill4J Backend provides Swagger API documentation for easy exploration of available endpoints.
+To access the Swagger UI, open your browser and navigate to:
+
+```shell
+http://localhost:8090/swagger
+```
+This will display the interactive API documentation where you can view and test the available API endpoints:
+
+<Image alt='Swagger UI' src="/img/0.9.0/swagger/swagger-ui.PNG" />
+
+## Authentication and Authorization
+
 > 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
