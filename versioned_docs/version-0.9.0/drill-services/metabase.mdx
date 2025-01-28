@@ -1,0 +1,70 @@
+---
+id: metabase
+title: Metabase
+---
+
+# Metabase
+
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+import { Image } from '@components'
+
+Metabase is a frontend service that provides configurable dashboards for displaying Drill4J's metrics.
+
+## Installation
+To install Metabase, follow the steps described in [local-deployment](/docs/getting-started/local-deployment).
+
+## Configuration
+
+Before you start using Metabase, you need to configure it. Here are the steps to do that:
+
+### Setting Drill4J DB connection
+
+Metabase uses the Drill4J database to fetch the data.
+To set up the Drill4J database connection, follow these steps:
+
+Click on the `Settings` icon in the top right corner and select `Admin settings`.
+<Image alt='Swagger UI' src="/img/0.9.0/metabase/admin-settings-1.PNG" />
+
+Move to the `Databases` menu on the header and click on the `Drill4J_PostgreSQL_DB` record.
+<Image alt='Swagger UI' src="/img/0.9.0/metabase/admin-settings-2.PNG" />
+
+Check the Database connection details and fix them if needed.
+<Image alt='Swagger UI' src="/img/0.9.0/metabase/admin-settings-3.PNG" />
+And click on the `Save changes` button.
+
+### Setting Site URL
+
+Metabase uses the Site URL to generate links to the dashboards.
+To set the Site URL, follow these steps:
+
+Click on the `Settings` icon in the top right corner and select `Admin settings`.
+<Image alt='Swagger UI' src="/img/0.9.0/metabase/admin-settings-1.PNG" />
+
+Move to the `General` tab and set the `Site URL` field.
+<Image alt='Swagger UI' src="/img/0.9.0/metabase/admin-settings-4.PNG" />
+
+## Authentication and Authorization
+
+> 🚧 UNDER CONSTRUCTION. TO BE COMPLETED SOON 🚧
+
+## Troubleshooting
+
+1. I don't see the Metabase authentication form and instead presented with this message:
+    ```
+    "Welcome to Metabase - Looks like everything is working. Now let’s get to know you, connect to your data, and start finding you some answers!
+    ```
+    - Reason: Metabase was not propertly initalized. You likely have either skipped downloading data.sql file or misplaced it. Make sure to put it in db-init folder next to the docker-compose.yml file.
+
+2. Metabase widgets sometimes display correctly and sometimes show errors at random times.
+   - The cause might be the inability to allocate shared memory to the PostgreSQL Docker container.
+   To confirm the cause, you can check the Metabase logs and see an error like:
+   ```
+   pq: could not resize shared memory segment "/PostgreSQL.XXX" to XXX bytes: No space left on device
+   ```
+   To fix it ensure that you add `shm-size` parameter to the `docker-compose.yml` file:
+   ```yaml
+     postgres:
+       image: postgres:17.0
+       shm_size: 1g
+   ```
