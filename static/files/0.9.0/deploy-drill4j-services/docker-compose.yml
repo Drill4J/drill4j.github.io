@@ -97,7 +97,7 @@ services:
       MB_DB_PORT: 5432
       MB_DB_USER: ${POSTGRES_USER}
       MB_DB_PASS: ${POSTGRES_PASSWORD}
-      MB_DB_DBNAME: ${POSTGRES_DB}
+      MB_DB_DBNAME: ${METABASE_POSTGRES_DB}
     healthcheck:
       test: curl --fail -I http://localhost:3000/api/health || exit 1
       interval: 15s
