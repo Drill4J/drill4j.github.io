@@ -173,6 +173,8 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | envId           | no | `develop`                                              | Environment identifier in which the application is running. |
 | scanClassDelay | no | `5000` | Time in milliseconds to delay the class scanning procedure. If none is specified, the class scanning starts immediately upon JVM startup
 | scanClassPath | no |  | Path(s) to application's .jar/.war/.ear files. If none are specified, the agent attempts to find application classes automatically. See [syntax and examples](#how-to-set-scanclasspath) below.
+| messageQueueLimit | no | 512Mb | Maximum queue capacity for sending messages to Drill4J Backend. The queue may accumulate, for example, if the server is unavailable. If none is specified, the default value is 512Mb.
+| messageMaxRetries | no | 10 | Maximum number of retries for sending messages to Drill4J Backend. If nothing is specified, there will be infinite attempts to send messages.
 
 ### Env variables naming
 
