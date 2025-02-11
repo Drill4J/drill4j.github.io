@@ -594,23 +594,43 @@ To skip tests for unchanged code, set the baseline version to compare with.
 #### Gradle
 To set the baseline configuration, add the following properties to your Gradle build file:
 
-```kotlin
+<Codeblock language="kotlin">
+{`
 drill {
+    // Group ID
+    groupId = "my-group"
+    // ID of the application under test
+    appId = "my-application"
+    // Identifies the version of the application under test that is based on the checked out commit
+    buildVersion = "1.0.0"
     // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
     baseline {
-       searchStrategy = "SEARCH_BY_TAG"
+        searchStrategy = "SEARCH_BY_TAG"
     }
+    // Enable Test Recommendations and Test Agent
+    ...
 }
-```
+`}
+</Codeblock>
 
 #### Maven
-To set the baseline configuration, add the following properties to your Maven pom.xml file:
+Set the `<baseline>` Drill4J configuration to your Maven pom.xml file:
 <Codeblock language="xml">
 {`
-<!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
-<baseline>
-    <searchStrategy>SEARCH_BY_TAG</searchStrategy>
-</baseline>
+<configuration>
+    <!-- Group ID -->
+    <groupId>my-group</groupId>
+    <!-- ID of the application under test -->
+    <appId>my-application</appId>
+    <!-- Identifies the version of the application under test that is based on the checked out commit -->
+    <buildVersion>1.0.0</buildVersion>
+    <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+    <baseline>
+        <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+    </baseline>
+    <!-- Enable Test Recommendations and Test Agent -->
+    ...
+</configuration>
 `}
 </Codeblock>
 
