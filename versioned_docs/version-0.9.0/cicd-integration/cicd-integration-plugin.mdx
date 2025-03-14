@@ -101,8 +101,8 @@ plugins {
         ```
     - __Option 2__ (not recommended): using Maven configuration file.
         
-        <Codeblock language="xml">
-        {`
+<Codeblock language="xml">
+{`
         <build>
             <plugins>
                 <plugin>
@@ -117,8 +117,8 @@ plugins {
                 </plugin>
             </plugins>
         </build>
-        `}
-        </Codeblock>
+`}
+</Codeblock>
 
 ## Test Agent
 
@@ -487,6 +487,153 @@ enableAppAgent {
 </appAgent>
 ```
 
+## Test Recommendations
+
+Drill4J helps to significantly reduce test execution time by providing recommendations on
+which tests can be skipped because the code they cover has already been tested before.
+
+### Set up
+
+Prerequisites:
+- [Test agent](#test-agent) is enabled.
+- Before running the tests, make sure that the application under test is already deployed with the [Application Agent](#application-agent) enabled.
+
+#### Gradle
+To enable test recommendations add the following properties to your Gradle build file:
+
+<Codeblock language="kotlin">
+{`
+drill {
+    // Group ID
+    groupId = "my-group"
+    // ID of the application under test
+    appId = "my-application"
+    // Identifies the version of the application under test that is based on the checked out commit
+    buildVersion = "1.0.0"
+    // Enables Test Recommendations
+    enableTestRecommendations {
+        coveragePeriodDays = 30 // Optional, sets the period of days for which coverage data is taken into account
+    }
+    // Enables Test Agent
+    enableTestAgent {
+        version = ${versions.testAgent}
+    }
+}
+`}
+ </Codeblock>
+
+
+#### Maven
+To enable test recommendations add the following properties to your Maven pom.xml file:
+
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Group ID -->
+        <groupId>my-group</groupId>
+        <!-- ID of the application under test -->
+        <appId>my-application</appId>
+        <!-- Identifies the version of the application under test that is based on the checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+        <testRecommendations>
+            <!-- Enables Test Recommendations -->
+            <enabled>true<enabled>
+            <!-- Optional, sets the period of days for which coverage data is taken into account -->
+            <coveragePeriodDays>30</coveragePeriodDays>
+        </testRecommendations>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <!-- Enables Test Agent -->
+                <goal>enableAppAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Disabling recommended tests
+
+#### Gradle
+To disable recommended tests, make the following changes to your Gradle file:
+
+<Codeblock language="kotlin">
+{`
+enableTestRecommendations {
+    // Optional, disables test recommendations
+    enabled = false
+}
+`}
+ </Codeblock>
+
+ #### Maven
+To disable recommended tests, make the following changes to your Maven file:
+
+<Codeblock language="xml">
+{`
+<testRecommendations>
+    <!-- Disables Test Recommendations -->
+    <enabled>false<enabled>
+</testRecommendations>
+`}
+</Codeblock>
+
+### Comparing with baseline
+
+Drill4J allows you to run tests only for code that has changed compared to the baseline version.
+To skip tests for unchanged code, set the baseline version to compare with.
+
+>See the [Baseline Strategy](#baseline-strategy) section for more information.
+
+#### Gradle
+To set the baseline configuration, add the following properties to your Gradle build file:
+
+<Codeblock language="kotlin">
+{`
+drill {
+    // Group ID
+    groupId = "my-group"
+    // ID of the application under test
+    appId = "my-application"
+    // Identifies the version of the application under test that is based on the checked out commit
+    buildVersion = "1.0.0"
+    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
+    baseline {
+        searchStrategy = "SEARCH_BY_TAG"
+    }
+    // Enable Test Recommendations and Test Agent
+    ...
+}
+`}
+</Codeblock>
+
+#### Maven
+Set the `<baseline>` Drill4J configuration to your Maven pom.xml file:
+<Codeblock language="xml">
+{`
+<configuration>
+    <!-- Group ID -->
+    <groupId>my-group</groupId>
+    <!-- ID of the application under test -->
+    <appId>my-application</appId>
+    <!-- Identifies the version of the application under test that is based on the checked out commit -->
+    <buildVersion>1.0.0</buildVersion>
+    <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+    <baseline>
+        <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+    </baseline>
+    <!-- Enable Test Recommendations and Test Agent -->
+    ...
+</configuration>
+`}
+</Codeblock>
+
 ## Generating a change testing report
 
 A Change Testing Report provides insights into the code changes that have been tested,
@@ -554,64 +701,6 @@ mvn drill:generateChangeTestingReport
 
 The report will be saved in the `/target/drill-reports/` directory.
 
-### Baseline strategy
-
-To generate a Change Testing Report, the current build must be compared to a baseline build.
-Drill4J supports multiple strategies to identify the baseline build:
-- Search by tags
-- Search by merge base
-
-#### Search by tags
-This strategy compares the current build to a baseline build identified by Git tags.
-
-> *IMPORTANT!*
-You need to have at least one Git tag in your repository for this strategy to work.
-
-##### Gradle
-```kotlin
-baseline {
-    // Strategy to find a baseline commit
-    searchStrategy = "SEARCH_BY_TAG"
-
-    // Adjust to match your tag naming scheme
-    tagPattern = "v[0-9].[0-9].[0-9]*"
-}
-```
-##### Maven
-```xml
-<baseline>
-    <!-- Strategy to find a baseline commit -->
-    <searchStrategy>SEARCH_BY_TAG</searchStrategy>
-
-    <!-- Adjust to match your tag naming scheme -->
-    <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
-</baseline>
-```
-
-#### Search by merge base
-This strategy compares the current build to the baseline based on the common ancestor (merge base) of two branches.
-
-##### Gradle
-```kotlin
-baseline {
-    // Strategy to find a baseline commit
-    searchStrategy = "SEARCH_BY_MERGE_BASE"
-    
-    // Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
-    targetRef = "main"
-}
-```
-##### Maven
-```xml
-<baseline>
-    <!-- Strategy to find a baseline commit -->
-    <searchStrategy>SEARCH_BY_MERGE_BASE</searchStrategy>
-
-    <!-- Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
-    <targetRef>main</targetRef>
-</baseline>
-```
-
 ## GitHub Pull Request report
 
 This feature posts a report of the tested changes as a comment on a GitHub Pull Request.
@@ -665,9 +754,11 @@ Add the following properties to the Drill4J plugin configuration in your Maven p
         </github>
     </configuration>
     <executions>
-       <goals>
-           <goal>githubPullRequestReport</goal>
-       </goals>
+        <execution>
+            <goals>
+                <goal>githubPullRequestReport</goal>
+            </goals>
+        </execution>
     </executions>
 </plugin>
 `}
@@ -732,9 +823,11 @@ Add the following properties to your Maven pom.xml file:
         </gitlab>
     </configuration>
     <executions>
-        <goals>
-           <goal>gitlabMergeRequestReport</goal>
-        </goals>
+        <execution>
+            <goals>
+                <goal>gitlabMergeRequestReport</goal>
+            </goals>
+        </execution>
     </executions>
 </plugin>
 `}
@@ -790,9 +883,11 @@ Add the following parameters to your Maven pom.xml file:
         <buildVersion>1.0.0</buildVersion>
     </configuration>
     <executions>
-        <goals>
-            <goal>sendBuildInfo</goal>
-        </goals>
+        <execution>
+            <goals>
+                <goal>sendBuildInfo</goal>
+            </goals>
+        </execution>
     </executions>
 </plugin>
 `}
@@ -802,6 +897,65 @@ To send the build information to the Drill4J backend, execute the following Mave
 ```shell
 mvn drill:sendBuildInfo
 ```
+
+## Baseline strategy
+
+To generate a Change Testing Report or enable Test Recommendations, the current build must be compared to a baseline build.
+Drill4J supports multiple strategies for identifying the baseline build.
+- Search by tags
+- Search by merge base
+
+### Search by tags
+This strategy compares the current build to a baseline build identified by Git tags.
+
+> *IMPORTANT!*
+You need to have at least one Git tag in your repository for this strategy to work.
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline commit
+    searchStrategy = "SEARCH_BY_TAG"
+
+    // Adjust to match your tag naming scheme
+    tagPattern = "v[0-9].[0-9].[0-9]*"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline commit -->
+    <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+
+    <!-- Adjust to match your tag naming scheme -->
+    <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
+</baseline>
+```
+
+### Search by merge base
+This strategy compares the current build to the baseline based on the common ancestor (merge base) of two branches.
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline commit
+    searchStrategy = "SEARCH_BY_MERGE_BASE"
+
+    // Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
+    targetRef = "main"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline commit -->
+    <searchStrategy>SEARCH_BY_MERGE_BASE</searchStrategy>
+
+    <!-- Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
+    <targetRef>main</targetRef>
+</baseline>
+```
+
 
 ## Troubleshooting
 
