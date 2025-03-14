@@ -67,13 +67,34 @@ This page provides the latest versions of all Drill4J components related to the 
 
 ## Releases
 
+### Release Mar 14 2025  
+
+#### New Versions
+
+- Drill4J Backend [0.9.10](https://github.com/Drill4J/admin/pkgs/container/admin/371078861?tag=0.9.10)
+- Metabase Dashboards [0.9.2](https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/0.9.2)
+- Test Agent [0.23.4](https://github.com/Drill4J/autotest-agent/releases/tag/v0.23.4)
+- Application Agent [0.9.7](https://github.com/Drill4J/java-agent/releases/tag/v0.9.7)
+- CI/CD Integration Plugin 0.1.7 ([Maven](https://central.sonatype.com/artifact/com.epam.drill.integration/drill-maven-plugin), [Gradle](https://central.sonatype.com/artifact/com.epam.drill.integration.cicd/com.epam.drill.integration.cicd.gradle.plugin/versions))
+
+#### New Features & Improvements  
+
+- **Optimized Metrics Calculation**: Significantly improved metrics calculation performance with a materialized view. Metric updates are now scheduled, and users can adjust the update interval using the [`DRILL_SCHEDULER_REFRESH_VIEWS_INTERVAL_IN_MINUTES`](https://drill4j.github.io/docs/drill-services/drill-backend#scheduler-configuration) environment variable.  
+- **Trend Analysis for Builds**: Introduces tracking of testing and coverage changes across multiple application versions, providing deeper insights into long-term testing trends.  
+- **Recommended Tests**: Enables test recommendations via a CI/CD plugin for Gradle and Maven, as well as an API endpoint. Supports precise test selection based on tags and criteria. See more in the [Test Recommendations](https://drill4j.github.io/docs/cicd-integration/cicd-integration-plugin#test-recommendations) section.  
+- **Test-Centric Metrics Dashboard**: Added a dedicated dashboard offering a deeper view into test sessions, launches, and corresponding metrics from the test suite perspective.
+- **Metabase Dashboards Migration Image**:
+  - Changed versioning schema from `v*` to `0.9.*` to match other Drill4J components
+  - Created dedicated Docker image to supply migration for Metabase-based dashboards. Users no longer need to download migration files manually - the whole process is automated.
+  - __WARNING__: all customizations to previously existing dashboards will be wiped upon update, as the tables are replaced before migration is applied. All Drill4J data and metrics are preserved. 
+
 ### Minor Release 4
 
 __New Versions__:
 
 - Application Agent [0.9.4](https://github.com/Drill4J/java-agent/releases/tag/v0.9.4)
 - Test Agent [0.23.3](https://github.com/Drill4J/autotest-agent/releases/tag/v0.23.3)
-- CI/CD Integration Plguin 0.1.6 ([Maven](https://central.sonatype.com/artifact/com.epam.drill.integration/drill-maven-plugin), [Gradle](https://central.sonatype.com/artifact/com.epam.drill.integration.cicd/com.epam.drill.integration.cicd.gradle.plugin/versions))
+- CI/CD Integration Plugin 0.1.6 ([Maven](https://central.sonatype.com/artifact/com.epam.drill.integration/drill-maven-plugin), [Gradle](https://central.sonatype.com/artifact/com.epam.drill.integration.cicd/com.epam.drill.integration.cicd.gradle.plugin/versions))
 - Drill4J Backend [0.9.3](https://github.com/Drill4J/admin/pkgs/container/admin/298908511?tag=0.9.3)
 - Metabase Dashboards [v20](https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/v20)
 - Drill4J UI [0.1.2](https://github.com/Drill4J/drill4j-ui/pkgs/container/drill4j-ui/305026431?tag=0.1.2)
@@ -87,7 +108,7 @@ __Notes__:
 __New Versions__:
 
 - Application Agent 0.9.3
-- CI/CD Integration Plguin 0.1.3
+- CI/CD Integration Plugin 0.1.3
 
 __Changelog__:
 1. Application Agent - fixed Java 21 support issue associated with outdated ASM library
