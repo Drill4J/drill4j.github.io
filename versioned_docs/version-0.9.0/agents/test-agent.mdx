@@ -113,13 +113,30 @@ To know how to use it see the [Application Agent reference](/docs/agents/java-ag
 
 ## Agent parameters reference
 
+### General Configuration
+
 | Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
 |----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | apiUrl               | yes      | `http://localhost/api`                   | URL to Drill4J Admin /api endpoint.                                                                                                                                         |
 | apiKey               | yes      | `1_01cdf51ff20544ee...`                  | Drill4J Backend API key. Generate it using Drill4J UI.  Please make sure to read the [apiKey security](#api-key-security) section                                                                                            |
 | groupId              | yes      | `my-cool-app`                            | Unique arbitrary string identifying your application group.                                                                                                                |
+| testTaskId           | no       | `check`                                  | Name of the test task or test command that was launched to run tests. |
 | withJsCoverage       | no       | `true`                                   | Enables collecting JS coverage by Chrome DevTools |
 | devToolsProxyAddress | no       | `http://localhost:8092`                  | URL address of [Drill4J DevToolsProxy](#)  |
+| messageQueueLimit | no | `512Mb` | Maximum queue capacity for sending messages to Drill4J Backend. The queue may accumulate, for example, if the server is unavailable. If none is specified, the default value is 512Mb.
+| messageMaxRetries | no | `10` | Maximum number of retries for sending messages to Drill4J Backend. If nothing is specified, there will be infinite attempts to send messages.
+
+### Recommended Tests
+
+| Parameter            | Required |  Description                                                                                                                                                                |
+|----------------------|----------|----------------------------------------------------------------------------|
+| recommendedTestsEnabled               | no     | Enables Test Recommendations                                                          |
+| recommendedTestsCoveragePeriodDays    | no     | Period of days for which coverage data is taken into account for test recommendations |
+| recommendedTestsTargetAppId           | no     | ID of the application under test |
+| recommendedTestsTargetCommitSha       | no     | Commit SHA of the application under test |
+| recommendedTestsTargetBuildVersion    | no     | Application under test version |
+| recommendedTestsBaselineCommitSha     | no     | Baseline commit SHA of the application under test |
+| recommendedTestsBaselineBuildVersion  | no     | Application under test baseline version |
 
 
 ### API key security
