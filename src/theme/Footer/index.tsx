@@ -18,7 +18,7 @@ const Footer = () => {
       <div className="navigationContainer">
         <section className="grid py-12 lg:py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5">
           <a href="/" className="col-span-full lg:col-span-4 mb-12 lg:mb-0">
-            <img src={useBaseUrl('img/drill4j-logo-grayscale.svg')} alt="drill4j github" />
+            <img src={useBaseUrl('imgs/drill4j-logo-grayscale.svg')} alt="drill4j github" />
           </a>
           {links.map(({ title = '', items }, index) => (
             <div
@@ -41,7 +41,7 @@ const Footer = () => {
           <span className="flex flex-col gap-y-2 items-center gap-x-2 text-16 leading-24 text-monochrome-default sm:flex-row">
             Sponsored by
             <Link to="https://www.epam.com/">
-              <img src={useBaseUrl('img/epam-logo.svg')} alt="Epam" />
+              <img src={useBaseUrl('imgs/epam-logo.svg')} alt="Epam" />
             </Link>
             Licensed under Apache v2.0
           </span>

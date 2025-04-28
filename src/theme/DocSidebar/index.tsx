@@ -228,7 +228,7 @@ function DocSidebar({
                 &times;
               </span>
             ) : (
-              <Icon src="/img/open-menu.svg" width={24} height={24} />
+              <Icon src="/imgs/open-menu.svg" width={24} height={24} />
             )}
           </button>
         )}

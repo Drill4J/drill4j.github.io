@@ -118,7 +118,7 @@
 
       &:nth-child(4)::after {
         @extend .integrateStepNumber;
-        content: url('/img/done.svg');
+        content: url('/imgs/done.svg');
         background: map-get($green, success);
       }
     }
@@ -162,7 +162,7 @@
     @extend .feature;
 
     &::before {
-      content: url('/img/small-done.svg');
+      content: url('/imgs/small-done.svg');
       top: 50%;
       transform: translateY(-50%);
       left: -32px;
@@ -179,7 +179,7 @@
     @extend .feature;
 
     &::before {
-      content: url('/img/small-plus.svg');
+      content: url('/imgs/small-plus.svg');
       top: 5px;
       left: -32px;
       background-color: map-get($green, success);
@@ -198,12 +198,12 @@
 }
 
 .quickStart {
-  background-image: url('/img/quick-start-small.png');
+  background-image: url('/imgs/quick-start-small.png');
   background-size: cover;
   background-position: 50% 50%;
 
   @media screen and (min-width: 640px){
-    background-image: url('/img/quick-start.png');
+    background-image: url('/imgs/quick-start.png');
   }
 
   p {

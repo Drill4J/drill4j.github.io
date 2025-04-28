@@ -71,13 +71,13 @@ function Home() {
                 <img
                   className="w-full"
                   style={{ borderRadius: '14px' }}
-                  src={useBaseUrl('img/coverage.png')}
+                  src={useBaseUrl('imgs/coverage.png')}
                   alt="coverage"
                 />
               </div>
               <img
                 className={clsx(styles.shadowImg, 'w-5/6 mx-auto')}
-                src={useBaseUrl('img/coverage-background.png')}
+                src={useBaseUrl('imgs/coverage-background.png')}
                 alt="coverage background"
               />
             </div>
@@ -94,13 +94,13 @@ function Home() {
               <div className={clsx(styles.imgWrapper, 'absolute -top-8 right-0 rounded-full w-1/2 md:w-1/2 ')}>
                 <img
                   className="rounded-full w-full"
-                  src={useBaseUrl('img/risks-and-t2r.png')}
+                  src={useBaseUrl('imgs/risks-and-t2r.png')}
                   alt="risks and tests to run"
                 />
               </div>
               <img
                 className={clsx(styles.shadowImg, 'w-5/6')}
-                src={useBaseUrl('img/risks-and-t2r-background.png')}
+                src={useBaseUrl('imgs/risks-and-t2r-background.png')}
                 alt="risks and tests to run background"
               />
             </div>
@@ -120,13 +120,13 @@ function Home() {
                 <img
                   className="w-full"
                   style={{ borderRadius: '14px' }}
-                  src={useBaseUrl('img/time-savings.png')}
+                  src={useBaseUrl('imgs/time-savings.png')}
                   alt="time savings"
                 />
               </div>
               <img
                 className={clsx(styles.shadowImg, 'w-5/6 mx-auto')}
-                src={useBaseUrl('img/time-savings-background.png')}
+                src={useBaseUrl('imgs/time-savings-background.png')}
                 alt="time savings background"
               />
             </div>
@@ -142,11 +142,11 @@ function Home() {
               <div
                 className={clsx(styles.imgWrapper, 'absolute -top-6 sm:-top-9 md:-top-9 lg:-top-11 right-5 rounded-full w-1/2 md:w-1/2')}
               >
-                <img className="rounded-full w-full" src={useBaseUrl('img/quality-gate.png')} alt="quality gate" />
+                <img className="rounded-full w-full" src={useBaseUrl('imgs/quality-gate.png')} alt="quality gate" />
               </div>
               <img
                 className={clsx(styles.shadowImg, 'w-5/6')}
-                src={useBaseUrl('img/quality-gate-background.png')}
+                src={useBaseUrl('imgs/quality-gate-background.png')}
                 alt="quality gate background"
               />
             </div>
@@ -162,26 +162,26 @@ function Home() {
             <div className="relative order-1 col-span-full md:col-span-4 lg:col-span-6 w-full md:w-11/12 mb-10 md:mb-0">
               <img
                 className={clsx(styles.shadowImg, 'w-5/6 invisible')}
-                src={useBaseUrl('img/browser-extension-background.png')}
+                src={useBaseUrl('imgs/browser-extension-background.png')}
                 alt="browser extension"
               />
               <div className="absolute left-0 bottom-0 z-10 w-5/6">
                 <img
                   className={clsx(styles.shadowImg)}
                   style={{ width: '80%' }}
-                  src={useBaseUrl('img/browser-extension.png')}
+                  src={useBaseUrl('imgs/browser-extension.png')}
                   alt="browser extension"
                 />
                 <img
                   className={clsx(styles.drillLogoShadow, 'absolute top-0 -right-1 z-10 rounded-full')}
                   style={{ width: '17%' }}
-                  src={useBaseUrl('img/drill-rounded-logo.svg')}
+                  src={useBaseUrl('imgs/drill-rounded-logo.svg')}
                   alt="drill logo"
                 />
               </div>
               <img
                 className={clsx(styles.shadowImg, 'absolute w-8/12 top-0 right-0 ')}
-                src={useBaseUrl('img/browser-extension-background.png')}
+                src={useBaseUrl('imgs/browser-extension-background.png')}
                 alt="browser extension background"
               />
             </div>

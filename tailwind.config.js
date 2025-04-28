@@ -9,12 +9,12 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: () => ({
-        'git-hub': "url('/img/git-hub.svg')",
-        telegram: "url('/img/telegram.svg')",
-        twiter: "url('/img/twiter.svg')",
-        youtube: "url('/img/youtube.svg')",
-        menu: "url('/img/menu.svg')",
-        close: "url('/img/close.svg')",
+        'git-hub': "url('/imgs/git-hub.svg')",
+        telegram: "url('/imgs/telegram.svg')",
+        twiter: "url('/imgs/twiter.svg')",
+        youtube: "url('/imgs/youtube.svg')",
+        menu: "url('/imgs/menu.svg')",
+        close: "url('/imgs/close.svg')",
       }),
       screens: {
         mxs: '360px',

@@ -18,7 +18,7 @@ export const Warning = ({ children }: Props) => (
       'text-monochrome-default text-16 leading-24',
     )}
   >
-    <Icon src="img/warning.svg" width={16} height={16} className="mt-1 h-4 text-orange-default" />
+    <Icon src="imgs/warning.svg" width={16} height={16} className="mt-1 h-4 text-orange-default" />
     <div>{children}</div>
   </div>
 );

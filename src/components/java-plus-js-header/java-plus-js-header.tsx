@@ -6,7 +6,7 @@ export const JavaPlusJsHeader = () => (
     <h3 className="text-center">We are using a RealWorld app examples:</h3>
     <div className="flex gap-x-6 mb-12 text-16 leading-20">
       <div className="flex justify-center items-center gap-x-3 leading-20">
-        <img style={{ marginBottom: 0 }} src={useBaseUrl('img/spring-logo.svg')} alt="spring-logo" />
+        <img style={{ marginBottom: 0 }} src={useBaseUrl('imgs/spring-logo.svg')} alt="spring-logo" />
         <span className="flex flex-col">
           Backend:&nbsp;
           <a
@@ -20,10 +20,10 @@ export const JavaPlusJsHeader = () => (
         </span>
       </div>
       <div className="flex justify-center items-center">
-        <img style={{ marginBottom: 0 }} src={useBaseUrl('img/plus.svg')} alt="plus" />
+        <img style={{ marginBottom: 0 }} src={useBaseUrl('imgs/plus.svg')} alt="plus" />
       </div>
       <div className="flex justify-center items-center gap-x-3">
-        <img style={{ marginBottom: 0 }} src={useBaseUrl('img/angular-logo.svg')} alt="angular-logo" />
+        <img style={{ marginBottom: 0 }} src={useBaseUrl('imgs/angular-logo.svg')} alt="angular-logo" />
         <span className="flex flex-col leading-20">
           Frontend:&nbsp;
           <a

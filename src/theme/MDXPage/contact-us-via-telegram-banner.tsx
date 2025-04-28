@@ -15,7 +15,7 @@ export const ContactUsViaTelegramBanner = () => (
       target="_blank"
       rel="noreferrer"
     >
-      <Icon src="img/telegram-logo.svg" width={16} height={12} /> Telegram
+      <Icon src="imgs/telegram-logo.svg" width={16} height={12} /> Telegram
     </a>
   </div>
 );

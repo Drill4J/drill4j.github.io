@@ -37,7 +37,7 @@ function MDXPage(props: Props): JSX.Element {
       wrapperClassName={wrapperClassName}
     >
       <main>
-        <Banner backgroundSrc="img/banner-background.png">
+        <Banner backgroundSrc="imgs/banner-background.png">
           <h1 className="text-monochrome-white text-32">{title}</h1>
         </Banner>
         <div className="container pt-12 pb-24">

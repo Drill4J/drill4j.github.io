@@ -4,14 +4,14 @@ title: Core Concepts
 ---
 import {Image} from '@components'
 import { AdditionalInformation, Badge } from '@components';
-import ExternalLinkIcon from '@static/img/external-link.svg';
+import ExternalLinkIcon from '@static/imgs/external-link.svg';
 
-<Image src="/img/core-concept-diagram.jpg"/>
+<Image src="/imgs/core-concept-diagram.jpg"/>
 
 ## 1. Service Packages Configuration
 The Drill4J Agent sends the application structure (packages\classes\methods) to the Drill admin panel. <br/>
 User is able to configure which service (application) packages will be instrumented. It can be done on the 2nd step of agent registration in the field **Application Packages**.
-<Image src="/img/agent-registration-step2.png"/>
+<Image src="/imgs/agent-registration-step2.png"/>
 
 A line with hyphenation turns into an array of strings for backend.
 
@@ -65,11 +65,11 @@ A risked method has 3 states:
 ### Recommended Tests
 **Recommended tests** are tests that should be run at first to check changes of code in a new application build.
 The set of recommended tests is formed by Test to Code mapping. It's a relationship between a particular test with the executed part of code.
-<Image src="/img/test-to-code-mapping.png"/>
+<Image src="/imgs/test-to-code-mapping.png"/>
 
 **E.g.**  In the first application build tests are mapped to code. The second application build has 3 modified methods which were covered by 2 test cases (autotests).
 Related to this information, we recommend to run only 2 test cases in order to check only modified code and don't waste time to run cases that aren't check something useful. <br/> 
 Also, we recommend writing new autotests or modify existing autotests to cover new methods.
 
-<Image src="/img/recommended-tests.png"/>
+<Image src="/imgs/recommended-tests.png"/>
 

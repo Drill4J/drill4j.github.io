@@ -15,7 +15,7 @@ Imagine a system under test, a black box. We perform a set of actions on applica
 
 <Image
   alt="A diagram with two entities: the first is labeled 'System Under Test', the second is labeled 'Test performer'. They are connected with an arrow labeled 'test actions'"
-  src="/img/motivation-blackbox.png"
+  src="/imgs/motivation-blackbox.png"
 />
 
 Once all actions are completed, we get a list of tests, each assined with either "passed" or "failed" status.
@@ -47,7 +47,7 @@ Even the most simple example application may pose a challenge.
 
 Let's look at the [Todo](https://todomvc.com/examples/angularjs/#/) application - a pet project that allows to create, edit and delete notes.
 
-<Image alt="A screenshot of a simple TodoMVC application" src="/img/motivation-todomvc-screenshot.png" />
+<Image alt="A screenshot of a simple TodoMVC application" src="/imgs/motivation-todomvc-screenshot.png" />
 
 - only JavaScript and Web API
 - no backend at all (except the one that serves the files)
@@ -67,7 +67,7 @@ Testing it by performing these obvious steps yeilds only 80.7% coverage.
 
 <Image
   alt="A screenshot of Drill4J Admin Panel. It demonstrates various application info and the coverage of 80.7%"
-  src="/img/motivation-todomvc-admin-screenshot.png"
+  src="/imgs/motivation-todomvc-admin-screenshot.png"
 />
 
 That does not look bad, and one might pass that as "good enough".
@@ -75,7 +75,7 @@ But Drill4J reveals that we have under-tested a number of classes, including the
 
 <Image
   alt="A screenshot of Drill4J Admin Panel. It demonstrates which methods were covered by tests and which were not"
-  src="/img/motivation-todomvc-admin-screenshot-2.png"
+  src="/imgs/motivation-todomvc-admin-screenshot-2.png"
 />
 
 On closer inspection we realise, we forgot about "edit and then revert edits" scenario!
@@ -83,14 +83,14 @@ Upon its completion, we can see that there is a coverage, part of which has over
 
 <Image
   alt="A screenshot of Drill4J Admin Panel. It demonstrates an increment in coverage"
-  src="/img/motivation-todomvc-admin-screenshot-3.png"
+  src="/imgs/motivation-todomvc-admin-screenshot-3.png"
 />
 
 We were able to bump coverage to 88.7%, but there are still improvements to be made.
 
 <Image
   alt="A screenshot of Drill4J Admin Panel. It demonstrates an increment in coverage"
-  src="/img/motivation-todomvc-admin-screenshot-4.png"
+  src="/imgs/motivation-todomvc-admin-screenshot-4.png"
 />
 
 Digging through the code to understand the rest 12.3% reveals more missed cases, such as trying to add an empty todo item.

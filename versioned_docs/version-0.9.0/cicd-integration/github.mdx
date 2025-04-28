@@ -22,14 +22,14 @@ __Change Testing__ report highlights the number of __new__ and __modified__ meth
 3. Handy for `feature/*`, `fix/*` branches and other shorter-lived branches
 4. Attached to [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) as comments
 
-<Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
+<Image alt="GitHub Pull Request Report" src="/imgs/0.9.0/github/github-pr-report.png" />
 
 ### Report on branch push
 1. Identifies changes in a branch between the __latest commit__ and the configured __baseline commit__. Generally, the __baseline commit__ is a tagged commit that follows the `tagPattern` defined in the [configuration file](#generate-report-on-branch-push).
 2. Best used in long-living branches such as `main` and `development`
 3. Attached to [artifacts](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow#about-workflow-artifacts) of workflow triggered [on branch push event](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#push)
 
-<Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
+<Image alt="GitHub Workflow Report" src="/imgs/0.9.0/github/github-workflow-report.png" />
 
 ## Prerequisites
 
@@ -316,7 +316,7 @@ Now it's time to create a new branch from the `main` branch.
 
 The comments section of the Pull Request should include a new comment with the report.
 
-<Image alt="GitHub Pull Request Report" src="/img/0.9.0/github/github-pr-report.png" />
+<Image alt="GitHub Pull Request Report" src="/imgs/0.9.0/github/github-pr-report.png" />
 
 ## Generate report on Branch push
 
@@ -444,7 +444,7 @@ jobs:
 ### Confirm its working
 
 Push some changes. Once workflow is complete, check the attachments for uploaded report:
-<Image alt="GitHub Workflow Report" src="/img/0.9.0/github/github-workflow-report.png" />
+<Image alt="GitHub Workflow Report" src="/imgs/0.9.0/github/github-workflow-report.png" />
 
 ## Examples
 

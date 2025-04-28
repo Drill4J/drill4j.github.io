@@ -84,12 +84,12 @@
       }
 
       &:first-child {
-        content: url("/img/ctrl.svg");
+        content: url("/imgs/ctrl.svg");
         padding: 5px;
       }
 
       &:last-child {
-        content: url("/img/k.svg");
+        content: url("/imgs/k.svg");
         padding: 5px 7px;
       }
     }
@@ -101,7 +101,7 @@ body.mac-os {
     &:first-child {
       display: flex;
       justify-content: center;
-      content: url("/img/comand.svg") !important;
+      content: url("/imgs/comand.svg") !important;
       padding: 3px;
     }
   }
@@ -238,7 +238,7 @@ a.hash-link {
   visibility: hidden;
 
   &:before {
-    content: url('/img/header-link.svg');
+    content: url('/imgs/header-link.svg');
     visibility: visible;
   }
 }

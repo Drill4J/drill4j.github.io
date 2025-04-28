@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
-  favicon: '/img/favicon.ico',
+  favicon: '/imgs/favicon.ico',
   organizationName: 'Drill4J',
   projectName: 'drill4j.github.io',
   themeConfig: {
@@ -28,7 +28,7 @@ module.exports = {
     navbar: {
       logo: {
         alt: 'Drill4J Logo',
-        src: 'img/drill4j-logo.svg',
+        src: 'imgs/drill4j-logo.svg',
       },
       items: [
         {

@@ -1,6 +1,6 @@
-import GitHubIcon from '../../static/img/git-hub.svg';
-import TelegramIcon from '../../static/img/telegram.svg';
-import YoutubeIcon from '../../static/img/youtube.svg';
+import GitHubIcon from '../../static/imgs/git-hub.svg';
+import TelegramIcon from '../../static/imgs/telegram.svg';
+import YoutubeIcon from '../../static/imgs/youtube.svg';
 
 export const socialLinks = [
   { Icon: GitHubIcon, bg: 'bg-git-hub', link: 'https://github.com/Drill4J' },
