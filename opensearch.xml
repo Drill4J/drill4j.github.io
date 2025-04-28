@@ -4,7 +4,7 @@
   <ShortName>Drill4J</ShortName>
   <Description>Search Drill4J</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://Drill4J.github.io/img/favicon.ico</Image>
+  <Image width="16" height="16" type="image/x-icon">https://Drill4J.github.io/imgs/favicon.ico</Image>
   <Url type="text/html" method="get" template="https://Drill4J.github.io/search?q={searchTerms}"/>
   <Url type="application/opensearchdescription+xml" rel="self" template="https://Drill4J.github.io/opensearch.xml" />
   <moz:SearchForm>https://Drill4J.github.io/</moz:SearchForm>
