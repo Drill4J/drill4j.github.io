@@ -134,5 +134,18 @@ This will display the interactive API documentation where you can view and test 
 
 ## Troubleshooting
 
-1. Миграция не применяется до конца / фейлится
-   Причина - shared memory не выделена в контейнере PostgreSQL.
+1. __Problem__: backend application fails to start due to database migration error.
+
+__Symptom__:
+```
+pq: could not resize shared memory segment "/PostgreSQL.XXX" to XXX bytes: No space left on device
+```
+
+__Solution__:
+```
+Set `shm-size` parameter for PostgreSQL to at least 1G. Example for `docker-compose.yml` file:
+```yaml
+  postgres:
+    image: postgres:17.0
+    shm_size: 1g
+```
