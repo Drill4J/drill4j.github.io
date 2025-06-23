@@ -230,7 +230,7 @@ function Home() {
                 <li className={styles.basicFeature}>Microservices Support</li>
                 <li className={styles.basicFeature}>Chrome Extension</li>
               </ul>
-              <a href="/docs/installation/setup" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
+              <a href="/docs/getting-started/local-deployment" className="button-ghost md:absolute bottom-8 left-6 lg:left-0 right-4 md:right-12 lg:right-0 mb-20 md:mb-0">For free</a>
             </div>
             <div className={clsx(styles.individualFeatures, 'md:col-span-4 lg:col-start-7 lg:col-span-5 pb-9')}>
               <h3 className="py-4 px-4 md:px-8 border-b border-monochrome-medium-tint">Individual</h3>
