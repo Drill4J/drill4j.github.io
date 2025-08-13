@@ -898,28 +898,31 @@ To send the build information to the Drill4J backend, execute the following Mave
 mvn drill:sendBuildInfo
 ```
 
-## Scanning application classes
+## Scanning application archive (JAR/WAR/EAR)
 
 Drill4J automatically scans information about an application's classes and methods when the application is run with the [Application agent](#application-agent).
-However, you can also obtain this information right after building the application—before it is run.
-To do this, use the `drillScanAppArchive` task in Gradle or the `drill:scanAppArchive` goal in Maven.
+However, you can also obtain this information right after building the application — before it is run.
+You have two ways to do this: either by running the dedicated Gradle/Maven command,
+or by enabling the corresponding parameter in the plugin configuration.
 
+### Run Gradle/Maven command
+To scan the application archive, execute the dedicated Gradle task or Maven goal as described below.
 > Note, before executing the command, you need to enable the [Application agent](#application-agent) and build your application.
 
+#### Gradle
+Execute the following Gradle command:
 
-### Gradle
-
-To scan the information about the application's classes and methods and send it to Drill4J Backend, execute the following Gradle command:
 ```shell
 ./gradlew drillScanAppArchive
 ```
-### Maven
+#### Maven
+Execute the following Maven command:
 
-To scan the information about the application's classes and methods and send it to Drill4J Backend, execute the following Maven command:
 ```shell
 mvn drill:scanAppArchive
 ```
 
+### Enable scan on build
 Alternatively, you can set up the `archiveScannerEnabled` parameter to `true` in the Application Agent plugin configuration.
 This case the application archive will be scanned automatically after the build is completed.
 
