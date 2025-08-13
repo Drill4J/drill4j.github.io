@@ -302,6 +302,46 @@ enableTestAgent {
 </testAgent>
 ```
 
+### Disable test tracing
+
+By default, the Test Agent will trace all tests executed in Gradle or Maven.
+This lets you measure the coverage of each individual test, but it also generates a large amount of data.
+If you only need the overall coverage for an entire test session rather than for each test - you can disable test tracing.
+
+To disable test tracing, set the `testTracingEnabled` parameter to `false` in the Test Agent configuration:
+
+##### Gradle
+```kotlin
+enableTestAgent {
+    testTracingEnabled = false
+}
+```
+##### Maven
+```xml
+<testAgent>
+    <testTracingEnabled>false</testTracingEnabled>
+</testAgent>
+```
+
+### Disable sending test metadata
+By default, the Test Agent sends test launch metadata (test names, test results, test duration, etc.) to the Drill4J backend.
+This metadata is used to provide detailed test reports and recommendations.
+
+If you want to disable this feature, set the `testLaunchMetadataSendingEnabled` parameter to `false` in the Test Agent configuration:
+
+##### Gradle
+```kotlin
+enableTestAgent {
+    testLaunchMetadataSendingEnabled = false
+}
+```
+##### Maven
+```xml
+<testAgent>
+    <testLaunchMetadataSendingEnabled>false</testLaunchMetadataSendingEnabled>
+</testAgent>
+```
+
 ## Application Agent
 
 Enables Drill4J to collect coverage for application classes. See the [Application Agent](/docs/agents/java-agent) reference page for more details.

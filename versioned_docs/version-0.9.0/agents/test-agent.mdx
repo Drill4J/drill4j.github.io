@@ -138,6 +138,11 @@ To know how to use it see the [Application Agent reference](/docs/agents/java-ag
 | recommendedTestsBaselineCommitSha     | no     | Baseline commit SHA of the application under test |
 | recommendedTestsBaselineBuildVersion  | no     | Application under test baseline version |
 
+### Test Tracing
+| Parameter            | Required |  Description                                                                                                                                                                |
+|----------------------|----------|----------------------------------------------------------------------------|
+| testTracingEnabled   | no       | Enables test tracing. If enabled, collected coverage will be related to the executed test, otherwise only to the test session
+| testLaunchMetadataSendingEnabled    | no     | Enables sending test launch metadata to Drill4J Backend.
 
 ### API key security
 
