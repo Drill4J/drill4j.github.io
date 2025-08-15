@@ -67,7 +67,24 @@ This page provides the latest versions of all Drill4J components related to the 
 
 ## Releases
 
-### Release Jun 16 2025  
+### Release Aug 15 2025
+
+#### New Versions
+
+- Drill4J Backend [0.9.16](https://github.com/Drill4J/admin/pkgs/container/admin/487713489?tag=0.9.16)
+- Test Agent [0.23.8](https://github.com/Drill4J/autotest-agent/releases/tag/v0.23.8)
+- Application Agent [0.9.9](https://github.com/Drill4J/java-agent/releases/tag/v0.9.9)
+- CI/CD Integration Plugin 0.1.10 ([Maven](https://central.sonatype.com/artifact/com.epam.drill.integration/drill-maven-plugin), [Gradle](https://central.sonatype.com/artifact/com.epam.drill.integration.cicd/com.epam.drill.integration.cicd.gradle.plugin/versions))
+- Metabase Dashboards [0.9.8](https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/0.9.8)
+
+#### New Features & Improvements
+
+- **Faster Materialized View Refresh**: Significantly reduced the refresh time for materialized views. The refresh interval is now configurable via a Quartz CRON expression, e.g., `DRILL_SCHEDULER_REFRESH_VIEWS_JOB_CRON=0 0 * * * ?` (at the start of every hour).
+- **Configurable Metrics Time Window**: Introduced a metrics time window for materialized views. It can be set using the `metricsPeriodDays` property in the `/api/group-settings` API.
+- **Optional Test Tracing**: Added the ability to disable test tracing to reduce unnecessary data collection, for example, in unit tests.
+- **Application Archive Scanning in Maven/Gradle**: Added a command to scan application archives (.jar, .war, .ear) and send class and method metadata to Drill4J before application startup.
+
+### Release Jun 16 2025
 
 #### New Versions
 
@@ -75,9 +92,7 @@ This page provides the latest versions of all Drill4J components related to the 
 - Metabase Dashboards [0.9.5](https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/0.9.5)
 - Test Agent [0.23.6](https://github.com/Drill4J/autotest-agent/releases/tag/v0.23.6)
 
-#### New Versions
-
-### Release Mar 14 2025  
+### Release Mar 14 2025
 
 #### New Versions
 
