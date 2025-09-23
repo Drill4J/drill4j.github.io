@@ -61,14 +61,16 @@ You can use default realm "master" if preferred.
    - Set `DRILL_OAUTH2_CLIENT_ID` to `drill4j`.
    - Set `DRILL_OAUTH2_CLIENT_SECRET` to the client secret you copied earlier
    - Set `DRILL_OAUTH2_SCOPES` to `openid,roles`.
-   - Set `DRILL_OAUTH2_TOKEN_MAPPING_USERNAME` to `preferred_username`.
+   - Set `DRILL_OAUTH2_TOKEN_MAPPING_USERNAME` to `preferred_username` according to default Keycloak client scope mapping.
    - Set `DRILL_OAUTH2_TOKEN_MAPPING_ROLES` to `roles`.
    - If you want to disable Simple Authentication and allow only OAuth2 authentication, set `DRILL_AUTH_SIMPLE_ENABLED` to `false` and set `DRILL_OAUTH2_AUTOMATIC_SIGN_IN` to `true`.
 2. **Restart Drill4J Backend**: After setting the environment variables, restart the Drill4J Backend service to apply the changes.
 
 ## Step 3: Verify the Integration
 1. **Access Drill4J UI**: Open your web browser and navigate to the Drill4J UI URL.
-2. **Login with Auth Provider**: If you have not disabled Simple Authentication, click the "Sign in with Auth Provider" button in the login window, otherwise you will be automatically redirected to Keycloak.
+2. **Login with Auth Provider**:
+   - Case 1: If you have enabled Simple Authentication `DRILL_AUTH_SIMPLE_ENABLED=true`, click the "Sign in with Auth Provider" button in the login window.
+   - Case 2: If you have disabled Simple Authentication `DRILL_AUTH_SIMPLE_ENABLED=false` and enabled OAuth Automatic Sign In `DRILL_OAUTH2_AUTOMATIC_SIGN_IN=true`, you will be automatically redirected to the Keycloak login page.
 3. **Authenticate**: Enter the credentials of a user you created in Keycloak.
 4. **Access Drill4J**: After successful authentication, you should be redirected back to the Drill4J UI and logged in with the appropriate role.
 
