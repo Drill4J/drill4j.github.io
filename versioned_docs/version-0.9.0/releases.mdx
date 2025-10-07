@@ -104,7 +104,7 @@ This page provides the latest versions of all Drill4J components related to the 
 
 #### New Features & Improvements  
 
-- **Optimized Metrics Calculation**: Significantly improved metrics calculation performance with a materialized view. Metric updates are now scheduled, and users can adjust the update interval using the [`DRILL_SCHEDULER_REFRESH_VIEWS_INTERVAL_IN_MINUTES`](https://drill4j.github.io/docs/drill-services/drill-backend#scheduler-configuration) environment variable.  
+- **Optimized Metrics Calculation**: Significantly improved metrics calculation performance with a materialized view. Metric updates are now scheduled, and users can adjust the update interval using the [`DRILL_SCHEDULER_REFRESH_VIEWS_JOB_CRON`](https://drill4j.github.io/docs/drill-services/drill-backend#scheduler-configuration) environment variable.
 - **Trend Analysis for Builds**: Introduces tracking of testing and coverage changes across multiple application versions, providing deeper insights into long-term testing trends.  
 - **Recommended Tests**: Enables test recommendations via a CI/CD plugin for Gradle and Maven, as well as an API endpoint. Supports precise test selection based on tags and criteria. See more in the [Test Recommendations](https://drill4j.github.io/docs/cicd-integration/cicd-integration-plugin#test-recommendations) section.  
 - **Test-Centric Metrics Dashboard**: Added a dedicated dashboard offering a deeper view into test sessions, launches, and corresponding metrics from the test suite perspective.
