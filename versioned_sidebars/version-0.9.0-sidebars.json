@@ -58,6 +58,11 @@
           "type": "doc",
           "label": "Wildfly",
           "id": "version-0.9.0/guides/wildfly"
+        },
+        {
+          "type": "doc",
+          "label": "Keycloak",
+          "id": "version-0.9.0/guides/keycloak"
         }
       ]
     },
