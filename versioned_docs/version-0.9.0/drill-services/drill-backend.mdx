@@ -113,8 +113,17 @@ The following environment variables are used to configure Drill4J Backend with t
 
 | Environment Variable         | Description                        | Default Value |
 |------------------------------|------------------------------------|---------------|
-| DRILL_SCHEDULER_REFRESH_VIEWS_JOB_CRON | Cron expression for refreshing views | 0 0 * * * ? |
+| DRILL_SCHEDULER_ETL_JOB_CRON | Cron expression for updating metrics by ETL process | 0 * * * * ? |
 | DRILL_SCHEDULER_DATA_RETENTION_JOB_CRON | Cron expression for the data retention job | 0 0 1 * * ? |
+
+#### ETL Configuration
+
+| Environment Variable         | Description                        | Default Value |
+|------------------------------|------------------------------------|---------------|
+| DRILL_ETL_BUFFER_SIZE | Controls the in-memory buffer capacity used for the shared flow between the extractor and loaders.  | 2000 |
+| DRILL_ETL_FETCH_SIZE | Hints the JDBC driver how many rows to fetch from the database per round trip for the SQL extractor. | 2000 |
+| DRILL_ETL_BATCH_SIZE | Controls how many items are grouped into a single write batch/transaction for loaders. | 1000 |
+
 
 ## Swagger UI
 
