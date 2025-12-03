@@ -172,19 +172,28 @@ The ETL logging supports multiple levels:
 
 ### Tracking Progress
 
-You can track the real-time progress of ETL executions by querying the `etl_metadata` table in the `metrics` database schema.
-This table provides detailed status and statistics for each ETL pipeline, extractor, and loader.
+You can track the real-time progress of ETL executions by calling the Metrics Refresh Status API:
+```shell
+curl -X 'GET' \
+  'http://localhost:8090/api/metrics/refresh-status' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]'
+```
 
-**Key columns:**
-- `pipeline_name`: Name of the ETL pipeline
-- `extractor_name`: Name of the data extractor component
-- `loader_name`: Name of the data loader component
-- `status`: Current status (STARTING, RUNNING, SUCCESS, FAILED)
-- `duration`: Time taken for the last run \(in milliseconds\)
-- `last_processed_at`: Timestamp of the last processed data item
-- `last_run_at`: Timestamp when the last run started
-- `rows_processed`: Number of rows processed in the last run
-- `error_message`: Error details if the last run failed
+**Example Response:**
+```json
+"data": {
+  "status": "RUNNING", // Current ETL status
+  "lastProcessedAt": "2025-11-01T09:59:30.000Z", // Timestamp of the last processed data item
+  "lastRunAt": "2025-11-01T10:00:00.000Z", // Timestamp when the last run started
+}
+```
+
+**ETL Statuses:**
+- `STARTING`: ETL process is extracting data from `raw_data` schema.
+- `RUNNING`: ETL is actively loading data.
+- `SUCCESS`: ETL completed successfully.
+- `FAILED`: ETL encountered an error and stopped.
 
 ## Troubleshooting
 
