@@ -183,15 +183,17 @@ curl -X 'GET' \
 **Example Response:**
 ```json
 "data": {
-  "status": "RUNNING", // Current ETL status
+  "status": "LOADING", // Current ETL status
   "lastProcessedAt": "2025-11-01T09:59:30.000Z", // Timestamp of the last processed data item
   "lastRunAt": "2025-11-01T10:00:00.000Z", // Timestamp when the last run started
+  "lastDuration": 1220, // Duration of the last ETL run in milliseconds
+  "lastRowsProcessed": 18500 // Number of rows processed in the last ETL run
 }
 ```
 
 **ETL Statuses:**
-- `STARTING`: ETL process is extracting data from `raw_data` schema.
-- `RUNNING`: ETL is actively loading data.
+- `EXTRACTING`: ETL process is extracting data from `raw_data` schema.
+- `LOADING`: ETL is actively loading data.
 - `SUCCESS`: ETL completed successfully.
 - `FAILED`: ETL encountered an error and stopped.
 
