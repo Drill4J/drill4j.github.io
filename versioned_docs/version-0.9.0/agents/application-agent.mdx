@@ -29,6 +29,8 @@ The most basic way to get agent files is to download release .zip manually.
 
   > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
 
+  > If your platform is not listed above, use the [Java agent mode](/docs/agents/java-agent#java-agent-mode) instead of native mode.
+
 2. Unzip the file. Rename unzipped folder to `agent`.
 
 3. Inside you'll find the following files:
@@ -64,17 +66,37 @@ Because of that, the next sections of this page are irrelevant in this scenario.
 
 ## How to set path to agent
 
-Java allows to load agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
+To load Drill4J Application Agent with your application, you need to instruct Java Virtual Machine (JVM) to use agent files.
+Drill4J has two modes of loading Application Agent:
+- Native mode (recommended) - uses native library file (`.so`, `.dll`, `.dylib`)
+- Java mode - uses `drill-runtime.jar` file
+
+Depending on mode you choose, the way to set path to agent differs.
+
+### Native Agent Mode (recommended)
+
+Java allows to load native agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
 
 ```shell
 java -agentpath:<path-to-agent>
 ```
 
-Where `<path-to-agent>` must point to agent library file.
+Where `<path-to-agent>` must point to native agent library file (`.so`, `.dll`, `.dylib`).
 
+### Java Agent Mode
+If your platform is not supported with native library, you can use Java mode.
+To load Drill4J Application Agent in Java mode, use the following command line argument:
+
+```shell
+java -javaagent:<path-to-drill-runtime-jar>
+```
+Where `<path-to-drill-runtime-jar>` must point to `drill-runtime.jar` file.
+
+
+### Setting agent path argument
 There are two way to set this command line argument.
 
-### Pass `-agentpath:` directly to Java process
+#### Pass agent path argument directly to Java process
 
 > __Use case__: when you have a direct access to __Java__'s process launch arguments. 
 
@@ -87,25 +109,31 @@ Considering your application is launched with:
 Change it to:
 
 ```shell
-  # Linux 
+  # Native Mode, Linux
   java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
-  # Windows
+  # Native Mode, Windows
   java -agentpath:/agent/drill_agent.dll -jar my-app.jar
-  # macOS 
+  # Native Mode, MacOS
   java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
+  # Java Mode
+  java -javaagent:/agent/drill-runtime.jar -jar my-app.jar
 ```
 
-### Set `-agentpath` to `JAVA_TOOL_OPTIONS` env variable
+#### Set agent path to `JAVA_TOOL_OPTIONS` env variable
 
 > __Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
 
 Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version.
 
 ```shell
+  # Native Mode, Linux
   JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so
-  # Linux - libdrill_agent.so
-  # Windows - drill_agent.dll
-  # macOS - libdrill_agent.dylib
+  # Native Mode, Windows
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/drill_agent.dll
+  # Native Mode, MacOS
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.dylib
+  # Java Mode
+  JAVA_TOOL_OPTIONS=-javaagent:/agent/drill-runtime.jar
 ```
 
 ### Troubleshooting
@@ -128,9 +156,12 @@ __Precedence__: parameter values set with env variables have the highest precede
 
 ### Set parameters in `-agentpath` argument string
 
-Append parameters to the `-agentpath` argument string. Add `=<options>` after `<path-to-agent>`:
+Append parameters to `-agentpath` or `-javaagent` argument string. Add `=<options>` after `<path-to-agent>`:
 ```shell
+#Native Mode
 -agentpath:<path-to-agent>=<options>
+#Java Mode
+-javaagent:<path-to-agent>=<options>
 ```
 
 Example:
@@ -144,7 +175,7 @@ Parameters are:
 - parameters are `<key>=<value>` pairs
 - each pair is separated by comma.
 
-__Precedence__: parameter values set with `-agentpath` will override values set in `drill.properties`
+__Precedence__: parameter values set with `-agentpath` or `-javaagent` will override values set in `drill.properties`
 
 ### Set parameters in `drill.properties` file
 
@@ -171,6 +202,7 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | buildVersion    | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `v1.2.3`                                                   | Build version of your application. Typically set to version tag. |
 | commitSha | recommended <br/> [see more](#considerations-regarding-buildversion-and-commitsha) | `8d87b0c2379a925...` | Full SHA hash of commit from which your application .jar is built from.  
 | envId           | no | `develop`                                              | Environment identifier in which the application is running. |
+| classScanningEnabled | no | false | Enables or disables class scanning procedure. If none is specified, class scanning is enabled by default.
 | scanClassDelay | no | `5000` | Time in milliseconds to delay the class scanning procedure. If none is specified, the class scanning starts immediately upon JVM startup
 | scanClassPath | no |  | Path(s) to application's .jar/.war/.ear files. If none are specified, the agent attempts to find application classes automatically. See [syntax and examples](#how-to-set-scanclasspath) below.
 | messageQueueLimit | no | 512Mb | Maximum queue capacity for sending messages to Drill4J Backend. The queue may accumulate, for example, if the server is unavailable. If none is specified, the default value is 512Mb.

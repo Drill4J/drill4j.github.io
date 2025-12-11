@@ -527,6 +527,28 @@ enableAppAgent {
 </appAgent>
 ```
 
+### Setting agent mode
+
+Drill4J has two modes of enabling Application Agent:
+- `NATIVE` - uses native library file (more capabilities)
+- `JAVA` - uses drill-runtime.jar file (platform agnostic)
+
+By default, Application Agent uses `NATIVE` mode. To set `JAVA` mode, set the `mode` parameter in Application Agent configuration:
+
+##### Gradle
+```kotlin
+enableAppAgent {
+    mode = "JAVA"
+}
+```
+
+##### Maven
+```xml
+<appAgent>
+    <mode>JAVA</mode>
+</appAgent>
+```
+
 ## Test Recommendations
 
 Drill4J helps to significantly reduce test execution time by providing recommendations on
