@@ -132,15 +132,15 @@ The `retentionPeriodDays` for `raw_data` should be greater than or equal to the 
 
 The ETL pipeline can be tuned for optimal performance based on your infrastructure and data volume. These parameters control memory usage, database interaction, and throughput.
 
-### Buffer Size
-- **Environment Variable:** `DRILL_ETL_BUFFER_SIZE`
-- **Purpose:** Size of the in-memory buffer between data extractor and loaders
-- **Behavior:** Prevents unbounded memory growth. When the buffer is full, the extractor suspends, giving loaders time to process
-- **Impact:** Affects throughput and memory usage
-- **Default:** 2000
+### Extraction Limit
+- **Environment Variable:** `DRILL_ETL_EXTRACTION_LIMIT`
+- **Purpose:** Controls page size for extraction queries
+- **Behavior:** Adds a `LIMIT` to the SQL extraction query used for each page. The extractor will keep requesting the next pages until there is no more data to extract
+- **Impact:** Query latency and memory/CPU load per extraction request
+- **Default:** 1000000
 - **Tuning Guidance:**
-  - Increase for faster processing if memory allows (4000-8000)
-  - Decrease if experiencing memory pressure (500-1000)
+  - Decrease the limit if single extraction queries are slow
+  - Increase the limit if ETL is spending too much time paging and the database can handle larger result sets
 
 ### Fetch Size
 - **Environment Variable:** `DRILL_ETL_FETCH_SIZE`
@@ -151,6 +151,30 @@ The ETL pipeline can be tuned for optimal performance based on your infrastructu
 - **Tuning Guidance:**
   - Increase for better throughput on fast networks (5000-10000)
   - Decrease for slower networks or smaller result sets (500-1000)
+
+### Buffer Size
+- **Environment Variable:** `DRILL_ETL_BUFFER_SIZE`
+- **Purpose:** Size of the in-memory buffer between data extractor and loaders
+- **Behavior:**  Prevents unbounded memory growth. When the buffer is full, the extractor suspends, giving loaders time to process
+- **Impact:** Affects throughput and memory usage
+- **Default:** 2000
+- **Tuning Guidance:**
+  - Increase for faster processing if memory allows (5000-20000)
+  - Decrease if experiencing memory pressure (500-1000)
+
+### Transformation Buffer Size
+- **Environment Variable:** `DRILL_ETL_TRANSFORMATION_BUFFER_SIZE`
+- **Purpose:** Controls how many aggregated rows the transformer accumulates in memory to pass aggregated results to loaders.
+- **Behavior:** The transformer groups and aggregates rows until this threshold is reached, then emits aggregated items downstream.
+- **Impact:**
+  - Larger values can improve throughput when aggregation significantly reduces cardinality, because loaders write fewer items
+  - Too-large values may increase heap usage and GC overhead and can lead to OOM on large/high-cardinality datasets
+  - Too-small values reduce aggregation opportunities and can increase the number of items written, slowing down loading
+- **Default:** 2000
+- **Tuning Guidance:**
+  - Increase (e.g., 4000–20000) if you have enough memory
+  - Decrease (e.g., 500–1000) if you observe memory pressure
+  - If increasing the buffer doesn’t reduce load volume, you’re likely dealing with high-cardinality keys (too many unique methods/tests).
 
 ### Batch Size
 - **Environment Variable:** `DRILL_ETL_BATCH_SIZE`
