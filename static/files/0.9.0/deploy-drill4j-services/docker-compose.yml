@@ -21,7 +21,6 @@ services:
       - DRILL_DB_USER_NAME=${POSTGRES_USER}
       - DRILL_DB_PASSWORD=${POSTGRES_PASSWORD}
       - DRILL_DB_MAX_POOL_SIZE=${DRILL_ADMIN_BACKEND_DB_MAX_POOL_SIZE}
-      - DRILL_SCHEDULER_REFRESH_VIEWS_JOB_CRON=0 0/15 * * * ?
       - LOG_LEVEL=info
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:8090" ]
