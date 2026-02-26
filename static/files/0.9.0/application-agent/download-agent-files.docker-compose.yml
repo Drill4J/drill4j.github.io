@@ -18,7 +18,7 @@ services:
     image: drill4j/java-agent:0.8.0-38 # ignore this. Its the version for the _download script_, not the agent
     environment:
       # ! set the desired agent version here !
-      - AGENT_VERSION=0.9.14
+      - AGENT_VERSION=0.9.20
       # ! set the desired agent version here !
     volumes:
       - agent-files:/data
