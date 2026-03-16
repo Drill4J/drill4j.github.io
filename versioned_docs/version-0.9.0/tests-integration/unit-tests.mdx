@@ -23,7 +23,7 @@ This instruction involves making changes to the Gradle/Maven project build file.
 
 ## Install Drill4J Plugin
 
-Drill4J CI/CD Integration Plugin allows to enable both Test Agent and App Agent to capture metrics from Unit tests execution.
+Drill4J CI/CD Integration Plugin allows to enable the Drill4J agent to capture metrics from Unit tests execution.
 Add following changes to your Gradle/Maven project with unit tests build file to install the Drill4J plugin:
 
 ##### Gradle
@@ -54,15 +54,15 @@ plugins {
 `}
 </Codeblock>
 
-## Enable agents
+## Enable agent
 
-To enable the agents add the following lines to configuration:
+To enable the Drill4J agent add the following lines to configuration:
 
 ##### Gradle
 
 Add `drill` section into the bottom of the Gradle build file:
 
-<Codeblock language="groovy">
+<Codeblock language="kotlin">
 {`
 drill {
     // Set the Drill4J API URL
@@ -76,15 +76,15 @@ drill {
     appId = "my-application"
     // Specifies the java packages for Drill4J to monitor
     // Use "/" separator for package name parts
-    packagePrefixes = "my/awesome/application"
+    packagePrefixes = arrayOf("my/awesome/application")
     // Optional, identifies app version built from checked out commit
     buildVersion = "1.0.0"
-    enableTestAgent {
-        version = "${versions.testAgent}"
-    }
-    enableAppAgent {
+    agent {
         version = "${versions.applicationAgent}"
     }
+    // Enable coverage collection and test tracing
+    coverage()
+    testTracing()
 }
 `}
 </Codeblock>
@@ -112,18 +112,21 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-        <testAgent>
-            <version>${versions.testAgent}</version>
-        </testAgent>
-        <appAgent>
+        <agent>
             <version>${versions.applicationAgent}</version>
-        </appAgent>
+        </agent>
+        <!-- Enable coverage collection and test tracing -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
     </configuration>
     <executions>
         <execution>
             <goals>
-                <goal>enableTestAgent</goal>
-                <goal>enableAppAgent</goal>
+                <goal>enableAgent</goal>
             </goals>
         </execution>
     </executions>

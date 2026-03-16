@@ -24,7 +24,7 @@ This instruction involves making changes to the Gradle/Maven project build file.
 
 ## Install Drill4J Plugin
 
-The Drill4J CI/CD integration plugin allows you to run API tests together with the Test Agent.
+The Drill4J CI/CD integration plugin allows you to run API tests together with the Drill4J agent.
 Add following changes to your Gradle/Maven project with API tests build file to install the Drill4J plugin:
 
 ##### Gradle
@@ -55,28 +55,30 @@ plugins {
 `}
 </Codeblock>
 
-## Enable Test Agent
+## Enable Agent
 
-To enable the Test Agent set the plugin configuration:
+To enable the Drill4J agent set the plugin configuration:
 
 ##### Gradle
 
 Add `drill` section into the bottom of the Gradle build file:
 
-<Codeblock language="groovy">
+<Codeblock language="kotlin">
 {`
 drill {
     // Set the Drill4J API URL
     // or set DRILL_API_URL env variable
-    drillApiUrl = "http://localhost:8090/api"
+    apiUrl = "http://localhost:8090/api"
     // Set the Drill4J API Key
     // or set DRILL_API_KEY env variable
-    drillApiKey = "1_01cdf51ff20544ee..."
+    apiKey = "1_01cdf51ff20544ee..."
     // Set the Drill4J Group ID
     groupId = "my-group"
-    enableTestAgent {
-        version = "${versions.testAgent}"
+    agent {
+        version = "${versions.applicationAgent}"
     }
+    // Enable test tracing
+    testTracing()
 }
 `}
 </Codeblock>
@@ -98,14 +100,18 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         <apiKey>1_01cdf51ff20544ee...</apiKey>
         <!-- Set the Drill4J Group ID -->
         <groupId>my-group</groupId>
-        <testAgent>
-            <version>${versions.testAgent}</version>
-        </testAgent>
+        <agent>
+            <version>${versions.applicationAgent}</version>
+        </agent>
+        <!-- Enable test tracing -->
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
     </configuration>
     <executions>
         <execution>
             <goals>
-                <goal>enableTestAgent</goal>
+                <goal>enableAgent</goal>
             </goals>
         </execution>
     </executions>
@@ -120,8 +126,8 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
 > *IMPORTANT!*
 When running tests in your IDE, double-check that it's picking up the correct configuration file with the Drill4J test agent added (that will be `build.gradle` for Gradle, `pom.xml` for Maven)
 
-2. To confirm test agent is working check tests log.
-There should be Drill4J ASCII logo followed by test agent version:
+2. To confirm the agent is working check tests log.
+There should be Drill4J ASCII logo followed by agent version:
 
     ```log
     Task :test is modified by Drill
