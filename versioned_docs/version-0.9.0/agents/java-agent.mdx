@@ -1,0 +1,455 @@
+---
+id: java-agent
+title: Java Agent
+---
+
+# Java Agent
+
+import versions from "@site/static/files/0.9.0/versions.json"
+import { Codeblock } from "@components"
+
+Drill4J Java Agent is a unified agent for JVM-based applications. It enables metrics collection, test-to-code mapping, and test context propagation.
+
+Key features:
+- Code coverage collection for applications
+- Test context propagation - mapping tests to code coverage and vice versa
+- Control over test execution
+
+General integration steps are:
+
+1. [Download Drill4J agent files](#how-to-download)
+2. [Set path to agent](#how-to-set-path-to-agent)
+3. [Set agent parameters](#how-to-set-agent-parameters)
+
+Due to the diverse tools used in software development — such as CI/CD providers, deployment methods, testing stages — the exact process will depend on the environment.
+
+## How to download
+
+### Download agent files manually
+
+The most basic way to get agent files is to download release .zip manually.
+
+1. Download release appropriate for your platform at
+<a href={`https://github.com/Drill4J/java-agent/releases/tag/v${versions.applicationAgent}`}> {`https://github.com/Drill4J/java-agent/releases/tag/v${versions.applicationAgent}`} </a>
+
+  > `mingwX64` is for Windows, Linux and Mac releases are called respectively.
+
+  > If your platform is not listed above, use the [Java agent mode](/docs/agents/java-agent#java-agent-mode) instead of native mode.
+
+2. Unzip the file. Rename unzipped folder to `agent`.
+
+3. Inside you'll find the following files:
+
+    -  `libdrill_agent.so` (on Windows - `.dll`, on Mac - `.dylib`)
+    - `drill-runtime.jar`
+    - `drill.properties`
+
+Refer to [next section](#how-to-set-path-to-agent) for further steps.
+
+### Use Docker image with a download script
+
+> __Use case__: when you are already using Docker Compose to start your application.
+
+We provide a small Docker image, that executes download script upon startup.
+
+The way it works is:
+1. You add our container to your docker-compose.yml file, passing the desired version to `JAVA_AGENT` env variable.
+2. On startup, the container launches the download script.
+3. Docker's healthcheck waits for it to complete.
+4. Downloaded agent files are placed in a shared volume.
+5. Shared volume is mounted to your application's container.
+
+See the example [docker-compose.yml](/files/0.9.0/application-agent/download-agent-files.docker-compose.yml) file for details.
+
+### Use Drill4J CI/CD Integration Plugin for Maven and Gradle
+
+> __Use cases__: when application (or certain classes of application) is launched with Maven or Gradle. That's most often the case with __Unit tests__.
+
+Drill4J CI/CD Integration Plugin __automatically downloads agent files__ and __passes required parameters to Java__.
+
+Because of that, the next sections of this page are irrelevant in this scenario. Instead, please refer to [CI/CD Integration Plugin](/docs/cicd-integration/cicd-integration-plugin) page for more info.
+
+## How to set path to agent
+
+To load Drill4J Java Agent, you need to instruct Java Virtual Machine (JVM) to use agent files.
+Drill4J has two modes of loading:
+- Native mode (recommended) - uses native library file (`.so`, `.dll`, `.dylib`)
+- Java mode - uses `drill-runtime.jar` file
+
+Depending on mode you choose, the way to set path to agent differs.
+
+### Native Agent Mode (recommended)
+
+Java allows to load native agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
+
+```shell
+java -agentpath:<path-to-agent>
+```
+
+Where `<path-to-agent>` must point to native agent library file (`.so`, `.dll`, `.dylib`).
+
+### Java Agent Mode
+
+If your platform is not supported with native library, you can use Java mode.
+To load Drill4J Java Agent in Java mode, use the following command line argument:
+
+```shell
+java -javaagent:<path-to-drill-runtime-jar>
+```
+Where `<path-to-drill-runtime-jar>` must point to `drill-runtime.jar` file.
+
+### Setting agent path for applications
+
+#### Pass agent path argument directly to Java process
+
+> __Use case__: when you have a direct access to __Java__'s process launch arguments.
+
+Considering your application is launched with:
+
+```shell
+  java -jar my-app.jar
+```
+
+Change it to:
+
+```shell
+  # Native Mode, Linux
+  java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
+  # Native Mode, Windows
+  java -agentpath:/agent/drill_agent.dll -jar my-app.jar
+  # Native Mode, MacOS
+  java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
+  # Java Mode
+  java -javaagent:/agent/drill-runtime.jar -jar my-app.jar
+```
+
+#### Set agent path to `JAVA_TOOL_OPTIONS` env variable
+
+> __Use case__: when you don't have direct access to the __Java__'s process launch arguments. It's often the case when app is launched somewhere deep in scripts or inside Docker container.
+
+Use [`JAVA_TOOL_OPTIONS`](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#tooloptions) to instruct __Java__ to use Drill4J Java Agent. Its a built-in env variable supported by any Java version.
+
+```shell
+  # Native Mode, Linux
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.so
+  # Native Mode, Windows
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/drill_agent.dll
+  # Native Mode, MacOS
+  JAVA_TOOL_OPTIONS=-agentpath:/agent/libdrill_agent.dylib
+  # Java Mode
+  JAVA_TOOL_OPTIONS=-javaagent:/agent/drill-runtime.jar
+```
+
+### Setting agent path for tests
+
+In order to pass `-agentpath` command-line argument when running tests, you can configure the [argLine for Maven](https://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html#argLine)
+or [jvmArgs for Gradle](https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html#org.gradle.api.tasks.testing.Test:jvmArgs) parameters.
+
+There are two ways to pass `-agentpath` parameter:
+- In command line for running tests
+- Inside the build configuration file
+
+#### Pass `-agentpath` in command line for running tests
+
+##### Gradle
+Add `-DjvmArgs` parameter to gradle command line:
+```shell
+./gradlew test -DjvmArgs=-agentpath:/path/to/agent
+```
+
+##### Maven
+Add `-DargLine` parameter to Maven command line:
+```shell
+./mvn test -DargLine=-agentpath:/path/to/agent
+```
+
+#### Set `-agentpath` in the build configuration file
+
+##### Gradle
+Add `jvmArgs` to Gradle test configuration:
+```groovy
+test {
+    jvmArgs = '-agentpath:/path/to/agent'
+}
+```
+
+##### Maven
+Add `argLine` to `maven-surefire-plugin` in pom.xml:
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <argLine>-agentpath:/path/to/agent</argLine>
+    </configuration>
+</plugin>
+```
+
+### Troubleshooting
+
+To ensure you set agentpath correctly see [how to confirm agent is loaded](#how-to-confirm-agent-is-loaded) section below.
+
+## How to set agent parameters
+
+Drill4J agent supports 3 ways to set agent [parameters](#agent-parameters-reference).
+
+### Set parameters using environment variables
+
+This is the recommended way to set agent parameters.
+
+Env variables names are prefixed with `DRILL_` with uppercase snake case. Examples:
+
+- Given `packagePrefixes` parameter the env variable is `DRILL_PACKAGE_PREFIXES`
+
+__Precedence__: parameter values set with env variables have the highest precedence and will override values set in `-agentpath` string or `drill.properties` file.
+
+### Set parameters in `-agentpath` argument string
+
+Append parameters to `-agentpath` or `-javaagent` argument string. Add `=<options>` after `<path-to-agent>`:
+```shell
+#Native Mode
+-agentpath:<path-to-agent>=<options>
+#Java Mode
+-javaagent:<path-to-agent>=<options>
+```
+
+Example:
+```
+-agentpath:/agent/libdrill_agent.so=parameter1=hello,parameter2=bar
+```
+
+Parameters are:
+- passed after `<path-to-agent>` (`/agent/libdrill_agent.so` above)
+- start of parameters string is indicated with `=` sign
+- parameters are `<key>=<value>` pairs
+- each pair is separated by comma.
+
+__Precedence__: parameter values set with `-agentpath` or `-javaagent` will override values set in `drill.properties`
+
+### Set parameters in `drill.properties` file
+
+Alternatively, Drill4J agent checks for values in `drill.properties` file. By default it is downloaded with agent files.
+
+```
+parameter1=hello
+parameter2=bar
+```
+
+It adheres to the [properties file syntax](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html)
+
+__Precedence__: parameter values set in `drill.properties` file have the lowest precedence and can be overriden by `-agentpath` and env variables.
+
+## Agent parameters reference
+
+### General Configuration
+
+| Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
+|----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiUrl               | yes      | `http://localhost/api`                   | URL to Drill4J Admin /api endpoint.                                                                                                                                        |
+| apiKey               | yes      | `1_01cdf51ff20544ee...`                  | Drill4J Backend API key. Generate it using Drill4J UI. Please make sure to read the [apiKey security](#api-key-security) section.                                           |
+| groupId              | yes      | `my-cool-app`                            | Unique arbitrary string identifying your application group.                                                                                                                |
+| appId                | yes      | `api-service`                            | Unique arbitrary string identifying your application.                                                                                                                      |
+| packagePrefixes      | yes      | `my/org/somecoolapp`                     | Specifies the packages for Drill4J to monitor. See [syntax and examples](#how-to-set-package-prefixes) below.                                                              |
+| buildVersion         | recommended | `v1.2.3`                              | Build version of your application. Typically set to version tag. [See more](#considerations-regarding-buildversion-and-commitsha).                                          |
+| commitSha            | recommended | `8d87b0c2379a925...`                  | Full SHA hash of commit from which your application .jar is built from. [See more](#considerations-regarding-buildversion-and-commitsha).                                   |
+| envId                | no       | `develop`                                | Environment identifier in which the application is running.                                                                                                                |
+| messageQueueLimit    | no       | `512Mb`                                  | Maximum queue capacity for sending messages to Drill4J Backend. The queue may accumulate, for example, if the server is unavailable. If none is specified, the default value is 512Mb. |
+| messageMaxRetries    | no       | `10`                                     | Maximum number of retries for sending messages to Drill4J Backend. If nothing is specified, there will be infinite attempts to send messages.                               |
+| coverageCollectionEnabled | no  | `false`                                  | Enables or disables application code coverage collection. Default is `true`.                                                                                               |
+
+### Application Class Scanning
+
+| Parameter              | Required | Example Value                            | Description                                                                                                                                                                |
+|------------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| classScanningEnabled   | no       | `false`                                  | Enables or disables class scanning procedure. If none is specified, class scanning is enabled by default.                                                                  |
+| scanClassPath          | no       | `build/libs/myapp-0.0.1.jar`             | Path(s) to application's .class/.jar/.war/.ear files. If none are specified, the agent attempts to find application classes automatically. See [syntax and examples](#how-to-set-scanclasspath) below. |
+| enableScanClassLoaders | no       | `true`                                   | Enables scanning of active thread class loaders. When enabled, the agent scans all active threads, retrieves their class loaders, and scans the files loaded by each class loader. |
+| scanClassDelay         | no       | `5000`                                   | Time in milliseconds to delay before scanning active thread class loaders, allowing the system to fully initialize first. If none is specified, the scanning starts immediately upon JVM startup. |
+
+### Test Tracing Configuration
+
+| Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
+|----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| testTracingEnabled   | no       | `true`                                   | Enables test tracing. If enabled, collected coverage will be associated with individual test or test session. Default is `false`. |
+| testTracingPerTestSessionEnabled | no | `true`                             | Enables test tracing per test session. Default is `true`.                                                                                                                  |
+| testTracingPerTestLaunchEnabled  | no | `true`                             | Enables test tracing per test launch. Default is `true`.                                                                                                                   |
+| testTaskId           | no       | `check`                                  | Name of the test task or test command that was launched to run tests.                                                                                                       |
+| testSessionId        | no       | `test-session-1`                         | Explicit test session identifier. If set, the agent uses this value instead of generating a session ID automatically. |
+
+### JS Coverage
+
+| Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
+|----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| withJsCoverage       | no       | `true`                                   | Enables collecting JS coverage by Chrome DevTools.                                                                                                                         |
+| devToolsProxyAddress | no       | `http://localhost:8092`                  | URL address of Drill4J DevToolsProxy.                                                                                                                                      |
+
+### Recommended Tests
+
+| Parameter                            | Required | Description                                                                          |
+|--------------------------------------|----------|--------------------------------------------------------------------------------------|
+| recommendedTestsEnabled              | no       | Enables Test Recommendations.                                                        |
+| recommendedTestsCoveragePeriodDays   | no       | Period of days for which coverage data is taken into account for test recommendations.|
+| recommendedTestsTargetAppId          | no       | ID of the application under test.                                                    |
+| recommendedTestsTargetCommitSha      | no       | Commit SHA of the application under test.                                            |
+| recommendedTestsTargetBuildVersion   | no       | Application under test version.                                                      |
+| recommendedTestsBaselineCommitSha    | no       | Baseline commit SHA of the application under test.                                   |
+| recommendedTestsBaselineBuildVersion | no       | Application under test baseline version.                                             |
+
+### Instrumentation Parameters
+
+These parameters control which frameworks and protocols the agent instruments for context propagation. 
+
+| Parameter                                | Required | Default | Description                                                                                          |
+|------------------------------------------|----------|---------|------------------------------------------------------------------------------------------------------|
+| instrumentationEnabled                   | no       | `true`  | Enables or disables all instrumentation.                                                             |
+| contextPropagationEnabled                | no       | `true`  | Enables or disables context propagation.                                                             |
+| instrumentationReactorEnabled    | no       | `true`  | Enables instrumentation for Project Reactor.                     |
+| instrumentationTtlEnabled        | no       | `true`  | Enables instrumentation for Transmittable Thread Local (TTL).    |
+| instrumentationKafkaEnabled      | no       | `false` | Enables instrumentation for Apache Kafka.                        |
+| instrumentationCadenceEnabled    | no       | `false` | Enables instrumentation for Uber Cadence.                        |
+| instrumentationWsEnabled         | no       | `true`  | Enables instrumentation for WebSocket connections.               |
+| instrumentationHttpEnabled                | no       | `true`  | Enables instrumentation for HTTP server connections.             |
+| instrumentationSslEnabled                 | no       | `true`  | Enables instrumentation for SSL/TLS connections.                 |
+| instrumentationJavaHttpClientEnabled      | no       | `true`  | Enables instrumentation for Java's built-in HTTP client.         |
+| instrumentationApacheHttpClientEnabled    | no       | `true`  | Enables instrumentation for Apache HTTP Client.                  |
+| instrumentationOkHttpClientEnabled        | no       | `true`  | Enables instrumentation for OkHttp Client.                       |
+| instrumentationSpringWebClientEnabled     | no       | `true`  | Enables instrumentation for Spring WebClient.                    |
+| instrumentationJUnitEnabled      | no       | `true`  | Enables instrumentation for JUnit.                               |
+| instrumentationTestNGEnabled     | no       | `true`  | Enables instrumentation for TestNG.                              |
+| instrumentationCucumberEnabled   | no       | `true`  | Enables instrumentation for Cucumber.                            |
+| instrumentationSeleniumEnabled   | no       | `true`  | Enables instrumentation for Selenium.                            |
+| instrumentationJMeterEnabled     | no       | `true`  | Enables instrumentation for JMeter.                              |
+
+### Env variables naming
+
+Environment variables start with the prefix `DRILL_`, followed by the parameter name in `UPPERCASE_SNAKE_CASE`.
+
+**Example**:
+1. For `apiUrl`, the env var is `DRILL_API_URL`.
+2. For `packagePrefixes`, the env var is `DRILL_PACKAGE_PREFIXES`.
+
+### How to set package prefixes
+
+__packagePrefixes__ is the filter that specifies which packages Drill4J should monitor. It is usually set to the topmost common package of your application.
+
+Avoid setting it to something very broad (like `com` or `org`) - otherwise you will be scanning and collecting metrics for third-party dependencies.
+
+#### Syntax
+
+1. Parts of package names are separated with forward slashes `/` (and not dots `.`)
+2. Multiple packages can be specified using `;` delimiter
+3. To exclude package use `!` prefix.
+
+#### Example
+
+Given you app packages are:
+
+1. `my.org.somecoolapp.user`
+2. `my.org.somecoolapp.orders.repository`
+3. `my.org.somecoolapp.db.models`
+
+__packagePrefixes__ parameter should be set to `my/org/somecoolapp`
+
+#### Adding extra package
+
+Add package name separated by `;` - `my/org/somecoolapp;some/other/package`.
+
+This adds both `my/org/somecoolapp` and `some.other.package` to scanned packages.
+
+#### Excluding package
+
+Add package name prefixed with `!` - `my/org/somecoolapp;!my.org.somecoolapp.db.models`.
+
+This adds `my/org/somecoolapp` to scanned packages, but excludes `my.org.somecoolapp.db.models`.
+
+### How to set scanClassPath
+
+Specifies path(s) for the agent to look for .jar, .war, or .ear files.
+
+Useful when the agent is unable to locate these automatically (e.g. when running [Wildfly](/docs/guides/wildfly) or [Tomcat](/docs/guides/tomcat)).
+
+```
+# Single path
+scanClassPath=../webapps/my-app.war
+
+# Multiple paths - use the ";" delimiter
+# scanClassPath=../webapps/my-app.war;../webapps/other-app.war
+
+# Absolute paths work too
+# scanClassPath=C:/java/tomcat-10/webapps/helloworld.war
+```
+
+### API key security
+
+❗ Please avoid hardcoding __apiKey__ and exposing it in plain text. Instead, use environment variables. ❗
+
+Bad example:
+```shell
+  -agentpath:/agent/libdrill_agent.so=drillApiKey=123
+```
+
+Good example:
+```shell
+  # Set DRILL_API_KEY variable prior to application launch
+  DRILL_API_KEY=123
+  # exact syntax for env variables will depend on your environment
+```
+
+### Considerations regarding `buildVersion` and `commitSha`
+
+1. **Necessity**: While `buildVersion` and `commitSha` are not strictly required, we recommend providing at least one (ideally both) for the following reasons:
+    - It allows Drill4J to group metrics by version or commit.
+    - Without `buildVersion` and `commitSha`, Drill4J reports each application instance individually. Instances are identified with a random UUID.
+
+2. **Uniqueness**: Both `buildVersion` and `commitSha` identify a unique application version, each associated with a specific set of classes and methods.
+
+    To maintain the integrity of metrics, ensure that different application versions do not share the same `buildVersion` or `commitSha` values.
+
+    Using identical values across different versions will lead to inaccurate metrics due to the mixing of unrelated data.
+
+3. **Semantics**: `buildVersion` typically corresponds to the version tag of your application.
+
+    Compliance with [Semver](https://semver.org/) is not required. Drill4J treats the build version as a unique string for grouping metrics, without any added semantics.
+
+## Troubleshooting
+
+### How to confirm agent is loaded
+
+Once loaded Drill4J agent prints the following ASCII logo:
+
+```log
+  ____    ____                 _       _          _  _                _
+  |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+/| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+  |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+  |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+(__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+Java Agent (v0.9.1)
+```
+It indicates that you have configured agent path correctly and Java picked up and loaded agent files.
+
+### Cannot load the agent because some agent parameters are set incorrectly
+
+If below Drill4J ASCII logo you see the following message:
+```
+ERROR [com.epam.drill.agent.configuration.ValidatedParametersProvider] Cannot load the agent because some agent parameters are set incorrectly. Please
+check the following parameters:
+```
+
+It indicates that you are missing some required parameters. Refer to the [agent parameters](#agent-parameters-reference) section.
+
+### Error "Could not create an Appender of type ..."
+
+```
+|-ERROR in com.epam.drill.autotest.shadow.ch.qos.logback.core.joran.action.AppenderAction - Could not create an Appender of type [ch.qos.logback.core.ConsoleAppender].
+|-ERROR in com.epam.drill.autotest.shadow.ch.qos.logback.core.joran.spi.Interpreter@5:73 - ActionException in Action for tag [appender]
+```
+The following error can be safely ignored as it doesn't impact the functionality of the application or agent.
+It simply indicates that Logback is being used with a logback.xml file, which conflicts with the Drill4J logging configuration. However, logging will still function as expected.
+
+## Limitations and Known Issues
+
+1. The Drill4J is not compatible with the [JaCoCo](https://www.jacoco.org/jacoco/) code coverage tool.
+JaCoCo conflicts with the Drill4J Java Agent, so it needs to be removed.
+This shouldn't be a concern, as Drill4J includes the same functionality along with additional features.
