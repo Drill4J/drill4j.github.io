@@ -8,12 +8,14 @@ title: Java Agent
 import versions from "@site/static/files/0.9.0/versions.json"
 import { Codeblock } from "@components"
 
-Drill4J Java Agent is a unified agent for JVM-based applications. It enables metrics collection, test-to-code mapping, and test context propagation.
+Drill4J Java Agent is a unified runtime agent for JVM-based applications that provides deep observability into your testing process and codebase evolution.
 
-Key features:
-- Code coverage collection for applications
-- Test context propagation - mapping tests to code coverage and vice versa
-- Control over test execution
+Key capabilities:
+
+- **Code Coverage Measurement** — collects precise method- and line-level code coverage data from running applications, giving teams real-time visibility into which parts of the codebase are exercised by tests.
+- **Test Tracing & Test-to-Code Mapping** — establishes bidirectional traceability between tests and the code they execute, enabling you to determine exactly which tests cover a given method and which code paths a specific test exercises.
+- **Context Propagation** — automatically propagates test context across threads, asynchronous calls, HTTP requests, messaging systems (Kafka), and WebSocket connections, ensuring accurate coverage attribution even in distributed and reactive architectures.
+- **Code Change Detection** — identifies structural changes between application builds at the method level by comparing `commitSha` and `buildVersion` metadata, powering intelligent test recommendations that highlight only the tests affected by recent changes.
 
 General integration steps are:
 
