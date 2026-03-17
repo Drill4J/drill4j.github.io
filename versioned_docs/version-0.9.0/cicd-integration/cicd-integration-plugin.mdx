@@ -44,11 +44,14 @@ The general gist of using the CI/CD integration plugin is:
 
 ## Adding plugin
 
-This section describes how to add CI/CD integration plugin to your project.
+This section describes how to add CI/CD integration plugin to your Gradle/Maven project.
 
-### Gradle
+### Set Up
 
-1. Add the following to Gradle build file `plugins` section:
+
+#### Gradle
+
+Add the following to Gradle build file `plugins` section:
 
 <Codeblock language="kotlin">
 {`
@@ -58,26 +61,9 @@ plugins {
 `}
 </Codeblock>
 
-2. Set Drill4J API address and API key
-    - __Option 1__ (recommended): using environment variables.
-        ```
-        // Exact way to set variables depends on the environment
-        DRILL_API_URL="http://localhost:8090/api"
-        DRILL_API_KEY="your_api_key_here"
-        ```
-    - __Option 2__ (not recommended): using Gradle build file.
-        ```kotlin
-        // Add the following section in `build.gradle` at root level
-        drill {
-            // Set API url and API key
-            apiUrl = "http://localhost:8090/api"
-            apiKey = "your_api_key_here"
-        }
-        ```
+#### Maven
 
-### Maven
-
-1. Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
+Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
 
 <Codeblock language="xml">
 {`
@@ -88,7 +74,7 @@ plugins {
             <artifactId>drill-maven-plugin</artifactId>
             <version>${versions.cicdPlugin}</version>
             <configuration>
-            
+                <!-- Plugin configuration goes here, see sections below for details -->
             </configuration>
         </plugin>
    </plugins>
@@ -96,33 +82,86 @@ plugins {
 `}
 </Codeblock>
 
-2. Set Drill4J API address and API key
-    - __Option 1__ (recommended): using environment variables.
-        ```
-        // Exact way to set variables depends on the environment
-        DRILL_API_URL="http://localhost:8090/api"
-        DRILL_API_KEY="your_api_key_here"
-        ```
-    - __Option 2__ (not recommended): using Maven configuration file.
-        
-<Codeblock language="xml">
-{`
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>${versions.cicdPlugin}</version>
-                    <configuration>
-                        <!-- Set API url and API key -->
-                        <apiUrl>http://localhost:8090/api</apiUrl>
-                        <apiKey>your_api_key_here</apiKey>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-`}
-</Codeblock>
+### API Key Configuration
+
+For the plugin to be able to send data to Drill4J backend, it needs to be configured with Drill4J API address and API key.
+You can set these parameters in two ways:
+
+1. __Option 1__ (recommended): using environment variables.
+```shell
+# Exact way to set variables depends on the environment
+DRILL_API_URL="http://localhost:8090/api"
+DRILL_API_KEY="your_api_key_here"
+```
+
+2. __Option 2__ (not recommended): using Gradle/Maven plugin configuration.
+
+#### Gradle
+```kotlin
+// Add the following section in `build.gradle` at root level
+drill {
+    // Set API url and API key
+    apiUrl = "http://localhost:8090/api"
+    apiKey = "your_api_key_here"
+}
+```
+
+#### Maven
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>        
+    <configuration>
+        <!-- Set API url and API key -->
+        <apiUrl>http://localhost:8090/api</apiUrl>
+        <apiKey>your_api_key_here</apiKey>
+    </configuration>
+</plugin>
+```
+
+### Per-task configuration override
+
+The Gradle CI/CD integration plugin allows you to override any Drill4J configuration parameter for a specific Gradle task.
+This can be used to:
+- Disable specific features for certain tasks
+- Enable features only for selected tasks (without enabling them globally)
+- Customize parameters like `packagePrefixes`, `buildVersion`, or feature-specific options on a per-task basis
+
+To override configuration for a specific task, add a `drill {}` block inside the task configuration:
+
+#### Overriding test task configuration
+
+```kotlin
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
+
+    drill {
+        // Override any parameter for this specific task
+        testTracing {
+            enabled = false // Disables test tracing for this task
+        }
+        coverage {
+            enabled = false // Disables coverage collection for this task
+        }
+    }
+}
+```
+
+#### Overriding archive task configuration
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true // Enable class scanning only for this archive task
+        }
+    }
+}
+```
+
+> This approach is not available for Maven. In Maven, use dedicated [profiles](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) to control which goals include the Drill4J agent.
+
 
 ## Agent Setup
 
@@ -292,91 +331,6 @@ agent {
     <agentMode>JAVA</agentMode>
 </agent>
 ```
-
-## Per-Task Configuration Override (Gradle)
-
-When features like `coverage()` or `testTracing()` are enabled globally in the `drill {}` block, the Drill4J agent automatically launches for every Gradle `test`, `JavaExec`, and archive (`jar`, `war`, `ear`) task.
-
-The CI/CD integration plugin allows you to override any Drill4J configuration parameter for a specific Gradle task. This can be used to:
-- Disable specific features for certain tasks
-- Enable features only for selected tasks (without enabling them globally)
-- Customize parameters like `packagePrefixes`, `buildVersion`, or feature-specific options on a per-task basis
-
-To override configuration for a specific task, add a `drill {}` block inside the task configuration:
-
-### Overriding test task configuration
-
-```kotlin
-// Standard test configuration in Gradle
-test {
-    useJUnitPlatform() // or any other test runner
-
-    drill {
-        // Override any parameter for this specific task
-        testTracing {
-            enabled = false // Disables test tracing for this task
-        }
-        coverage {
-            enabled = false // Disables coverage collection for this task
-        }
-    }
-}
-```
-
-### Overriding JavaExec task configuration
-
-```kotlin
-tasks.named<JavaExec>("run") {
-    drill {
-        // Override parameters for this specific JavaExec task
-        packagePrefixes = arrayOf("my/other/package")
-    }
-}
-```
-
-### Overriding archive task configuration
-
-```kotlin
-tasks.named("jar") {
-    drill {
-        classScanning {
-            afterBuild = true // Enable class scanning only for this archive task
-        }
-    }
-}
-```
-
-### Enabling features per-task only
-
-Instead of enabling features globally, you can skip the global configuration and enable features only for specific tasks:
-
-```kotlin
-drill {
-    groupId = "my-group"
-    appId = "my-application"
-    packagePrefixes = arrayOf("my/awesome/application")
-    agent {
-        version = "${versions.applicationAgent}"
-    }
-    // No features enabled globally
-}
-
-// Enable features only for this specific test task
-test {
-    useJUnitPlatform()
-
-    drill {
-        coverage {
-            enabled = true
-        }
-        testTracing {
-            enabled = true
-        }
-    }
-}
-```
-
-> This approach is not available for Maven. In Maven, use dedicated [profiles](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) to control which goals include the Drill4J agent.
 
 ## Coverage Collection
 
