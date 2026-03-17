@@ -159,8 +159,8 @@ drill {
 `}
 </Codeblock>
 
-> If `coverage()` feature is enabled, the agent will automatically launch for every Gradle test and JavaExec task.
-> If you need to disable the agent for specific tasks, refer to [this section](#disable-for-specific-task).
+> If `coverage()` or `testTracing()` feature is enabled, the agent will automatically launch for every Gradle test and JavaExec task.
+> To override configuration for specific tasks, refer to [Per-Task Configuration Override](#per-task-configuration-override-gradle).
 
 #### Maven
 
@@ -205,67 +205,6 @@ To set up the Drill4J agent in a Maven project, add the following to pom.xml:
 </Codeblock>
 
 > The agent will automatically launch for every Maven test goal.
-> If you need to disable the agent for specific goals, refer to [this section](#disable-for-specific-task).
-
-### Disable for specific task
-
-By default, the Drill4J agent will launch for every Gradle task and Maven goal.
-To disable the agent or specific features for individual tasks/goals, follow the steps below:
-
-##### Gradle
-
-Add the following to configuration of test task:
-```kotlin
-// Standard test configuration in Gradle
-test {
-    useJUnitPlatform() // or any other test runner
-
-    drill {
-        // Override any feature for this specific task
-        testTracing {
-            enabled = false // Disables test tracing for this task
-        }
-    }
-}
-```
-
-##### Maven
-
-There is no way to disable the agent for specific Maven goal while keeping it for all others.
-
-Instead you can create dedicated Maven profile for the CI/CD Integration Plugin configuration:
-
-<Codeblock language="xml">
-{`
-<profiles>
-    <profile>
-        <!-- profile name, it is totally arbitrary -->
-        <id>profileWithDrillAgent</id>
-        <activation>
-            <activeByDefault>false</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>${versions.cicdPlugin}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>enableAgent</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-`}
-</Codeblock>
-
-This way the agent will only launch when the respective profile is launched.
 
 ### Agent files download source
 
@@ -277,7 +216,6 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 #### Automatic download
 
 To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Java Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
-> *NOTE:*
 > GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
 
 ##### Gradle
@@ -355,12 +293,99 @@ agent {
 </agent>
 ```
 
+## Per-Task Configuration Override (Gradle)
+
+When features like `coverage()` or `testTracing()` are enabled globally in the `drill {}` block, the Drill4J agent automatically launches for every Gradle `test`, `JavaExec`, and archive (`jar`, `war`, `ear`) task.
+
+The CI/CD integration plugin allows you to override any Drill4J configuration parameter for a specific Gradle task. This can be used to:
+- Disable specific features for certain tasks
+- Enable features only for selected tasks (without enabling them globally)
+- Customize parameters like `packagePrefixes`, `buildVersion`, or feature-specific options on a per-task basis
+
+To override configuration for a specific task, add a `drill {}` block inside the task configuration:
+
+### Overriding test task configuration
+
+```kotlin
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
+
+    drill {
+        // Override any parameter for this specific task
+        testTracing {
+            enabled = false // Disables test tracing for this task
+        }
+        coverage {
+            enabled = false // Disables coverage collection for this task
+        }
+    }
+}
+```
+
+### Overriding JavaExec task configuration
+
+```kotlin
+tasks.named<JavaExec>("run") {
+    drill {
+        // Override parameters for this specific JavaExec task
+        packagePrefixes = arrayOf("my/other/package")
+    }
+}
+```
+
+### Overriding archive task configuration
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true // Enable class scanning only for this archive task
+        }
+    }
+}
+```
+
+### Enabling features per-task only
+
+Instead of enabling features globally, you can skip the global configuration and enable features only for specific tasks:
+
+```kotlin
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    agent {
+        version = "${versions.applicationAgent}"
+    }
+    // No features enabled globally
+}
+
+// Enable features only for this specific test task
+test {
+    useJUnitPlatform()
+
+    drill {
+        coverage {
+            enabled = true
+        }
+        testTracing {
+            enabled = true
+        }
+    }
+}
+```
+
+> This approach is not available for Maven. In Maven, use dedicated [profiles](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) to control which goals include the Drill4J agent.
+
 ## Coverage Collection
 
 Enables Drill4J to collect code coverage for application classes. See the [Java Agent](/docs/agents/java-agent) reference page for more details.
 
 ### Set up
-Prerequisite - [Agent setup](#agent-setup) is configured
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
 
 #### Gradle
 To enable coverage collection in a Gradle project, add `coverage()` to the `drill {}` block:
@@ -414,7 +439,8 @@ To enable coverage collection in a Maven project, add the `<coverage>` configura
 
 ## Test Tracing
 
-Enables Drill4J to map tests to code coverage and vice versa, providing per-test coverage data and test metadata.
+Enables Drill4J to establish test-to-code mapping, linking each test to the specific code it exercises and vice versa. 
+In addition, it provides test tracking capabilities — recording which tests were executed along with their outcomes (passed, failed, skipped, etc.).
 
 ### Set up
 Prerequisite - [Agent setup](#agent-setup) is configured
@@ -471,6 +497,15 @@ To enable test tracing in a Maven project, add the `<testTracing>` configuration
 
 You can configure test tracing with the following options:
 
+| Option | Description |
+|--------|-------------|
+| `testSessionId` | Custom identifier for the test session. Generated automatically in UUID format for each test session if not specified. |
+| `perTestSession` | When enabled, groups trace data by test session. |
+| `perTestLaunch` | When enabled, records granular per-launch trace data for each test execution. |
+
+> Enabling `perTestLaunch` may increase the amount of trace data collected, which can impact performance and storage. 
+> Use this option if you need detailed insights into each test execution.
+
 ##### Gradle
 ```kotlin
 testTracing {
@@ -492,13 +527,16 @@ testTracing {
 
 ## Class Scanning
 
-Drill4J can scan application classes to collect metadata about classes and methods. This can be done at runtime during task execution, before running a task, or after a build.
+Drill4J can scan application classes and methods to identify structural changes between application builds.
+This can be done at runtime during application execution, before running a test task, after a build, or directly by executing the dedicated Gradle/Maven command.
 
 ### Set up
-Prerequisite - [Agent setup](#agent-setup) is configured
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
 
 #### Gradle
-To enable class scanning in a Gradle project, add `classScanning()` to the `drill {}` block:
+To enable class scanning in a Gradle project, add `classScanning` to the `drill {}` block:
 <Codeblock language="kotlin">
 {`
 drill {
@@ -508,14 +546,17 @@ drill {
     agent {
         version = "${versions.applicationAgent}"
     }
-    // Enables class scanning before task execution
-    classScanning()
+    // Enables class scanning
+    classScanning {
+        appClasses = files("build/classes/java/main")   //Optional, path to compiled application classes
+        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes
+    }
 }
 `}
 </Codeblock>
 
 #### Maven
-To enable class scanning in a Maven project, add the `<classScanning>` configuration:
+To enable class scanning in a Maven project, add the `<execution>` configuration for any phase you want to trigger scanning: 
 <Codeblock language="xml">
 {`
 <plugin>
@@ -528,16 +569,19 @@ To enable class scanning in a Maven project, add the `<classScanning>` configura
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <agent>
             <version>${versions.applicationAgent}</version>
-        </agent>
-        <!-- Enables runtime class scanning -->
+        </agent>     
         <classScanning>
-            <runtime>true</runtime>
-        </classScanning>
+            <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
+            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->
+        </classScanning>   
     </configuration>
     <executions>
         <execution>
-            <goals>
-                <goal>enableAgent</goal>
+            <!-- Enables class scanning before test task execution -->
+            <id>scan-app-classes</id>
+            <phase>YOUR_PHASE_HERE</phase>
+            <goals>                
+                <goal>scanAppArchive</goal>
             </goals>
         </execution>
     </executions>
@@ -545,19 +589,117 @@ To enable class scanning in a Maven project, add the `<classScanning>` configura
 `}
 </Codeblock>
 
-### Class scanning options
+### Scan after build
 
-#### Runtime class loader scanning
+Drill4J can automatically scan application classes after a build archive (JAR/WAR/EAR) task completes. 
+This allows Drill4J to collect class metadata right after the application is built, without waiting for it to be run.
 
-To enable scanning of classes loaded by class loaders at runtime, use the `runtimeClassLoaderScanning` option:
+#### Gradle
+To scan application classes after a build archive task completes set the `afterBuild` option to `true`:
+```kotlin
+classScanning {
+    afterBuild = true
+}
+```
+
+You can also enable class scanning for a specific build task only:
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true
+        }
+    }
+}
+```
+
+#### Maven
+```xml
+<execution>
+    <id>scan-app-classes-after-build</id>
+    <phase>package</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
+```
+
+### Scan before test execution
+
+Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for features like test recommendations.
+
+#### Gradle
+This scanning mode is enabled by default when you enable `classScanning()` in Gradle:
+```kotlin
+drill {
+    classScanning()
+}
+```
+
+If you want to disable scanning before test execution, set the `beforeTest` option to `false`:
+```kotlin
+drill {
+    classScanning {
+        beforeTests = false
+    }
+}
+```
+
+#### Maven
+```xml
+<execution>
+    <id>scan-app-classes-before-tests</id>
+    <phase>process-test-classes</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
+```
+
+### Runtime class scanning
+
+The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application runtime). 
+This allows Drill4J to collect class metadata from the actual runtime classpath rather than from a static archive.
+
+To enable runtime class scanning, set the `runtime` option to `true`:
+
+#### Gradle
+```kotlin
+drill {
+    classScanning {
+        runtime = true
+    }
+}
+```
+
+#### Maven
+```xml
+<configuration>
+    <classScanning>
+        <runtime>true</runtime>    
+    </classScanning>
+</configuration>
+<executions>
+    <execution>
+        <goals>
+            <goal>enableAgent</goal>
+        </goals>
+    </execution>
+</executions>
+```
+
+#### Runtime ClassLoader scanning
+
+Runtime class scanning capability allows to scan all application's active threads in runtime, retrieves their class loaders, and scans the files loaded by each class loader. 
+This scanning mode is enabled by default when you enable `runtime` class scanning. If you want to disable it, set the runtimeClassLoaderScanning `enabled` option to `false`:
 
 ##### Gradle
 ```kotlin
 classScanning {
     runtime = true
     runtimeClassLoaderScanning {
-        enabled = true
-        delay = 5000 // Optional delay in milliseconds before scanning class loaders
+        enabled = false        
     }
 }
 ```
@@ -565,23 +707,48 @@ classScanning {
 ##### Maven
 ```xml
 <classScanning>
-    <runtime>true</runtime>
+    <runtime>true</runtime>    
     <runtimeClassLoaderScanning>
-        <enabled>true</enabled>
-        <delay>5000</delay> <!-- Optional delay in milliseconds before scanning class loaders -->
+        <enabled>false</enabled>        
     </runtimeClassLoaderScanning>
 </classScanning>
 ```
 
-#### Scan after build
-
-To scan application classes automatically after a build archive (JAR/WAR) task completes:
+The optional `delay` parameter specifies a waiting period (in milliseconds) before scanning begins, giving class loaders time to finish loading.
 
 ##### Gradle
 ```kotlin
 classScanning {
-    afterBuild = true
+    runtime = true
+    runtimeClassLoaderScanning {
+        delay = 1000 // Optional delay in milliseconds before scanning class loaders
+    }
 }
+```
+##### Maven
+```xml
+<classScanning>
+    <runtime>true</runtime>    
+    <runtimeClassLoaderScanning>
+        <delay>1000</delay> <!-- Optional delay in milliseconds before scanning class loaders -->
+    </runtimeClassLoaderScanning>
+</classScanning>
+```
+
+### Scan by running command
+You can scan the application archive (JAR/WAR/EAR) by executing the dedicated Gradle task or Maven goal as described below.
+
+#### Gradle
+Execute the following Gradle command:
+
+```shell
+./gradlew drillScanAppArchive
+```
+#### Maven
+Execute the following Maven command:
+
+```shell
+mvn drill:scanAppArchive
 ```
 
 ## Test Recommendations
@@ -1004,42 +1171,6 @@ To send the build information to the Drill4J backend, execute the following Mave
 ```shell
 mvn drill:sendBuildInfo
 ```
-
-## Scanning application archive (JAR/WAR/EAR)
-
-Drill4J automatically scans information about an application's classes and methods when the application is run with the agent.
-However, you can also obtain this information right after building the application — before it is run.
-You have two ways to do this: either by running the dedicated Gradle/Maven command,
-or by enabling the [class scanning after build](#scan-after-build) parameter in the plugin configuration.
-
-### Run Gradle/Maven command
-To scan the application archive, execute the dedicated Gradle task or Maven goal as described below.
-> Note, before executing the command, you need to configure the [agent setup](#agent-setup) and build your application.
-
-#### Gradle
-Execute the following Gradle command:
-
-```shell
-./gradlew drillScanAppArchive
-```
-#### Maven
-Execute the following Maven command:
-
-```shell
-mvn drill:scanAppArchive
-```
-
-### Enable scan on build
-Alternatively, you can set up the `afterBuild` parameter to `true` in the class scanning configuration.
-In this case the application archive will be scanned automatically after the build is completed.
-
-#### Gradle
-```kotlin
-classScanning {
-    afterBuild = true // Enables automatic scanning of the application archive after build
-}
-```
-
 
 ## Baseline strategy
 
