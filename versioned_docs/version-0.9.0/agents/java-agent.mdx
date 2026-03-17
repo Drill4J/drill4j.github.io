@@ -8,13 +8,13 @@ title: Java Agent
 import versions from "@site/static/files/0.9.0/versions.json"
 import { Codeblock } from "@components"
 
-Drill4J Java Agent is a unified runtime agent for JVM-based applications that provides deep observability into your testing process and codebase evolution.
+Drill4J Java Agent is a runtime agent for JVM-based applications that provides deep observability into your testing process and codebase evolution.
 
 Key capabilities:
 
 - **Code Coverage Measurement** — collects precise code coverage data from running applications, giving teams visibility into which parts of the codebase are exercised by tests.
 - **Test Tracing & Test-to-Code Mapping** — establishes bidirectional traceability between tests and the code they execute, enabling you to determine exactly which tests cover a given method and which code paths a specific test exercises.
-- **Context Propagation** — automatically propagates test context across threads, asynchronous calls, HTTP requests, messaging systems (Kafka), and WebSocket connections, ensuring accurate coverage attribution even in distributed and reactive architectures.
+- **Context Propagation** — automatically propagates test context across threads, asynchronous calls, HTTP requests, messaging systems (Kafka), ensuring accurate coverage attribution even in distributed and reactive architectures.
 - **Code Change Detection** — identifies structural changes between application builds at the method level, powering intelligent test recommendations that highlight only the tests affected by recent changes.
 
 General integration steps are:
@@ -151,6 +151,11 @@ There are two ways to pass `-agentpath` parameter:
 - In command line for running tests
 - Inside the build configuration file
 
+
+> Note: If you're using Maven or Gradle to run tests, consider using [Drill4J CI/CD Integration Plugin](/docs/cicd-integration/cicd-integration-plugin) instead. 
+> It handles agent configuration automatically without requiring manual parameter setup.
+
+
 #### Pass `-agentpath` in command line for running tests
 
 ##### Gradle
@@ -275,15 +280,8 @@ __Precedence__: parameter values set in `drill.properties` file have the lowest 
 | testTracingEnabled   | no       | `true`                                   | Enables test tracing. If enabled, collected coverage will be associated with individual test or test session. Default is `false`. |
 | testTracingPerTestSessionEnabled | no | `true`                             | Enables test tracing per test session. Default is `true`.                                                                                                                  |
 | testTracingPerTestLaunchEnabled  | no | `true`                             | Enables test tracing per test launch. Default is `true`.                                                                                                                   |
-| testTaskId           | no       | `check`                                  | Name of the test task or test command that was launched to run tests.                                                                                                       |
-| testSessionId        | no       | `test-session-1`                         | Explicit test session identifier. If set, the agent uses this value instead of generating a session ID automatically. |
-
-### JS Coverage
-
-| Parameter            | Required | Example Value                            | Description                                                                                                                                                                |
-|----------------------|----------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| withJsCoverage       | no       | `true`                                   | Enables collecting JS coverage by Chrome DevTools.                                                                                                                         |
-| devToolsProxyAddress | no       | `http://localhost:8092`                  | URL address of Drill4J DevToolsProxy.                                                                                                                                      |
+| testTaskId           | no       | `check`                                  | Name of the test task or test command that was launched to run tests. Configured automatically. Override only in exceptional cases.                                        |
+| testSessionId        | no       | `test-session-1`                         | Explicit test session identifier. Configured automatically. Override only in exceptional cases.                                                                            |
 
 ### Recommended Tests
 
@@ -309,7 +307,7 @@ These parameters control which frameworks and protocols the agent instruments fo
 | instrumentationTtlEnabled        | no       | `true`  | Enables instrumentation for Transmittable Thread Local (TTL).    |
 | instrumentationKafkaEnabled      | no       | `false` | Enables instrumentation for Apache Kafka.                        |
 | instrumentationCadenceEnabled    | no       | `false` | Enables instrumentation for Uber Cadence.                        |
-| instrumentationWsEnabled         | no       | `true`  | Enables instrumentation for WebSocket connections.               |
+| instrumentationWsEnabled         | no       | `false`  | Enables instrumentation for WebSocket connections.               |
 | instrumentationHttpEnabled                | no       | `true`  | Enables instrumentation for HTTP server connections.             |
 | instrumentationSslEnabled                 | no       | `true`  | Enables instrumentation for SSL/TLS connections.                 |
 | instrumentationJavaHttpClientEnabled      | no       | `true`  | Enables instrumentation for Java's built-in HTTP client.         |

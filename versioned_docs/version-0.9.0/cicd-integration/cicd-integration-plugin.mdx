@@ -165,7 +165,7 @@ tasks.named("jar") {
 
 ## Agent Setup
 
-Drill4J uses a single unified agent for JVM-based applications and JVM-based tests. The agent is configured within the `drill {}` block and enables features such as coverage collection, test tracing, and class scanning.
+Drill4J uses a single agent for JVM-based applications and JVM-based tests. The agent is configured within the `drill {}` block and enables features such as coverage collection, test tracing, and class scanning.
 
 For more details on the agent itself, see the [Java Agent](/docs/agents/java-agent) reference page.
 
@@ -481,8 +481,12 @@ testTracing {
 
 ## Class Scanning
 
-Drill4J can scan application classes and methods to identify structural changes between application builds.
-This can be done at runtime during application execution, before running a test task, after a build, or directly by executing the dedicated Gradle/Maven command.
+Drill4J scans application classes and methods to identify structural changes between application builds.
+This can be done at either:
+- runtime during application execution;
+- before running a test task;
+- after a build;
+- directly by executing the dedicated Gradle/Maven command.
 
 ### Set up
 Prerequisite:
@@ -581,7 +585,7 @@ tasks.named("jar") {
 
 ### Scan before test execution
 
-Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for features like test recommendations.
+Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for impacted tests.
 
 #### Gradle
 This scanning mode is enabled by default when you enable `classScanning()` in Gradle:
@@ -613,7 +617,7 @@ drill {
 
 ### Runtime class scanning
 
-The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application runtime). 
+The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application run time). 
 This allows Drill4J to collect class metadata from the actual runtime classpath rather than from a static archive.
 
 To enable runtime class scanning, set the `runtime` option to `true`:
