@@ -504,10 +504,10 @@ drill {
     agent {
         version = "${versions.applicationAgent}"
     }
-    // Enables class scanning
+    // Class scanning configuration
     classScanning {
         appClasses = files("build/classes/java/main")   //Optional, path to compiled application classes
-        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes
+        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes        
     }
 }
 `}
@@ -530,7 +530,7 @@ To enable class scanning in a Maven project, add the `<execution>` configuration
         </agent>     
         <classScanning>
             <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
-            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->
+            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->            
         </classScanning>   
     </configuration>
     <executions>
@@ -588,18 +588,11 @@ tasks.named("jar") {
 Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for impacted tests.
 
 #### Gradle
-This scanning mode is enabled by default when you enable `classScanning()` in Gradle:
-```kotlin
-drill {
-    classScanning()
-}
-```
-
-If you want to disable scanning before test execution, set the `beforeTest` option to `false`:
+To enable scanning before test execution, set the `beforeRun` option to `true`:
 ```kotlin
 drill {
     classScanning {
-        beforeTests = false
+        beforeRun = true
     }
 }
 ```
