@@ -9,6 +9,10 @@
 .cache-loader
 index.css
 
+# IDEs and editors
+.idea
+.vscode
+
 # Misc
 .DS_Store
 .env.local

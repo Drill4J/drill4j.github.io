@@ -18,33 +18,40 @@ All these functions are provided under a single tool because they are related to
 
 CI/CD Integration Plugin functions include:
 
-1. __Downloading and configuring agents__:
-   - [Application agent](#application-agent) - to capture unit tests coverage
-   - [Test agent](#test-agent) - to capture metadata for tests launches (such as runner, test name and result)
+1. __Downloading and configuring the [Drill4J Java Agent](#agent-setup)__
 
-2. __Generating change testing reports__:
+2. __Enabling agent features__:
+   - [Coverage collection](#coverage-collection) - to capture code coverage for application classes
+   - [Test tracing](#test-tracing) - to map tests to code coverage and vice versa
+   - [Class scanning](#class-scanning) - to scan application classes at build time or runtime
+   - [Test recommendations](#test-recommendations) - to skip tests for unchanged code
+
+3. __Generating change testing reports__:
    - [With a command](#generating-a-change-testing-report) - useful to call on branch push event.
    - [On GitHub Pull Request](#github-pull-request-report)
    - [On GitLab Merge Request](#gitlab-merge-request-report)
 
-3. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
+4. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
 
 ### How to use
 
 The general gist of using the CI/CD integration plugin is:
 1. [Add the plugin](#adding-plugin) to your Maven or Gradle configuration.
-2. Configure the agents (for [application](#application-agent), for [tests](#test-agent))
+2. [Configure the agent](#agent-setup) and enable desired features (coverage, test tracing, etc.)
 3. Use commands provided by CI/CD Integration Plugin and integrate it with your CI/CD scripts
 
 > The exact configuration files and commands you should use depend on the task at hand. This page provides general reference. __For step-by-step guides__ refer to Integration Guides section (see documentation sidebar at the top of the page).
 
 ## Adding plugin
 
-This section describes how to add CI/CD integration plugin to your project.
+This section describes how to add CI/CD integration plugin to your Gradle/Maven project.
 
-### Gradle
+### Set Up
 
-1. Add the following to Gradle build file `plugins` section:
+
+#### Gradle
+
+Add the following to Gradle build file `plugins` section:
 
 <Codeblock language="kotlin">
 {`
@@ -54,26 +61,9 @@ plugins {
 `}
 </Codeblock>
 
-2. Set Drill4J API address and API key
-    - __Option 1__ (recommended): using environment variables.
-        ```
-        // Exact way to set variables depends on the environment
-        DRILL_API_URL="http://localhost:8090/api"
-        DRILL_API_KEY="your_api_key_here"
-        ```
-    - __Option 2__ (not recommended): using Gradle build file.
-        ```kotlin
-        // Add the following section in `build.gradle` at root level
-        drill {
-            // Set API url and API key
-            apiUrl = "http://localhost:8090/api"
-            apiKey = "your_api_key_here"
-        }
-        ```
+#### Maven
 
-### Maven
-
-1. Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
+Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
 
 <Codeblock language="xml">
 {`
@@ -84,7 +74,7 @@ plugins {
             <artifactId>drill-maven-plugin</artifactId>
             <version>${versions.cicdPlugin}</version>
             <configuration>
-            
+                <!-- Plugin configuration goes here, see sections below for details -->
             </configuration>
         </plugin>
    </plugins>
@@ -92,37 +82,92 @@ plugins {
 `}
 </Codeblock>
 
-2. Set Drill4J API address and API key
-    - __Option 1__ (recommended): using environment variables.
-        ```
-        // Exact way to set variables depends on the environment
-        DRILL_API_URL="http://localhost:8090/api"
-        DRILL_API_KEY="your_api_key_here"
-        ```
-    - __Option 2__ (not recommended): using Maven configuration file.
-        
-<Codeblock language="xml">
-{`
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>${versions.cicdPlugin}</version>
-                    <configuration>
-                        <!-- Set API url and API key -->
-                        <apiUrl>http://localhost:8090/api</apiUrl>
-                        <apiKey>your_api_key_here</apiKey>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-`}
-</Codeblock>
+### API Key Configuration
 
-## Test Agent
+For the plugin to be able to send data to Drill4J backend, it needs to be configured with Drill4J API address and API key.
+You can set these parameters in two ways:
 
-Enables Drill4J to map tests to coverage and vice versa. For more details on this feature and its purpose, see the [Test Agent](/docs/agents/test-agent) reference page.
+1. __Option 1__ (recommended): using environment variables.
+```shell
+# Exact way to set variables depends on the environment
+DRILL_API_URL="http://localhost:8090/api"
+DRILL_API_KEY="your_api_key_here"
+```
+
+2. __Option 2__ (not recommended): using Gradle/Maven plugin configuration.
+
+#### Gradle
+```kotlin
+// Add the following section in `build.gradle` at root level
+drill {
+    // Set API url and API key
+    apiUrl = "http://localhost:8090/api"
+    apiKey = "your_api_key_here"
+}
+```
+
+#### Maven
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>        
+    <configuration>
+        <!-- Set API url and API key -->
+        <apiUrl>http://localhost:8090/api</apiUrl>
+        <apiKey>your_api_key_here</apiKey>
+    </configuration>
+</plugin>
+```
+
+### Per-task configuration override
+
+The Gradle CI/CD integration plugin allows you to override any Drill4J configuration parameter for a specific Gradle task.
+This can be used to:
+- Disable specific features for certain tasks
+- Enable features only for selected tasks (without enabling them globally)
+- Customize parameters like `packagePrefixes`, `buildVersion`, or feature-specific options on a per-task basis
+
+To override configuration for a specific task, add a `drill {}` block inside the task configuration:
+
+#### Overriding test task configuration
+
+```kotlin
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
+
+    drill {
+        // Override any parameter for this specific task
+        testTracing {
+            enabled = false // Disables test tracing for this task
+        }
+        coverage {
+            enabled = false // Disables coverage collection for this task
+        }
+    }
+}
+```
+
+#### Overriding archive task configuration
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true // Enable class scanning only for this archive task
+        }
+    }
+}
+```
+
+> This approach is not available for Maven. In Maven, use dedicated [profiles](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) to control which goals include the Drill4J agent.
+
+
+## Agent Setup
+
+Drill4J uses a single agent for JVM-based applications and JVM-based tests. The agent is configured within the `drill {}` block and enables features such as coverage collection, test tracing, and class scanning.
+
+For more details on the agent itself, see the [Java Agent](/docs/agents/java-agent) reference page.
 
 ### Set up
 
@@ -130,25 +175,35 @@ Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
 
 #### Gradle
 
-To enable the Drill4J Test Agent to Gradle project add the following:
+To set up the Drill4J agent in a Gradle project, add the following to your build file:
 <Codeblock language="kotlin">
 {`
 drill {
-    // groupId is a required parameter to run test agent
+    // Required parameters
     groupId = "my-group"
-    enableTestAgent {
-        version = ${versions.testAgent}
+    appId = "my-application"
+    // Specifies the java packages for Drill4J to monitor
+    // Use "/" separator for package name parts
+    packagePrefixes = arrayOf("my/awesome/application")
+    // Optional, identifies app version built from checked out commit
+    buildVersion = "1.0.0"
+    // Agent download configuration
+    agent {
+        version = "${versions.applicationAgent}"
     }
+    // Enable desired features (see sections below)
+    coverage()
+    testTracing()
 }
 `}
 </Codeblock>
 
-> Note, that Test Agent will automatically launch for every Gradle test task.
-> If you need to disable Test Agent for specific tasks, refer to [this section](#disable-for-specific-task)
+> If `coverage()` or `testTracing()` feature is enabled, the agent will automatically launch for every Gradle test and JavaExec task.
+> To override configuration for specific tasks, refer to [Per-Task Configuration Override](#per-task-configuration-override-gradle).
 
 #### Maven
 
-To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
+To set up the Drill4J agent in a Maven project, add the following to pom.xml:
 <Codeblock language="xml">
 {`
 <plugin>
@@ -156,17 +211,31 @@ To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
     <artifactId>drill-maven-plugin</artifactId>
     <version>${versions.cicdPlugin}</version>
     <configuration>
-        <!-- groupId is a required parameter to run test agent -->
+        <!-- Required parameters -->
         <groupId>my-group</groupId>
-        <testAgent>
-            <version>${versions.testAgent}</version>
-        </testAgent>
+        <appId>my-application</appId>
+        <!--  Specifies the java packages for Drill4J to monitor -->
+        <!-- Use "/" separator for package name parts -->
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <!-- Optional, identifies app version built from checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+        <!-- Agent download configuration -->
+        <agent>
+            <version>${versions.applicationAgent}</version>
+        </agent>
+        <!-- Enable desired features (see sections below) -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
     </configuration>
-    <!-- adds enableTestAgent goal -->
+    <!-- adds enableAgent goal -->
     <executions>
         <execution>
             <goals>
-                <goal>enableTestAgent</goal>
+                <goal>enableAgent</goal>
             </goals>
         </execution>
     </executions>
@@ -174,67 +243,7 @@ To enable the Drill4J Test Agent to Maven project add the following to pom.xml:
 `}
 </Codeblock>
 
-> Note, that Test Agent will automatically launch for every Maven test goal.
-> If you need to disable Test Agent for specific goals, refer to [this section](#disable-for-specific-task)
-
-### Disable for specific task
-
-By default, the Test Agent will launch for every Gradle task and Maven goal.
-To disable the Test Agent for specific tasks/goals, follow the steps below:
-
-##### Gradle
-
-Add the following to configuration of test task:
-```kotlin
-// Standard test configuration in Gradle
-test {
-    useJUnitPlatform() // or any other test runner
-
-    drill {
-        testAgent {
-            enabled = false // Disables Test agent for this test task
-        }
-    }
-}
-```
-
-##### Maven
-
-There is no way to disable Test Agent for specific Maven goal while keeping it for all others.
-
-Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Test Agent configuration:
-
-<Codeblock language="xml">
-{`
-<profiles>
-    <profile>
-        <!-- profile name, it is totally arbitrary -->
-        <id>profileWithTestAgent</id>
-        <activation>
-            <activeByDefault>false</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>${versions.cicdPlugin}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>enableTestAgent</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-`}
-</Codeblock>
-
-This way Test Agent will only launch when the respective profile is launched.
+> The agent will automatically launch for every Maven test goal.
 
 ### Agent files download source
 
@@ -245,15 +254,14 @@ There are 3 ways to specify where CI/CD plugin should load agent from:
 
 #### Automatic download
 
-To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Test Agent GitHub repository](https://github.com/Drill4J/autotest-agent/releases) releases page.
-> *NOTE:*
+To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Java Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
 > GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
 
 ##### Gradle
 <Codeblock language="kotlin">
 {`
-enableTestAgent {
-    version = "${versions.cicdPlugin}"
+agent {
+    version = "${versions.applicationAgent}"
 }
 `}
 </Codeblock>
@@ -262,118 +270,97 @@ enableTestAgent {
 
 <Codeblock language="xml">
 {`
-<testAgent>
-    <version>${versions.cicdPlugin}</version>
-</testAgent>
+<agent>
+    <version>${versions.applicationAgent}</version>
+</agent>
 `}
 </Codeblock>
 
 #### Custom URL download
 
-To download the Test Agent from a custom URL, set the `downloadUrl` parameter to the desired link:
+To download the agent from a custom URL, set the `downloadUrl` parameter to the desired link:
 
 ##### Gradle
 ```kotlin
-enableTestAgent {
+agent {
     downloadUrl = "http://url_to_download_agent.zip"
 }
 ```
 ##### Maven
 ```xml
-<testAgent>
+<agent>
     <downloadUrl>http://url_to_download_agent.zip</downloadUrl>
-</testAgent>
+</agent>
 ```
 
 #### Local path to ZIP release
 
-To use a locally available Test Agent, set the `zipPath` parameter to the path of the local zip archive:
+To use a locally available agent, set the `zipPath` parameter to the path of the local zip archive:
 
 ##### Gradle
 ```kotlin
-enableTestAgent {
+agent {
     zipPath = "path/to/local/agent.zip"
 }
 ```
 ##### Maven
 ```xml
-<testAgent>
+<agent>
     <zipPath>path/to/local/agent.zip</zipPath>
-</testAgent>
+</agent>
 ```
 
-### Disable test tracing
+### Setting agent mode
 
-By default, the Test Agent will trace all tests executed in Gradle or Maven.
-This lets you measure the coverage of each individual test, but it also generates a large amount of data.
-If you only need the overall coverage for an entire test session rather than for each test - you can disable test tracing.
+Drill4J has two modes of running the agent:
+- `NATIVE` - uses native library file (more capabilities)
+- `JAVA` - uses drill-runtime.jar file (platform agnostic)
 
-To disable test tracing, set the `testTracingEnabled` parameter to `false` in the Test Agent configuration:
+By default, the agent uses `NATIVE` mode. To set `JAVA` mode, set the `agentMode` parameter in agent configuration:
 
 ##### Gradle
 ```kotlin
-enableTestAgent {
-    testTracingEnabled = false
+agent {
+    agentMode = "JAVA"
 }
 ```
+
 ##### Maven
 ```xml
-<testAgent>
-    <testTracingEnabled>false</testTracingEnabled>
-</testAgent>
+<agent>
+    <agentMode>JAVA</agentMode>
+</agent>
 ```
 
-### Disable sending test metadata
-By default, the Test Agent sends test launch metadata (test names, test results, test duration, etc.) to the Drill4J backend.
-This metadata is used to provide detailed test reports and recommendations.
+## Coverage Collection
 
-If you want to disable this feature, set the `testLaunchMetadataSendingEnabled` parameter to `false` in the Test Agent configuration:
-
-##### Gradle
-```kotlin
-enableTestAgent {
-    testLaunchMetadataSendingEnabled = false
-}
-```
-##### Maven
-```xml
-<testAgent>
-    <testLaunchMetadataSendingEnabled>false</testLaunchMetadataSendingEnabled>
-</testAgent>
-```
-
-## Application Agent
-
-Enables Drill4J to collect coverage for application classes. See the [Application Agent](/docs/agents/java-agent) reference page for more details.
+Enables Drill4J to collect code coverage for application classes. See the [Java Agent](/docs/agents/java-agent) reference page for more details.
 
 ### Set up
-Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
 
 #### Gradle
-To enable the Drill4J Application Agent to Gradle project add the following:
-<Codeblock language="groovy">
+To enable coverage collection in a Gradle project, add `coverage()` to the `drill {}` block:
+<Codeblock language="kotlin">
 {`
 drill {
-    // Enter appropriate parameter values
     groupId = "my-group"
     appId = "my-application"
-    // Specifies the java packages for Drill4J to monitor
-    // Use "/" separator for package name parts
-    packagePrefixes = "my/awesome/application"
-    // Optional, identifies app version built from checked out commit
+    packagePrefixes = arrayOf("my/awesome/application")
     buildVersion = "1.0.0"
-    enableAppAgent {
+    agent {
         version = "${versions.applicationAgent}"
     }
+    // Enables coverage collection
+    coverage()
 }
 `}
 </Codeblock>
 
-> Note, that Application Agent will automatically launch for every Gradle exec task.
-If you need to disable Application Agent for specific tasks, refer to [this section](#disable-for-specific-task-1)
-
 #### Maven
-To enable the Drill4J Application Agent to Maven project add the following to pom.xml:
+To enable coverage collection in a Maven project, add the `<coverage>` configuration:
 <Codeblock language="xml">
 {`
 <plugin>
@@ -381,23 +368,22 @@ To enable the Drill4J Application Agent to Maven project add the following to po
     <artifactId>drill-maven-plugin</artifactId>
     <version>${versions.cicdPlugin}</version>
     <configuration>
-        <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-        <!--  Specifies the java packages for Drill4J to monitor -->
-        <!-- Use "/" separator for package name parts -->
         <packagePrefixes>my/awesome/application</packagePrefixes>
-        <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-        <appAgent>
+        <agent>
             <version>${versions.applicationAgent}</version>
-        </appAgent>
+        </agent>
+        <!-- Enables coverage collection -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
     </configuration>
-    <!-- adds enableAppAgent goal -->
     <executions>
         <execution>
             <goals>
-                <goal>enableAppAgent</goal>
+                <goal>enableAgent</goal>
             </goals>
         </execution>
     </executions>
@@ -405,148 +391,315 @@ To enable the Drill4J Application Agent to Maven project add the following to po
 `}
 </Codeblock>
 
-> Note, that Application Agent will automatically launch for every Maven test goal. If you need to disable Application Agent for specific goals, refer to [this section](#disable-for-specific-task-1)
+## Test Tracing
 
-### Disable for specific task
-By default, the Application Agent will launch for every Gradle task and Maven goal. To disable the Application Agent for specific tasks/goals, follow the steps below:
+Enables Drill4J to establish test-to-code mapping, linking each test to the specific code it exercises and vice versa. 
+In addition, it provides test tracking capabilities — recording which tests were executed along with their outcomes (passed, failed, skipped, etc.).
+
+### Set up
+Prerequisite - [Agent setup](#agent-setup) is configured
+
+#### Gradle
+To enable test tracing in a Gradle project, add `testTracing()` to the `drill {}` block:
+<Codeblock language="kotlin">
+{`
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    agent {
+        version = "${versions.applicationAgent}"
+    }
+    // Enables test tracing
+    testTracing()
+}
+`}
+</Codeblock>
+
+#### Maven
+To enable test tracing in a Maven project, add the `<testTracing>` configuration:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <agent>
+            <version>${versions.applicationAgent}</version>
+        </agent>
+        <!-- Enables test tracing -->
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Test tracing options
+
+You can configure test tracing with the following options:
+
+| Option | Description |
+|--------|-------------|
+| `testSessionId` | Custom identifier for the test session. Generated automatically in UUID format for each test session if not specified. |
+| `perTestSession` | When enabled, groups trace data by test session. |
+| `perTestLaunch` | When enabled, records granular per-launch trace data for each test execution. |
+
+> Enabling `perTestLaunch` may increase the amount of trace data collected, which can impact performance and storage. 
+> Use this option if you need detailed insights into each test execution.
 
 ##### Gradle
-Add the following to configuration of test task:
-```groovy
-// Standard test configuration in Gradle
-test {
-    useJUnitPlatform() // or any other test runner
+```kotlin
+testTracing {
+    testSessionId = "my-session-id"      // Custom test session identifier
+    perTestSession = true                 // Enable per-test-session tracing
+    perTestLaunch = true                  // Enable per-test-launch tracing
+}
+```
 
+##### Maven
+```xml
+<testTracing>
+    <enabled>true</enabled>
+    <testSessionId>my-session-id</testSessionId>    <!-- Custom test session identifier -->
+    <perTestSession>true</perTestSession>           <!-- Enable per-test-session tracing -->
+    <perTestLaunch>true</perTestLaunch>             <!-- Enable per-test-launch tracing -->
+</testTracing>
+```
+
+## Class Scanning
+
+Drill4J scans application classes and methods to identify structural changes between application builds.
+This can be done at either:
+- runtime during application execution;
+- before running a test task;
+- after a build;
+- directly by executing the dedicated Gradle/Maven command.
+
+### Set up
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
+
+#### Gradle
+To enable class scanning in a Gradle project, add `classScanning` to the `drill {}` block:
+<Codeblock language="kotlin">
+{`
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    agent {
+        version = "${versions.applicationAgent}"
+    }
+    // Class scanning configuration
+    classScanning {
+        appClasses = files("build/classes/java/main")   //Optional, path to compiled application classes
+        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes        
+    }
+}
+`}
+</Codeblock>
+
+#### Maven
+To enable class scanning in a Maven project, add the `<execution>` configuration for any phase you want to trigger scanning: 
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <agent>
+            <version>${versions.applicationAgent}</version>
+        </agent>     
+        <classScanning>
+            <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
+            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->            
+        </classScanning>   
+    </configuration>
+    <executions>
+        <execution>
+            <!-- Enables class scanning before test task execution -->
+            <id>scan-app-classes</id>
+            <phase>YOUR_PHASE_HERE</phase>
+            <goals>                
+                <goal>scanAppArchive</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Scan after build
+
+Drill4J can automatically scan application classes after a build archive (JAR/WAR/EAR) task completes. 
+This allows Drill4J to collect class metadata right after the application is built, without waiting for it to be run.
+
+#### Gradle
+To scan application classes after a build archive task completes set the `afterBuild` option to `true`:
+```kotlin
+classScanning {
+    afterBuild = true
+}
+```
+
+You can also enable class scanning for a specific build task only:
+
+```kotlin
+tasks.named("jar") {
     drill {
-        appAgent {
-            enabled = false // Disables Application agent for this test task
+        classScanning {
+            afterBuild = true
         }
     }
 }
 ```
 
-##### Maven
-
-There is no way to disable Application Agent for specific Maven goal while keeping it for all others.
-
-Instead you can create dedicated Maven profile for both CI/CD Integration Plugin and Application Agent configuration:
-<Codeblock language="">
-{`
-<profiles>
-    <profile>
-        <!-- profile name, it is totally arbitrary -->
-        <id>profileWithAppAgent</id>
-        <activation>
-            <activeByDefault>false</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.epam.drill.integration</groupId>
-                    <artifactId>drill-maven-plugin</artifactId>
-                    <version>${versions.cicdPlugin}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>enableAppAgent</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-`}
-</Codeblock>
-
-This way Application Agent will only launch when the respective profile is launched.
-
-### Agent files download source
-
-There are 3 ways to specify where CI/CD plugin should load agent from:
-- [Automatic download](#automatic-download-1) by version tag - the default option.
-- [Custom URL download](#custom-url-download-1) - arbitrary URL to ZIP release.
-- [Local path to ZIP release](#local-path-to-zip-release-1) - local path to ZIP release.
-
-#### Automatic download
-
-To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Application Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
-> *NOTE:*
-> GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
-
-##### Gradle
-<Codeblock language="kotlin">
-{`
-enableAppAgent {
-    version = "${versions.applicationAgent}"
-}
-`}
-</Codeblock>
-
-##### Maven
-<Codeblock language="xml">
-{`
-<appAgent>
-    <version>${versions.applicationAgent}</version>
-</appAgent>
-`}
-</Codeblock>
-
-#### Custom URL download
-
-To download the Application Agent from a custom URL, set the `downloadUrl` parameter to the desired link:
-
-##### Gradle
-```kotlin
-enableAppAgent {
-    downloadUrl = "http://url_to_download_agent.zip"
-}
-```
-##### Maven
+#### Maven
 ```xml
-<appAgent>
-    <downloadUrl>http://url_to_download_agent.zip</downloadUrl>
-</appAgent>
+<execution>
+    <id>scan-app-classes-after-build</id>
+    <phase>package</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
 ```
 
-#### Local path to ZIP release
+### Scan before test execution
 
-To use a locally available Application Agent, set the `zipPath` parameter to the path of the local zip archive:
+Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for impacted tests.
 
-##### Gradle
+#### Gradle
+To enable scanning before test execution, set the `beforeRun` option to `true`:
 ```kotlin
-enableAppAgent {
-    zipPath = "path/to/local/agent.zip"
+drill {
+    classScanning {
+        beforeRun = true
+    }
 }
 ```
-##### Maven
+
+#### Maven
 ```xml
-<appAgent>
-    <zipPath>path/to/local/agent.zip</zipPath>
-</appAgent>
+<execution>
+    <id>scan-app-classes-before-tests</id>
+    <phase>process-test-classes</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
 ```
 
-### Setting agent mode
+### Runtime class scanning
 
-Drill4J has two modes of enabling Application Agent:
-- `NATIVE` - uses native library file (more capabilities)
-- `JAVA` - uses drill-runtime.jar file (platform agnostic)
+The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application run time). 
+This allows Drill4J to collect class metadata from the actual runtime classpath rather than from a static archive.
 
-By default, Application Agent uses `NATIVE` mode. To set `JAVA` mode, set the `mode` parameter in Application Agent configuration:
+To enable runtime class scanning, set the `runtime` option to `true`:
+
+#### Gradle
+```kotlin
+drill {
+    classScanning {
+        runtime = true
+    }
+}
+```
+
+#### Maven
+```xml
+<configuration>
+    <classScanning>
+        <runtime>true</runtime>    
+    </classScanning>
+</configuration>
+<executions>
+    <execution>
+        <goals>
+            <goal>enableAgent</goal>
+        </goals>
+    </execution>
+</executions>
+```
+
+#### Runtime ClassLoader scanning
+
+Runtime class scanning capability allows to scan all application's active threads in runtime, retrieves their class loaders, and scans the files loaded by each class loader. 
+This scanning mode is enabled by default when you enable `runtime` class scanning. If you want to disable it, set the runtimeClassLoaderScanning `enabled` option to `false`:
 
 ##### Gradle
 ```kotlin
-enableAppAgent {
-    mode = "JAVA"
+classScanning {
+    runtime = true
+    runtimeClassLoaderScanning {
+        enabled = false        
+    }
 }
 ```
 
 ##### Maven
 ```xml
-<appAgent>
-    <mode>JAVA</mode>
-</appAgent>
+<classScanning>
+    <runtime>true</runtime>    
+    <runtimeClassLoaderScanning>
+        <enabled>false</enabled>        
+    </runtimeClassLoaderScanning>
+</classScanning>
+```
+
+The optional `delay` parameter specifies a waiting period (in milliseconds) before scanning begins, giving class loaders time to finish loading.
+
+##### Gradle
+```kotlin
+classScanning {
+    runtime = true
+    runtimeClassLoaderScanning {
+        delay = 1000 // Optional delay in milliseconds before scanning class loaders
+    }
+}
+```
+##### Maven
+```xml
+<classScanning>
+    <runtime>true</runtime>    
+    <runtimeClassLoaderScanning>
+        <delay>1000</delay> <!-- Optional delay in milliseconds before scanning class loaders -->
+    </runtimeClassLoaderScanning>
+</classScanning>
+```
+
+### Scan by running command
+You can scan the application archive (JAR/WAR/EAR) by executing the dedicated Gradle task or Maven goal as described below.
+
+#### Gradle
+Execute the following Gradle command:
+
+```shell
+./gradlew drillScanAppArchive
+```
+#### Maven
+Execute the following Maven command:
+
+```shell
+mvn drill:scanAppArchive
 ```
 
 ## Test Recommendations
@@ -557,8 +710,9 @@ which tests can be skipped because the code they cover has already been tested b
 ### Set up
 
 Prerequisites:
-- [Test agent](#test-agent) is enabled.
-- Before running the tests, make sure that the application under test is already deployed with the [Application Agent](#application-agent) enabled.
+- [Agent setup](#agent-setup) is configured.
+- [Test tracing](#test-tracing) is enabled.
+- Before running the tests, make sure that the application under test is already deployed with [coverage collection](#coverage-collection) enabled.
 
 #### Gradle
 To enable test recommendations add the following properties to your Gradle build file:
@@ -572,14 +726,15 @@ drill {
     appId = "my-application"
     // Identifies the version of the application under test that is based on the checked out commit
     buildVersion = "1.0.0"
+    agent {
+        version = "${versions.applicationAgent}"
+    }
+    // Enables Coverage Collection
+    coverage()
+    // Enables Test Tracing
+    testTracing()
     // Enables Test Recommendations
-    enableTestRecommendations {
-        coveragePeriodDays = 30 // Optional, sets the period of days for which coverage data is taken into account
-    }
-    // Enables Test Agent
-    enableTestAgent {
-        version = ${versions.testAgent}
-    }
+    recommendedTests()
 }
 `}
  </Codeblock>
@@ -601,18 +756,26 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <appId>my-application</appId>
         <!-- Identifies the version of the application under test that is based on the checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-        <testRecommendations>
-            <!-- Enables Test Recommendations -->
-            <enabled>true<enabled>
-            <!-- Optional, sets the period of days for which coverage data is taken into account -->
-            <coveragePeriodDays>30</coveragePeriodDays>
-        </testRecommendations>
+        <agent>
+            <version>${versions.applicationAgent}</version>
+        </agent>
+        <!-- Enables Coverage Collection -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+        <!-- Enables Test Tracing -->
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
+        <!-- Enables Test Recommendations -->
+        <recommendedTests>
+            <enabled>true</enabled>
+        </recommendedTests>
     </configuration>
     <executions>
         <execution>
             <goals>
-                <!-- Enables Test Agent -->
-                <goal>enableAppAgent</goal>
+                <goal>enableAgent</goal>
             </goals>
         </execution>
     </executions>
@@ -627,7 +790,7 @@ To disable recommended tests, make the following changes to your Gradle file:
 
 <Codeblock language="kotlin">
 {`
-enableTestRecommendations {
+recommendedTests {
     // Optional, disables test recommendations
     enabled = false
 }
@@ -639,10 +802,10 @@ To disable recommended tests, make the following changes to your Maven file:
 
 <Codeblock language="xml">
 {`
-<testRecommendations>
+<recommendedTests>
     <!-- Disables Test Recommendations -->
-    <enabled>false<enabled>
-</testRecommendations>
+    <enabled>false</enabled>
+</recommendedTests>
 `}
 </Codeblock>
 
@@ -959,49 +1122,6 @@ To send the build information to the Drill4J backend, execute the following Mave
 ```shell
 mvn drill:sendBuildInfo
 ```
-
-## Scanning application archive (JAR/WAR/EAR)
-
-Drill4J automatically scans information about an application's classes and methods when the application is run with the [Application agent](#application-agent).
-However, you can also obtain this information right after building the application — before it is run.
-You have two ways to do this: either by running the dedicated Gradle/Maven command,
-or by enabling the corresponding parameter in the plugin configuration.
-
-### Run Gradle/Maven command
-To scan the application archive, execute the dedicated Gradle task or Maven goal as described below.
-> Note, before executing the command, you need to enable the [Application agent](#application-agent) and build your application.
-
-#### Gradle
-Execute the following Gradle command:
-
-```shell
-./gradlew drillScanAppArchive
-```
-#### Maven
-Execute the following Maven command:
-
-```shell
-mvn drill:scanAppArchive
-```
-
-### Enable scan on build
-Alternatively, you can set up the `archiveScannerEnabled` parameter to `true` in the Application Agent plugin configuration.
-This case the application archive will be scanned automatically after the build is completed.
-
-#### Gradle
-```kotlin
-appAgent {
-    archiveScannerEnabled = true // Enables automatic scanning of the application archive
-}
-```
-
-#### Maven
-```xml
-<appAgent>
-    <archiveScannerEnabled>true</archiveScannerEnabled> <!-- Enables automatic scanning of the application archive -->
-</appAgent>
-```
-
 
 ## Baseline strategy
 
