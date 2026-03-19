@@ -75,12 +75,12 @@ Because of that, the next sections of this page are irrelevant in this scenario.
 
 To load Drill4J Java Agent, you need to instruct Java Virtual Machine (JVM) to use agent files.
 Drill4J has two modes of loading:
-- Native mode (recommended) - uses native library file (`.so`, `.dll`, `.dylib`)
+- Native mode - uses native library file (`.so`, `.dll`, `.dylib`)
 - Java mode - uses `drill-runtime.jar` file
 
 Depending on mode you choose, the way to set path to agent differs.
 
-### Native Agent Mode (recommended)
+### Native Agent Mode
 
 Java allows to load native agents using [special command line argument](https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#starting):
 
@@ -89,6 +89,8 @@ java -agentpath:<path-to-agent>
 ```
 
 Where `<path-to-agent>` must point to native agent library file (`.so`, `.dll`, `.dylib`).
+
+> Note: If you have any issues with native mode, you can switch to Java mode described in the next section.
 
 ### Java Agent Mode
 
