@@ -1,0 +1,105 @@
+{
+  "version-0.10.0/docs": [
+    {
+      "type": "doc",
+      "label": "Introduction",
+      "id": "version-0.10.0/what-is-drill4j"
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.10.0/getting-started/local-deployment"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/getting-started/metabase"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/getting-started/metrics-overview"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Integration Guides",
+      "items": [
+        {
+          "type": "doc",
+          "label": "API tests (Java)",
+          "id": "version-0.10.0/tests-integration/api-tests"
+        },
+        {
+          "type": "doc",
+          "label": "Unit tests (Java)",
+          "id": "version-0.10.0/tests-integration/unit-tests"
+        },
+        {
+          "type": "doc",
+          "label": "GitHub",
+          "id": "version-0.10.0/cicd-integration/github"
+        },
+        {
+          "type": "doc",
+          "label": "GitLab",
+          "id": "version-0.10.0/cicd-integration/gitlab"
+        },
+        {
+          "type": "doc",
+          "label": "Tomcat",
+          "id": "version-0.10.0/guides/tomcat"
+        },
+        {
+          "type": "doc",
+          "label": "Wildfly",
+          "id": "version-0.10.0/guides/wildfly"
+        },
+        {
+          "type": "doc",
+          "label": "Keycloak",
+          "id": "version-0.10.0/guides/keycloak"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Components Reference",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.10.0/releases"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/agents/java-agent"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/cicd-integration/cicd-integration-plugin"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/drill-services/drill-backend"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/etl-update-metrics"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/drill-services/drill-ui"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/drill-services/metabase"
+        }
+      ]
+    }
+  ]
+}
