@@ -1,25 +1,33 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, {
   useState, useCallback, useEffect, useRef,
 } from 'react';
 import clsx from 'clsx';
-import { isSamePath } from '@docusaurus/theme-common';
-import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 import Link from '@docusaurus/Link';
 import isInternalUrl from '@docusaurus/isInternalUrl';
-import type { Props } from '@theme/DocSidebar';
-import { useLocation } from '@docusaurus/router';
-import { useBreakpoint } from '../../hooks/use-breakpoint';
+import {useLocation} from '@docusaurus/router';
+import {useBreakpoint} from '../../hooks/use-breakpoint';
 import './styles.scss';
-import { Icon, SearchBar } from '../../components';
+import {Icon} from '../../components';
 
-function usePrevious(value) {
+function useLockBodyScroll(lock: boolean) {
+  useEffect(() => {
+    if (lock) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [lock]);
+}
+
+function isSamePath(path1?: string, path2?: string): boolean {
+  const normalize = (p?: string) => (p || '').replace(/\/$/, '') || '/';
+  return normalize(path1) === normalize(path2);
+}
+
+function usePrevious(value: any) {
   const ref = useRef(value);
   useEffect(() => {
     ref.current = value;
@@ -27,12 +35,12 @@ function usePrevious(value) {
   return ref.current;
 }
 
-const isActiveSidebarItem = (item, activePath) => {
+const isActiveSidebarItem = (item: any, activePath: string): boolean => {
   if (item.type === 'link') {
     return isSamePath(item.href, activePath);
   }
   if (item.type === 'category') {
-    return item.items.some((subItem) =>
+    return item.items.some((subItem: any) =>
       isActiveSidebarItem(subItem, activePath));
   }
   return false;
@@ -44,14 +52,12 @@ function DocSidebarItemCategory({
   collapsible,
   activePath,
   ...props
-}) {
-  const { items, label } = item;
+}: any) {
+  const {items, label} = item;
 
   const isActive = isActiveSidebarItem(item, activePath);
   const wasActive = usePrevious(isActive);
 
-  // active categories are always initialized as expanded
-  // the default (item.collapsed) is only used for non-active categories
   const [collapsed, setCollapsed] = useState(() => {
     if (!collapsible) {
       return false;
@@ -69,7 +75,6 @@ function DocSidebarItemCategory({
     );
   };
 
-  // If we navigate to a category, it should automatically expand itself
   useEffect(() => {
     const justBecameActive = isActive && !wasActive;
     if (justBecameActive && collapsed) {
@@ -78,13 +83,11 @@ function DocSidebarItemCategory({
   }, [isActive, wasActive, collapsed]);
 
   const handleItemClick = useCallback(
-    (e) => {
+    (e: React.MouseEvent) => {
       e.preventDefault();
-
       if (!menuListHeight) {
         handleMenuListHeight();
       }
-
       setTimeout(() => setCollapsed((state) => !state), 100);
     },
     [menuListHeight],
@@ -125,13 +128,13 @@ function DocSidebarItemCategory({
           }
         }}
       >
-        {items.map((childItem) => (
+        {items.map((childItem: any) => (
           <DocSidebarItem
-            tabIndex={collapsed ? '-1' : '0'}
+            tabIndex={collapsed ? -1 : 0}
             key={childItem.label}
             item={childItem}
             onItemClick={onItemClick}
-            collapsible={String(collapsible)}
+            collapsible={collapsible}
             activePath={activePath}
           />
         ))}
@@ -145,8 +148,8 @@ function DocSidebarItemLink({
   onItemClick,
   activePath,
   ...props
-}) {
-  const { href, label } = item;
+}: any) {
+  const {href, label} = item;
   const isActive = isActiveSidebarItem(item, activePath);
   return (
     <li className="menu__list-item" key={label}>
@@ -157,8 +160,6 @@ function DocSidebarItemLink({
         to={href}
         {...(isInternalUrl(href)
           ? {
-            isNavLink: true,
-            exact: true,
             onClick: onItemClick,
           }
           : {
@@ -173,7 +174,7 @@ function DocSidebarItemLink({
   );
 }
 
-function DocSidebarItem(props) {
+function DocSidebarItem(props: any) {
   switch (props.item.type) {
     case 'category':
       return <DocSidebarItemCategory {...props} />;
@@ -183,13 +184,17 @@ function DocSidebarItem(props) {
   }
 }
 
+interface DocSidebarProps {
+  sidebar: any[];
+  path: string;
+}
+
 function DocSidebar({
   path,
   sidebar,
-  sidebarCollapsible = true,
-}: Props): JSX.Element | null {
+}: DocSidebarProps): JSX.Element | null {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
 
   useLockBodyScroll(showResponsiveSidebar);
   const isWindowLg = useBreakpoint('lg');
@@ -208,7 +213,6 @@ function DocSidebar({
       {(isWindowLg || showResponsiveSidebar) && (
         <div className="flex justify-between items-center mb-3 lg:mb-4 py-3 lg:py-0 lg:pr-3 pt-6 lg:pt-0 px-6 lg:px-0">
           <h3 className="hidden sm:inline lg:hidden text-monochrome-default">Documentation</h3>
-          <SearchBar closeDocsSidebar={() => setShowResponsiveSidebar(false)} />
         </div>
       )}
       <div
@@ -234,15 +238,15 @@ function DocSidebar({
         )}
         {(isWindowLg || showResponsiveSidebar) && (
           <ul className="menu__list">
-            {sidebar?.map((item) => (
+            {sidebar?.map((item: any) => (
               <DocSidebarItem
                 key={item.label}
                 item={item}
-                onItemClick={(e) => {
+                onItemClick={(e: any) => {
                   e.target.blur();
                   setShowResponsiveSidebar(false);
                 }}
-                collapsible={String(sidebarCollapsible)}
+                collapsible={true}
                 activePath={path}
               />
             ))}

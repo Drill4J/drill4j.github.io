@@ -1,9 +1,9 @@
 {
-  "version-0.10.0/docs": [
+  "docs": [
     {
       "type": "doc",
       "label": "Introduction",
-      "id": "version-0.10.0/what-is-drill4j"
+      "id": "what-is-drill4j"
     },
     {
       "collapsed": false,
@@ -12,15 +12,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.10.0/getting-started/local-deployment"
+          "id": "getting-started/local-deployment"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/getting-started/metabase"
+          "id": "getting-started/metabase"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/getting-started/metrics-overview"
+          "id": "getting-started/metrics-overview"
         }
       ]
     },
@@ -32,37 +32,37 @@
         {
           "type": "doc",
           "label": "API tests (Java)",
-          "id": "version-0.10.0/tests-integration/api-tests"
+          "id": "tests-integration/api-tests"
         },
         {
           "type": "doc",
           "label": "Unit tests (Java)",
-          "id": "version-0.10.0/tests-integration/unit-tests"
+          "id": "tests-integration/unit-tests"
         },
         {
           "type": "doc",
           "label": "GitHub",
-          "id": "version-0.10.0/cicd-integration/github"
+          "id": "cicd-integration/github"
         },
         {
           "type": "doc",
           "label": "GitLab",
-          "id": "version-0.10.0/cicd-integration/gitlab"
+          "id": "cicd-integration/gitlab"
         },
         {
           "type": "doc",
           "label": "Tomcat",
-          "id": "version-0.10.0/guides/tomcat"
+          "id": "guides/tomcat"
         },
         {
           "type": "doc",
           "label": "Wildfly",
-          "id": "version-0.10.0/guides/wildfly"
+          "id": "guides/wildfly"
         },
         {
           "type": "doc",
           "label": "Keycloak",
-          "id": "version-0.10.0/guides/keycloak"
+          "id": "guides/keycloak"
         }
       ]
     },
@@ -73,31 +73,31 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.10.0/releases"
+          "id": "releases"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/agents/java-agent"
+          "id": "agents/java-agent"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/cicd-integration/cicd-integration-plugin"
+          "id": "cicd-integration/cicd-integration-plugin"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/drill-services/drill-backend"
+          "id": "drill-services/drill-backend"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/etl-update-metrics"
+          "id": "etl-update-metrics"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/drill-services/drill-ui"
+          "id": "drill-services/drill-ui"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/drill-services/metabase"
+          "id": "drill-services/metabase"
         }
       ]
     }

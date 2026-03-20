@@ -1,19 +1,27 @@
-const path = require('path');
-const math = require('remark-math');
-const katex = require('rehype-katex');
+import type {Config} from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+import {themes as prismThemes} from 'prism-react-renderer';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import path from 'path';
 
-module.exports = {
+const config: Config = {
   title: 'Drill4J',
   tagline: 'The tagline of my site',
   url: 'https://Drill4J.github.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   favicon: '/imgs/favicon.ico',
   organizationName: 'Drill4J',
   projectName: 'drill4j.github.io',
   themeConfig: {
     algolia: {
+      appId: 'BH4D9OD16A',
       apiKey: '6893440cddb296d0faf1399850200fc6',
       indexName: 'drill4j',
     },
@@ -22,7 +30,7 @@ module.exports = {
       disableSwitch: true,
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
+      theme: prismThemes.github,
       additionalLanguages: ['java'],
     },
     navbar: {
@@ -34,7 +42,6 @@ module.exports = {
         {
           type: 'docsVersionDropdown',
           position: 'right',
-          // dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
           dropdownActiveClassDisabled: true,
         },
         {
@@ -79,27 +86,28 @@ module.exports = {
         },
       ],
     },
-  },
+  } satisfies Preset.ThemeConfig,
   presets: [
     [
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          remarkPlugins: [math],
-          rehypePlugins: [katex],
+          sidebarPath: './sidebars.js',
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.scss'),
+          customCss: './src/css/custom.scss',
         },
-      },
+        gtag: undefined,
+      } satisfies Preset.Options,
     ],
   ],
   plugins: [
     [
-      require.resolve('docusaurus-gtm-plugin'),
+      '@docusaurus/plugin-google-tag-manager',
       {
-        id: 'GTM-NGTZFW2', // GTM Container ID
+        containerId: 'GTM-NGTZFW2',
       },
     ],
     'docusaurus-plugin-sass',
@@ -115,9 +123,9 @@ module.exports = {
   ],
   stylesheets: [
     {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
       type: 'text/css',
-      integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      integrity: 'sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV',
       crossorigin: 'anonymous',
     },
   ],
@@ -138,3 +146,5 @@ module.exports = {
     },
   ],
 };
+
+export default config;
