@@ -1,0 +1,7 @@
+{
+    "applicationAgent": "0.10.0",
+    "cicdPlugin": "0.10.0",
+    "adminBackend": "0.10.0",
+    "ui": "0.10.0",
+    "metabaseDashboards": "0.10.0"
+}
