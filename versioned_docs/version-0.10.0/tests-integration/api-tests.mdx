@@ -5,7 +5,7 @@ title: API Tests
 
 # API Tests
 
-import versions from "@site/static/files/0.9.0/versions.json"
+import versions from "@site/static/files/0.10.0/versions.json"
 import { Codeblock } from "@components"
 
 This page walks you through Drill4J integration for Java-based API tests.
@@ -75,7 +75,7 @@ drill {
     // Set the Drill4J Group ID
     groupId = "my-group"
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enable test tracing
     testTracing()
@@ -101,7 +101,7 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         <!-- Set the Drill4J Group ID -->
         <groupId>my-group</groupId>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enable test tracing -->
         <testTracing>

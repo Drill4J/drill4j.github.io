@@ -5,7 +5,7 @@ title: Unit Tests
 
 # Unit Tests
 
-import versions from "@site/static/files/0.9.0/versions.json"
+import versions from "@site/static/files/0.10.0/versions.json"
 import { Codeblock } from "@components"
 
 This page walks you through Drill4J integration for Java-based Unit tests.
@@ -80,7 +80,7 @@ drill {
     // Optional, identifies app version built from checked out commit
     buildVersion = "1.0.0"
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enable coverage collection and test tracing
     coverage()
@@ -113,7 +113,7 @@ Add `<configuration>` and `<executions>` elements to Drill4J plugin in your Mave
         <!-- Optional, identifies app version built from checked out commit -->
         <buildVersion>1.0.0</buildVersion>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enable coverage collection and test tracing -->
         <coverage>
