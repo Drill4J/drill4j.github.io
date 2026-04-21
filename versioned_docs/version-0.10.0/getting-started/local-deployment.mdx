@@ -38,7 +38,7 @@ It's a good starting point to get familiar with Drill4J. For installation and co
 2. Open terminal in this folder and execute:
 
     ```shell
-      docker-compose up -d
+    docker-compose up -d
     ```
 
 3. Wait for docker-compose to download images and launch containers.
@@ -50,9 +50,9 @@ To make sure everything is working:
 1. [Drill4J Admin Backend](http://localhost:8090/) must return 
 
   ```json
-    {
-      "message": "Drill4J Admin Backend"
-    }
+  {
+    "message": "Drill4J Admin Backend"
+  }
   ```
 
 2. [Drill4J UI](http://localhost:8091) must display authentication form.
@@ -61,7 +61,9 @@ To make sure everything is working:
 
 3. [Metabase](http://localhost:8095) must display Metabase UI authentication form.
 
-    - Default credentials: user: `user@user.user` password: `useruser1`
+    - Default credentials: 
+      - admin: `admin@admin.admin` password: `adminadmin1`
+      - user: `user@user.user` password: `useruser1`
     - After you login to Metabase UI you should see `"Builds"` dashboard being available in Bookmarks section
 
 ### Troubleshooting
