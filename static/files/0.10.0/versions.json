@@ -1,5 +1,5 @@
 {
-    "applicationAgent": "0.10.0",
+    "javaAgent": "0.10.1",
     "cicdPlugin": "0.10.0",
     "adminBackend": "0.10.0",
     "ui": "0.10.0",

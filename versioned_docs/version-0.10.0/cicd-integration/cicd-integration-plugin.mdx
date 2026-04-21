@@ -5,7 +5,7 @@ title: CI/CD Integration Plugin
 
 #  CI/CD Integration Plugin
 
-import versions from "@site/static/files/0.9.0/versions.json"
+import versions from "@site/static/files/0.10.0/versions.json"
 import { Codeblock } from "@components"
 
 ## Overview
@@ -189,7 +189,7 @@ drill {
     buildVersion = "1.0.0"
     // Agent download configuration
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enable desired features (see sections below)
     coverage()
@@ -221,7 +221,7 @@ To set up the Drill4J agent in a Maven project, add the following to pom.xml:
         <buildVersion>1.0.0</buildVersion>
         <!-- Agent download configuration -->
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enable desired features (see sections below) -->
         <coverage>
@@ -261,7 +261,7 @@ To enable automatic download specify `version` parameter with concrete version. 
 <Codeblock language="kotlin">
 {`
 agent {
-    version = "${versions.applicationAgent}"
+    version = "${versions.javaAgent}"
 }
 `}
 </Codeblock>
@@ -271,7 +271,7 @@ agent {
 <Codeblock language="xml">
 {`
 <agent>
-    <version>${versions.applicationAgent}</version>
+    <version>${versions.javaAgent}</version>
 </agent>
 `}
 </Codeblock>
@@ -351,7 +351,7 @@ drill {
     packagePrefixes = arrayOf("my/awesome/application")
     buildVersion = "1.0.0"
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enables coverage collection
     coverage()
@@ -373,7 +373,7 @@ To enable coverage collection in a Maven project, add the `<coverage>` configura
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <buildVersion>1.0.0</buildVersion>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enables coverage collection -->
         <coverage>
@@ -408,7 +408,7 @@ drill {
     appId = "my-application"
     packagePrefixes = arrayOf("my/awesome/application")
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enables test tracing
     testTracing()
@@ -429,7 +429,7 @@ To enable test tracing in a Maven project, add the `<testTracing>` configuration
         <appId>my-application</appId>
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enables test tracing -->
         <testTracing>
@@ -502,7 +502,7 @@ drill {
     appId = "my-application"
     packagePrefixes = arrayOf("my/awesome/application")
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Class scanning configuration
     classScanning {
@@ -526,7 +526,7 @@ To enable class scanning in a Maven project, add the `<execution>` configuration
         <appId>my-application</appId>
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>     
         <classScanning>
             <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
@@ -727,7 +727,7 @@ drill {
     // Identifies the version of the application under test that is based on the checked out commit
     buildVersion = "1.0.0"
     agent {
-        version = "${versions.applicationAgent}"
+        version = "${versions.javaAgent}"
     }
     // Enables Coverage Collection
     coverage()
@@ -757,7 +757,7 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <!-- Identifies the version of the application under test that is based on the checked out commit -->
         <buildVersion>1.0.0</buildVersion>
         <agent>
-            <version>${versions.applicationAgent}</version>
+            <version>${versions.javaAgent}</version>
         </agent>
         <!-- Enables Coverage Collection -->
         <coverage>
