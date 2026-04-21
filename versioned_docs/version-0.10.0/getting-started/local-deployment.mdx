@@ -20,34 +20,28 @@ It's a good starting point to get familiar with Drill4J. For installation and co
 
 1. [Docker](https://www.docker.com/)
 2. [Docker Compose](https://docs.docker.com/compose/)
-2. The current release supports `x64` but not `arm`-based machines. Specifically, it won’t work on Apple Silicon CPUs (M-series). Support for ARM-based machines is being worked on.
+3. The current release supports `x64` but not `arm`-based machines. Specifically, it won’t work on Apple Silicon CPUs (M-series). Support for ARM-based machines is being worked on.
 
 ## Deploy Core Drill4J Services
 
 1. Download the following files and put them in the empty folder:
 
-    - [docker-compose.yml](/files/0.9.0/deploy-drill4j-services/docker-compose.yml)
-    - [.env](/files/0.9.0/deploy-drill4j-services/drill.env)
+    - [docker-compose.yml](/files/0.10.0/deploy-drill4j-services/docker-compose.yml)
+    - [.env](/files/0.10.0/deploy-drill4j-services/drill.env)
 
-2. Create `db-init` folder next to `docker-compose.yml`
-
-3. Download `data.sql` from https://github.com/Drill4J/drill-metabase-dashboards/releases/tag/v18 and place in `db-init` folder
-
-4. Your folder structure should match the following:
-
+  Your folder structure should match the following:
     ```
-    - docker-compose.yml
-    - .env
-    - db-init/data.sql
+    .env
+    docker-compose.yml    
     ```
 
-5. Open terminal in this folder and execute:
+2. Open terminal in this folder and execute:
 
     ```shell
       docker-compose up -d
     ```
 
-6. Wait for docker-compose to download images and launch containers.
+3. Wait for docker-compose to download images and launch containers.
 
 ## Check Services Availability
 
@@ -61,7 +55,7 @@ To make sure everything is working:
     }
   ```
 
-2. [Drill4J UI](http://localhost:8091) must display  authentication form.
+2. [Drill4J UI](http://localhost:8091) must display authentication form.
 
     - Default credentials: user: `admin` password: `admin`.
 
