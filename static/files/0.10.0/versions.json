@@ -1,7 +1,7 @@
 {
     "javaAgent": "0.10.1",
-    "cicdPlugin": "0.10.0",
-    "adminBackend": "0.10.0",
-    "ui": "0.10.0",
-    "metabaseDashboards": "0.10.0"
+    "cicdPlugin": "0.10.1",
+    "adminBackend": "0.10.1",
+    "ui": "0.10.1",
+    "metabaseDashboards": "0.10.1"
 }
