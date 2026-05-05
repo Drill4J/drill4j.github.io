@@ -1,12 +1,24 @@
 import React, {
   useState, useRef, useEffect, useLayoutEffect,
 } from 'react';
-import useLockBodyScroll from '@theme/hooks/useLockBodyScroll';
 
 import Expand from '../../../static/imgs/expand.svg';
 import Close from '../../../static/imgs/close.svg';
 
 import styles from './styles.module.scss';
+
+function useLockBodyScroll(lock: boolean) {
+  useEffect(() => {
+    if (lock) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [lock]);
+}
 
 interface Props {
   columns?: string[];

@@ -1,58 +1,32 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React from 'react';
-
-import Head from '@docusaurus/Head';
-import DocPaginator from '@theme/DocPaginator';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { useTitleFormatter } from '@docusaurus/theme-common';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import type { Props } from '@theme/DocItem';
 import clsx from 'clsx';
-import { TOC } from '../../components';
-import { useBreakpoint } from '../../hooks/use-breakpoint';
+import {DocProvider, useDoc} from '@docusaurus/plugin-content-docs/client';
+import DocItemMetadata from '@theme/DocItem/Metadata';
+import DocPaginator from '@theme/DocPaginator';
+import MDXContent from '@theme/MDXContent';
+import {TOC} from '../../components';
+import {useBreakpoint} from '../../hooks/use-breakpoint';
 import './styles.scss';
 
-function DocItem(props: Props): JSX.Element {
-  const { siteConfig } = useDocusaurusContext();
-  const { url: siteUrl } = siteConfig;
-  const { content: DocContent } = props;
+function DocItemLayout({children}: {children: React.ReactNode}): JSX.Element {
+  const {metadata, frontMatter, toc} = useDoc();
+  const {title} = metadata;
   const {
-    metadata,
-    docsMetadata,
-    frontMatter: { image: metaImage, keywords, hide_title: hideTitle, hide_table_of_contents: hideTableOfContents },
-  } = DocContent;
-  const { description, title, permalink } = metadata;
+    hide_title: hideTitle,
+    hide_table_of_contents: hideTableOfContents,
+  } = frontMatter;
   const isWindowLg = useBreakpoint('lg');
   const isLaptopWindow = useBreakpoint('laptop');
-  const metaTitle = useTitleFormatter(title);
-  const metaImageUrl = useBaseUrl(metaImage, { absolute: true });
+
   return (
     <>
-      <Head>
-        <title>{metaTitle}</title>
-        <meta property="og:title" content={metaTitle} />
-        {description && <meta name="description" content={description} />}
-        {description && <meta property="og:description" content={description} />}
-        {keywords && keywords.length && <meta name="keywords" content={keywords.join(',')} />}
-        {metaImage && <meta property="og:image" content={metaImageUrl} />}
-        {metaImage && <meta name="twitter:image" content={metaImageUrl} />}
-        {metaImage && <meta name="twitter:image:alt" content={`Image for ${title}`} />}
-        {permalink && <meta property="og:url" content={siteUrl + permalink} />}
-        {permalink && <link rel="canonical" href={siteUrl + permalink} />}
-      </Head>
+      <DocItemMetadata />
       <main className="grid grid-cols-12 gap-x-5 mb-22 bg-monochrome-white">
         <article
           className={clsx('col-span-12 lg:col-start-2 lg:col-span-8', {
             'lg:col-span-12 pr-16': isLaptopWindow,
           })}
-          style={{ maxWidth: '100%' }}
+          style={{maxWidth: '100%'}}
         >
           {!hideTitle && (
             <header>
@@ -60,25 +34,35 @@ function DocItem(props: Props): JSX.Element {
             </header>
           )}
           <div className="markdown">
-            <DocContent />
+            {children}
           </div>
           <br />
-          <DocPaginator docsMetadata={docsMetadata} metadata={metadata} />
+          <DocPaginator previous={metadata.previous} next={metadata.next} />
         </article>
-        {!hideTableOfContents && DocContent.toc && isWindowLg && !isLaptopWindow && (
+        {!hideTableOfContents && toc && toc.length > 0 && isWindowLg && !isLaptopWindow && (
           <aside className="col-span-3">
-            <TOC toc={DocContent.toc} />
+            <TOC toc={toc} />
           </aside>
         )}
       </main>
-      {!hideTableOfContents && DocContent.toc && isWindowLg && isLaptopWindow && (
+      {!hideTableOfContents && toc && toc.length > 0 && isWindowLg && isLaptopWindow && (
         <aside>
-          <TOC toc={DocContent.toc} />
+          <TOC toc={toc} />
         </aside>
       )}
     </>
   );
 }
-0;
 
-export default DocItem;
+export default function DocItem(props: {content: any}): JSX.Element {
+  const MDXComponent = props.content;
+  return (
+    <DocProvider content={props.content}>
+      <DocItemLayout>
+        <MDXContent>
+          <MDXComponent />
+        </MDXContent>
+      </DocItemLayout>
+    </DocProvider>
+  );
+}

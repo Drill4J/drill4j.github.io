@@ -9,7 +9,7 @@ import { RellaxWrapper } from 'react-rellax-wrapper';
 
 import styles from './styles.module.scss';
 
-const Figure: React.FC = ({ children }) => (
+const Figure = ({ children }: {children: React.ReactNode}) => (
   <figure
     className={clsx(styles.figure,
       'grid grid-cols-8 lg:grid-cols-12 items-center justify-items-start gap-x-5 py-12 md:py-0')}

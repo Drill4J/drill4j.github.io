@@ -1,5 +1,5 @@
 {
-  "version-0.8.0/docs": [
+  "docs": [
     {
       "collapsed": true,
       "type": "category",
@@ -7,15 +7,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.8.0/overview/what-is-drill4j"
+          "id": "overview/what-is-drill4j"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/overview/motivation"
+          "id": "overview/motivation"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/overview/use-cases"
+          "id": "overview/use-cases"
         }
       ]
     },
@@ -26,27 +26,27 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.8.0/installation/setup"
+          "id": "installation/setup"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/installation/deploy-drill4j-services"
+          "id": "installation/deploy-drill4j-services"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/installation/setup-java-agent"
+          "id": "installation/setup-java-agent"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/installation/setup-browser-extension"
+          "id": "installation/setup-browser-extension"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/installation/setup-java-autotest-agent"
+          "id": "installation/setup-java-autotest-agent"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/basic-concepts/glossary"
+          "id": "basic-concepts/glossary"
         }
       ]
     },
@@ -57,47 +57,47 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/drill4j-admin-installation"
+          "id": "drill4net/drill4j-admin-installation"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/drill4net-apps"
+          "id": "drill4net/drill4net-apps"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/one-time-setup"
+          "id": "drill4net/one-time-setup"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/quick-start-guide"
+          "id": "drill4net/quick-start-guide"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/ci-cd-integration"
+          "id": "drill4net/ci-cd-integration"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/app-under-test-setup"
+          "id": "drill4net/app-under-test-setup"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/tests-project-setup"
+          "id": "drill4net/tests-project-setup"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/drill4net-scanner-parameters"
+          "id": "drill4net/drill4net-scanner-parameters"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/chrome-extention"
+          "id": "drill4net/chrome-extention"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/known-issues"
+          "id": "drill4net/known-issues"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/drill4net/support-matrix"
+          "id": "drill4net/support-matrix"
         }
       ]
     },
@@ -108,7 +108,7 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.8.0/basic-concepts/data-collection"
+          "id": "basic-concepts/data-collection"
         }
       ]
     },
@@ -119,31 +119,31 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/pre-release-0-8-0-alpha"
+          "id": "releases/pre-release-0-8-0-alpha"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-7-0"
+          "id": "releases/release-0-7-0"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-6-0"
+          "id": "releases/release-0-6-0"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-5-0"
+          "id": "releases/release-0-5-0"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-4-0"
+          "id": "releases/release-0-4-0"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-3-0"
+          "id": "releases/release-0-3-0"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/releases/release-0-2-0"
+          "id": "releases/release-0-2-0"
         }
       ]
     },
@@ -159,23 +159,23 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/installation/drill-admin"
+              "id": "pre-0.8.0/installation/drill-admin"
             },
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/installation/java-agent"
+              "id": "pre-0.8.0/installation/java-agent"
             },
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/installation/microservices"
+              "id": "pre-0.8.0/installation/microservices"
             },
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/installation/autotest-agent"
+              "id": "pre-0.8.0/installation/autotest-agent"
             },
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/installation/extension"
+              "id": "pre-0.8.0/installation/extension"
             }
           ]
         },
@@ -186,7 +186,7 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/configuration/launch-parameters"
+              "id": "pre-0.8.0/configuration/launch-parameters"
             }
           ]
         },
@@ -202,11 +202,11 @@
               "items": [
                 {
                   "type": "doc",
-                  "id": "version-0.8.0/pre-0.8.0/for-development/java-agent/java-coverage-receiving-event-flow"
+                  "id": "pre-0.8.0/for-development/java-agent/java-coverage-receiving-event-flow"
                 },
                 {
                   "type": "doc",
-                  "id": "version-0.8.0/pre-0.8.0/for-development/java-agent/java-switch-scope-event-flow"
+                  "id": "pre-0.8.0/for-development/java-agent/java-switch-scope-event-flow"
                 }
               ]
             },
@@ -217,7 +217,7 @@
               "items": [
                 {
                   "type": "doc",
-                  "id": "version-0.8.0/pre-0.8.0/for-development/java-script-agent/js-agent-admin-be-communication"
+                  "id": "pre-0.8.0/for-development/java-script-agent/js-agent-admin-be-communication"
                 }
               ]
             }
@@ -230,7 +230,7 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/api/builds-summary"
+              "id": "pre-0.8.0/api/builds-summary"
             }
           ]
         },
@@ -241,21 +241,21 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/diagrams/auto-test-agent-diagrams"
+              "id": "pre-0.8.0/diagrams/auto-test-agent-diagrams"
             },
             {
               "type": "doc",
-              "id": "version-0.8.0/pre-0.8.0/diagrams/testing-diagrams"
+              "id": "pre-0.8.0/diagrams/testing-diagrams"
             }
           ]
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/pre-0.8.0/supported-frameworks"
+          "id": "pre-0.8.0/supported-frameworks"
         },
         {
           "type": "doc",
-          "id": "version-0.8.0/pre-0.8.0/core-concepts"
+          "id": "pre-0.8.0/core-concepts"
         }
       ]
     }

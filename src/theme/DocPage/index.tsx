@@ -1,108 +1,52 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-import React, {
-  ReactNode, useState, useCallback, useEffect,
-} from 'react';
-import { MDXProvider } from '@mdx-js/react';
-
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import renderRoutes from '@docusaurus/renderRoutes';
-import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
-import Layout from '@theme/Layout';
-import DocSidebar from '@theme/DocSidebar';
-import MDXComponents from '@theme/MDXComponents';
-import NotFound from '@theme/NotFound';
-import type { DocumentRoute } from '@theme/DocItem';
-import type { Props } from '@theme/DocPage';
-import { matchPath } from '@docusaurus/router';
-import { docVersionSearchTag } from '@docusaurus/theme-common';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
+import {
+  HtmlClassNameProvider,
+  ThemeClassNames,
+  docVersionSearchTag,
+  DocsContext,
+} from '@docusaurus/theme-common';
+import {
+  DocsSidebarProvider,
+  useDocRootMetadata,
+} from '@docusaurus/plugin-content-docs/client';
+import DocPageLayout from '@theme/DocPage/Layout';
+import NotFound from '@theme/NotFound';
+import SearchMetadata from '@theme/SearchMetadata';
+import type {Props} from '@theme/DocPage';
 
 import styles from './styled.module.scss';
 
-type DocPageContentProps = {
-  readonly currentDocRoute: DocumentRoute;
-  readonly versionMetadata: PropVersionMetadata;
-  readonly children: ReactNode;
-};
+export default function DocPage(props: Props): JSX.Element {
+  const {versionMetadata} = props;
+  const currentDocRouteMetadata = useDocRootMetadata(props);
 
-function DocPageContent({
-  currentDocRoute,
-  versionMetadata,
-  children,
-}: DocPageContentProps): JSX.Element {
-  const { siteConfig, isClient } = useDocusaurusContext();
-  const {
-    pluginId, permalinkToSidebar, docsSidebars, version,
-  } = versionMetadata;
-  const sidebarName = permalinkToSidebar[currentDocRoute.path];
-  const sidebar = docsSidebars[sidebarName];
-
-  const [hiddenSidebarContainer, setHiddenSidebarContainer] = useState(false);
-  const [hiddenSidebar, setHiddenSidebar] = useState(false);
-  const toggleSidebar = useCallback(() => {
-    if (hiddenSidebar) {
-      setHiddenSidebar(false);
-    }
-
-    setHiddenSidebarContainer(!hiddenSidebarContainer);
-  }, [hiddenSidebar]);
-
-  return (
-    <Layout
-      key={isClient}
-      searchMetadatas={{
-        version,
-        tag: docVersionSearchTag(pluginId, version),
-      }}
-    >
-      <div className={clsx(styles.docPageContainer)}>
-        <div className={styles.background} />
-        <DocSidebar
-          key={sidebarName}
-          sidebar={sidebar}
-          path={currentDocRoute.path}
-          sidebarCollapsible={
-            String(siteConfig.themeConfig?.sidebarCollapsible ?? true)
-          }
-          onCollapse={toggleSidebar}
-          isHidden={hiddenSidebar}
-        />
-        <MDXProvider components={MDXComponents}>{children}</MDXProvider>
-      </div>
-    </Layout>
-  );
-}
-
-function DocPage(props: Props): JSX.Element {
-  const {
-    route: { routes: docRoutes },
-    versionMetadata,
-    location,
-  } = props;
-  const currentDocRoute = docRoutes.find((docRoute) =>
-    matchPath(location.pathname, docRoute));
-  if (!currentDocRoute) {
-    return <NotFound {...props} />;
+  if (!currentDocRouteMetadata) {
+    return <NotFound />;
   }
+
+  const {docElement, sidebarName, sidebarItems} = currentDocRouteMetadata;
+
   useEffect(() => {
-    if (navigator.userAgent.indexOf('Mac') > 0) {
+    if (typeof navigator !== 'undefined' && navigator.userAgent.indexOf('Mac') > 0) {
       document.querySelector('body')?.classList.add('mac-os');
     }
   }, []);
+
   return (
-    <DocPageContent
-      currentDocRoute={currentDocRoute}
-      versionMetadata={versionMetadata}
-    >
-      {renderRoutes(docRoutes)}
-    </DocPageContent>
+    <HtmlClassNameProvider className={clsx(ThemeClassNames.page.docsDocPage)}>
+      <DocsContext.Provider value={versionMetadata}>
+        <SearchMetadata
+          version={versionMetadata.version}
+          tag={docVersionSearchTag(
+            versionMetadata.pluginId,
+            versionMetadata.version,
+          )}
+        />
+        <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
+          <DocPageLayout>{docElement}</DocPageLayout>
+        </DocsSidebarProvider>
+      </DocsContext.Provider>
+    </HtmlClassNameProvider>
   );
 }
-
-export default DocPage;

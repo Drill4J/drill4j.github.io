@@ -1,0 +1,148 @@
+---
+id: install-demo
+title: Java+JS demo example
+---
+
+import {AdditionalInformation, Image, ListItem, JavaPlusJsHeader, Warning, Info} from '@components';
+
+<div className='mb-12'>
+<Warning>
+
+**Please note that at the moment:** <br/>
+– This demo works only for Windows 10. <br/>
+– Frontend JavaScript coverage collection for automated tests works only when running headful Chrome.
+
+</Warning>
+</div>
+
+<JavaPlusJsHeader/>
+
+## Step 1. Clone the example repository:
+
+```
+git clone https://github.com/Drill4J/realworld-java-and-js-coverage
+```
+
+## Step 2. Start Drill4J Admin
+
+<ListItem number={'2.1.'}>Start docker containers using the following command:</ListItem>
+
+```
+./demo-up.sh
+```
+
+<ListItem number={'2.2.'}>
+
+After the installation go to Drill4J Admin: [http://localhost:8091](http://localhost:8091)
+
+</ListItem>
+
+<ListItem number={'2.3.'}>
+
+Press “Continue as a Guest” and **register agents** (both Java and Node.js)
+
+</ListItem>
+
+<Image src={'/imgs/java-plus-js-agents-table.png'}/>
+
+<ListItem number={'2.4.'}>
+
+Go through the first two steps of the registration wizard and make sure that Test2Code plugin is **enabled** at Step 3
+
+<Info>
+
+There is no need to specify any parameters during the registration, just click through steps leaving everything as-is.
+
+</Info>
+
+</ListItem>
+
+<ListItem number={'2.5.'}>
+
+Open sample application at: [http://localhost:8080](http://localhost:8080)
+
+</ListItem>
+
+<ListItem number={'2.6.'}>
+
+To collect coverage run tests:
+
+</ListItem>
+
+```
+./gradlew clean :build1:test
+```
+
+Tests will be started in a few seconds. Please wait untill the testing process finish. <br/>
+See the testing results on [Test2Code plugin’s page](http://localhost:8091/service-group-full-page/realworld-app/test2code) and **finish active scope** <br/>
+to add collected coverage to your build.
+
+
+## Step 3. Deploy additional builds
+
+You have to deploy additional builds to discover Drill4J features:
+
+* Tests to run;
+* Risks Management;
+* Time Savings;
+* Baseline builds.
+
+<ListItem number={'3.1.'}>
+
+Deploy the **2nd build** of Realworld example app:
+
+</ListItem>
+
+```
+./demo-deploy-build2.sh
+```
+<AdditionalInformation >
+
+Wait for build notification to appear (click the icon in the top-right corner).
+
+</AdditionalInformation>
+
+Now you are able to see the list of **Risks** (uncovered new and modified methods) <br/>
+and suggested **Tests to Run**
+
+<ListItem number={'3.2.'}>
+
+To collect coverage for the 2nd build run tests:
+
+</ListItem>
+
+```
+./gradlew clean :build2:test2run
+```
+
+<ListItem number={'3.3.'}>
+
+Deploy the **3rd build** (optional):
+
+</ListItem>
+
+```
+./demo-deploy-build3.sh
+```
+
+<ListItem number={'3.4.'}>
+
+To collect coverage for the 3rd build run tests:
+
+</ListItem>
+
+```
+./gradlew clean :build3:test2run
+```
+Below you can find a command to **remove** RealWorld demo example:
+
+```
+./demo-down.sh
+```
+
+## For manual testing use Chrome Extension
+
+Install the latest version of [Chrome Extension](/docs/installation/extension)
+
+
+
