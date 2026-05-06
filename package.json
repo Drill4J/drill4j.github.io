@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "npm run tailwind:css && docusaurus start",
+    "start": "node scripts/create-deploy-services-zip.js && npm run tailwind:css && docusaurus start",
+    "prebuild": "node scripts/create-deploy-services-zip.js",
     "build": "set NODE_ENV=production&& npm run tailwind:css && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -54,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "airbnb": "0.0.2",
+    "adm-zip": "^0.5.16",
     "autoprefixer": "^10.2.5",
     "docusaurus-plugin-module-alias": "0.0.2",
     "eslint": "^7.21.0",
