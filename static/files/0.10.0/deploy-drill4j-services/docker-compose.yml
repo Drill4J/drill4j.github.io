@@ -13,15 +13,16 @@ services:
   drill-admin:
     image: ghcr.io/drill4j/admin:${DRILL_ADMIN_BACKEND_VERSION}
     environment:
-      - DRILL_METRICS_UI_BASE_URL=${DRILL_METRICS_UI_BASE_URL}
+      - LOG_LEVEL=info
       - DRILL_DB_PORT=5432
-      - DRILL_AGENTS_SOCKET_TIMEOUT=6000
       - DRILL_DB_HOST=${POSTGRES_HOST}
-      - DRILL_DB_NAME=${POSTGRES_DB}
+      - DRILL_DB_NAME=${DRILL_DB_NAME}
       - DRILL_DB_USER_NAME=${POSTGRES_USER}
       - DRILL_DB_PASSWORD=${POSTGRES_PASSWORD}
-      - DRILL_DB_MAX_POOL_SIZE=${DRILL_ADMIN_BACKEND_DB_MAX_POOL_SIZE}
-      - LOG_LEVEL=info
+      - DRILL_DB_SSL=${POSTGRES_SSL}
+      - DRILL_DB_MAX_POOL_SIZE=${DRILL_DB_MAX_POOL_SIZE}
+      - DRILL_METRICS_DB_NAME=${DRILL_METRICS_DB_NAME}
+      - DRILL_METRICS_UI_BASE_URL=${DRILL_METRICS_UI_BASE_URL}
     healthcheck:
       test: [ "CMD", "curl", "http://localhost:8090" ]
       interval: 10s
@@ -46,12 +47,11 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: ${DRILL_DB_NAME}
     volumes:
-      # Volume to initialize Metabase dashboards 
-      # Place data.sql file from the https://github.com/Drill4J/drill-metabase-dashboards/releases to db-init directory
+      # Volume to initialize postgres with required databases and data (see "db-init" folder)
       - ./db-init:/docker-entrypoint-initdb.d
-      # Volume to store application metrics
+      # Volume to store data
       - drill-data-pg:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
@@ -73,11 +73,11 @@ services:
     environment:      
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_SSL: ${POSTGRES_SSL}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       METABASE_DB_NAME: ${METABASE_DB_NAME}
+      DRILL_METRICS_DB_NAME: ${DRILL_METRICS_DB_NAME}
       DRILL_METRICS_UI_BASE_URL: ${DRILL_METRICS_UI_BASE_URL}
       DRILL_UI_BASE_URL: ${DRILL_UI_BASE_URL}
     extra_hosts:
