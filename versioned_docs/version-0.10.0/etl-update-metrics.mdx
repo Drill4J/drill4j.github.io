@@ -186,6 +186,24 @@ The ETL pipeline can be tuned for optimal performance based on your infrastructu
   - Increase for better write performance (2000-5000)
   - Decrease to reduce transaction lock time (100-500)
 
+### Consistency Window
+- **Environment Variable:** `DRILL_ETL_CONSISTENCY_WINDOW`
+- **Purpose:** Number of seconds to subtract from the last processed timestamp when starting an ETL run
+- **Behavior:** Allows re-processing records that arrived in the source database with a delay or were inconsistent at the time of the previous ETL run
+- **Impact:** Slightly increases the amount of data reprocessed per run, but improves data consistency
+- **Default:** 0
+- **Tuning Guidance:**
+  - Increase this value if records are skipped because agents may send data out of order.
+
+### Processing Delay
+- **Environment Variable:** `DRILL_ETL_PROCESSING_DELAY`
+- **Purpose:** Number of seconds to subtract from the current time when calculating the upper bound of the ETL processing window
+- **Behavior:** Delays the ETL process to allow in-flight transactions in the data source to complete before they are processed
+- **Impact:** Introduces a small lag in metrics freshness, but prevents partial or uncommitted data from being picked up
+- **Default:** 0
+- **Tuning Guidance:**
+  - Increase if ETL occasionally picks up incomplete or inconsistent records from active transactions (e.g., 5–60 seconds)
+
 **Note:** Applying changes to the environment variable requires restarting the Drill4J Backend instance for the new schedule to take effect.
 
 ## Tracking and Monitoring
