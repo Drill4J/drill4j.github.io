@@ -38,4 +38,5 @@ jobs:
           git config --global user.name "github-actions"
           npm ci --legacy-peer-deps
           npm run tailwind:css
+          node scripts/create-deploy-services-zip.js
           npx docusaurus deploy
