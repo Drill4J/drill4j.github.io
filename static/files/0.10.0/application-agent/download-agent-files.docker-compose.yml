@@ -3,9 +3,16 @@ services:
   my-app:
     image: my-app:${MY_APP_VERSION}
     environment:
-      # Instructs Java to load agent files from shared volume directory.
-      # Remember to set the rest of parameters according to Drill4J Java Agent docs 
-      - "JAVA_TOOL_OPTIONS=-agentpath:/data/agent/libdrill_agent.so"
+      # Instructs Java to load Drill4J Java Agent file from shared volume directory.
+      # Drill4J has two modes of loading: -javaagent and -agentpath. See Drill4J Java Agent docs for details.
+      # ! set the desired loading mode here !  You can only use one of them!
+      - "JAVA_TOOL_OPTIONS=-javagent:/data/agent/drill-runtime.jar"
+      #- "JAVA_TOOL_OPTIONS=-agentpath:/data/agent/libdrill_agent.so"
+      # Remember to set parameters according to Drill4J Java Agent docs
+      - "DRILL_GROUP_ID=my-group"
+      - "DRILL_APP_ID=my-app"
+      - "DRILL_BUILD_VERSION=${MY_APP_VERSION}"
+      - "DRILL_PACKAGE_PREFIXES=com.myapp"
     volumes:
       # Mount volume with agent files to your app's container
       - agent-files:/data
@@ -18,8 +25,7 @@ services:
     image: drill4j/java-agent:0.8.0-38 # ignore this. Its the version for the _download script_, not the agent
     environment:
       # ! set the desired agent version here !
-      - AGENT_VERSION=0.10.1
-      # ! set the desired agent version here !
+      - AGENT_VERSION=0.10.2
     volumes:
       - agent-files:/data
     healthcheck:
