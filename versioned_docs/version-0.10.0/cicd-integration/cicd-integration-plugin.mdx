@@ -31,7 +31,9 @@ CI/CD Integration Plugin functions include:
    - [On GitHub Pull Request](#github-pull-request-report)
    - [On GitLab Merge Request](#gitlab-merge-request-report)
 
-4. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
+4. [__Getting a list of recommended tests to skip__](#getting-recommended-tests) - retrieves the list of tests that can be skipped as a JSON file (for use in custom CI/CD pipelines).
+
+5. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
 
 ### How to use
 
@@ -92,6 +94,8 @@ You can set these parameters in two ways:
 # Exact way to set variables depends on the environment
 DRILL_API_URL="http://localhost:8090/api"
 DRILL_API_KEY="your_api_key_here"
+# Optional, HTTP request timeout in milliseconds (default: 60000)
+DRILL_HTTP_TIMEOUT_MS="60000"
 ```
 
 2. __Option 2__ (not recommended): using Gradle/Maven plugin configuration.
@@ -103,6 +107,8 @@ drill {
     // Set API url and API key
     apiUrl = "http://localhost:8090/api"
     apiKey = "your_api_key_here"
+    // Optional, HTTP request timeout in milliseconds (default: 60000)
+    httpTimeoutMs = 60000
 }
 ```
 
@@ -115,6 +121,8 @@ drill {
         <!-- Set API url and API key -->
         <apiUrl>http://localhost:8090/api</apiUrl>
         <apiKey>your_api_key_here</apiKey>
+        <!-- Optional, HTTP request timeout in milliseconds (default: 60000) -->
+        <httpTimeoutMs>60000</httpTimeoutMs>
     </configuration>
 </plugin>
 ```
@@ -729,12 +737,12 @@ drill {
     agent {
         version = "${versions.javaAgent}"
     }
-    // Enables Coverage Collection
-    coverage()
     // Enables Test Tracing
     testTracing()
     // Enables Test Recommendations
     recommendedTests()
+    // Setup baseline strategy for test recommendations
+    ...
 }
 `}
  </Codeblock>
@@ -759,10 +767,6 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
-        <!-- Enables Coverage Collection -->
-        <coverage>
-            <enabled>true</enabled>
-        </coverage>
         <!-- Enables Test Tracing -->
         <testTracing>
             <enabled>true</enabled>
@@ -771,6 +775,8 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <recommendedTests>
             <enabled>true</enabled>
         </recommendedTests>
+        <!-- Setup baseline strategy for test recommendations -->
+        ...
     </configuration>
     <executions>
         <execution>
@@ -822,18 +828,11 @@ To set the baseline configuration, add the following properties to your Gradle b
 <Codeblock language="kotlin">
 {`
 drill {
-    // Group ID
-    groupId = "my-group"
-    // ID of the application under test
-    appId = "my-application"
-    // Identifies the version of the application under test that is based on the checked out commit
-    buildVersion = "1.0.0"
-    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
+    // Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION.
+    // See "Baseline Strategy" section on the page below for more info
     baseline {
         searchStrategy = "SEARCH_BY_TAG"
     }
-    // Enable Test Recommendations and Test Agent
-    ...
 }
 `}
 </Codeblock>
@@ -843,21 +842,43 @@ Set the `<baseline>` Drill4J configuration to your Maven pom.xml file:
 <Codeblock language="xml">
 {`
 <configuration>
-    <!-- Group ID -->
-    <groupId>my-group</groupId>
-    <!-- ID of the application under test -->
-    <appId>my-application</appId>
-    <!-- Identifies the version of the application under test that is based on the checked out commit -->
-    <buildVersion>1.0.0</buildVersion>
-    <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+    <!-- Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION. -->
+    <!-- See "Baseline Strategy" section on the page below for more info -->
     <baseline>
         <searchStrategy>SEARCH_BY_TAG</searchStrategy>
     </baseline>
-    <!-- Enable Test Recommendations and Test Agent -->
-    ...
 </configuration>
 `}
 </Codeblock>
+
+### Saving recommended tests to a file
+
+This command produces a JSON file listing tests that can be safely skipped for the current build (based on impact analysis against the baseline).
+Use it when you need the list of "tests to skip" as an artifact for a custom CI/CD pipeline that filters test execution outside of the Drill4J agent.
+
+The output is written to `recommendedTests.json`:
+- Gradle: `<project>/build/drill/recommendedTests.json`
+- Maven: `<project>/target/drill/recommendedTests.json`
+
+If this command is executed before running the tests, the Java Agent will detect the `recommendedTests.json` file at the expected path and use it as the source of tests to skip,
+instead of requesting the list of recommended tests when the tests are run.
+
+> When running the same configuration across several modules of a multi-module build,
+> the plugin caches the HTTP response for identical parameters, so only one request is sent to the Drill4J backend.
+
+#### Gradle
+
+To retrieve the recommended tests, execute the following Gradle command:
+```shell
+./gradlew drillGetRecommendedTests
+```
+
+#### Maven
+
+To retrieve the recommended tests, execute the following Maven command:
+```shell
+mvn drill:getRecommendedTests
+```
 
 ## Generating a change testing report
 
@@ -876,8 +897,11 @@ drill {
     // Enter appropriate parameter values
     groupId = "my-group"
     appId = "my-application"
+    // Optional, identifies the app version to compare. If not set, the current commit SHA is used.
+    buildVersion = "1.0.0"
 
-    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
+    // Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION.
+    // See "Baseline Strategy" section on the page below for more info
     baseline {
        searchStrategy = "SEARCH_BY_TAG"
     }
@@ -903,7 +927,10 @@ Add the following properties to your Maven pom.xml file:
         <!-- Enter appropriate parameter values -->
         <groupId>my-group</groupId>
         <appId>my-application</appId>
-        <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+        <!-- Optional, identifies the app version to compare. If not set, the current commit SHA is used. -->
+        <buildVersion>1.0.0</buildVersion>
+        <!-- Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION. -->
+        <!-- See "Baseline Strategy" section on the page below for more info -->
         <baseline>
             <searchStrategy>SEARCH_BY_TAG</searchStrategy>
         </baseline>
@@ -1063,6 +1090,7 @@ To leave a comment on a Merge Request, execute the following Maven command:
 mvn drill:gitlabMergeRequestReport
 ```
 
+
 ## Sending Git metadata to Drill4J API
 
 This enables Drill4J to display additional data on build in the reports, such as:
@@ -1127,14 +1155,19 @@ mvn drill:sendBuildInfo
 
 To generate a Change Testing Report or enable Test Recommendations, the current build must be compared to a baseline build.
 Drill4J supports multiple strategies for identifying the baseline build.
-- Search by tags
+- Search by tag
 - Search by merge base
+- Search by commit
+- Search by build version
 
-### Search by tags
+### Search by tag
 This strategy compares the current build to a baseline build identified by Git tags.
 
 > *IMPORTANT!*
 You need to have at least one Git tag in your repository for this strategy to work.
+
+By default, the tag is resolved to a commit SHA and the baseline build is looked up by that commit.
+Alternatively, the tag name itself can be interpreted as an application build version — use the `tagMatchBy` and `tagPrefix` options for that.
 
 #### Gradle
 ```kotlin
@@ -1144,6 +1177,14 @@ baseline {
 
     // Adjust to match your tag naming scheme
     tagPattern = "v[0-9].[0-9].[0-9]*"
+
+    // Optional. "COMMIT_SHA" (default) — resolve tag to a commit and search by commit.
+    // "BUILD_VERSION" — extract build version from the tag name and search by build version.
+    tagMatchBy = "BUILD_VERSION"
+
+    // Optional. Prefix stripped from the tag name to derive the build version (only used with tagMatchBy = "BUILD_VERSION").
+    // E.g. for tag "v1.2.3" and tagPrefix = "v" the resulting build version is "1.2.3".
+    tagPrefix = "v"
 }
 ```
 #### Maven
@@ -1154,6 +1195,13 @@ baseline {
 
     <!-- Adjust to match your tag naming scheme -->
     <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
+
+    <!-- Optional. COMMIT_SHA (default) — resolve tag to a commit and search by commit. -->
+    <!-- BUILD_VERSION — extract build version from the tag name and search by build version. -->
+    <tagMatchBy>BUILD_VERSION</tagMatchBy>
+
+    <!-- Optional. Prefix stripped from the tag name to derive the build version (only used with tagMatchBy = BUILD_VERSION). -->
+    <tagPrefix>v</tagPrefix>
 </baseline>
 ```
 
@@ -1178,6 +1226,56 @@ baseline {
 
     <!-- Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
     <targetRef>main</targetRef>
+</baseline>
+```
+
+### Search by commit
+This strategy compares the current build to the baseline identified by an explicit commit SHA.
+Use it when the baseline commit is already known (e.g. it is provided by an upstream CI/CD stage).
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline build
+    searchStrategy = "SEARCH_BY_COMMIT"
+
+    // Commit SHA of the baseline build
+    commitSha = "a1b2c3d4e5f6"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline build -->
+    <searchStrategy>SEARCH_BY_COMMIT</searchStrategy>
+
+    <!-- Commit SHA of the baseline build -->
+    <commitSha>a1b2c3d4e5f6</commitSha>
+</baseline>
+```
+
+### Search by build version
+This strategy compares the current build to the baseline identified by an application build version.
+Use it when releases are tracked by a version string rather than by Git tags/commits.
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline build
+    searchStrategy = "SEARCH_BY_BUILD_VERSION"
+
+    // Build version of the baseline
+    buildVersion = "1.0.0"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline build -->
+    <searchStrategy>SEARCH_BY_BUILD_VERSION</searchStrategy>
+
+    <!-- Build version of the baseline -->
+    <buildVersion>1.0.0</buildVersion>
 </baseline>
 ```
 
