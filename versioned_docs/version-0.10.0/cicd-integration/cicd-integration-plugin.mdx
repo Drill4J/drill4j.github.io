@@ -737,12 +737,12 @@ drill {
     agent {
         version = "${versions.javaAgent}"
     }
-    // Enables Coverage Collection
-    coverage()
     // Enables Test Tracing
     testTracing()
     // Enables Test Recommendations
     recommendedTests()
+    // Setup baseline strategy for test recommendations
+    ...
 }
 `}
  </Codeblock>
@@ -767,10 +767,6 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
-        <!-- Enables Coverage Collection -->
-        <coverage>
-            <enabled>true</enabled>
-        </coverage>
         <!-- Enables Test Tracing -->
         <testTracing>
             <enabled>true</enabled>
@@ -779,6 +775,8 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <recommendedTests>
             <enabled>true</enabled>
         </recommendedTests>
+        <!-- Setup baseline strategy for test recommendations -->
+        ...
     </configuration>
     <executions>
         <execution>
@@ -830,19 +828,11 @@ To set the baseline configuration, add the following properties to your Gradle b
 <Codeblock language="kotlin">
 {`
 drill {
-    // Group ID
-    groupId = "my-group"
-    // ID of the application under test
-    appId = "my-application"
-    // Identifies the version of the application under test that is based on the checked out commit
-    buildVersion = "1.0.0"
     // Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION.
     // See "Baseline Strategy" section on the page below for more info
     baseline {
         searchStrategy = "SEARCH_BY_TAG"
     }
-    // Enable Test Recommendations and Test Agent
-    ...
 }
 `}
 </Codeblock>
@@ -852,24 +842,16 @@ Set the `<baseline>` Drill4J configuration to your Maven pom.xml file:
 <Codeblock language="xml">
 {`
 <configuration>
-    <!-- Group ID -->
-    <groupId>my-group</groupId>
-    <!-- ID of the application under test -->
-    <appId>my-application</appId>
-    <!-- Identifies the version of the application under test that is based on the checked out commit -->
-    <buildVersion>1.0.0</buildVersion>
     <!-- Set to SEARCH_BY_TAG, SEARCH_BY_MERGE_BASE, SEARCH_BY_COMMIT or SEARCH_BY_BUILD_VERSION. -->
     <!-- See "Baseline Strategy" section on the page below for more info -->
     <baseline>
         <searchStrategy>SEARCH_BY_TAG</searchStrategy>
     </baseline>
-    <!-- Enable Test Recommendations and Test Agent -->
-    ...
 </configuration>
 `}
 </Codeblock>
 
-### Getting recommended tests
+### Saving recommended tests to a file
 
 This command produces a JSON file listing tests that can be safely skipped for the current build (based on impact analysis against the baseline).
 Use it when you need the list of "tests to skip" as an artifact for a custom CI/CD pipeline that filters test execution outside of the Drill4J agent.
@@ -878,12 +860,11 @@ The output is written to `recommendedTests.json`:
 - Gradle: `<project>/build/drill/recommendedTests.json`
 - Maven: `<project>/target/drill/recommendedTests.json`
 
+If this command is executed before running the tests, the Java Agent will detect the `recommendedTests.json` file at the expected path and use it as the source of tests to skip,
+instead of requesting the list of recommended tests when the tests are run.
+
 > When running the same configuration across several modules of a multi-module build,
 > the plugin caches the HTTP response for identical parameters, so only one request is sent to the Drill4J backend.
-
-Prerequisites:
-- Before running, make sure the application under test has already been deployed and covered with [coverage collection](#coverage-collection) enabled.
-- [Baseline](#baseline-strategy) is configured.
 
 #### Gradle
 
