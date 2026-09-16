@@ -9,16 +9,35 @@
 @import './colors';
 
 :root {
-  --ifm-color-primary: #007fff;
-    --ifm-color-primary-dark: #0072e6;
-    --ifm-color-primary-darker: #0066cc;
-    --ifm-color-primary-darkest: #0054a6;
-    --ifm-color-primary-light: #3399ff;
-    --ifm-color-primary-lighter: #66b2ff;
-    --ifm-color-primary-lightest: #99ccff;
+  --ifm-color-primary: #2f8eea;
+  --ifm-color-primary-dark: #1a6fc7;
+  --ifm-color-primary-darker: #1862b0;
+  --ifm-color-primary-darkest: #145292;
+  --ifm-color-primary-light: #5aa3ef;
+  --ifm-color-primary-lighter: #85bdf4;
+  --ifm-color-primary-lightest: #cfe4fb;
+  --ifm-font-family-base: var(--d4j-font);
+  --ifm-heading-font-family: var(--d4j-display);
+  --ifm-font-color-base: #0c2438;
+  --ifm-color-content-secondary: #5a7186;
+  --ifm-background-color: #f6fafc;
+  --ifm-navbar-background-color: transparent;
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-height: 5.5rem;
+  --ifm-global-radius: 10px;
   --ifm-code-font-size: 95%;
   --ifm-list-margin: 0;
   --ifm-list-left-padding: 0;
+  --ifm-link-color: #2f8eea;
+  --ifm-link-hover-color: #1a6fc7;
+  --ifm-toc-border-color: #d3dee8;
+  --ifm-hr-border-color: #d3dee8;
+  --ifm-color-emphasis-300: #d3dee8;
+  --ifm-menu-color: #0c2438;
+  --ifm-menu-color-active: #1a6fc7;
+  --ifm-menu-color-background-active: #eaf4fc;
+  --ifm-menu-color-background-hover: rgba(47, 142, 234, 0.06);
+  --ifm-pagination-nav-color-hover: #2f8eea;
 }
 
 .threeWaysToDeployContainer {

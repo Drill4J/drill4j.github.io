@@ -1,58 +1,82 @@
+/* Cool slate + soft sky — aligned with drill4j-ui tokens (light surfaces). */
 $primary-blue: (
-  default: #007fff,
-  shade: #006cd8,
-  medium-tint: #3399ff,
-  light-tint: #e5f2ff,
-  ultralight-tint: #e5f2ff,
-  visited: #632ed1,
+  default: #2f8eea,
+  shade: #1a6fc7,
+  medium-tint: #5aa3ef,
+  light-tint: #eaf4fc,
+  ultralight-tint: #cfe4fb,
+  visited: #16324a,
 );
 
 $monochrome: (
-  black: #1b191b,
+  black: #0c2438,
   white: #ffffff,
-  default: #687481,
-  shade: #58626d,
-  dark-tint: #a4acb3,
-  medium-tint: #e3e6e8,
-  light-tint: #f8f9fb,
+  default: #5a7186,
+  shade: #16324a,
+  dark-tint: #8a9bab,
+  medium-tint: #d3dee8,
+  light-tint: #f6fafc,
 );
 
 $green: (
-  default: #00b602,
-  shade: #009402,
-  medium-tint: #33c535,
-  light-tint: #e5f7e5,
-  success: #18D09B,
+  default: #1bbf9a,
+  shade: #149a7c,
+  medium-tint: #48ccae,
+  light-tint: #e8f8f3,
+  success: #1bbf9a,
 );
 
 $red: (
-  default: #ee0000,
-  shade: #cc0000,
-  medium-tint: #f13333,
-  light-tint: #fccccc,
-  ultralight-tint: #fde5e5,
+  default: #e4565c,
+  shade: #d3484e,
+  medium-tint: #eb787c,
+  light-tint: #fef1f2,
+  ultralight-tint: #fef1f2,
 );
 
 $yellow: (
-  default: #ffdd00,
-  shade: #ebcb00,
-  medium-tint: #ffe74c,
-  light-tint: #fffbe5,
+  default: #e6c56a,
+  shade: #c9992e,
+  medium-tint: #efd89a,
+  light-tint: #fff8e8,
 );
 
 $orange: (
-  default: #f5a623,
-  shade: #dc931b,
-  medium-tint: #f7b84f,
-  light-tint: #fef6e9,
+  default: #f0a04b,
+  shade: #c9992e,
+  medium-tint: #f5b872,
+  light-tint: #fff8e8,
 );
 
 $data-visualization: (
-  scrollbar-thumb: #ccd0db,
-  coverage: #62adfc,
-  overlapping: #4f8ac9,
-  scope-cover: #aed4fd,
-  saved-time: #67d5b5,
-  auto: #d599ff,
-  manual: #88e2f3,
+  scrollbar-thumb: #d3dee8,
+  coverage: #2f8eea,
+  overlapping: #1a6fc7,
+  scope-cover: #90caf9,
+  saved-time: #1bbf9a,
+  auto: #1aabb8,
+  manual: #90caf9,
 );
+
+/* CSS custom properties for non-SCSS consumers */
+:root {
+  --d4j-ink: #0c2438;
+  --d4j-ink-soft: #16324a;
+  --d4j-mist: #e8f1f7;
+  --d4j-paper: #f6fafc;
+  --d4j-line: #d3dee8;
+  --d4j-muted: #5a7186;
+  --d4j-blue: #2f8eea;
+  --d4j-blue-deep: #1a6fc7;
+  --d4j-blue-soft: #cfe4fb;
+  --d4j-blue-mist: #eaf4fc;
+  --d4j-cyan: #1aabb8;
+  --d4j-mint: #1bbf9a;
+  --d4j-surface: #ffffff;
+  --d4j-radius: 12px;
+  --d4j-radius-sm: 8px;
+  --d4j-radius-md: 10px;
+  --d4j-shadow: 0 8px 24px rgba(12, 36, 56, 0.06);
+  --d4j-font: 'Figtree', 'Segoe UI', sans-serif;
+  --d4j-display: 'Space Grotesk', 'Figtree', 'Segoe UI', sans-serif;
+}

@@ -13,14 +13,19 @@ import {
   ImpactComparisonDashboard,
   PillarsInfographic,
 } from '../components/landing/mockups';
+import { useContactEmail, useMailtoHref } from '../hooks/use-contact-email';
 
 const DOCS = '/docs/what-is-drill4j';
 const GITHUB = 'https://github.com/Drill4J/drill4j';
 const TELEGRAM = 'https://t.me/drill4j';
-const EMAIL = 'mailto:Drill4j@gmail.com';
 const YOUTUBE = 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured';
 
 function Home() {
+  const contactEmail = useContactEmail();
+  const emailHref = useMailtoHref();
+  const talkHref = useMailtoHref('Drill4J inquiry');
+  const servicesHref = useMailtoHref('Drill4J services conversation');
+
   return (
     <Layout
       title="Testing intelligence for AI-driven delivery"
@@ -54,7 +59,7 @@ function Home() {
                 <Link className={styles.ctaPrimary} to={useBaseUrl(DOCS)}>
                   See how it works
                 </Link>
-                <a className={styles.ctaGhost} href={EMAIL}>
+                <a className={styles.ctaGhost} href={talkHref}>
                   Talk to us
                 </a>
               </div>
@@ -168,7 +173,7 @@ function Home() {
                   <li>Customization and extensions for your project</li>
                   <li>.NET and frontend JavaScript available as paid configuration</li>
                 </ul>
-                <a className={styles.ctaOnDark} href={EMAIL}>
+                <a className={styles.ctaOnDark} href={servicesHref}>
                   Request a services conversation
                 </a>
               </div>
@@ -193,7 +198,7 @@ function Home() {
             </div>
             <div className={styles.contactRow}>
               <a href={TELEGRAM}>Telegram</a>
-              <a href={EMAIL}>Drill4j@gmail.com</a>
+              <a href={emailHref}>{contactEmail}</a>
               <a href={YOUTUBE}>YouTube</a>
               <a href={GITHUB}>GitHub</a>
             </div>

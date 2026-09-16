@@ -2,6 +2,14 @@ const path = require('path');
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
+/** Single source of truth for public contact email (navbar, footer, landing, mailto CTAs). */
+const CONTACT_EMAIL = 'ProjectEPM-D4J@epam.com';
+const mailto = (subject) => (
+  subject
+    ? `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`
+    : `mailto:${CONTACT_EMAIL}`
+);
+
 module.exports = {
   title: 'Drill4J',
   tagline: 'Continuous test gap & impact analysis for JVM and beyond',
@@ -12,6 +20,9 @@ module.exports = {
   favicon: '/imgs/favicon.ico',
   organizationName: 'Drill4J',
   projectName: 'drill4j.github.io',
+  customFields: {
+    contactEmail: CONTACT_EMAIL,
+  },
   themeConfig: {
     algolia: {
       apiKey: '6893440cddb296d0faf1399850200fc6',
@@ -43,8 +54,8 @@ module.exports = {
           position: 'right',
         },
         {
-          to: 'https://github.com/Drill4J/realworld-java-and-js-coverage/',
-          label: 'Demo',
+          href: mailto('Drill4J demo request'),
+          label: 'Request demo',
           position: 'right',
         },
         {
@@ -57,23 +68,36 @@ module.exports = {
     footer: {
       links: [
         {
-          title: '1',
-          items: [],
-        },
-        {
-          title: '2',
-          items: [],
-        },
-        {
-          title: '3',
+          title: 'Product',
           items: [
             {
-              label: 'Demo',
-              href: 'https://github.com/Drill4J/realworld-java-and-js-coverage/',
+              label: 'Documentation',
+              to: 'docs/what-is-drill4j',
+            },
+            {
+              label: 'Request demo',
+              href: mailto('Drill4J demo request'),
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/Drill4J/drill4j',
+            },
+          ],
+        },
+        {
+          title: 'Connect',
+          items: [
+            {
+              label: 'Telegram',
+              href: 'https://t.me/drill4j',
+            },
+            {
+              label: 'YouTube',
+              href: 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured',
             },
             {
               label: 'Contact us',
-              href: 'https://t.me/drill4j',
+              href: mailto(),
             },
           ],
         },

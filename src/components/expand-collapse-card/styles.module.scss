@@ -16,12 +16,13 @@
     gap: 24px;
     padding: 24px;
     margin-bottom: 16px;
-    font-family: "OpenSans-Semibold", sans-serif;
+    font-family: var(--d4j-display);
+    font-weight: 600;
     font-size: 18px;
     line-height: 24px;
-    color: map-get($monochrome, default);
+    color: map-get($monochrome, black);
     background-color: map-get($monochrome, white);
-    border-radius: 8px;
+    border-radius: var(--d4j-radius);
     cursor: pointer;
 
     &:hover {
