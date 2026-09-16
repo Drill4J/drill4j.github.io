@@ -18,7 +18,11 @@ const Footer = () => {
       <div className="navigationContainer">
         <section className="grid py-12 lg:py-16 grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-x-5">
           <a href="/" className="col-span-full lg:col-span-4 mb-12 lg:mb-0">
-            <img src={useBaseUrl('imgs/drill4j-logo-grayscale.svg')} alt="drill4j github" />
+            <img
+              src={useBaseUrl('imgs/drill4j-logo.svg')}
+              alt="Drill4J"
+              style={{ height: 40, width: 'auto' }}
+            />
           </a>
           {links.map(({ title = '', items }, index) => (
             <div

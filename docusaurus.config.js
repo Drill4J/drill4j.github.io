@@ -4,7 +4,7 @@ const katex = require('rehype-katex');
 
 module.exports = {
   title: 'Drill4J',
-  tagline: 'The tagline of my site',
+  tagline: 'Continuous test gap & impact analysis for JVM and beyond',
   url: 'https://Drill4J.github.io',
   baseUrl: '/',
   onBrokenLinks: 'warn',
