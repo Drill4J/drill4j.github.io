@@ -6,6 +6,7 @@
   box-sizing: initial;
   grid-template-columns: 0 1fr;
   min-height: calc(100vh - 300px); // footer height
+  background: map-get($monochrome, light-tint);
 
   @media screen and (max-width: 360px) {
     padding: 0 16px;

@@ -56,7 +56,7 @@ function DocItem(props: Props): JSX.Element {
         >
           {!hideTitle && (
             <header>
-              <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-default">{title}</h1>
+              <h1 className="mt-8 mb-4 text-32 leading-48 text-monochrome-black">{title}</h1>
             </header>
           )}
           <div className="markdown">
@@ -79,6 +79,5 @@ function DocItem(props: Props): JSX.Element {
     </>
   );
 }
-0;
 
 export default DocItem;

@@ -1,15 +1,119 @@
 @import "colors";
 
-@media (min-width: 999px) {
-  .navbar {
+.navbar {
+  position: relative;
+  background:
+    radial-gradient(ellipse 55% 120% at 8% 0%, rgba(47, 142, 234, 0.1), transparent 55%),
+    radial-gradient(ellipse 40% 100% at 92% 20%, rgba(27, 191, 154, 0.08), transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, #f6fafc 100%);
+  border-bottom: 1px solid map-get($monochrome, medium-tint);
+  box-shadow: 0 8px 24px rgba(12, 36, 56, 0.04);
+  backdrop-filter: blur(8px);
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(47, 142, 234, 0.45) 22%,
+      rgba(26, 171, 184, 0.55) 50%,
+      rgba(27, 191, 154, 0.4) 78%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  @media (min-width: 999px) {
     padding-left: 24px;
     padding-right: 24px;
     height: 5.5rem;
   }
 }
 
+.navbar__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
 .navbar__brand {
   height: 3rem;
+}
+
+.navbar__logo {
+  height: 3rem; // full SVG (48px) — keeps subtitle readable
+  width: auto;
+}
+
+.navbar__items--right {
+  gap: 2px;
+  flex-wrap: nowrap;
+}
+
+.navbar__item {
+  font-family: var(--d4j-font);
+  font-weight: $semibold;
+  font-size: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navbar__link {
+  color: map-get($monochrome, shade);
+  border-radius: var(--d4j-radius-md);
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    color: map-get($primary-blue, shade);
+    background: map-get($primary-blue, light-tint);
+    border-color: map-get($primary-blue, ultralight-tint);
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(47, 142, 234, 0.12);
+  }
+
+  &--active {
+    color: map-get($primary-blue, shade);
+    background: map-get($primary-blue, light-tint);
+    border-color: map-get($primary-blue, ultralight-tint);
+  }
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  text-decoration: none;
+}
+
+.navbar__item.dropdown .navbar__link {
+  border-radius: var(--d4j-radius-md);
+}
+
+.dropdown__menu {
+  border: 1px solid map-get($monochrome, medium-tint);
+  border-radius: var(--d4j-radius);
+  box-shadow: var(--d4j-shadow);
+  padding: 6px;
+  background: map-get($monochrome, white);
+}
+
+.dropdown__link {
+  border-radius: var(--d4j-radius-sm);
+  font-family: var(--d4j-font);
+  font-size: 14px;
+  color: map-get($monochrome, black);
+
+  &:hover {
+    background: map-get($primary-blue, light-tint);
+    color: map-get($primary-blue, shade);
+  }
 }
 
 .DocSearch {
@@ -17,9 +121,11 @@
     width: 100%;
     height: 40px !important;
     margin: 0 !important;
-    background: linear-gradient(to bottom, map-get($monochrome, white), map-get($monochrome, light-tint)) !important;
-    box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3) !important;
-    border-radius: 4px !important;
+    background: map-get($monochrome, white) !important;
+    border: 1px solid map-get($monochrome, medium-tint) !important;
+    box-shadow: none !important;
+    border-radius: var(--d4j-radius-md) !important;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
 
     @media screen and (min-width: 640px) {
       width: 200px;
@@ -29,7 +135,8 @@
     }
 
     &:hover {
-      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(16, 33, 64, 0.2) !important;
+      border-color: map-get($primary-blue, default) !important;
+      box-shadow: 0 2px 8px rgba(47, 142, 234, 0.16) !important;
     }
 
     &-Container {
@@ -77,7 +184,9 @@
 
     &-Key {
       background: map-get($monochrome, light-tint) !important;
-      box-shadow: inset 0 -2px 0 0 map-get($monochrome, medium-tint), inset 0 0 1px 1px #fff, 0px 1px 5px 0px #A4ACB3 !important;
+      border: 1px solid map-get($monochrome, medium-tint) !important;
+      box-shadow: none !important;
+      border-radius: 6px !important;
 
       @media screen and (max-width: 1023px) {
         display: none !important;
@@ -108,15 +217,18 @@ body.mac-os {
 }
 
 .DocSearch {
-  --docsearch-searchbox-shadow: inset 0 0 0 2px #007fff;
-  --docsearch-highlight-color: #007fff;
+  --docsearch-searchbox-shadow: inset 0 0 0 2px #2f8eea;
+  --docsearch-highlight-color: #2f8eea;
+  --docsearch-primary-color: #2f8eea;
+  --docsearch-modal-shadow: var(--d4j-shadow);
+  --docsearch-container-background: rgba(12, 36, 56, 0.45);
 }
 
 .markdown {
-  --ifm-tabs-color-active: #007FFF;
-  --ifm-hover-overlay: #F8F9FB;
+  --ifm-tabs-color-active: #2f8eea;
+  --ifm-hover-overlay: #eaf4fc;
   --ifm-pre-padding: 24px;
-  --ifm-navbar-height: 100px;
+  --ifm-navbar-height: 88px;
 
   button[aria-label="Copy code to clipboard"] {
     top: 8px;
@@ -125,8 +237,9 @@ body.mac-os {
     color: map-get($monochrome, default);
     font-size: 12px !important;
     line-height: 24px;
-    background-color: rgba(map-get($monochrome, dark-tint), 0.25) !important;
-    border-radius: 4px;
+    background-color: rgba(12, 36, 56, 0.08) !important;
+    border-radius: var(--d4j-radius-sm);
+    border: 1px solid map-get($monochrome, medium-tint);
   }
 
   .thin-scrollbar {
@@ -197,6 +310,7 @@ body.mac-os {
   position: relative;
   margin-top: 24px;
   padding: 0 0 0 8px;
+  border-left: 1px solid map-get($monochrome, medium-tint);
 
   li {
     padding-left: 8px;
@@ -212,6 +326,7 @@ body.mac-os {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: color 160ms ease;
 
       &--active {
         color: map-get($primary-blue, default);
@@ -224,6 +339,7 @@ body.mac-os {
           height: 20px;
           background-color: map-get($primary-blue, default);
           cursor: default;
+          border-radius: 1px;
         }
       }
 
@@ -243,3 +359,209 @@ a.hash-link {
   }
 }
 
+.pagination-nav__link {
+  border: 1px solid map-get($monochrome, medium-tint);
+  border-radius: var(--d4j-radius);
+  background: map-get($monochrome, white);
+  box-shadow: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    border-color: map-get($primary-blue, default);
+    box-shadow: 0 2px 8px rgba(47, 142, 234, 0.16);
+    text-decoration: none;
+  }
+}
+
+.pagination-nav__label {
+  font-family: var(--d4j-display);
+  font-weight: $semibold;
+  color: map-get($monochrome, black);
+}
+
+.pagination-nav__sublabel {
+  color: map-get($monochrome, default);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* —— Site footer —— */
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 50% 80% at 0% 100%, rgba(47, 142, 234, 0.1), transparent 55%),
+    radial-gradient(ellipse 40% 70% at 100% 0%, rgba(27, 191, 154, 0.1), transparent 50%),
+    linear-gradient(165deg, #eef5fb 0%, #f6fafc 45%, #e8f8f3 100%);
+  border-top: 1px solid map-get($monochrome, medium-tint);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(47, 142, 234, 0.55) 20%,
+      rgba(26, 171, 184, 0.65) 50%,
+      rgba(27, 191, 154, 0.5) 80%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+}
+
+.site-footer__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 3rem 0 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem 2.5rem;
+    padding: 3.5rem 0 1.75rem;
+    align-items: start;
+  }
+}
+
+.site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+}
+
+.site-footer__logo {
+  height: 48px;
+  width: auto;
+}
+
+.site-footer__tagline {
+  margin: 0;
+  font-family: var(--d4j-font);
+  font-size: 14px;
+  line-height: 22px;
+  color: map-get($monochrome, default);
+}
+
+.site-footer__email {
+  font-family: var(--d4j-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: map-get($primary-blue, default);
+
+  &:hover {
+    color: map-get($primary-blue, shade);
+    text-decoration: none;
+  }
+}
+
+.site-footer__column {
+  min-width: 0;
+}
+
+.site-footer__heading {
+  margin: 0 0 12px;
+  font-family: var(--d4j-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: map-get($monochrome, shade);
+}
+
+.site-footer__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__list li {
+  margin: 0 0 10px;
+}
+
+.site-footer__link {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 500;
+  color: map-get($monochrome, default);
+  transition: color 160ms ease;
+
+  &:hover {
+    color: map-get($primary-blue, default);
+    text-decoration: none;
+  }
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 0;
+  margin-top: 8px;
+  border-top: 1px solid map-get($monochrome, medium-tint);
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.site-footer__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 24px;
+  color: map-get($monochrome, default);
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
+
+.site-footer__social {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+.site-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid map-get($monochrome, medium-tint);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 4px 12px rgba(12, 36, 56, 0.04);
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    border-color: map-get($primary-blue, ultralight-tint);
+    background: map-get($primary-blue, light-tint);
+    box-shadow: 0 6px 16px rgba(47, 142, 234, 0.14);
+    transform: translateY(-1px);
+    text-decoration: none;
+
+    svg {
+      color: map-get($primary-blue, default);
+    }
+  }
+}

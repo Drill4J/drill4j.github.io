@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "node scripts/create-deploy-services-zip.js && npm run tailwind:css && docusaurus start",
+    "start": "node scripts/create-deploy-services-zip.js && npm run tailwind:css && docusaurus start --port 3001",
     "prebuild": "node scripts/create-deploy-services-zip.js",
     "build": "set NODE_ENV=production&& npm run tailwind:css && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve",
+    "serve": "docusaurus serve --port 3001",
     "clear": "docusaurus clear",
     "tailwind:css": "tailwind build src/css/tailwind.css -c tailwind.config.js -o src/css/index.css"
   },

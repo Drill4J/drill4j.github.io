@@ -200,14 +200,14 @@ function DocSidebar({
 
   return (
     <div
-      className={clsx('flex flex-col lg:pt-6 lg:pl-6 lg:border-r border-monochrome-medium-tint bg-monochrome-light-tint', {
+      className={clsx('flex flex-col lg:pt-6 lg:pl-4 lg:border-r border-monochrome-medium-tint bg-monochrome-light-tint', {
         'fixed inset-0 z-50 mt-0 bg-monochrome-white': showResponsiveSidebar,
       })}
       role="complementary"
     >
       {(isWindowLg || showResponsiveSidebar) && (
         <div className="flex justify-between items-center mb-3 lg:mb-4 py-3 lg:py-0 lg:pr-3 pt-6 lg:pt-0 px-6 lg:px-0">
-          <h3 className="hidden sm:inline lg:hidden text-monochrome-default">Documentation</h3>
+          <h3 className="hidden sm:inline lg:hidden text-monochrome-shade">Documentation</h3>
           <SearchBar closeDocsSidebar={() => setShowResponsiveSidebar(false)} />
         </div>
       )}

@@ -1,9 +1,13 @@
+@import "colors";
+
 @mixin card-shadow {
-  box-shadow: 0px 0px 12px rgba(88, 98, 109, 0.07), 0px 2px 4px rgba(88, 98, 109, 0.3);
-  transition: box-shadow 200ms ease, transform 200ms ease;
+  border: 1px solid map-get($monochrome, medium-tint);
+  box-shadow: var(--d4j-shadow);
+  transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
 
   &:hover {
-    box-shadow: 0px 6px 16px rgba(27, 25, 27, 0.16);
-    transform: scale(1.01);
+    border-color: map-get($primary-blue, ultralight-tint);
+    box-shadow: 0 12px 28px rgba(12, 36, 56, 0.1);
+    transform: translateY(-1px);
   }
 }

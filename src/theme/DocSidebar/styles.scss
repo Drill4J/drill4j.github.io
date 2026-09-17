@@ -5,25 +5,32 @@
     overflow-y: hidden;
 
     &-item {
-      margin: 0;
-    }
-
-    .menu__link {
-      &:hover {
-        background: #EBEDF1;
-      }
+      margin: 0 0 2px;
     }
 
     .menu__link {
       color: map-get($monochrome, black);
-      font-weight: $normal;
+      font-family: var(--d4j-font);
+      font-weight: $medium;
       font-size: 14px;
-      line-height: 24px;
-      padding: 8px 16px;
-      border-radius: 8px 0 0 8px;
+      line-height: 22px;
+      padding: 8px 12px;
+      margin-right: 8px;
+      border-radius: var(--d4j-radius-sm);
+      border: 1px solid transparent;
+      transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 
-      @media screen and (max-width: 1024px){
-        border-radius: 8px;
+      &:hover {
+        background: rgba(47, 142, 234, 0.06);
+        color: map-get($primary-blue, shade);
+        text-decoration: none;
+      }
+
+      &--active:not(.menu__link--sublist) {
+        background: map-get($primary-blue, light-tint);
+        color: map-get($primary-blue, shade);
+        border-color: map-get($primary-blue, ultralight-tint);
+        font-weight: $semibold;
       }
     }
 
@@ -33,24 +40,23 @@
       transition: height 200ms linear;
 
       .menu__link {
-        margin-left: 16px;
-        padding-left: 16px;
+        margin-left: 12px;
+        padding-left: 12px;
 
         &--active:not(.menu__link--sublist) {
           background: map-get($monochrome, white);
-          color: map-get($primary-blue, default);
-          border: 1px solid #EBEDF1;
-          border-right: none;
-          font-weight: $bold;
+          color: map-get($primary-blue, shade);
+          border: 1px solid map-get($monochrome, medium-tint);
+          font-weight: $semibold;
           box-sizing: border-box;
+          box-shadow: var(--d4j-shadow);
         }
       }
 
       .menu__list {
         .menu__link {
-          margin-left: 32px;
-          padding-left: 16px;
-
+          margin-left: 24px;
+          padding-left: 12px;
         }
       }
     }
@@ -60,6 +66,9 @@
 .menu__link--sublist {
   display: flex;
   align-items: center;
+  font-family: var(--d4j-display) !important;
+  font-weight: $semibold !important;
+  letter-spacing: -0.01em;
 
   &:after {
     width: 10px;
@@ -67,6 +76,7 @@
     top: 50%;
     background: url('/imgs/small-arrow.svg');
     transform: rotate(0deg) translateY(-50%);
+    opacity: 0.55;
   }
 }
 
@@ -85,5 +95,6 @@
 .menu__list-item--none-collapsed {
   & > .menu__link--sublist {
     font-weight: $bold !important;
+    color: map-get($monochrome, shade);
   }
 }
