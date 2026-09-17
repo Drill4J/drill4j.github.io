@@ -74,3 +74,84 @@ svg {
 
 @import './index';
 @import 'index.css';
+
+/* Cookie consent banner — one row, vertically centered */
+#onetrust-banner-sdk {
+  padding: 16px 24px !important;
+
+  .ot-sdk-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ot-sdk-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 24px !important;
+    overflow: visible !important;
+    margin: 0 !important;
+  }
+
+  #onetrust-group-container,
+  #onetrust-button-group-parent {
+    float: none !important;
+    width: auto !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  #onetrust-group-container {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #onetrust-policy {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    float: none !important;
+    width: 100% !important;
+  }
+
+  #onetrust-policy-text {
+    margin: 0 !important;
+    float: none !important;
+  }
+
+  #onetrust-button-group-parent {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+  }
+
+  #onetrust-button-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    position: static !important;
+  }
+
+  #onetrust-accept-btn-handler,
+  #onetrust-pc-btn-handler {
+    position: static !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+    float: none !important;
+  }
+}
