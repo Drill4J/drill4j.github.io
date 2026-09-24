@@ -3,7 +3,7 @@ const math = require('remark-math');
 const katex = require('rehype-katex');
 
 /** Public contact email (navbar, footer, landing, mailto CTAs). Empty = hidden. */
-const CONTACT_EMAIL = '';
+const CONTACT_EMAIL = 'Roman_Davliatshin@epam.com';
 const mailto = (subject) => (
   subject
     ? `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`
@@ -95,13 +95,9 @@ module.exports = {
               label: 'Telegram',
               href: 'https://t.me/drill4j',
             },
-            {
-              label: 'YouTube',
-              href: 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured',
-            },
             ...(CONTACT_EMAIL
               ? [{
-                label: 'Contact us',
+                label: 'Email',
                 href: mailto(),
               }]
               : []),

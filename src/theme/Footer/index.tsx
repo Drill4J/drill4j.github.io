@@ -33,7 +33,7 @@ const Footer = () => {
             </p>
             {contactEmail && (
               <a className="site-footer__email" href={`mailto:${contactEmail}`}>
-                {contactEmail}
+                Email
               </a>
             )}
           </div>

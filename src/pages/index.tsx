@@ -18,13 +18,11 @@ import { useContactEmail, useMailtoHref } from '../hooks/use-contact-email';
 const DOCS = '/docs/what-is-drill4j';
 const GITHUB = 'https://github.com/Drill4J/drill4j';
 const TELEGRAM = 'https://t.me/drill4j';
-const YOUTUBE = 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured';
 
 function Home() {
   const contactEmail = useContactEmail();
   const emailHref = useMailtoHref();
-  const talkHref = useMailtoHref('Drill4J inquiry');
-  const servicesHref = useMailtoHref('Drill4J services conversation');
+  const talkHref = useMailtoHref('Drill4J demo request');
 
   return (
     <Layout
@@ -59,7 +57,7 @@ function Home() {
                 <Link className={styles.ctaPrimary} to={useBaseUrl(DOCS)}>
                   See how it works
                 </Link>
-                <a className={styles.ctaGhost} href={contactEmail ? talkHref : TELEGRAM}>
+                <a className={styles.ctaGhost} href={talkHref}>
                   Talk to us
                 </a>
               </div>
@@ -173,7 +171,7 @@ function Home() {
                   <li>Customization and extensions for your project</li>
                   <li>.NET and frontend JavaScript available as paid configuration</li>
                 </ul>
-                <a className={styles.ctaOnDark} href={contactEmail ? servicesHref : TELEGRAM}>
+                <a className={styles.ctaOnDark} href={TELEGRAM}>
                   Request a services conversation
                 </a>
               </div>
@@ -198,8 +196,7 @@ function Home() {
             </div>
             <div className={styles.contactRow}>
               <a href={TELEGRAM}>Telegram</a>
-              {contactEmail ? <a href={emailHref}>{contactEmail}</a> : null}
-              <a href={YOUTUBE}>YouTube</a>
+              {contactEmail ? <a href={emailHref}>Email</a> : null}
               <a href={GITHUB}>GitHub</a>
             </div>
           </div>
