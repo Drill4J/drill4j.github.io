@@ -2,8 +2,8 @@ const path = require('path');
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
-/** Single source of truth for public contact email (navbar, footer, landing, mailto CTAs). */
-const CONTACT_EMAIL = 'ProjectEPM-D4J@epam.com';
+/** Public contact email (navbar, footer, landing, mailto CTAs). Empty = hidden. */
+const CONTACT_EMAIL = '';
 const mailto = (subject) => (
   subject
     ? `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`
@@ -53,11 +53,13 @@ module.exports = {
           label: 'Documentation',
           position: 'right',
         },
-        {
-          href: mailto('Drill4J demo request'),
-          label: 'Request demo',
-          position: 'right',
-        },
+        ...(CONTACT_EMAIL
+          ? [{
+            href: mailto('Drill4J demo request'),
+            label: 'Request demo',
+            position: 'right',
+          }]
+          : []),
         {
           to: 'https://github.com/Drill4J/drill4j',
           label: 'Github',
@@ -74,10 +76,12 @@ module.exports = {
               label: 'Documentation',
               to: 'docs/what-is-drill4j',
             },
-            {
-              label: 'Request demo',
-              href: mailto('Drill4J demo request'),
-            },
+            ...(CONTACT_EMAIL
+              ? [{
+                label: 'Request demo',
+                href: mailto('Drill4J demo request'),
+              }]
+              : []),
             {
               label: 'GitHub',
               href: 'https://github.com/Drill4J/drill4j',
@@ -95,10 +99,12 @@ module.exports = {
               label: 'YouTube',
               href: 'https://www.youtube.com/channel/UCJtegUnUHr0bO6icF1CYjKw/featured',
             },
-            {
-              label: 'Contact us',
-              href: mailto(),
-            },
+            ...(CONTACT_EMAIL
+              ? [{
+                label: 'Contact us',
+                href: mailto(),
+              }]
+              : []),
           ],
         },
       ],

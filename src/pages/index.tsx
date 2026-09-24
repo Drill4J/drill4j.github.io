@@ -59,7 +59,7 @@ function Home() {
                 <Link className={styles.ctaPrimary} to={useBaseUrl(DOCS)}>
                   See how it works
                 </Link>
-                <a className={styles.ctaGhost} href={talkHref}>
+                <a className={styles.ctaGhost} href={contactEmail ? talkHref : TELEGRAM}>
                   Talk to us
                 </a>
               </div>
@@ -173,7 +173,7 @@ function Home() {
                   <li>Customization and extensions for your project</li>
                   <li>.NET and frontend JavaScript available as paid configuration</li>
                 </ul>
-                <a className={styles.ctaOnDark} href={servicesHref}>
+                <a className={styles.ctaOnDark} href={contactEmail ? servicesHref : TELEGRAM}>
                   Request a services conversation
                 </a>
               </div>
@@ -198,7 +198,7 @@ function Home() {
             </div>
             <div className={styles.contactRow}>
               <a href={TELEGRAM}>Telegram</a>
-              <a href={emailHref}>{contactEmail}</a>
+              {contactEmail ? <a href={emailHref}>{contactEmail}</a> : null}
               <a href={YOUTUBE}>YouTube</a>
               <a href={GITHUB}>GitHub</a>
             </div>
