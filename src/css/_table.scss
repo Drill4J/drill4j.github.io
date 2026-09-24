@@ -2,6 +2,8 @@ table {
   display: table;
   border-collapse: collapse;
   border-style: hidden;
+  border-radius: var(--d4j-radius);
+  overflow: hidden;
 
   code {
     display: block;
@@ -15,11 +17,16 @@ table {
   }
 
   th {
-    padding: 8px 12px;
-    background-color: map-get($monochrome, light-tint);
+    padding: 10px 12px;
+    background-color: var(--d4j-mist, #e8f1f7);
+    font-family: var(--d4j-display);
     font-size: 12px;
+    font-weight: 600;
     line-height: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     color: map-get($monochrome, default);
+    border-bottom: 1px solid map-get($monochrome, medium-tint);
   }
 
   td {
@@ -27,5 +34,7 @@ table {
     line-height: 18px;
     color: map-get($monochrome, black);
     background-color: map-get($monochrome, white);
+    border-bottom: 1px solid map-get($monochrome, medium-tint);
+    padding: 10px 12px;
   }
 }

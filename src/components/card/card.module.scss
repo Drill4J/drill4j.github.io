@@ -8,11 +8,12 @@
   flex-grow: 1;
   padding: 24px;
   margin-bottom: 32px;
-  font-family: "OpenSans-Semibold", sans-serif;
+  font-family: var(--d4j-display);
+  font-weight: 600;
   font-size: 18px;
   line-height: 24px;
   background-color: map-get($monochrome, white);
-  border-radius: 8px;
+  border-radius: var(--d4j-radius);
   cursor: pointer;
 
   &:hover{

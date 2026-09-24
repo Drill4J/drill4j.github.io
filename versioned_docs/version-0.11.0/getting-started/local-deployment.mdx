@@ -1,0 +1,159 @@
+---
+id: local-deployment
+title: Local Deployment
+---
+
+# Local Deployment
+
+import versions from "@site/static/files/0.11.0/versions.json"
+import { Codeblock } from "@components"
+
+This page will walk you through:
+1. Running core Drill4J Services
+2. Drill4J Agent configuration steps to collect metrics for your Java application.
+
+It assumes you're running all services on your local machine.
+
+It's a good starting point to get familiar with Drill4J. For installation and configuration in your actual development and testing environments, refer to the additional documentation (links at the bottom of the page).
+
+## Prerequisites
+
+1. [Docker](https://www.docker.com/)
+2. [Docker Compose](https://docs.docker.com/compose/)
+3. The current release supports `x64` but not `arm`-based machines. Specifically, it won’t work on Apple Silicon CPUs (M-series). Support for ARM-based machines is being worked on.
+
+## Deploy Core Drill4J Services
+
+1. Download [deploy-drill4j-services.zip](/files/0.11.0/deploy-drill4j-services/deploy-drill4j-services.zip) and extract it into an empty folder.
+
+  Your folder structure should match the following:
+    ```
+    /db-init/01-create-metrics-db.sh
+    .env
+    docker-compose.yml    
+    ```
+
+2. Open terminal in this folder and execute:
+
+    ```shell
+    docker-compose up -d
+    ```
+
+3. Wait for docker-compose to download images and launch containers.
+
+## Check Services Availability
+
+To make sure everything is working:
+
+1. [Drill4J Admin Backend](http://localhost:8090/) must return 
+
+  ```json
+  {
+    "message": "Drill4J Admin Backend"
+  }
+  ```
+
+2. [Drill4J UI](http://localhost:8091) must display authentication form.
+
+    - Default credentials: user: `admin` password: `admin`.
+
+## Generate API Key
+
+Drill4J Backend authenticates incoming data using API keys. To generate new API key:
+
+1. Open Drill4J UI [My API Keys](http://localhost:8091/my-api-keys) section 
+3. At the top of the page, enter description for the new key and click "Generate" button.
+4. New API key row must appear in the table.
+5. The actual key value is copied to your clipboard. Paste it somewhere safe for the next step.
+
+## Setup Java Agent
+
+1. Download the Drill4J Java Agent release zip file using the link: 
+
+  <a href={`https://github.com/Drill4J/java-agent/releases/tag/v${versions.javaAgent}`}> {`https://github.com/Drill4J/java-agent/releases/tag/v${versions.javaAgent}`} </a>
+
+  Pick the release appropriate for your platform (`mingwx64` - Windows; Mac and Linux are called correspondingly)
+
+2. Unzip the file. Change the release-specific folder name (e.g. `linuxX64-0.9.1`) to simply `agent`. The folder must contain:
+
+    ```
+    - drill.properties
+    - drill-runtime.jar
+    - libdrill_agent.so # .dylib for Mac, drill_agent.dll for Windows
+    ```
+
+3. Place this `agent` folder next to __your Java application__ `.jar` file
+
+4. Open `drill.properties` file and set the following properties:
+    
+    ```properties
+      drillApiUrl=http://localhost:8090/api
+
+      # Paste the API key value here
+      # Putting key in .properties file is _not_ the recommended way to handle API keys. See Java Agent documentation section for more info
+      drillApiKey= 
+
+      # These properties identify your application in Drill4J.
+      # For now set to the following:
+      groupId=my-app
+      appId=backend
+      buildVersion=1.0.0
+
+      # IMPORTANT: make sure to set to actual name of your application's _topmost_ package
+      # replace "." with "/"
+      # Example: my.org.something.app -> my/org/something/app
+      packagePrefixes=
+
+    ```
+
+3. Launch your application:
+
+    1. Considering your application is launched with
+   
+        ```shell
+          java -jar my-app.jar
+        ```
+    2. Change it to be
+
+        - Windows
+        ```shell
+          java -agentpath:/agent/drill_agent.dll -jar my-app.jar
+        ```
+        - Linux
+        ```shell
+          java -agentpath:/agent/libdrill_agent.so -jar my-app.jar
+        ```
+        -  For Mac
+        ```shell
+          java -agentpath:/agent/libdrill_agent.dylib -jar my-app.jar
+        ```
+
+4. To confirm Drill4J Java Agent is running check your application log. There must be Drill4J ASCII art followed with agent version and log entry:
+
+    ```log
+      ____    ____                 _       _          _  _                _      
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u   
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/    
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-. 
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/  
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//       
+    (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)  
+    Java Agent (v0.9.1)
+    [com.epam.drill.agent.Agent] agentOnLoad: Java Agent has been loaded.
+    ```
+
+## Inspect Metrics
+
+In Drill4J UI open [Metrics](http://localhost:8091/metrics).
+
+You should see the `my-app` group. Open it, then open the `backend` application and the `1.0.0` build to view coverage metrics.
+
+Try interacting with your application (execute some tests, call API endpoints) and then check back in Drill4J UI to see how your application coverage % changes.
+
+## Next Steps and Further Reading
+
+This guide covered the basics of deploying Drill4J Services and the Application Agent, which gives you basic _Coverage_ metrics.
+
+For more advanced metrics, integrate Drill4J with your tests. For more details, check out the additional documentation:
+
+1. [API tests integration](/docs/tests-integration/api-tests)

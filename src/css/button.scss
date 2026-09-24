@@ -8,22 +8,24 @@
   gap: 8px;
   padding: 12px 36px;
   max-height: 48px;
-  border-radius: 8px;
-  border: 2px solid map-get($primary-blue, default);
+  border-radius: var(--d4j-radius-md);
+  border: 1px solid map-get($primary-blue, default);
   background-color: map-get($primary-blue, default);
   color: map-get($monochrome, white) !important;
   text-decoration: none !important;
-  font-weight: $bold;
+  font-family: var(--d4j-font);
+  font-weight: $semibold;
   font-size: 16px;
   line-height: 24px;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(47, 142, 234, 0.22);
 
   &:visited {
     color: map-get($monochrome, white) !important;
   }
 
   &:hover {
-    border: 2px solid map-get($primary-blue, medium-tint);
+    border-color: map-get($primary-blue, medium-tint);
     background-color: map-get($primary-blue, medium-tint);
     color: map-get($monochrome, white) !important;
     text-decoration: none;
@@ -34,7 +36,7 @@
   }
 
   &:active {
-    border: 2px solid map-get($primary-blue, shade);
+    border-color: map-get($primary-blue, shade);
     background-color: map-get($primary-blue, shade);
     color: map-get($monochrome, white) !important;
   }
@@ -46,9 +48,10 @@
 
 .button-secondary {
   @extend .button-primary;
-  border: 2px solid map-get($monochrome, white);
+  border: 1px solid map-get($monochrome, medium-tint);
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default) !important;
+  box-shadow: none;
 
   &:visited {
     color: map-get($primary-blue, default) !important;
@@ -59,23 +62,24 @@
   }
 
   &:hover {
-    border: 2px solid #EDF6FF;
-    background-color: #EDF6FF;
-    color: map-get($primary-blue, medium-tint) !important;
+    border-color: map-get($primary-blue, ultralight-tint);
+    background-color: map-get($primary-blue, light-tint);
+    color: map-get($primary-blue, shade) !important;
   }
 
   &:active {
-    border: 2px solid #B3D9FF;
-    background-color: #B3D9FF;
-    color: map-get($primary-blue, medium-tint) !important;
+    border-color: map-get($primary-blue, default);
+    background-color: map-get($primary-blue, ultralight-tint);
+    color: map-get($primary-blue, shade) !important;
   }
 }
 
 .button-ghost {
   @extend .button-primary;
-  border: 2px solid map-get($primary-blue, default);
+  border: 1px solid map-get($primary-blue, default);
   background-color: map-get($monochrome, white);
   color: map-get($primary-blue, default) !important;
+  box-shadow: none;
 
   &:visited {
     color: map-get($primary-blue, default) !important;
@@ -86,17 +90,17 @@
   }
 
   &:hover {
-    border: 2px solid map-get($primary-blue, medium-tint);
-    color: map-get($primary-blue, medium-tint) !important;
-    background-color: map-get($monochrome, white);
+    border-color: map-get($primary-blue, medium-tint);
+    color: map-get($primary-blue, shade) !important;
+    background-color: map-get($primary-blue, light-tint);
 
     svg {
-      fill: map-get($primary-blue, medium-tint);
+      fill: map-get($primary-blue, shade);
     }
   }
 
   &:active {
-    border: 2px solid map-get($primary-blue, shade);
+    border-color: map-get($primary-blue, shade);
     color: map-get($primary-blue, shade) !important;
 
     svg {

@@ -1,0 +1,1237 @@
+---
+id: cicd-integration-plugin
+title: CI/CD Integration Plugin
+---
+
+#  CI/CD Integration Plugin
+
+import versions from "@site/static/files/0.11.0/versions.json"
+import { Codeblock } from "@components"
+
+## Overview
+
+The CI/CD integration plugin offers a wide range of capabilities and is available for both Gradle and Maven.
+
+All these functions are provided under a single tool because they are related to tasks executed within Maven or Gradle.
+
+### Features
+
+CI/CD Integration Plugin functions include:
+
+1. __Downloading and configuring the [Drill4J Java Agent](#agent-setup)__
+
+2. __Enabling agent features__:
+   - [Coverage collection](#coverage-collection) - to capture code coverage for application classes
+   - [Test tracing](#test-tracing) - to map tests to code coverage and vice versa
+   - [Class scanning](#class-scanning) - to scan application classes at build time or runtime
+   - [Test recommendations](#test-recommendations) - to skip tests for unchanged code
+
+3. __Generating change testing reports__:
+   - [With a command](#generating-a-change-testing-report) - useful to call on branch push event.
+   - [On GitHub Pull Request](#github-pull-request-report)
+   - [On GitLab Merge Request](#gitlab-merge-request-report)
+
+4. [__Sending Git metadata to Drill4J API__](#sending-git-metadata-to-drill4j-api) - to supply Drill4J with commit information (date, hash, author) from which a particular application version is built.
+
+### How to use
+
+The general gist of using the CI/CD integration plugin is:
+1. [Add the plugin](#adding-plugin) to your Maven or Gradle configuration.
+2. [Configure the agent](#agent-setup) and enable desired features (coverage, test tracing, etc.)
+3. Use commands provided by CI/CD Integration Plugin and integrate it with your CI/CD scripts
+
+> The exact configuration files and commands you should use depend on the task at hand. This page provides general reference. __For step-by-step guides__ refer to Integration Guides section (see documentation sidebar at the top of the page).
+
+## Adding plugin
+
+This section describes how to add CI/CD integration plugin to your Gradle/Maven project.
+
+### Set Up
+
+
+#### Gradle
+
+Add the following to Gradle build file `plugins` section:
+
+<Codeblock language="kotlin">
+{`
+plugins {
+    id("com.epam.drill.integration.cicd") version "${versions.cicdPlugin}"
+}
+`}
+</Codeblock>
+
+#### Maven
+
+Add the Drill4J CI/CD integration plugin to `<build>` section of pom.xml file:
+
+<Codeblock language="xml">
+{`
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.epam.drill.integration</groupId>
+            <artifactId>drill-maven-plugin</artifactId>
+            <version>${versions.cicdPlugin}</version>
+            <configuration>
+                <!-- Plugin configuration goes here, see sections below for details -->
+            </configuration>
+        </plugin>
+   </plugins>
+</build>
+`}
+</Codeblock>
+
+### API Key Configuration
+
+For the plugin to be able to send data to Drill4J backend, it needs to be configured with Drill4J API address and API key.
+You can set these parameters in two ways:
+
+1. __Option 1__ (recommended): using environment variables.
+```shell
+# Exact way to set variables depends on the environment
+DRILL_API_URL="http://localhost:8090/api"
+DRILL_API_KEY="your_api_key_here"
+```
+
+2. __Option 2__ (not recommended): using Gradle/Maven plugin configuration.
+
+#### Gradle
+```kotlin
+// Add the following section in `build.gradle` at root level
+drill {
+    // Set API url and API key
+    apiUrl = "http://localhost:8090/api"
+    apiKey = "your_api_key_here"
+}
+```
+
+#### Maven
+```xml
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>        
+    <configuration>
+        <!-- Set API url and API key -->
+        <apiUrl>http://localhost:8090/api</apiUrl>
+        <apiKey>your_api_key_here</apiKey>
+    </configuration>
+</plugin>
+```
+
+### Per-task configuration override
+
+The Gradle CI/CD integration plugin allows you to override any Drill4J configuration parameter for a specific Gradle task.
+This can be used to:
+- Disable specific features for certain tasks
+- Enable features only for selected tasks (without enabling them globally)
+- Customize parameters like `packagePrefixes`, `buildVersion`, or feature-specific options on a per-task basis
+
+To override configuration for a specific task, add a `drill {}` block inside the task configuration:
+
+#### Overriding test task configuration
+
+```kotlin
+// Standard test configuration in Gradle
+test {
+    useJUnitPlatform() // or any other test runner
+
+    drill {
+        // Override any parameter for this specific task
+        testTracing {
+            enabled = false // Disables test tracing for this task
+        }
+        coverage {
+            enabled = false // Disables coverage collection for this task
+        }
+    }
+}
+```
+
+#### Overriding archive task configuration
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true // Enable class scanning only for this archive task
+        }
+    }
+}
+```
+
+> This approach is not available for Maven. In Maven, use dedicated [profiles](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) to control which goals include the Drill4J agent.
+
+
+## Agent Setup
+
+Drill4J uses a single agent for JVM-based applications and JVM-based tests. The agent is configured within the `drill {}` block and enables features such as coverage collection, test tracing, and class scanning.
+
+For more details on the agent itself, see the [Java Agent](/docs/agents/java-agent) reference page.
+
+### Set up
+
+Prerequisite - [CI/CD integration plugin](#adding-plugin) added to project
+
+#### Gradle
+
+To set up the Drill4J agent in a Gradle project, add the following to your build file:
+<Codeblock language="kotlin">
+{`
+drill {
+    // Required parameters
+    groupId = "my-group"
+    appId = "my-application"
+    // Specifies the java packages for Drill4J to monitor
+    // Use "/" separator for package name parts
+    packagePrefixes = arrayOf("my/awesome/application")
+    // Optional, identifies app version built from checked out commit
+    buildVersion = "1.0.0"
+    // Agent download configuration
+    agent {
+        version = "${versions.javaAgent}"
+    }
+    // Enable desired features (see sections below)
+    coverage()
+    testTracing()
+}
+`}
+</Codeblock>
+
+> If `coverage()` or `testTracing()` feature is enabled, the agent will automatically launch for every Gradle test and JavaExec task.
+> To override configuration for specific tasks, refer to [Per-Task Configuration Override](#per-task-configuration-override-gradle).
+
+#### Maven
+
+To set up the Drill4J agent in a Maven project, add the following to pom.xml:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Required parameters -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <!--  Specifies the java packages for Drill4J to monitor -->
+        <!-- Use "/" separator for package name parts -->
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <!-- Optional, identifies app version built from checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+        <!-- Agent download configuration -->
+        <agent>
+            <version>${versions.javaAgent}</version>
+        </agent>
+        <!-- Enable desired features (see sections below) -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
+    </configuration>
+    <!-- adds enableAgent goal -->
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+> The agent will automatically launch for every Maven test goal.
+
+### Agent files download source
+
+There are 3 ways to specify where CI/CD plugin should load agent from:
+- [Automatic download](#automatic-download) by version tag - the default option.
+- [Custom URL download](#custom-url-download) - arbitrary URL to ZIP release. 
+- [Local path to ZIP release](#local-path-to-zip-release) - local path to ZIP release.
+
+#### Automatic download
+
+To enable automatic download specify `version` parameter with concrete version. See list of available versions on [Java Agent GitHub repository](https://github.com/Drill4J/java-agent/releases) releases page.
+> GitHub API has rate limits for unauthenticated downloads. To increase these limits, set the `GH_USER_TOKEN` environment variable.
+
+##### Gradle
+<Codeblock language="kotlin">
+{`
+agent {
+    version = "${versions.javaAgent}"
+}
+`}
+</Codeblock>
+
+##### Maven
+
+<Codeblock language="xml">
+{`
+<agent>
+    <version>${versions.javaAgent}</version>
+</agent>
+`}
+</Codeblock>
+
+#### Custom URL download
+
+To download the agent from a custom URL, set the `downloadUrl` parameter to the desired link:
+
+##### Gradle
+```kotlin
+agent {
+    downloadUrl = "http://url_to_download_agent.zip"
+}
+```
+##### Maven
+```xml
+<agent>
+    <downloadUrl>http://url_to_download_agent.zip</downloadUrl>
+</agent>
+```
+
+#### Local path to ZIP release
+
+To use a locally available agent, set the `zipPath` parameter to the path of the local zip archive:
+
+##### Gradle
+```kotlin
+agent {
+    zipPath = "path/to/local/agent.zip"
+}
+```
+##### Maven
+```xml
+<agent>
+    <zipPath>path/to/local/agent.zip</zipPath>
+</agent>
+```
+
+### Setting agent mode
+
+Drill4J has two modes of running the agent:
+- `NATIVE` - uses native library file (more capabilities)
+- `JAVA` - uses drill-runtime.jar file (platform agnostic)
+
+By default, the agent uses `NATIVE` mode. To set `JAVA` mode, set the `agentMode` parameter in agent configuration:
+
+##### Gradle
+```kotlin
+agent {
+    agentMode = "JAVA"
+}
+```
+
+##### Maven
+```xml
+<agent>
+    <agentMode>JAVA</agentMode>
+</agent>
+```
+
+## Coverage Collection
+
+Enables Drill4J to collect code coverage for application classes. See the [Java Agent](/docs/agents/java-agent) reference page for more details.
+
+### Set up
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
+
+#### Gradle
+To enable coverage collection in a Gradle project, add `coverage()` to the `drill {}` block:
+<Codeblock language="kotlin">
+{`
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    buildVersion = "1.0.0"
+    agent {
+        version = "${versions.javaAgent}"
+    }
+    // Enables coverage collection
+    coverage()
+}
+`}
+</Codeblock>
+
+#### Maven
+To enable coverage collection in a Maven project, add the `<coverage>` configuration:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <buildVersion>1.0.0</buildVersion>
+        <agent>
+            <version>${versions.javaAgent}</version>
+        </agent>
+        <!-- Enables coverage collection -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+## Test Tracing
+
+Enables Drill4J to establish test-to-code mapping, linking each test to the specific code it exercises and vice versa. 
+In addition, it provides test tracking capabilities — recording which tests were executed along with their outcomes (passed, failed, skipped, etc.).
+
+### Set up
+Prerequisite - [Agent setup](#agent-setup) is configured
+
+#### Gradle
+To enable test tracing in a Gradle project, add `testTracing()` to the `drill {}` block:
+<Codeblock language="kotlin">
+{`
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    agent {
+        version = "${versions.javaAgent}"
+    }
+    // Enables test tracing
+    testTracing()
+}
+`}
+</Codeblock>
+
+#### Maven
+To enable test tracing in a Maven project, add the `<testTracing>` configuration:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <agent>
+            <version>${versions.javaAgent}</version>
+        </agent>
+        <!-- Enables test tracing -->
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Test tracing options
+
+You can configure test tracing with the following options:
+
+| Option | Description |
+|--------|-------------|
+| `testSessionId` | Custom identifier for the test session. Generated automatically in UUID format for each test session if not specified. |
+| `perTestSession` | When enabled, groups trace data by test session. |
+| `perTestLaunch` | When enabled, records granular per-launch trace data for each test execution. |
+
+> Enabling `perTestLaunch` may increase the amount of trace data collected, which can impact performance and storage. 
+> Use this option if you need detailed insights into each test execution.
+
+##### Gradle
+```kotlin
+testTracing {
+    testSessionId = "my-session-id"      // Custom test session identifier
+    perTestSession = true                 // Enable per-test-session tracing
+    perTestLaunch = true                  // Enable per-test-launch tracing
+}
+```
+
+##### Maven
+```xml
+<testTracing>
+    <enabled>true</enabled>
+    <testSessionId>my-session-id</testSessionId>    <!-- Custom test session identifier -->
+    <perTestSession>true</perTestSession>           <!-- Enable per-test-session tracing -->
+    <perTestLaunch>true</perTestLaunch>             <!-- Enable per-test-launch tracing -->
+</testTracing>
+```
+
+## Class Scanning
+
+Drill4J scans application classes and methods to identify structural changes between application builds.
+This can be done at either:
+- runtime during application execution;
+- before running a test task;
+- after a build;
+- directly by executing the dedicated Gradle/Maven command.
+
+### Set up
+Prerequisite:
+- [Agent setup](#agent-setup) is configured
+- Enabling coverage collection requires the `packagePrefixes` parameter to be specified.
+
+#### Gradle
+To enable class scanning in a Gradle project, add `classScanning` to the `drill {}` block:
+<Codeblock language="kotlin">
+{`
+drill {
+    groupId = "my-group"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
+    agent {
+        version = "${versions.javaAgent}"
+    }
+    // Class scanning configuration
+    classScanning {
+        appClasses = files("build/classes/java/main")   //Optional, path to compiled application classes
+        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes        
+    }
+}
+`}
+</Codeblock>
+
+#### Maven
+To enable class scanning in a Maven project, add the `<execution>` configuration for any phase you want to trigger scanning: 
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <agent>
+            <version>${versions.javaAgent}</version>
+        </agent>     
+        <classScanning>
+            <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
+            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->            
+        </classScanning>   
+    </configuration>
+    <executions>
+        <execution>
+            <!-- Enables class scanning before test task execution -->
+            <id>scan-app-classes</id>
+            <phase>YOUR_PHASE_HERE</phase>
+            <goals>                
+                <goal>scanAppArchive</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Scan after build
+
+Drill4J can automatically scan application classes after a build archive (JAR/WAR/EAR) task completes. 
+This allows Drill4J to collect class metadata right after the application is built, without waiting for it to be run.
+
+#### Gradle
+To scan application classes after a build archive task completes set the `afterBuild` option to `true`:
+```kotlin
+classScanning {
+    afterBuild = true
+}
+```
+
+You can also enable class scanning for a specific build task only:
+
+```kotlin
+tasks.named("jar") {
+    drill {
+        classScanning {
+            afterBuild = true
+        }
+    }
+}
+```
+
+#### Maven
+```xml
+<execution>
+    <id>scan-app-classes-after-build</id>
+    <phase>package</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
+```
+
+### Scan before test execution
+
+Scanning application classes before test execution allows Drill4J to collect class metadata before the tests are run, which can be useful for impacted tests.
+
+#### Gradle
+To enable scanning before test execution, set the `beforeRun` option to `true`:
+```kotlin
+drill {
+    classScanning {
+        beforeRun = true
+    }
+}
+```
+
+#### Maven
+```xml
+<execution>
+    <id>scan-app-classes-before-tests</id>
+    <phase>process-test-classes</phase>
+    <goals>
+        <goal>scanAppArchive</goal>
+    </goals>
+</execution>
+```
+
+### Runtime class scanning
+
+The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application run time). 
+This allows Drill4J to collect class metadata from the actual runtime classpath rather than from a static archive.
+
+To enable runtime class scanning, set the `runtime` option to `true`:
+
+#### Gradle
+```kotlin
+drill {
+    classScanning {
+        runtime = true
+    }
+}
+```
+
+#### Maven
+```xml
+<configuration>
+    <classScanning>
+        <runtime>true</runtime>    
+    </classScanning>
+</configuration>
+<executions>
+    <execution>
+        <goals>
+            <goal>enableAgent</goal>
+        </goals>
+    </execution>
+</executions>
+```
+
+#### Runtime ClassLoader scanning
+
+Runtime class scanning capability allows to scan all application's active threads in runtime, retrieves their class loaders, and scans the files loaded by each class loader. 
+This scanning mode is enabled by default when you enable `runtime` class scanning. If you want to disable it, set the runtimeClassLoaderScanning `enabled` option to `false`:
+
+##### Gradle
+```kotlin
+classScanning {
+    runtime = true
+    runtimeClassLoaderScanning {
+        enabled = false        
+    }
+}
+```
+
+##### Maven
+```xml
+<classScanning>
+    <runtime>true</runtime>    
+    <runtimeClassLoaderScanning>
+        <enabled>false</enabled>        
+    </runtimeClassLoaderScanning>
+</classScanning>
+```
+
+The optional `delay` parameter specifies a waiting period (in milliseconds) before scanning begins, giving class loaders time to finish loading.
+
+##### Gradle
+```kotlin
+classScanning {
+    runtime = true
+    runtimeClassLoaderScanning {
+        delay = 1000 // Optional delay in milliseconds before scanning class loaders
+    }
+}
+```
+##### Maven
+```xml
+<classScanning>
+    <runtime>true</runtime>    
+    <runtimeClassLoaderScanning>
+        <delay>1000</delay> <!-- Optional delay in milliseconds before scanning class loaders -->
+    </runtimeClassLoaderScanning>
+</classScanning>
+```
+
+### Scan by running command
+You can scan the application archive (JAR/WAR/EAR) by executing the dedicated Gradle task or Maven goal as described below.
+
+#### Gradle
+Execute the following Gradle command:
+
+```shell
+./gradlew drillScanAppArchive
+```
+#### Maven
+Execute the following Maven command:
+
+```shell
+mvn drill:scanAppArchive
+```
+
+## Test Recommendations
+
+Drill4J helps to significantly reduce test execution time by providing recommendations on
+which tests can be skipped because the code they cover has already been tested before.
+
+### Set up
+
+Prerequisites:
+- [Agent setup](#agent-setup) is configured.
+- [Test tracing](#test-tracing) is enabled.
+- Before running the tests, make sure that the application under test is already deployed with [coverage collection](#coverage-collection) enabled.
+
+#### Gradle
+To enable test recommendations add the following properties to your Gradle build file:
+
+<Codeblock language="kotlin">
+{`
+drill {
+    // Group ID
+    groupId = "my-group"
+    // ID of the application under test
+    appId = "my-application"
+    // Identifies the version of the application under test that is based on the checked out commit
+    buildVersion = "1.0.0"
+    agent {
+        version = "${versions.javaAgent}"
+    }
+    // Enables Coverage Collection
+    coverage()
+    // Enables Test Tracing
+    testTracing()
+    // Enables Test Recommendations
+    recommendedTests()
+}
+`}
+ </Codeblock>
+
+
+#### Maven
+To enable test recommendations add the following properties to your Maven pom.xml file:
+
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Group ID -->
+        <groupId>my-group</groupId>
+        <!-- ID of the application under test -->
+        <appId>my-application</appId>
+        <!-- Identifies the version of the application under test that is based on the checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+        <agent>
+            <version>${versions.javaAgent}</version>
+        </agent>
+        <!-- Enables Coverage Collection -->
+        <coverage>
+            <enabled>true</enabled>
+        </coverage>
+        <!-- Enables Test Tracing -->
+        <testTracing>
+            <enabled>true</enabled>
+        </testTracing>
+        <!-- Enables Test Recommendations -->
+        <recommendedTests>
+            <enabled>true</enabled>
+        </recommendedTests>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>enableAgent</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+### Disabling recommended tests
+
+#### Gradle
+To disable recommended tests, make the following changes to your Gradle file:
+
+<Codeblock language="kotlin">
+{`
+recommendedTests {
+    // Optional, disables test recommendations
+    enabled = false
+}
+`}
+ </Codeblock>
+
+ #### Maven
+To disable recommended tests, make the following changes to your Maven file:
+
+<Codeblock language="xml">
+{`
+<recommendedTests>
+    <!-- Disables Test Recommendations -->
+    <enabled>false</enabled>
+</recommendedTests>
+`}
+</Codeblock>
+
+### Comparing with baseline
+
+Drill4J allows you to run tests only for code that has changed compared to the baseline version.
+To skip tests for unchanged code, set the baseline version to compare with.
+
+>See the [Baseline Strategy](#baseline-strategy) section for more information.
+
+#### Gradle
+To set the baseline configuration, add the following properties to your Gradle build file:
+
+<Codeblock language="kotlin">
+{`
+drill {
+    // Group ID
+    groupId = "my-group"
+    // ID of the application under test
+    appId = "my-application"
+    // Identifies the version of the application under test that is based on the checked out commit
+    buildVersion = "1.0.0"
+    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
+    baseline {
+        searchStrategy = "SEARCH_BY_TAG"
+    }
+    // Enable Test Recommendations and Test Agent
+    ...
+}
+`}
+</Codeblock>
+
+#### Maven
+Set the `<baseline>` Drill4J configuration to your Maven pom.xml file:
+<Codeblock language="xml">
+{`
+<configuration>
+    <!-- Group ID -->
+    <groupId>my-group</groupId>
+    <!-- ID of the application under test -->
+    <appId>my-application</appId>
+    <!-- Identifies the version of the application under test that is based on the checked out commit -->
+    <buildVersion>1.0.0</buildVersion>
+    <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+    <baseline>
+        <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+    </baseline>
+    <!-- Enable Test Recommendations and Test Agent -->
+    ...
+</configuration>
+`}
+</Codeblock>
+
+## Generating a change testing report
+
+A Change Testing Report provides insights into the code changes that have been tested,
+allowing you to ensure the quality of newly introduced changes.
+
+For step-by-step integrations guide see:
+1. [GitLab integration](/docs/cicd-integration/gitlab)
+2. [GitHub integration](/docs/cicd-integration/github)
+
+### Gradle
+
+Add the following properties to your Gradle build file:
+```kotlin
+drill {
+    // Enter appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+
+    // Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info
+    baseline {
+       searchStrategy = "SEARCH_BY_TAG"
+    }
+}
+```
+
+To generate the Change Testing Report, execute the following Gradle command:
+```shell
+./gradlew drillGenerateChangeTestingReport
+```
+The report will be saved in the `/build/drill-reports/` directory.
+
+### Maven
+
+Add the following properties to your Maven pom.xml file:
+<Codeblock language="">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Enter appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <!-- Set either to SEARCH_BY_MERGE_BASE or SEARCH_BY_TAG. See "Baseline Strategy" section on the page below for more info -->
+        <baseline>
+            <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+        </baseline>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generateChangeTestingReport</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+To generate the Change Testing Report, execute the following Maven command:
+```shell
+mvn drill:generateChangeTestingReport
+```
+
+The report will be saved in the `/target/drill-reports/` directory.
+
+## GitHub Pull Request report
+
+This feature posts a report of the tested changes as a comment on a GitHub Pull Request.
+It compares the current build with the merge base build of the target branch for the Pull Request.
+
+> *IMPORTANT!*
+This command can only be executed within a GitHub workflow and requires specific environment variables available only in a GitHub Actions job.
+
+To execute this command, you need to provide a GitHub API token.
+API token should have following rights:
+- repo
+- write:discussion
+
+### Gradle
+
+Add the following properties to your Gradle build file:
+```kotlin
+drill {
+    // Enter appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+
+    github {
+        // Enter your GitHub Token
+        token = "your-github-token-here"
+    }
+}
+```
+
+To leave a comment on a Pull Request, execute the following Gradle command:
+```shell
+./gradlew drillGithubPullRequestReport
+```
+
+### Maven
+
+Add the following properties to the Drill4J plugin configuration in your Maven pom.xml file:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Enter appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <github>
+            <!-- Enter your GitHub Token -->
+            <token>your-github-token-here</token>
+        </github>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>githubPullRequestReport</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+To leave a comment on a Pull Request, execute the following Maven command:
+```shell
+mvn drill:githubPullRequestReport
+```
+
+## GitLab Merge Request report
+
+This feature posts a report of the tested changes as a comment on a GitLab Merge Request.
+It compares the current build with the merge base build of the target branch for the Merge Request.
+
+> *IMPORTANT!*
+This command can only be executed within a GitLab CI/CD job and requires specific environment variables available only during GitLab CI/CD execution.
+
+To execute this command, you need to provide a GitLab private token.
+
+### Gradle
+
+Add the following properties to your Gradle build file:
+```kotlin
+drill {
+    // Enter appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+    
+    gitlab {
+        // Adjust if running on a private GitLab instance
+        apiUrl="https://gitlab.com/api/v4/"
+        // Enter your token
+        privateToken = "your-gitlab-token-here"
+    }
+}
+```
+
+To post a comment on a Merge Request, execute the following Gradle command:
+```shell
+./gradlew drillGitlabMergeRequestReport
+```
+
+### Maven
+
+Add the following properties to your Maven pom.xml file:
+<Codeblock language="">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Set appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <gitlab>
+            <!-- Adjust if running on a private GitLab instance-->
+            <apiUrl>https://gitlab.com/api/v4/</apiUrl>
+            <!-- Enter your personal token -->
+            <privateToken>someToken</privateToken>
+        </gitlab>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>gitlabMergeRequestReport</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+To leave a comment on a Merge Request, execute the following Maven command:
+```shell
+mvn drill:gitlabMergeRequestReport
+```
+
+## Sending Git metadata to Drill4J API
+
+This enables Drill4J to display additional data on build in the reports, such as:
+- Build version
+- Current commit SHA
+- Current commit message
+- Commit author
+
+It makes reports more readable and allows to easily associate reports with particular commits. 
+
+### Gradle
+
+Add the following parameters to your Gradle build file:
+```kotlin
+drill {
+    // Set appropriate parameter values
+    groupId = "my-group"
+    appId = "my-application"
+    // Optional, identifies app version built from checked out commit
+    buildVersion = "1.0.0"
+}
+```
+
+To send the build information to the Drill4J backend, execute the following Gradle command:
+```shell
+./gradlew drillSendBuildInfo
+```
+
+### Maven
+
+Add the following parameters to your Maven pom.xml file:
+<Codeblock language="xml">
+{`
+<plugin>
+    <groupId>com.epam.drill.integration</groupId>
+    <artifactId>drill-maven-plugin</artifactId>
+    <version>${versions.cicdPlugin}</version>
+    <configuration>
+        <!-- Set appropriate parameter values -->
+        <groupId>my-group</groupId>
+        <appId>my-application</appId>
+        <!-- Optional, identifies app version built from checked out commit -->
+        <buildVersion>1.0.0</buildVersion>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>sendBuildInfo</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+`}
+</Codeblock>
+
+To send the build information to the Drill4J backend, execute the following Maven command
+```shell
+mvn drill:sendBuildInfo
+```
+
+## Baseline strategy
+
+To generate a Change Testing Report or enable Test Recommendations, the current build must be compared to a baseline build.
+Drill4J supports multiple strategies for identifying the baseline build.
+- Search by tags
+- Search by merge base
+
+### Search by tags
+This strategy compares the current build to a baseline build identified by Git tags.
+
+> *IMPORTANT!*
+You need to have at least one Git tag in your repository for this strategy to work.
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline commit
+    searchStrategy = "SEARCH_BY_TAG"
+
+    // Adjust to match your tag naming scheme
+    tagPattern = "v[0-9].[0-9].[0-9]*"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline commit -->
+    <searchStrategy>SEARCH_BY_TAG</searchStrategy>
+
+    <!-- Adjust to match your tag naming scheme -->
+    <tagPattern>v[0-9].[0-9].[0-9]*</tagPattern>
+</baseline>
+```
+
+### Search by merge base
+This strategy compares the current build to the baseline based on the common ancestor (merge base) of two branches.
+
+#### Gradle
+```kotlin
+baseline {
+    // Strategy to find a baseline commit
+    searchStrategy = "SEARCH_BY_MERGE_BASE"
+
+    // Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
+    targetRef = "main"
+}
+```
+#### Maven
+```xml
+<baseline>
+    <!-- Strategy to find a baseline commit -->
+    <searchStrategy>SEARCH_BY_MERGE_BASE</searchStrategy>
+
+    <!-- Set to either branch, tag, or a commit. Current application version will be compared against last version matching the <tagRef> -->
+    <targetRef>main</targetRef>
+</baseline>
+```
+
+
+## Troubleshooting
+
+### How to confirm that agents are enabled when running tests?
+
+Once loaded, the Drill4J agent prints the following ASCII logo in the Gradle/Maven console log:
+
+```log
+Task :test is modified by Drill
+      ____    ____                 _       _          _  _                _
+     |  _"\U |  _"\ u     ___     |"|     |"|        | ||"|            U |"| u
+    /| | | |\| |_) |/    |_"_|  U | | u U | | u      | || |_          _ \| |/
+    U| |_| |\|  _ <       | |    \| |/__ \| |/__     |__   _|        | |_| |_,-.
+     |____/ u|_| \_\    U/| |\u   |_____| |_____|      /|_|\          \___/-(_/
+      |||_   //   \\_.-,_|___|_,-.//  \\  //  \\      u_|||_u          _//
+     (__)_) (__)  (__)\_)-' '-(_/(_")("_)(_")("_)     (__)__)         (__)
+     Autotest Agent (v0.23.1)
+```
+
+> *IMPORTANT!*
+Maven does not print the Drill4J logs by default, you need to add the `-X` parameter to the command line:
+```shell
+mvn test -X
+```
+
+### Tests do not appear in Drill4J after running in Maven with Java 17
+
+If you run tests in Maven with Java 17 or higher and see the following message:
+```log
+java.lang.reflect.InaccessibleObjectException: Unable to make protected final java.lang.Class java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain) throws java.lang.ClassFormatError accessible: module java.base does not "opens java.lang" to unnamed module @4659191b
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:354)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:297)
+	at java.base/java.lang.reflect.Method.checkCanSetAccessible(Method.java:199)
+	at java.base/java.lang.reflect.Method.setAccessible(Method.java:193)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.SecurityActions.setAccessible(SecurityActions.java:159)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper$JavaOther.defineClass(DefineClassHelper.java:213)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper$Java11.defineClass(DefineClassHelper.java:52)
+	at com.epam.drill.autotest.shadow.javassist.util.proxy.DefineClassHelper.toClass(DefineClassHelper.java:260)
+	at com.epam.drill.autotest.shadow.javassist.ClassPool.toClass(ClassPool.java:1240)
+	at com.epam.drill.autotest.shadow.javassist.CtClass.toClass(CtClass.java:1392)
+```
+
+You should provide `--add-opens` option to the JVM argument line in Maven Surefire Plugin:
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+        <argLine>@{argLine} --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+    </configuration>
+</plugin>
+```
+> *IMPORTANT!*
+Don't forget to add `@{argLine}` to keep Drill4J agents enabled.
