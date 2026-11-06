@@ -402,13 +402,12 @@ In addition, it provides test tracking capabilities — recording which tests we
 Prerequisite - [Agent setup](#agent-setup) is configured
 
 #### Gradle
-To enable test tracing in a Gradle project, add `testTracing()` to the `drill {}` block:
+To enable test tracing in a Gradle project, specify `testProjectId` and `testTracing()` to the `drill {}` block:
 <Codeblock language="kotlin">
 {`
 drill {
     groupId = "my-group"
-    appId = "my-application"
-    packagePrefixes = arrayOf("my/awesome/application")
+    testProjectId = "my-tests"
     agent {
         version = "${versions.javaAgent}"
     }
@@ -428,8 +427,7 @@ To enable test tracing in a Maven project, add the `<testTracing>` configuration
     <version>${versions.cicdPlugin}</version>
     <configuration>
         <groupId>my-group</groupId>
-        <appId>my-application</appId>
-        <packagePrefixes>my/awesome/application</packagePrefixes>
+        <testProjectId>my-tests</testProjectId>
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
@@ -728,6 +726,8 @@ drill {
     appId = "my-application"
     // Identifies the version of the application under test that is based on the checked out commit
     buildVersion = "1.0.0"
+    // ID of the test project
+    testProjectId = "my-tests"
     agent {
         version = "${versions.javaAgent}"
     }
@@ -760,6 +760,8 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <appId>my-application</appId>
         <!-- Identifies the version of the application under test that is based on the checked out commit -->
         <buildVersion>1.0.0</buildVersion>
+        <!-- ID of the test project -->
+        <testProjectId>my-tests</testProjectId>
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
