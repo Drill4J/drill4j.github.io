@@ -28,12 +28,11 @@ The schedule is controlled by the `DRILL_SCHEDULER_ETL_JOB_CRON` environment var
 ## On-Demand Run
 
 You can manually trigger the ETL process without waiting for the scheduled execution.
-The ETL process supports two modes of operation:
+The ETL process supports incremental synchronization and reruns. Reruns can cover all available data or a specified day range.
 
 ### Incremental Updates
 
-By default, the ETL process performs incremental updates, processing only new data from `raw_data` that hasn't been transformed yet. This is the most efficient approach for day-to-day operations.
-
+By default, the ETL process performs incremental updates, processing data added or updated in `raw_data` since its last processed timestamp.
 **When to use:**
 - Regular scheduled updates
 - Quick catch-up after a brief period
@@ -42,7 +41,20 @@ By default, the ETL process performs incremental updates, processing only new da
 **API Request:**
 ```shell
 curl -X 'POST' \
-  'http://localhost:8090/api/metrics/refresh?reset=false' \
+  'http://localhost:8090/api/metrics/sync' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]' \
+  -d ''
+```
+
+### Day-Scoped Rerun
+
+You can reprocess a bounded date range without rerunning the full history. Provide both `fromDay` and `toDay` as inclusive ISO-8601 dates. This rerun keeps its progress watermark separate from the regular incremental run.
+
+**API Request:**
+```shell
+curl -X 'POST' \
+  'http://localhost:8090/api/metrics/reload?fromDay=2025-11-01&toDay=2025-11-07' \
   -H 'accept: application/json' \
   -H 'X-API-KEY: [YOUR_API_KEY]' \
   -d ''
@@ -61,7 +73,7 @@ A complete restart clears all data from the `metrics` schema and reprocesses eve
 **API Request:**
 ```shell
 curl -X 'POST' \
-  'http://localhost:8090/api/metrics/refresh?reset=true' \
+  'http://localhost:8090/api/metrics/reload?reset=true' \
   -H 'accept: application/json' \
   -H 'X-API-KEY: [YOUR_API_KEY]' \
   -d ''
@@ -162,10 +174,10 @@ The ETL pipeline can be tuned for optimal performance based on your infrastructu
   - Increase for faster processing if memory allows (5000-20000)
   - Decrease if experiencing memory pressure (500-1000)
 
-### Transformation Buffer Size
-- **Environment Variable:** `DRILL_ETL_TRANSFORMATION_BUFFER_SIZE`
-- **Purpose:** Controls how many aggregated rows the transformer accumulates in memory to pass aggregated results to loaders.
-- **Behavior:** The transformer groups and aggregates rows until this threshold is reached, then emits aggregated items downstream.
+### Aggregation Buffer Size
+- **Environment Variable:** `DRILL_ETL_AGGREGATION_BUFFER_SIZE`
+- **Purpose:** Controls the in-memory buffer between transformers and loaders for aggregation results.
+- **Behavior:** Aggregated rows are buffered until the threshold is reached, then emitted downstream.
 - **Impact:**
   - Larger values can improve throughput when aggregation significantly reduces cardinality, because loaders write fewer items
   - Too-large values may increase heap usage and GC overhead and can lead to OOM on large/high-cardinality datasets
@@ -175,6 +187,23 @@ The ETL pipeline can be tuned for optimal performance based on your infrastructu
   - Increase (e.g., 4000–20000) if you have enough memory
   - Decrease (e.g., 500–1000) if you observe memory pressure
   - If increasing the buffer doesn’t reduce load volume, you’re likely dealing with high-cardinality keys (too many unique methods/tests).
+
+### Lookup Cache Size
+- **Environment Variable:** `DRILL_ETL_LOOKUP_CACHE_SIZE`
+- **Purpose:** Maximum number of build probe layouts retained in memory by the build coverage transformer.
+- **Impact:** A larger cache can reduce repeated database lookups during build coverage processing, at the cost of more memory.
+- **Default:** 100
+
+### Per-Pipeline and Per-Component Overrides
+
+ETL settings can be overridden for individual pipelines and components. The configuration keys are:
+- `DRILL_ETL_PIPELINES_<PIPELINE_NAME>_BUFFER_SIZE`
+- `DRILL_ETL_EXTRACTORS_<EXTRACTOR_NAME>_FETCH_SIZE`
+- `DRILL_ETL_EXTRACTORS_<EXTRACTOR_NAME>_EXTRACTION_LIMIT`
+- `DRILL_ETL_TRANSFORMERS_<TRANSFORMER_NAME>_AGGREGATION_BUFFER_SIZE`
+- `DRILL_ETL_LOADERS_<LOADER_NAME>_BATCH_SIZE`
+
+An override applies only to the named pipeline or component; otherwise, the global setting is used.
 
 ### Batch Size
 - **Environment Variable:** `DRILL_ETL_BATCH_SIZE`
@@ -208,7 +237,7 @@ The ETL pipeline can be tuned for optimal performance based on your infrastructu
 
 ## Tracking and Monitoring
 
-The ETL process provides comprehensive logging to help you monitor execution, troubleshoot issues, and optimize performance.
+The ETL process provides logging and APIs to help you monitor execution, troubleshoot issues, and optimize performance.
 
 ### Logging Levels
 
@@ -219,30 +248,25 @@ The ETL logging supports multiple levels:
 
 ### Tracking Progress
 
-You can track the real-time progress of ETL executions by calling the Metrics Refresh Status API:
+Use the active jobs endpoint to view currently running ETL jobs:
 ```shell
 curl -X 'GET' \
-  'http://localhost:8090/api/metrics/refresh-status' \
+  'http://localhost:8090/api/metrics/jobs?groupId=[GROUP_ID]' \
   -H 'accept: application/json' \
   -H 'X-API-KEY: [YOUR_API_KEY]'
 ```
 
-**Example Response:**
-```json
-"data": {
-  "status": "LOADING", // Current ETL status
-  "lastProcessedAt": "2025-11-01T09:59:30.000Z", // Timestamp of the last processed data item
-  "lastRunAt": "2025-11-01T10:00:00.000Z", // Timestamp when the last run started
-  "lastDuration": 1220, // Duration of the last ETL run in milliseconds
-  "lastRowsProcessed": 18500 // Number of rows processed in the last ETL run
-}
+To view daily ETL status for a group, call the refresh status endpoint.
+The optional `fromDay` and `toDay` query parameters filter the result by an inclusive day range:
+```shell
+curl -X 'GET' \
+  'http://localhost:8090/api/metrics/jobs/status?groupId=[GROUP_ID]' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]'
 ```
 
-**ETL Statuses:**
-- `EXTRACTING`: ETL process is extracting data from `raw_data` schema.
-- `LOADING`: ETL is actively loading data.
-- `SUCCESS`: ETL completed successfully.
-- `FAILED`: ETL run ended with an error. Check the **Drill4J Admin** container logs for details. It will try again on the next scheduled run, but it will continue to fail until the underlying issue is fixed.
+Daily statuses are `UNLOADED`, `SCHEDULED`, `RUNNING`, `COMPLETED`, and `FAILED`.
+To check how recent the computed metrics are, use `GET /api/metrics/jobs/last-processed-timestamp?groupId=[GROUP_ID]`.
 
 ## Troubleshooting
 
