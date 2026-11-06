@@ -1,0 +1,334 @@
+---
+id: etl-update-metrics
+title: Metrics update process
+---
+
+# Metrics Update Process
+
+## Overview
+
+Drill4J uses an ETL (Extract, Transform, Load) process to transform raw data collected by agents into actionable metrics.
+The system maintains two separate database schemas:
+- `raw_data` - Stores data sent by agents in its original format without any processing.
+- `metrics` - Contains processed data that powers the dashboards and API responses. This schema is populated and maintained by the ETL pipeline.
+
+The ETL process runs automatically on a schedule and can also be triggered manually.
+It reads from `raw_data`, performs necessary transformations and calculations, and updates the `metrics` schema.
+This architecture allows for data reprocessing if needed and separates data collection from data analysis concerns.
+
+## Scheduled Run
+
+ETL uses two scheduled jobs:
+- The incremental job processes the current day. Its schedule is controlled by `DRILL_SCHEDULER_ETL_JOB_CRON` and defaults to once per minute (`0 * * * * ?`).
+- The idle job resumes unfinished or historical ETL work. Its schedule is controlled by `DRILL_SCHEDULER_ETL_IDLE_JOB_CRON` and defaults to every 10 minutes (`0 */10 * * * ?`).
+
+**Note:** Applying changes to the environment variable requires restarting the Drill4J Backend instance for the new schedule to take effect.
+
+## On-Demand Run
+
+You can manually trigger the ETL process without waiting for the scheduled execution.
+The ETL process supports incremental synchronization and reruns. Reruns can cover all available data or a specified day range.
+
+### Incremental Updates
+
+By default, the ETL process performs incremental updates, processing data added or updated in `raw_data` since its last processed timestamp.
+**When to use:**
+- Regular scheduled updates
+- Quick catch-up after a brief period
+- Before querying impacted tests/methods API endpoints
+
+**API Request:**
+```shell
+curl -X 'POST' \
+  'http://localhost:8090/api/metrics/sync' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]' \
+  -d ''
+```
+
+### Day-Scoped Rerun
+
+You can reprocess a bounded date range without rerunning the full history. Provide both `fromDay` and `toDay` as inclusive ISO-8601 dates. This rerun keeps its progress watermark separate from the regular incremental run.
+
+**API Request:**
+```shell
+curl -X 'POST' \
+  'http://localhost:8090/api/metrics/reload?fromDay=2025-11-01&toDay=2025-11-07' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]' \
+  -d ''
+```
+
+### Complete Restart
+
+A full rerun reprocesses all available data from `raw_data`. With `reset=true`, existing computed data is deleted before it is reloaded.
+
+**When to use:**
+- When the settings affecting the metrics changed (metrics period expanded, rules for ignoring methods and classes changed)
+- When retrospective changes have occurred
+- When data integrity issues are suspected
+- After schema migrations or updates
+
+**API Request:**
+```shell
+curl -X 'POST' \
+  'http://localhost:8090/api/metrics/reload?reset=true' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]' \
+  -d ''
+```
+
+**Warning:** This operation is resource-intensive and can take a long time to complete (from hours to days, depending on the amount of data).
+
+**Best Practice:** Schedule complete restarts during maintenance windows when metrics access is not critical.
+
+## Data Retention and Cleanup
+
+Drill4J automatically manages data retention for both `raw_data` and `metrics` schemas using dedicated cleanup jobs.
+This prevents unlimited data growth and maintains optimal database performance.
+
+### Configuring Retention Periods
+
+Each agent group has its own retention settings that control how long data is kept in each schema.
+
+**Viewing Current Settings:**
+```shell
+curl -X 'GET' \
+  'http://localhost:8090/api/group-settings/[GROUP_ID]' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]'
+```
+
+**Example Response:**
+```json
+{
+  "retentionPeriodDays": 30,  // cleanup window for raw_data schema
+  "metricsPeriodDays": 30      // cleanup window for metrics schema
+}
+```
+
+**Updating Retention Settings:**
+
+**Warning**: Please note the body **must contain all parameters** with appropriate values - payload is not merged - it overwrites all settings.
+
+```shell
+curl -X 'PUT' \
+  'http://localhost:8090/api/group-settings/[GROUP_ID]' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "retentionPeriodDays": 45,
+    "metricsPeriodDays": 45
+  }'
+``` 
+
+### Configuring Cleanup Schedule
+
+The cleanup jobs run on a schedule controlled by the `DRILL_SCHEDULER_DATA_RETENTION_JOB_CRON` environment variable.
+
+**Example Configuration:**
+```yml
+# Runs cleanup jobs once a day at midnight
+DRILL_SCHEDULER_DATA_RETENTION_JOB_CRON=0 0 0 * * ?
+```
+By default, the cleanup job is set to run daily at 01:00.
+
+**Note:** Changes to the environment variable require restarting the Drill4J Backend instance.
+
+**Best Practice:**
+The `retentionPeriodDays` for `raw_data` should be greater than or equal to the `metricsPeriodDays`. This ensures that all data required for a complete ETL reprocessing is available, allowing safe full metric recalculation if needed.
+
+## Fine-Tuning Performance
+
+The ETL pipeline can be tuned for optimal performance based on your infrastructure and data volume. These parameters control memory usage, database interaction, and throughput.
+
+### Extraction Limit
+- **Environment Variable:** `DRILL_ETL_EXTRACTION_LIMIT`
+- **Purpose:** Controls page size for extraction queries
+- **Behavior:** Adds a `LIMIT` to the SQL extraction query used for each page. The extractor will keep requesting the next pages until there is no more data to extract
+- **Impact:** Query latency and memory/CPU load per extraction request
+- **Default:** 1000000
+- **Tuning Guidance:**
+  - Decrease the limit if single extraction queries are slow
+  - Increase the limit if ETL is spending too much time paging and the database can handle larger result sets
+
+### Fetch Size
+- **Environment Variable:** `DRILL_ETL_FETCH_SIZE`
+- **Purpose:** JDBC fetch size hint for SQL queries used by the data extractor
+- **Behavior:** Determines how many rows are fetched from the database per round trip
+- **Impact:** Network latency and database load
+- **Default:** 2000
+- **Tuning Guidance:**
+  - Increase for better throughput on fast networks (5000-10000)
+  - Decrease for slower networks or smaller result sets (500-1000)
+
+### Buffer Size
+- **Environment Variable:** `DRILL_ETL_BUFFER_SIZE`
+- **Purpose:** Size of the in-memory buffer between data extractor and loaders
+- **Behavior:**  Prevents unbounded memory growth. When the buffer is full, the extractor suspends, giving loaders time to process
+- **Impact:** Affects throughput and memory usage
+- **Default:** 2000
+- **Tuning Guidance:**
+  - Increase for faster processing if memory allows (5000-20000)
+  - Decrease if experiencing memory pressure (500-1000)
+
+### Aggregation Buffer Size
+- **Environment Variable:** `DRILL_ETL_AGGREGATION_BUFFER_SIZE`
+- **Purpose:** Controls the in-memory buffer between transformers and loaders for aggregation results.
+- **Behavior:** Aggregated rows are buffered until the threshold is reached, then emitted downstream.
+- **Impact:**
+  - Larger values can improve throughput when aggregation significantly reduces cardinality, because loaders write fewer items
+  - Too-large values may increase heap usage and GC overhead and can lead to OOM on large/high-cardinality datasets
+  - Too-small values reduce aggregation opportunities and can increase the number of items written, slowing down loading
+- **Default:** 2000
+- **Tuning Guidance:**
+  - Increase (e.g., 4000–20000) if you have enough memory
+  - Decrease (e.g., 500–1000) if you observe memory pressure
+  - If increasing the buffer doesn’t reduce load volume, you’re likely dealing with high-cardinality keys (too many unique methods/tests).
+
+### Lookup Cache Size
+- **Environment Variable:** `DRILL_ETL_LOOKUP_CACHE_SIZE`
+- **Purpose:** Maximum number of build probe layouts retained in memory by the build coverage transformer.
+- **Impact:** A larger cache can reduce repeated database lookups during build coverage processing, at the cost of more memory.
+- **Default:** 100
+
+### Per-Pipeline and Per-Component Overrides
+
+ETL settings can be overridden for individual pipelines and components. The configuration keys are:
+- `DRILL_ETL_PIPELINES_<PIPELINE_NAME>_BUFFER_SIZE`
+- `DRILL_ETL_EXTRACTORS_<EXTRACTOR_NAME>_FETCH_SIZE`
+- `DRILL_ETL_EXTRACTORS_<EXTRACTOR_NAME>_EXTRACTION_LIMIT`
+- `DRILL_ETL_TRANSFORMERS_<TRANSFORMER_NAME>_AGGREGATION_BUFFER_SIZE`
+- `DRILL_ETL_LOADERS_<LOADER_NAME>_BATCH_SIZE`
+
+An override applies only to the named pipeline or component; otherwise, the global setting is used.
+
+### Batch Size
+- **Environment Variable:** `DRILL_ETL_BATCH_SIZE`
+- **Purpose:** Number of items grouped into a single write batch/transaction used by data loaders
+- **Behavior:** Controls commit frequency and transaction size
+- **Impact:** Write performance and transaction overhead
+- **Default:** 1000
+- **Tuning Guidance:**
+  - Increase for better write performance (2000-5000)
+  - Decrease to reduce transaction lock time (100-500)
+
+### Consistency Window
+- **Environment Variable:** `DRILL_ETL_CONSISTENCY_WINDOW`
+- **Purpose:** Number of seconds to subtract from the last processed timestamp when starting an ETL run
+- **Behavior:** Allows re-processing records that arrived in the source database with a delay or were inconsistent at the time of the previous ETL run
+- **Impact:** Slightly increases the amount of data reprocessed per run, but improves data consistency
+- **Default:** 0
+- **Tuning Guidance:**
+  - Increase this value if records are skipped because agents may send data out of order.
+
+### Processing Delay
+- **Environment Variable:** `DRILL_ETL_PROCESSING_DELAY`
+- **Purpose:** Number of seconds to subtract from the current time when calculating the upper bound of the ETL processing window
+- **Behavior:** Delays the ETL process to allow in-flight transactions in the data source to complete before they are processed
+- **Impact:** Introduces a small lag in metrics freshness, but prevents partial or uncommitted data from being picked up
+- **Default:** 0
+- **Tuning Guidance:**
+  - Increase if ETL occasionally picks up incomplete or inconsistent records from active transactions (e.g., 5–60 seconds)
+
+### Maximum ETL Workers
+- **Environment Variable:** `DRILL_ETL_MAX_WORKERS`
+- **Purpose:** Sets the maximum number of ETL jobs that may run concurrently.
+- **Behavior:** Each worker processes the extractor groups for its ETL job in parallel. This setting limits concurrent jobs, not the number of individual extractors.
+- **Impact:** Increasing the limit can improve throughput when there are multiple ETL jobs to process, but each active job may hold several database connections. A value that is too high can exhaust the database connection pool and affect ETL or other database operations.
+- **Default:** 4
+- **Tuning Guidance:**
+  - Keep the value within the capacity of the database connection pool, accounting for the extractor groups running in parallel and connections needed by other application operations.
+  - Increase gradually only when the database has spare connection and processing capacity; reduce it if connection-pool exhaustion or database contention occurs.
+
+**Note:** Applying changes to the environment variable requires restarting the Drill4J Backend instance for the new schedule to take effect.
+
+## Tracking and Monitoring
+
+The ETL process provides logging and APIs to help you monitor execution, troubleshoot issues, and optimize performance.
+
+### Logging Levels
+
+The ETL logging supports multiple levels:
+- **INFO:** Logs only ETL start and completion events.
+- **DEBUG:** In addition to INFO, logs when each extractor and loader starts and finishes.
+- **TRACE:** In addition to DEBUG, logs every batch commit during loading.
+
+### Tracking Progress
+
+Use the active jobs endpoint to view currently running ETL jobs:
+```shell
+curl -X 'GET' \
+  'http://localhost:8090/api/metrics/jobs?groupId=[GROUP_ID]' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]'
+```
+
+To view daily ETL status for a group, call the refresh status endpoint.
+The optional `fromDay` and `toDay` query parameters filter the result by an inclusive day range:
+```shell
+curl -X 'GET' \
+  'http://localhost:8090/api/metrics/jobs/status?groupId=[GROUP_ID]' \
+  -H 'accept: application/json' \
+  -H 'X-API-KEY: [YOUR_API_KEY]'
+```
+
+Daily statuses are `UNLOADED`, `SCHEDULED`, `RUNNING`, `COMPLETED`, and `FAILED`.
+To check how recent the computed metrics are, use `GET /api/metrics/jobs/last-processed-timestamp?groupId=[GROUP_ID]`.
+
+## Troubleshooting
+
+### ETL Pipeline Fails
+
+**Symptoms:**
+- ETL log shows errors
+- Manual refresh API returns errors
+- Metrics not updating
+
+**Solutions:**
+1. **Check Database Connectivity:**
+   - Verify database connection credentials
+   - Test database accessibility from the Backend instance
+   - Check firewall rules and network connectivity
+
+2. **Verify Schema Existence:**
+   - Check database user has necessary permissions (SELECT, INSERT, UPDATE, DELETE)
+
+### ETL Running Slowly
+
+**Symptoms:**
+- ETL process execution time keeps increasing
+- Data processing delay continues to grow
+- Metrics stop reflecting the most recent data
+
+**Solutions:**
+1. **Data Volume:**
+   - Review [retention settings](#configuring-retention-periods) - older data may not be needed
+   - Review methods ignore rules - consider excluding unneeded classes and methods
+
+2. **Database Performance:**
+   - Consider increasing database resources (CPU, memory, IOPS)
+   - Consider database maintenance (VACUUM, ANALYZE, etc.)
+
+3. **Review Performance Parameters:**
+   - Consider increasing [`bufferSize`](#buffer-size), [`fetchSize`](#fetch-size), or [`batchSize`](#batch-size).
+   - Monitor memory usage when adjusting parameters
+
+### Metrics Data Inconsistency
+
+**Symptoms:**
+- Dashboard showing unexpected values
+- API results don't match raw data
+
+**Solutions:**
+1. **Perform Complete Refresh:**
+   - Use [`reset=true`](./etl-update-metrics#complete-restart) API call to reprocess all data
+
+2. **Check Data Retention:**
+   - Review [`retentionPeriodDays`](#configuring-retention-periods) and [`metricsPeriodDays`](#configuring-retention-periods) settings
+   - Verify cleanup jobs haven't removed needed data
+
+3. **Investigate Errors:**
+   - Review ETL logs for failure counts
+   - Review ETL Metadata table for error messages

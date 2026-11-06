@@ -402,12 +402,13 @@ In addition, it provides test tracking capabilities — recording which tests we
 Prerequisite - [Agent setup](#agent-setup) is configured
 
 #### Gradle
-To enable test tracing in a Gradle project, specify `testProjectId` and `testTracing()` to the `drill {}` block:
+To enable test tracing in a Gradle project, add `testTracing()` to the `drill {}` block:
 <Codeblock language="kotlin">
 {`
 drill {
     groupId = "my-group"
-    testProjectId = "my-tests"
+    appId = "my-application"
+    packagePrefixes = arrayOf("my/awesome/application")
     agent {
         version = "${versions.javaAgent}"
     }
@@ -427,7 +428,8 @@ To enable test tracing in a Maven project, add the `<testTracing>` configuration
     <version>${versions.cicdPlugin}</version>
     <configuration>
         <groupId>my-group</groupId>
-        <testProjectId>my-tests</testProjectId>
+        <appId>my-application</appId>
+        <packagePrefixes>my/awesome/application</packagePrefixes>
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
@@ -457,7 +459,7 @@ You can configure test tracing with the following options:
 | `perTestSession` | When enabled, groups trace data by test session. |
 | `perTestLaunch` | When enabled, records granular per-launch trace data for each test execution. |
 
-> Enabling `perTestLaunch` may increase the amount of trace data collected, which can impact performance and storage. 
+> Enabling `perTestLaunch` may increase the amount of trace data collected, which can impact performance and storage.
 > Use this option if you need detailed insights into each test execution.
 
 ##### Gradle
@@ -507,14 +509,14 @@ drill {
     // Class scanning configuration
     classScanning {
         appClasses = files("build/classes/java/main")   //Optional, path to compiled application classes
-        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes        
+        testClasses = files("build/classes/java/test")  //Optional, path to compiled test classes
     }
 }
 `}
 </Codeblock>
 
 #### Maven
-To enable class scanning in a Maven project, add the `<execution>` configuration for any phase you want to trigger scanning: 
+To enable class scanning in a Maven project, add the `<execution>` configuration for any phase you want to trigger scanning:
 <Codeblock language="xml">
 {`
 <plugin>
@@ -527,18 +529,18 @@ To enable class scanning in a Maven project, add the `<execution>` configuration
         <packagePrefixes>my/awesome/application</packagePrefixes>
         <agent>
             <version>${versions.javaAgent}</version>
-        </agent>     
+        </agent>
         <classScanning>
             <appClasses>target/classes</appClasses>         <!-- Optional, path to compiled application classes -->
-            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->            
-        </classScanning>   
+            <testClasses>target/test-classes</testClasses>  <!-- Optional, path to compiled test classes -->
+        </classScanning>
     </configuration>
     <executions>
         <execution>
             <!-- Enables class scanning before test task execution -->
             <id>scan-app-classes</id>
             <phase>YOUR_PHASE_HERE</phase>
-            <goals>                
+            <goals>
                 <goal>scanAppArchive</goal>
             </goals>
         </execution>
@@ -549,7 +551,7 @@ To enable class scanning in a Maven project, add the `<execution>` configuration
 
 ### Scan after build
 
-Drill4J can automatically scan application classes after a build archive (JAR/WAR/EAR) task completes. 
+Drill4J can automatically scan application classes after a build archive (JAR/WAR/EAR) task completes.
 This allows Drill4J to collect class metadata right after the application is built, without waiting for it to be run.
 
 #### Gradle
@@ -610,7 +612,7 @@ drill {
 
 ### Runtime class scanning
 
-The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application run time). 
+The Drill4J agent can scan application classes as they are loaded by the JVM during task execution (e.g., during application run time).
 This allows Drill4J to collect class metadata from the actual runtime classpath rather than from a static archive.
 
 To enable runtime class scanning, set the `runtime` option to `true`:
@@ -628,7 +630,7 @@ drill {
 ```xml
 <configuration>
     <classScanning>
-        <runtime>true</runtime>    
+        <runtime>true</runtime>
     </classScanning>
 </configuration>
 <executions>
@@ -642,7 +644,7 @@ drill {
 
 #### Runtime ClassLoader scanning
 
-Runtime class scanning capability allows to scan all application's active threads in runtime, retrieves their class loaders, and scans the files loaded by each class loader. 
+Runtime class scanning capability allows to scan all application's active threads in runtime, retrieves their class loaders, and scans the files loaded by each class loader.
 This scanning mode is enabled by default when you enable `runtime` class scanning. If you want to disable it, set the runtimeClassLoaderScanning `enabled` option to `false`:
 
 ##### Gradle
@@ -650,7 +652,7 @@ This scanning mode is enabled by default when you enable `runtime` class scannin
 classScanning {
     runtime = true
     runtimeClassLoaderScanning {
-        enabled = false        
+        enabled = false
     }
 }
 ```
@@ -658,9 +660,9 @@ classScanning {
 ##### Maven
 ```xml
 <classScanning>
-    <runtime>true</runtime>    
+    <runtime>true</runtime>
     <runtimeClassLoaderScanning>
-        <enabled>false</enabled>        
+        <enabled>false</enabled>
     </runtimeClassLoaderScanning>
 </classScanning>
 ```
@@ -679,7 +681,7 @@ classScanning {
 ##### Maven
 ```xml
 <classScanning>
-    <runtime>true</runtime>    
+    <runtime>true</runtime>
     <runtimeClassLoaderScanning>
         <delay>1000</delay> <!-- Optional delay in milliseconds before scanning class loaders -->
     </runtimeClassLoaderScanning>
@@ -726,8 +728,6 @@ drill {
     appId = "my-application"
     // Identifies the version of the application under test that is based on the checked out commit
     buildVersion = "1.0.0"
-    // ID of the test project
-    testProjectId = "my-tests"
     agent {
         version = "${versions.javaAgent}"
     }
@@ -760,8 +760,6 @@ To enable test recommendations add the following properties to your Maven pom.xm
         <appId>my-application</appId>
         <!-- Identifies the version of the application under test that is based on the checked out commit -->
         <buildVersion>1.0.0</buildVersion>
-        <!-- ID of the test project -->
-        <testProjectId>my-tests</testProjectId>
         <agent>
             <version>${versions.javaAgent}</version>
         </agent>
