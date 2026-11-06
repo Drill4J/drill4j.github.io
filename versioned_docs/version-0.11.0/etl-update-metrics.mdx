@@ -18,12 +18,11 @@ This architecture allows for data reprocessing if needed and separates data coll
 
 ## Scheduled Run
 
-ETL process runs automatically using a Cron job.
-The schedule is controlled by the `DRILL_SCHEDULER_ETL_JOB_CRON` environment variable passed to the Drill4J Backend.
+ETL uses two scheduled jobs:
+- The incremental job processes the current day. Its schedule is controlled by `DRILL_SCHEDULER_ETL_JOB_CRON` and defaults to once per minute (`0 * * * * ?`).
+- The idle job resumes unfinished or historical ETL work. Its schedule is controlled by `DRILL_SCHEDULER_ETL_IDLE_JOB_CRON` and defaults to every 10 minutes (`0 */10 * * * ?`).
 
 **Note:** Applying changes to the environment variable requires restarting the Drill4J Backend instance for the new schedule to take effect.
-
-**Best Practice:** Adjust the ETL schedule frequency so that job execution finishes before the next run time. Although the job won't start a new run until the previous one finishes, we recommend leaving extra buffer time.
 
 ## On-Demand Run
 
@@ -62,7 +61,7 @@ curl -X 'POST' \
 
 ### Complete Restart
 
-A complete restart clears all data from the `metrics` schema and reprocesses everything from scratch based on available data in `raw_data`.
+A full rerun reprocesses all available data from `raw_data`. With `reset=true`, existing computed data is deleted before it is reloaded.
 
 **When to use:**
 - When the settings affecting the metrics changed (metrics period expanded, rules for ignoring methods and classes changed)
@@ -232,6 +231,16 @@ An override applies only to the named pipeline or component; otherwise, the glob
 - **Default:** 0
 - **Tuning Guidance:**
   - Increase if ETL occasionally picks up incomplete or inconsistent records from active transactions (e.g., 5–60 seconds)
+
+### Maximum ETL Workers
+- **Environment Variable:** `DRILL_ETL_MAX_WORKERS`
+- **Purpose:** Sets the maximum number of ETL jobs that may run concurrently.
+- **Behavior:** Each worker processes the extractor groups for its ETL job in parallel. This setting limits concurrent jobs, not the number of individual extractors.
+- **Impact:** Increasing the limit can improve throughput when there are multiple ETL jobs to process, but each active job may hold several database connections. A value that is too high can exhaust the database connection pool and affect ETL or other database operations.
+- **Default:** 4
+- **Tuning Guidance:**
+  - Keep the value within the capacity of the database connection pool, accounting for the extractor groups running in parallel and connections needed by other application operations.
+  - Increase gradually only when the database has spare connection and processing capacity; reduce it if connection-pool exhaustion or database contention occurs.
 
 **Note:** Applying changes to the environment variable requires restarting the Drill4J Backend instance for the new schedule to take effect.
 
