@@ -24,7 +24,7 @@ It's a good starting point to get familiar with Drill4J. For installation and co
 
 ## Deploy Core Drill4J Services
 
-1. Download [deploy-drill4j-services.zip](/files/0.11.0/deploy-drill4j-services/deploy-drill4j-services.zip) and extract it into an empty folder.
+1. Download [deploy-drill4j-services.zip](/files/0.12.0/deploy-drill4j-services/deploy-drill4j-services.zip) and extract it into an empty folder.
 
   Your folder structure should match the following:
     ```
@@ -40,6 +40,19 @@ It's a good starting point to get familiar with Drill4J. For installation and co
     ```
 
 3. Wait for docker-compose to download images and launch containers.
+
+### Secure Deployment
+
+For PostgreSQL TLS encryption and a dedicated database user with limited permissions, use the secure configuration instead of the standard deployment:
+
+1. Download [deploy-drill4j-services-secure.zip](/files/0.12.0/secure-config/deploy-drill4j-services-secure.zip) and extract it into an empty folder.
+2. Copy `.env.example` to `.env` and set strong, unique values for `POSTGRES_PASSWORD` and `DRILL_ADMIN_DB_PASSWORD`.
+3. Open a terminal in this folder and run:
+
+    ```shell
+    docker compose -f docker-compose-secure.yml up -d
+    ```
+Database initialization scripts run only on an empty data volume.
 
 ## Check Services Availability
 

@@ -29,17 +29,57 @@ function createDeployServicesZip(sourceDir) {
   console.log(`Created ${outputZip}`);
 }
 
-const versions = fs.readdirSync(filesRoot).filter((name) => {
+function createSecureConfigZip(sourceDir) {
+  const outputZip = path.join(sourceDir, "deploy-drill4j-services-secure.zip");
+  const zip = new AdmZip();
+  const files = [
+    ".env.example",
+    "README.md",
+    "docker-compose-secure.yml",
+    "pg_hba.conf",
+    "ssl-entrypoint.sh",
+    "db-init/01-create-metrics-db.sh",
+    "db-init/02-harden-public-role.sql",
+    "db-init/03-drill-user-role.sh",
+  ];
+
+  files.forEach((name) => {
+    const filePath = path.join(sourceDir, name);
+    if (name.endsWith(".sh")) {
+      zip.addFile(
+        name,
+        Buffer.from(fs.readFileSync(filePath, "utf8").replace(/\r\n/g, "\n")),
+        "",
+        0o755
+      );
+    } else {
+      zip.addLocalFile(filePath, path.posix.dirname(name));
+    }
+  });
+  zip.writeZip(outputZip);
+
+  console.log(`Created ${outputZip}`);
+}
+
+const versions = fs.readdirSync(filesRoot);
+const deployVersions = versions.filter((name) => {
   const deployDir = path.join(filesRoot, name, "deploy-drill4j-services");
   return fs.existsSync(deployDir) && hasRequiredDeployFiles(deployDir);
 });
 
-if (versions.length === 0) {
+if (deployVersions.length === 0) {
   throw new Error(
     "No deploy-drill4j-services folders with required files found under static/files"
   );
 }
 
-versions.forEach((version) => {
+deployVersions.forEach((version) => {
   createDeployServicesZip(path.join(filesRoot, version, "deploy-drill4j-services"));
+});
+
+versions.forEach((version) => {
+  const secureDir = path.join(filesRoot, version, "secure-config");
+  if (fs.existsSync(secureDir)) {
+    createSecureConfigZip(secureDir);
+  }
 });
