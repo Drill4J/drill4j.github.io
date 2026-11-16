@@ -126,15 +126,7 @@ Backups are disabled by default, including in `values-local.yaml` and `values-pr
 
 When backups are explicitly enabled (`true`, or `auto` for the bundled database), a hook backs up both databases to the backup PVC before upgrade or rollback. A backup failure stops the operation. Backups are retained according to `backup.keep`. Use a StorageClass with `volumeBindingMode: Immediate` for `backup.persistence.storageClass`, or a pre-bound PVC via `backup.persistence.existingClaim`: the backup Job does not run during installation, so `WaitForFirstConsumer` can leave the backup PVC pending and block `helm install --wait`. When enabling backups on an existing release, the first upgrade creates the PVC and is not itself backed up; enable backups in a separate upgrade before changing versions.
 
-Admin applies database migrations at startup. The default `admin.updateStrategy.type: Recreate` stops old admin pods before starting new ones, so the API is briefly unavailable during upgrades, environment changes, and rollbacks. UI updates without downtime. Database migrations may not be reversible: if the previous admin version cannot use the migrated schema, restore a backup from before the upgrade before rolling back:
-
-```bash
-drill/scripts/restore.sh drill -n drill                  # list backups
-drill/scripts/restore.sh drill <backup-timestamp> -n drill
-helm rollback drill <REVISION> -n drill --wait
-```
-
-Restoring loses data written after that backup. The restore script prompts for confirmation.
+Admin applies database migrations at startup. The default `admin.updateStrategy.type: Recreate` stops old admin pods before starting new ones, so the API is briefly unavailable during upgrades, environment changes, and rollbacks. UI updates without downtime. Database migrations may not be reversible, so verify rollback compatibility before upgrading.
 
 The generated database password is stored in a Kubernetes Secret. Neither that Secret nor the database PVC is removed by `helm uninstall`; reinstalling with the same release name reuses them. Changing the Secret alone does not change the password in an initialized database.
 
