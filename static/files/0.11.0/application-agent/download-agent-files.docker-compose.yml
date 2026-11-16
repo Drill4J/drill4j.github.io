@@ -12,7 +12,7 @@ services:
       - "DRILL_GROUP_ID=my-group"
       - "DRILL_APP_ID=my-app"
       - "DRILL_BUILD_VERSION=${MY_APP_VERSION}"
-      - "DRILL_PACKAGE_PREFIXES=com.myapp"
+      - "DRILL_PACKAGE_PREFIXES=com/myapp"
     volumes:
       # Mount volume with agent files to your app's container
       - agent-files:/data
