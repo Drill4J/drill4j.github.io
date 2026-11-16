@@ -73,7 +73,7 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    command: ["postgres", "-c", "log_statement=all", "-c", "log_min_duration_statement=0"]
+    command: ["postgres", "-c", "max_connections=120", "-c", "log_statement=all", "-c", "log_min_duration_statement=0"]
 
 volumes:
   drill-data-pg:
