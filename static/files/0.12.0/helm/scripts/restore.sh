@@ -94,7 +94,7 @@ if [ "${YES:-}" != "1" ]; then
 fi
 
 k scale deploy "$DEPLOY" --replicas=0
-k wait --for=delete pod -l "$SEL,app.kubernetes.io/component=admin" --timeout=5m || true
+k wait --for=delete pod -l "$SEL,app.kubernetes.io/component=admin" --timeout=5m
 run_pod drill-restore "set -e
 for db in '$DB' '$MDB'; do
   f=\"/backups/$BACKUP/\$db.dump\"; [ -f \"\$f\" ] || { echo \"missing \$f\"; exit 1; }
