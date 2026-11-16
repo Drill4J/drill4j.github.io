@@ -27,7 +27,7 @@ data:
   {{- with $m.username }}
   DRILL_METRICS_DB_USER_NAME: {{ . | quote }}
   {{- end }}
-  {{- if ne (toString ($m.ssl | default "")) "" }}
+  {{- if and (hasKey $m "ssl") (ne (toString $m.ssl) "") }}
   DRILL_METRICS_DB_SSL: {{ $m.ssl | toString | quote }}
   {{- end }}
   DRILL_SCHEDULER_ETL_JOB_CRON: {{ $c.scheduler.etlJobCron | quote }}

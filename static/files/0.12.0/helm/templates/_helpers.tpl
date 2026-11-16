@@ -165,7 +165,7 @@ imagePullSecrets:
       name: {{ include "drill.db.secretName" . }}
       key: {{ $m.passwordKey | default (include "drill.db.passwordKey" .) }}
 - name: M_PGSSLMODE
-  value: {{ ternary "require" "prefer" (eq (toString (default (include "drill.db.ssl" .) $m.ssl)) "true") | quote }}
+  value: {{ ternary "require" "prefer" (eq (toString (ternary $m.ssl (include "drill.db.ssl" .) (and (hasKey $m "ssl") (ne (toString $m.ssl) "")))) "true") | quote }}
 {{- end }}
 
 {{/* ---------- Connections ---------- */}}
