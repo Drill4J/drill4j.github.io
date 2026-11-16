@@ -178,7 +178,10 @@ imagePullSecrets:
 {{- if eq .Values.admin.updateStrategy.type "RollingUpdate" -}}
 {{- $ru := .Values.admin.updateStrategy.rollingUpdate | default (dict) -}}
 {{- $s := ternary $ru.maxSurge 1 (hasKey $ru "maxSurge") -}}
-{{- if kindIs "string" $s -}}{{- $surge = $replicas -}}{{- else -}}{{- $surge = int $s -}}{{- end -}}
+{{- if and (kindIs "string" $s) (hasSuffix "%" $s) -}}
+{{- $surge = div (add (mul $replicas (int (trimSuffix "%" $s))) 99) 100 -}}
+{{- else -}}
+{{- $surge = int $s -}}
 {{- end -}}
 {{- add $replicas $surge -}}
 {{- end }}
