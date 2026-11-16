@@ -1,0 +1,111 @@
+{{- if .Values.postgresql.enabled }}
+{{- $p := .Values.postgresql -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "drill.postgresqlName" . }}
+  labels:
+    {{- include "drill.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+spec:
+  replicas: 1
+  serviceName: {{ include "drill.postgresqlName" . }}-headless
+  selector:
+    matchLabels:
+      {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 8 }}
+    spec:
+      {{- include "drill.imagePullSecrets" . | nindent 6 }}
+      containers:
+        - name: postgresql
+          image: {{ include "drill.image" (dict "ctx" . "image" $p.image) }}
+          imagePullPolicy: {{ $p.image.pullPolicy }}
+          args:
+            - postgres
+            - -c
+            - max_connections={{ include "drill.postgresql.maxConnections" . }}
+            {{- if $p.debugLogging }}
+            - -c
+            - log_statement=all
+            - -c
+            - log_min_duration_statement=0
+            {{- end }}
+          ports:
+            - name: postgresql
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: {{ $p.auth.username | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "drill.db.secretName" . }}
+                  key: {{ $p.auth.passwordKey }}
+            - name: POSTGRES_DB
+              value: {{ $p.database | quote }}
+            # Subdirectory: the volume root may contain lost+found.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -h 127.0.0.1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -h 127.0.0.1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          {{- with $p.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ $p.shmSize }}
+        {{- if $p.persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ $p.persistence.existingClaim }}
+        {{- end }}
+      {{- with $p.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $p.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $p.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if not $p.persistence.existingClaim }}
+  # PVCs created from this template are not deleted by `helm uninstall`.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 10 }}
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- with $p.persistence.storageClass }}
+        storageClassName: {{ . }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ $p.persistence.size }}
+  {{- end }}
+{{- end }}

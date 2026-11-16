@@ -1,0 +1,187 @@
+global:
+  # Overrides the registry of every image in the chart (admin, ui, postgres, init/hook containers).
+  imageRegistry: ""
+  imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+# How admin and UI are reachable from outside the cluster.
+#   local   - NodePort services (admin.service.nodePort / ui.service.nodePort).
+#             minikube: `minikube start --driver=docker --ports=8090:30090,8091:30091`
+#   ingress - ClusterIP services + Ingress (see `ingress`).
+exposure:
+  mode: local
+
+ingress:
+  className: ""
+  host: drill.local
+  annotations: {}
+  tls: []
+  #  - secretName: drill-tls
+  #    hosts: [drill.example.com]
+
+admin:
+  enabled: true
+  replicaCount: 1
+  image:
+    registry: ghcr.io
+    repository: drill4j/admin
+    tag: "0.12.0"
+    pullPolicy: IfNotPresent
+  # Recreate: all old admin pods are stopped before new ones start
+  updateStrategy:
+    type: Recreate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  service:
+    port: 8090
+    nodePort: 30090
+  # Application settings, rendered to DRILL_* environment variables.
+  config:
+    logLevel: INFO
+    db:
+      maxPoolSize: 50
+    metricsDb:
+      maxPoolSize: 50
+    scheduler:
+      etlJobCron: "0 * * * * ?"
+    etl:
+      maxWorkers: 4
+      consistencyWindow: 0
+      processingDelay: 0
+      batchSize: 1000
+      bufferSize: 100000
+      fetchSize: 100000
+      extractionLimit: 1000000
+      aggregationBufferSize: 50000
+  # Secret used to sign user JWTs. Must be shared by all replicas and survive restarts,
+  # otherwise users are logged out. Generated once and kept if empty.
+  jwt:
+    secret: ""
+    existingSecret: ""
+    secretKey: jwt-secret
+  # Init container that creates the main and metrics databases if they do not exist.
+  # Disable when the DB user is not allowed to CREATE DATABASE (create them beforehand).
+  dbInit:
+    enabled: true
+    maintenanceDatabase: postgres
+  # Highest priority: overrides any variable rendered from `config`.
+  extraEnv: []
+  #  - name: DRILL_AUTH_SIMPLE_SIGN_UP_ENABLED
+  #    value: "false"
+  extraEnvFrom: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  probes:
+    path: /
+  # Gives migrations time to finish on upgrade before liveness kicks in (60 x 5s = 5 min).
+  startupProbe:
+    periodSeconds: 5
+    failureThreshold: 60
+  # Delay before SIGTERM so the pod leaves Service endpoints first (no refused connections while other
+  # pods keep serving). Applied with RollingUpdate or replicaCount > 1 only.
+  preStopSleepSeconds: 10
+  pdb:
+    minAvailable: 1
+  resources: {}
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+ui:
+  enabled: true
+  replicaCount: 1
+  image:
+    registry: ghcr.io
+    repository: drill4j/drill4j-ui
+    tag: "0.12.1-alpha.2"
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+    nodePort: 30091
+  # Admin address used by the UI nginx proxy for /api. Defaults to the admin Service of this release.
+  apiHost: ""
+  apiPort: ""
+  # Serve the UI under a sub-path, e.g. /drill (needs UI >= 0.12.1-alpha.2). Works the same in local mode
+  # (http://localhost:8091/drill) and behind any Ingress controller: the UI nginx handles the prefix, no rewrite.
+  basePath: ""
+  preStopSleepSeconds: 5
+  extraEnv: []
+  resources: {}
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Built-in PostgreSQL. Set `enabled: false` and fill `externalDatabase` to use an external server.
+postgresql:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: library/postgres
+    tag: "17.0"
+    pullPolicy: IfNotPresent
+  port: 5432
+  database: drill
+  metricsDatabase: drill-metrics
+  auth:
+    username: postgres
+    # Generated once and kept if empty. Changing it later does NOT change the password inside an
+    # initialized database (see README).
+    password: ""
+    existingSecret: ""
+    passwordKey: db-password
+  # `auto` = (admin replicas [+ maxSurge with RollingUpdate]) x (db + metrics pool sizes) + 20.
+  maxConnections: auto
+  # log_statement=all, log_min_duration_statement=0 (as in docker-compose). Heavy, logs data.
+  debugLogging: false
+  shmSize: 1Gi
+  persistence:
+    size: 8Gi
+    storageClass: ""
+    existingClaim: ""
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+externalDatabase:
+  host: ""
+  port: 5432
+  ssl: false
+  username: postgres
+  password: ""
+  existingSecret: ""
+  passwordKey: db-password
+  database: drill
+  metricsDatabase: drill-metrics
+  # Optional: the metrics database on a different server or with a different user.
+  # Empty values fall back to the settings above.
+  metrics:
+    host: ""
+    port: ""
+    ssl: ""
+    username: ""
+    # Key in the same secret; empty = same password as the main database.
+    passwordKey: ""
+
+# pg_dump of both databases before every `helm upgrade` / `helm rollback`.
+# A failed backup aborts the upgrade.
+backup:
+  # Disabled by default. auto = enabled for the built-in PostgreSQL only.
+  enabled: false
+  keep: 5
+  # pg_dump must not be older than the server; override for newer external servers.
+  image:
+    registry: ""
+    repository: ""
+    tag: ""
+  persistence:
+    size: 8Gi
+    storageClass: ""
+    existingClaim: ""
+  activeDeadlineSeconds: 1800
+  resources: {}

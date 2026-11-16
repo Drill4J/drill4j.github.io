@@ -1,0 +1,19 @@
+{{- if and (include "drill.backup.enabled" .) (not .Values.backup.persistence.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "drill.backupName" . }}
+  labels:
+    {{- include "drill.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backup
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes: ["ReadWriteOnce"]
+  {{- with .Values.backup.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.backup.persistence.size }}
+{{- end }}
