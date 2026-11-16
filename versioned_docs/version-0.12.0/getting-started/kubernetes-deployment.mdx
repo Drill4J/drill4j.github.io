@@ -3,7 +3,10 @@ id: kubernetes-deployment
 title: Kubernetes Deployment
 ---
 
-# Kubernetes Deployment with Helm
+# Kubernetes Deployment
+
+import versions from "@site/static/files/0.12.0/versions.json"
+import { Codeblock } from "@components"
 
 This guide explains how to deploy Drill4J services to a Kubernetes cluster with Helm.
 The chart installs the Admin API, UI, and optionally PostgreSQL.
@@ -20,12 +23,9 @@ The chart requires Kubernetes 1.25 or later.
 
 ## Get the Helm chart
 
-To use the chart from a repository checkout:
+Download [helm.zip](/files/0.12.0/helm/helm.zip) and extract it into an empty folder.
 
-```shell
-git clone https://github.com/Drill4J/drill4j.github.io.git
-cd drill4j.github.io/static/files/0.12.0/helm
-```
+Open a terminal in the extracted folder containing `Chart.yaml`. Run the following Helm commands from this folder.
 
 ## Deploy to a Kubernetes cluster
 

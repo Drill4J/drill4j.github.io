@@ -10,50 +10,25 @@ function hasRequiredDeployFiles(sourceDir) {
   );
 }
 
-function createDeployServicesZip(sourceDir) {
-  const outputZip = path.join(sourceDir, "deploy-drill4j-services.zip");
-  const dockerComposePath = path.join(sourceDir, "docker-compose.yml");
-  const envSourcePath = path.join(sourceDir, "drill.env");
-  const dbInitPath = path.join(sourceDir, "db-init");
+function createConfigZip(sourceDir, zipName, renameEnv = false) {
+  const outputZip = path.join(sourceDir, zipName);
+  const zip = new AdmZip();
+  zip.addLocalFolder(sourceDir, "", (name) => !name.endsWith(".zip"));
 
-  if (fs.existsSync(outputZip)) {
-    fs.unlinkSync(outputZip);
+  if (renameEnv) {
+    const envEntry = zip.getEntry("drill.env");
+    zip.addFile(".env", envEntry.getData());
+    zip.deleteFile(envEntry);
   }
 
-  const zip = new AdmZip();
-  zip.addLocalFile(dockerComposePath);
-  zip.addLocalFile(envSourcePath, "", ".env");
-  zip.addLocalFolder(dbInitPath, "db-init");
-  zip.writeZip(outputZip);
-
-  console.log(`Created ${outputZip}`);
-}
-
-function createSecureConfigZip(sourceDir) {
-  const outputZip = path.join(sourceDir, "deploy-drill4j-services-secure.zip");
-  const zip = new AdmZip();
-  const files = [
-    ".env.example",
-    "README.md",
-    "docker-compose-secure.yml",
-    "pg_hba.conf",
-    "ssl-entrypoint.sh",
-    "db-init/01-create-metrics-db.sh",
-    "db-init/02-harden-public-role.sql",
-    "db-init/03-drill-user-role.sh",
-  ];
-
-  files.forEach((name) => {
-    const filePath = path.join(sourceDir, name);
-    if (name.endsWith(".sh")) {
+  zip.getEntries().forEach((entry) => {
+    if (entry.entryName.endsWith(".sh")) {
       zip.addFile(
-        name,
-        Buffer.from(fs.readFileSync(filePath, "utf8").replace(/\r\n/g, "\n")),
+        entry.entryName,
+        Buffer.from(entry.getData().toString("utf8").replace(/\r\n/g, "\n")),
         "",
         0o755
       );
-    } else {
-      zip.addLocalFile(filePath, path.posix.dirname(name));
     }
   });
   zip.writeZip(outputZip);
@@ -74,12 +49,21 @@ if (deployVersions.length === 0) {
 }
 
 deployVersions.forEach((version) => {
-  createDeployServicesZip(path.join(filesRoot, version, "deploy-drill4j-services"));
+  createConfigZip(
+    path.join(filesRoot, version, "deploy-drill4j-services"),
+    "deploy-drill4j-services.zip",
+    true
+  );
 });
 
 versions.forEach((version) => {
-  const secureDir = path.join(filesRoot, version, "secure-config");
-  if (fs.existsSync(secureDir)) {
-    createSecureConfigZip(secureDir);
-  }
+  [
+    ["secure-config", "deploy-drill4j-services-secure.zip"],
+    ["helm", "helm.zip"],
+  ].forEach(([folder, zipName]) => {
+    const sourceDir = path.join(filesRoot, version, folder);
+    if (fs.existsSync(sourceDir)) {
+      createConfigZip(sourceDir, zipName);
+    }
+  });
 });
