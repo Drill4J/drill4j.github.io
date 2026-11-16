@@ -84,6 +84,8 @@ services:
     command:
       - "postgres"
       - "-c"
+      - "max_connections=120"
+      - "-c"
       - "ssl=on"
       - "-c"
       - "ssl_cert_file=/etc/ssl/certs/pg-server.crt"
