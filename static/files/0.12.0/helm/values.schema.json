@@ -206,6 +206,25 @@
           ]
         },
         "debugLogging": { "type": "boolean" },
+        "tls": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "existingSecret": { "type": "string" }
+          }
+        },
+        "adminUser": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "username": { "type": "string", "pattern": "^[a-z_][a-z0-9_]{0,62}$" },
+            "password": { "type": "string" },
+            "passwordKey": { "type": "string", "minLength": 1 }
+          }
+        },
+        "hardenPublicRole": { "type": "boolean" },
         "shmSize": { "type": "string" },
         "persistence": { "$ref": "#/definitions/persistence" },
         "resources": { "$ref": "#/definitions/obj" },

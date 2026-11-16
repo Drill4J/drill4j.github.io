@@ -50,6 +50,7 @@ Choose a values file and override settings with additional `-f` files or `--set`
 |---|---|
 | `drill/values.yaml` | Default configuration |
 | `drill/values-local.yaml` | Minikube development/testing; reduced resources and storage |
+| `drill/values-local-secure.yaml` | `values-local.yaml` with hardened built-in PostgreSQL (see [Secure PostgreSQL](#secure-postgresql)) |
 | `drill/values-prod.yaml` | Production Kubernetes; Ingress, TLS, multiple replicas, and larger storage. Adjust resources and persistence for your cluster |
 
 Important settings:
@@ -63,6 +64,7 @@ Important settings:
 | `admin.replicaCount` | Admin replicas; replicas share the JWT signing secret |
 | `admin.jwt.secret`, `admin.jwt.existingSecret` | Persist the JWT signing key across restarts |
 | `postgresql.persistence.*` | Configure database storage |
+| `postgresql.tls.*`, `postgresql.adminUser.*`, `postgresql.hardenPublicRole` | Harden the built-in PostgreSQL (see [Secure PostgreSQL](#secure-postgresql)) |
 | `backup.enabled` | Disabled by default; `true` enables backups explicitly, `auto` enables them for the bundled database |
 
 Values are schema-validated; unknown keys and invalid values are rejected. See `values.yaml` for the full configuration.
@@ -81,6 +83,23 @@ helm install drill ./drill -n drill -f drill/values-prod.yaml \
 ```
 
 Admin creates the configured databases if missing; the database user therefore needs `CREATE DATABASE`, or create them in advance and set `admin.dbInit.enabled=false`. Ensure the server supports the connection count printed in the install notes. If you explicitly enable backups, verify backup storage and ensure the configured `pg_dump` image is compatible with the external server.
+
+### Secure PostgreSQL
+
+These settings apply to the built-in PostgreSQL and are all disabled by default:
+
+```bash
+minikube start --driver=docker --ports=8090:30090,8091:30091
+helm install drill ./drill -f drill/values-local-secure.yaml --wait
+```
+
+| Setting | Effect |
+|---|---|
+| `postgresql.tls.enabled` | PostgreSQL runs with `ssl=on` and accepts only TLS connections from other pods (`hostssl` in `pg_hba.conf`); admin and the chart's jobs connect with SSL. A self-signed certificate is generated at pod start unless `postgresql.tls.existingSecret` names a `kubernetes.io/tls` Secret with `tls.crt` and `tls.key` |
+| `postgresql.adminUser.enabled` | Admin connects as a dedicated role (`postgresql.adminUser.username`, default `drill`) with `NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION NOBYPASSRLS` and only `CONNECT, CREATE` on the Drill4J databases. The superuser `postgresql.auth.username` is used only by the database init container and backups. The role password is taken from `postgresql.adminUser.password`, or generated into the chart Secret under `postgresql.adminUser.passwordKey` (with `postgresql.auth.existingSecret`, that Secret must contain this key) |
+| `postgresql.hardenPublicRole` | Revokes default `PUBLIC` privileges (server-information functions and views, `public` schema) in both Drill4J databases, as `secure-config/db-init/02-harden-public-role.sql` does |
+
+Enable `postgresql.adminUser.enabled` on a fresh installation only: tables already created by the superuser are not accessible to the new role.
 
 ### Ingress
 

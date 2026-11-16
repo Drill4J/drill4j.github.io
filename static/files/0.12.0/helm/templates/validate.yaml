@@ -12,6 +12,23 @@
 {{- fail "externalDatabase.metrics.passwordKey requires externalDatabase.existingSecret containing that key" }}
 {{- end }}
 
+{{- $pg := .Values.postgresql }}
+{{- if and (not $pg.enabled) (or $pg.tls.enabled $pg.adminUser.enabled $pg.hardenPublicRole) }}
+{{- fail "postgresql.tls, postgresql.adminUser and postgresql.hardenPublicRole apply to the built-in PostgreSQL only (postgresql.enabled=true)" }}
+{{- end }}
+
+{{- if and $pg.enabled (or $pg.adminUser.enabled $pg.hardenPublicRole) (not (and .Values.admin.enabled .Values.admin.dbInit.enabled)) }}
+{{- fail "postgresql.adminUser.enabled and postgresql.hardenPublicRole require admin.enabled=true and admin.dbInit.enabled=true" }}
+{{- end }}
+
+{{- if and $pg.enabled $pg.adminUser.enabled (eq $pg.adminUser.username $pg.auth.username) }}
+{{- fail "postgresql.adminUser.username must differ from postgresql.auth.username (the superuser)" }}
+{{- end }}
+
+{{- if and $pg.enabled $pg.adminUser.enabled (eq $pg.adminUser.passwordKey $pg.auth.passwordKey) }}
+{{- fail "postgresql.adminUser.passwordKey must differ from postgresql.auth.passwordKey" }}
+{{- end }}
+
 {{- if and .Values.ui.enabled (not .Values.admin.enabled) (not .Values.ui.apiHost) }}
 {{- fail "admin.enabled=false: set ui.apiHost to the admin address used by the UI" }}
 {{- end }}

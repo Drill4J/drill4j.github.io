@@ -25,14 +25,18 @@ SEL="app.kubernetes.io/instance=$RELEASE"
 
 DEPLOY=$(k get deploy -l "$SEL,app.kubernetes.io/component=admin" -o jsonpath='{.items[0].metadata.name}')
 CM=$(k get deploy "$DEPLOY" -o jsonpath='{.spec.template.spec.containers[0].envFrom[0].configMapRef.name}')
-SECRET=$(k get deploy "$DEPLOY" -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="DRILL_DB_PASSWORD")].valueFrom.secretKeyRef.name}')
-KEY=$(k get deploy "$DEPLOY" -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="DRILL_DB_PASSWORD")].valueFrom.secretKeyRef.key}')
+ienv() { k get deploy "$DEPLOY" -o jsonpath="{.spec.template.spec.initContainers[0].env[?(@.name==\"$1\")]$2}"; }
+SECRET=$(ienv PGPASSWORD .valueFrom.secretKeyRef.name)
+KEY=$(ienv PGPASSWORD .valueFrom.secretKeyRef.key)
+USER=$(ienv PGUSER .value)
+SSLMODE=$(ienv PGSSLMODE .value)
 PVC=$(k get job -l "$SEL,app.kubernetes.io/component=backup" -o jsonpath='{.items[0].spec.template.spec.volumes[0].persistentVolumeClaim.claimName}' 2>/dev/null || true)
 PVC="${PVC:-$(k get pvc -l "$SEL,app.kubernetes.io/component=backup" -o jsonpath='{.items[0].metadata.name}')}"
 IMAGE=$(k get deploy "$DEPLOY" -o jsonpath='{.spec.template.spec.initContainers[0].image}')
 cmv() { k get cm "$CM" -o jsonpath="{.data.$1}"; }
-HOST=$(cmv DRILL_DB_HOST); PORT=$(cmv DRILL_DB_PORT); USER=$(cmv DRILL_DB_USER_NAME)
+HOST=$(cmv DRILL_DB_HOST); PORT=$(cmv DRILL_DB_PORT); APP_USER=$(cmv DRILL_DB_USER_NAME)
 DB=$(cmv DRILL_DB_NAME); MDB=$(cmv DRILL_METRICS_DB_NAME)
+OWNER_OPT="--no-owner"; [ "$APP_USER" = "$USER" ] || OWNER_OPT=""
 
 run_pod() {  # run_pod <name> <script>: runs a postgres-client pod with the backup PVC mounted
   k delete pod "$1" --ignore-not-found >/dev/null
@@ -57,6 +61,7 @@ EOF
         - {name: PGHOST, value: "$HOST"}
         - {name: PGPORT, value: "$PORT"}
         - {name: PGUSER, value: "$USER"}
+        - {name: PGSSLMODE, value: "${SSLMODE:-prefer}"}
         - name: PGPASSWORD
           valueFrom: {secretKeyRef: {name: "$SECRET", key: "$KEY"}}
       volumeMounts:
@@ -93,7 +98,7 @@ k wait --for=delete pod -l "$SEL,app.kubernetes.io/component=admin" --timeout=5m
 run_pod drill-restore "set -e
 for db in '$DB' '$MDB'; do
   f=\"/backups/$BACKUP/\$db.dump\"; [ -f \"\$f\" ] || { echo \"missing \$f\"; exit 1; }
-  echo \"restoring \$db\"; pg_restore --clean --if-exists --no-owner -d \"\$db\" \"\$f\"
+  echo \"restoring \$db\"; pg_restore --clean --if-exists $OWNER_OPT -d \"\$db\" \"\$f\"
 done
 echo restore done"
 k scale deploy "$DEPLOY" --replicas="$REPLICAS"

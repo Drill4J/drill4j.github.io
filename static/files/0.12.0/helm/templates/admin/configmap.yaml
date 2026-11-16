@@ -13,7 +13,7 @@ data:
   DRILL_DB_HOST: {{ include "drill.db.host" . | quote }}
   DRILL_DB_PORT: {{ include "drill.db.port" . | quote }}
   DRILL_DB_NAME: {{ include "drill.db.name" . | quote }}
-  DRILL_DB_USER_NAME: {{ include "drill.db.user" . | quote }}
+  DRILL_DB_USER_NAME: {{ include "drill.admin.db.user" . | quote }}
   DRILL_DB_SSL: {{ include "drill.db.ssl" . | quote }}
   DRILL_DB_MAX_POOL_SIZE: {{ $c.db.maxPoolSize | int64 | quote }}
   DRILL_METRICS_DB_NAME: {{ include "drill.db.metricsName" . | quote }}

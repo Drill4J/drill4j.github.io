@@ -1,5 +1,8 @@
 {{- if .Values.admin.enabled }}
 {{- $a := .Values.admin -}}
+{{- $adminUser := include "drill.adminUser.enabled" . -}}
+{{- $harden := and .Values.postgresql.enabled .Values.postgresql.hardenPublicRole -}}
+{{- $dbInitSql := and $a.dbInit.enabled (or $adminUser $harden) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,6 +28,9 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/admin/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- if $dbInitSql }}
+        checksum/db-init: {{ include (print $.Template.BasePath "/admin/db-init-configmap.yaml") . | sha256sum }}
+        {{- end }}
         {{- with $a.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -51,19 +57,32 @@ spec:
             - |
               set -e
               # create_db <db> <host> <port> <user> <password> <sslmode>
-              create_db() {
+              # Runs in a subshell: the exported PG* variables do not leak into the steps below.
+              create_db() (
                 export PGHOST="$2" PGPORT="$3" PGUSER="$4" PGPASSWORD="$5" PGSSLMODE="$6"
                 q="SELECT 1 FROM pg_database WHERE datname = '$1'"
                 if [ "$(psql -d "$MAINT_DB" -tAc "$q")" = "1" ]; then
-                  echo "database \"$1\" exists"; return 0
+                  echo "database \"$1\" exists"; exit 0
                 fi
                 echo "creating database \"$1\""
                 # Another replica may create it at the same time: re-check on failure.
                 psql -d "$MAINT_DB" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"$1\"" \
                   || [ "$(psql -d "$MAINT_DB" -tAc "$q")" = "1" ]
-              }
+              )
               create_db "$DB_NAME" "$PGHOST" "$PGPORT" "$PGUSER" "$PGPASSWORD" "$PGSSLMODE"
               create_db "$METRICS_DB_NAME" "$M_PGHOST" "$M_PGPORT" "$M_PGUSER" "$M_PGPASSWORD" "$M_PGSSLMODE"
+              {{- if $harden }}
+              for db in "$DB_NAME" "$METRICS_DB_NAME"; do
+                echo "revoking default PUBLIC privileges in \"$db\""
+                psql -X -q -d "$db" -v ON_ERROR_STOP=1 -f /db-init/harden-public-role.sql
+              done
+              {{- end }}
+              {{- if $adminUser }}
+              echo "configuring role \"$ADMIN_DB_USER\""
+              # Another replica may run it at the same time: retry once.
+              psql -X -q -d "$MAINT_DB" -v ON_ERROR_STOP=1 -f /db-init/admin-user.sql \
+                || { sleep 2; psql -X -q -d "$MAINT_DB" -v ON_ERROR_STOP=1 -f /db-init/admin-user.sql; }
+              {{- end }}
           env:
             {{- include "drill.pgEnv" . | nindent 12 }}
             {{- include "drill.pgMetricsEnv" . | nindent 12 }}
@@ -73,6 +92,21 @@ spec:
               value: {{ include "drill.db.name" . | quote }}
             - name: METRICS_DB_NAME
               value: {{ include "drill.db.metricsName" . | quote }}
+            {{- if $adminUser }}
+            - name: ADMIN_DB_USER
+              value: {{ include "drill.admin.db.user" . | quote }}
+            - name: ADMIN_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "drill.db.secretName" . }}
+                  key: {{ include "drill.admin.db.passwordKey" . }}
+            {{- end }}
+          {{- if $dbInitSql }}
+          volumeMounts:
+            - name: db-init
+              mountPath: /db-init
+              readOnly: true
+          {{- end }}
         {{- end }}
       containers:
         - name: admin
@@ -92,7 +126,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ include "drill.db.secretName" . }}
-                  key: {{ include "drill.db.passwordKey" . }}
+                  key: {{ include "drill.admin.db.passwordKey" . }}
             {{- with (include "drill.db.metrics" . | fromYaml).passwordKey }}
             - name: DRILL_METRICS_DB_PASSWORD
               valueFrom:
@@ -144,9 +178,16 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with $a.extraVolumes }}
+      {{- if or $a.extraVolumes $dbInitSql }}
       volumes:
+        {{- if $dbInitSql }}
+        - name: db-init
+          configMap:
+            name: {{ include "drill.adminName" . }}-db-init
+        {{- end }}
+        {{- with $a.extraVolumes }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       {{- with $a.nodeSelector }}
       nodeSelector:

@@ -83,7 +83,21 @@ imagePullSecrets:
 {{- end }}
 
 {{- define "drill.db.ssl" -}}
-{{- if .Values.postgresql.enabled -}}false{{- else -}}{{ .Values.externalDatabase.ssl }}{{- end -}}
+{{- if .Values.postgresql.enabled -}}{{ .Values.postgresql.tls.enabled }}{{- else -}}{{ .Values.externalDatabase.ssl }}{{- end -}}
+{{- end }}
+
+{{/* "true" when admin uses the dedicated least-privilege role of the built-in PostgreSQL. */}}
+{{- define "drill.adminUser.enabled" -}}
+{{- if and .Values.postgresql.enabled .Values.postgresql.adminUser.enabled }}true{{ end -}}
+{{- end }}
+
+{{/* Login used by the admin application. drill.db.user stays the management user (db-init, backup). */}}
+{{- define "drill.admin.db.user" -}}
+{{- if include "drill.adminUser.enabled" . -}}{{ .Values.postgresql.adminUser.username }}{{- else -}}{{ include "drill.db.user" . }}{{- end -}}
+{{- end }}
+
+{{- define "drill.admin.db.passwordKey" -}}
+{{- if include "drill.adminUser.enabled" . -}}{{ .Values.postgresql.adminUser.passwordKey }}{{- else -}}{{ include "drill.db.passwordKey" . }}{{- end -}}
 {{- end }}
 
 {{- define "drill.db.user" -}}

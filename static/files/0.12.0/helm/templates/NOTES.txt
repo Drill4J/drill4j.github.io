@@ -39,6 +39,17 @@ Check the installation: helm test {{ .Release.Name }} -n {{ .Release.Namespace }
 {{- if .Values.postgresql.enabled }}
 
 PostgreSQL: built-in, max_connections={{ include "drill.postgresql.maxConnections" . }}.
+{{- with .Values.postgresql }}
+{{- if .tls.enabled }}
+  TLS: on ({{ ternary (printf "certificate from secret %s" .tls.existingSecret) "self-signed certificate" (not (empty .tls.existingSecret)) }}), non-TLS connections from other pods are rejected.
+{{- end }}
+{{- if and .adminUser.enabled $.Values.admin.enabled }}
+  Admin connects as least-privilege role "{{ .adminUser.username }}" (password: secret "{{ include "drill.db.secretName" $ }}", key "{{ .adminUser.passwordKey }}").
+{{- end }}
+{{- if .hardenPublicRole }}
+  Default PUBLIC privileges are revoked in "{{ .database }}" and "{{ .metricsDatabase }}".
+{{- end }}
+{{- end }}
 {{- else if .Values.admin.enabled }}
 
 PostgreSQL: external {{ .Values.externalDatabase.host }}:{{ .Values.externalDatabase.port }}.

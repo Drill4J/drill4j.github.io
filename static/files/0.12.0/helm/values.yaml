@@ -138,6 +138,23 @@ postgresql:
   maxConnections: auto
   # log_statement=all, log_min_duration_statement=0 (as in docker-compose). Heavy, logs data.
   debugLogging: false
+  # TLS for connections to the built-in PostgreSQL
+  tls:
+    enabled: false
+    # Secret of type kubernetes.io/tls (tls.crt, tls.key). Empty = a self-signed certificate is generated
+    # on every PostgreSQL pod start.
+    existingSecret: ""
+  # Dedicated least-privilege login used by admin instead of the superuser `auth.username`
+  # Enable on a new (empty) database only.
+  adminUser:
+    enabled: false
+    username: drill
+    # Generated once and kept if empty. With `auth.existingSecret` the password is read from that secret.
+    password: ""
+    passwordKey: admin-db-password
+  # Revoke dangerous default privileges from the PUBLIC role.
+  # Applied by the admin db-init container on every start.
+  hardenPublicRole: false
   shmSize: 1Gi
   persistence:
     size: 8Gi

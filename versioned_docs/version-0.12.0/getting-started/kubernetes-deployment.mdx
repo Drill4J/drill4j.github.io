@@ -79,6 +79,23 @@ The default login is `admin` / `admin`.
 
 If Minikube was started without the port mappings, use the `kubectl port-forward` commands printed in the Helm install notes.
 
+### Secure deployment
+
+`values-local-secure.yaml` is `values-local.yaml` with a hardened bundled PostgreSQL:
+
+```shell
+minikube start --driver=docker --ports=8090:30090,8091:30091
+helm install drill . -f values-local-secure.yaml --wait
+```
+
+It enables:
+
+- `postgresql.tls.enabled` — PostgreSQL accepts only SSL connections from other pods. A self-signed certificate is generated at startup; set `postgresql.tls.existingSecret` to use your own `kubernetes.io/tls` Secret.
+- `postgresql.adminUser.enabled` — the admin service connects as a dedicated `drill` role without superuser, `CREATEDB`, `CREATEROLE`, replication, or RLS-bypass privileges. Its password is generated into the chart Secret unless `postgresql.adminUser.password` is set.
+- `postgresql.hardenPublicRole` — default `PUBLIC` privileges are revoked in both Drill4J databases.
+
+Use it for a new installation with an empty database volume. The same settings can be added to `values-prod.yaml`.
+
 ## Configuration
 
 Use `values-local.yaml` for Minikube development and `values-prod.yaml` as a starting point for a Kubernetes cluster.
