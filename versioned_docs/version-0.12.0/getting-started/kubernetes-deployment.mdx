@@ -1,0 +1,109 @@
+---
+id: kubernetes-deployment
+title: Kubernetes Deployment
+---
+
+# Kubernetes Deployment with Helm
+
+This guide explains how to deploy Drill4J services to a Kubernetes cluster with Helm.
+The chart installs the Admin API, UI, and optionally PostgreSQL.
+
+## Prerequisites
+
+1. A Kubernetes cluster and `kubectl` configured to use the intended cluster context.
+2. Helm 3.
+3. An Ingress controller and DNS configured for the hostname you plan to use.
+4. A default StorageClass, or a StorageClass configured for the PostgreSQL and backup volumes.
+5. TLS certificate and key files, unless TLS is provisioned by cert-manager.
+
+The chart requires Kubernetes 1.25 or later.
+
+## Get the Helm chart
+
+To use the chart from a repository checkout:
+
+```shell
+git clone https://github.com/Drill4J/drill4j.github.io.git
+cd drill4j.github.io/static/files/0.12.0/helm
+```
+
+## Deploy to a Kubernetes cluster
+
+1. Check that `kubectl` is connected to the intended cluster and create the `drill` namespace:
+
+    ```shell
+    kubectl config current-context
+    kubectl create namespace drill --dry-run=client -o yaml | kubectl apply -f -
+    ```
+
+2. If TLS is not provisioned automatically by cert-manager, create a TLS Secret in the namespace:
+
+    ```shell
+    kubectl create secret tls drill-tls -n drill --cert=path/to/tls.crt --key=path/to/tls.key
+    ```
+
+3. Install the chart, replacing the example hostname and `nginx` with values for your cluster:
+
+    ```shell
+    helm install drill . -n drill \
+      -f values-prod.yaml \
+      --set ingress.host=drill.example.com \
+      --set-string 'ingress.tls[0].hosts[0]=drill.example.com' \
+      --set ingress.className=nginx \
+      --wait
+    ```
+
+    If cert-manager provisions TLS, omit the Secret creation command, configure the issuer in the Ingress annotations,
+    and ensure it provisions the `drill-tls` Secret configured in `values-prod.yaml`.
+
+4. Check the workloads and run the chart test:
+
+    ```shell
+    kubectl get pods,services,ingress,pvc -n drill
+    helm test drill -n drill
+    ```
+
+5. Open `https://drill.example.com` and sign in with the default credentials: `admin` / `admin`. Change the password after signing in. The API is available at `/api` and Swagger at `/swagger`. Configure Drill4J agents to send data to `https://drill.example.com/api`.
+
+## Minikube
+
+For local development, start Minikube with the port mappings used by the chart's NodePort services, then install the local values:
+
+```shell
+minikube start --driver=docker --ports=8090:30090,8091:30091
+helm install drill . -f values-local.yaml --wait
+```
+
+Open the UI at [http://localhost:8091](http://localhost:8091).
+The default login is `admin` / `admin`.
+
+If Minikube was started without the port mappings, use the `kubectl port-forward` commands printed in the Helm install notes.
+
+## Configuration
+
+Use `values-local.yaml` for Minikube development and `values-prod.yaml` as a starting point for a Kubernetes cluster.
+Adjust resource requests, storage, Ingress settings, and TLS to match your environment. The full list of chart values is in `values.yaml`.
+
+To use an external PostgreSQL instance, create a Secret containing its password and disable the chart's bundled database:
+
+```shell
+kubectl create secret generic drill-db -n drill --from-literal=db-password='<password>'
+helm install drill . -n drill -f values-prod.yaml \
+  --set postgresql.enabled=false \
+  --set externalDatabase.host=pg.example.com \
+  --set externalDatabase.username=drill \
+  --set externalDatabase.existingSecret=drill-db
+```
+
+The database user must be allowed to create the configured databases, or create them in advance and set `admin.dbInit.enabled=false`.
+
+## Upgrade and rollback
+
+Use the same values file and overrides that were used for installation:
+
+```shell
+helm upgrade drill . -n drill -f values-prod.yaml --wait
+helm rollback drill <REVISION> -n drill --wait
+```
+
+Backups are disabled by default. Admin applies database migrations at startup, and a migration may not be reversible.
