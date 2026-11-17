@@ -1,0 +1,64 @@
+name: publish-helm-chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_path:
+        description: 'Path to Helm chart directory (e.g. static/files/0.12.0/helm)'
+        required: true
+        type: string
+      version:
+        description: 'Version (vX.Y.Z or vX.Y.Z-suf.V), leave empty to auto-detect'
+        default: null
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - if: inputs.version == null
+        id: next-tag
+        uses: Drill4J/semver-tag-action@v0.2.0
+        with:
+          type: ${{ github.ref_name == 'main' && 'patch' || 'prerelease' }}
+
+      - id: version
+        run: echo "version=${tag#v}" >> $GITHUB_OUTPUT
+        env:
+          tag: ${{ inputs.version != null && inputs.version || steps.next-tag.outputs.tag }}
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Set version in Chart.yaml
+        run: |
+          yq -i ".version = \"$VERSION\"" ${{ inputs.chart_path }}/Chart.yaml
+          yq -i ".appVersion = \"$VERSION\"" ${{ inputs.chart_path }}/Chart.yaml
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - name: Lint
+        run: helm lint ${{ inputs.chart_path }}
+
+      - name: Template check
+        run: helm template drill ${{ inputs.chart_path }} > /dev/null
+
+      - name: Package
+        run: helm package ${{ inputs.chart_path }}
+
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          helm registry login ghcr.io \
+            --username ${{ github.actor }} \
+            --password-stdin
+
+      - name: Push
+        run: helm push drill-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/drill4j
