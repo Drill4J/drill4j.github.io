@@ -183,6 +183,7 @@ imagePullSecrets:
 {{- else -}}
 {{- $surge = int $s -}}
 {{- end -}}
+{{- end -}}
 {{- add $replicas $surge -}}
 {{- end }}
 
