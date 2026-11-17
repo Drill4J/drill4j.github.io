@@ -1,0 +1,85 @@
+# Integration with Keycloak Auth Server
+
+To enable authentication with Auth Provider in Drill4J, you can integrate it with Keycloak, an open-source identity and access management solution.
+This guide will walk you through the steps to set up Keycloak and configure Drill4J to use it for authentication.
+
+## Prerequisites
+- Keycloak 22.0.5. You can download it from the [Keycloak website](https://www.keycloak.org/downloads) and follow the installation instructions.
+- A running instance of Drill4J Backend & UI.
+
+## Step 1: Set Up Keycloak
+1. **Create a Realm**: Log in to the Keycloak admin console and create a new realm for your Drill4J instance.
+You can use default realm "master" if preferred.
+2. **Create a Client**: Within the newly created realm, create a new client for Drill4J.
+   - Set the Client Type to `OpenID Connect`.
+   - Set the Client ID to `drill4j`.
+   - Click Next.
+   - Set Client Authentication to `ON` to grant OIDC Access Type confidential.
+   - Set `Standard Flow` flag for Authentication Flow.
+   - Click Next.
+   - Set Valid Redirect URIs to `http://<DRILL4J_UI_HOST>:<DRILL4J_UI_PORT>/oauth/callback` (replace `<DRILL4J_UI_HOST>` and `<DRILL4J_UI_PORT>` with your Drill4J UI host and port).
+   - Click Save to create the client.
+   - On the Client Details page of the `drill4j` client, navigate to the `Credentials` tab.
+   - Copy the `Client secret` value. You will need this for configuring Drill4J.
+3. **Create Roles**: On the Client Details page of the `drill4j` client, navigate to the `Roles` tab to create roles that correspond to Drill4J user roles (e.g., `admin`, `user`).
+   - Click Create role and enter the role name `admin`.
+   - Click Save.
+   - Repeat the process to create a `user` role.
+4. **Client Scopes Mapping**: Go to the `Client Scopes` tab.
+   - Find the `roles` scope and click on it.
+   - In the `Mappers` tab, click on `Add mapper > By configuration`.
+   - On the `Configure a new mapper` window, choose the `User Client Role`.
+   - Set the `Name` to `drill4j-roles`.
+   - Set the `Client ID` to `drill4j`.
+   - Set the `Token Claim Name` to `roles`.
+   - Set Multivalued to `ON`.
+   - Set `Claim JSON Type` to `String`.
+   - Set `Add to access token` to `ON`.
+   - Click Save.
+5. **Create Users**: Navigate to the `Users` tab and create users for Drill4J.
+   - Click Add user and fill in the required fields (Username, Email, First Name, Last Name).
+   - Click Create.
+   - After creating the user, go to the `Credentials` tab to set a password for the user.
+   - Set `Temporary` to `OFF` if you don't want the user to change the password on first login.
+   - Click Set Password.
+   - Go to the `Role Mappings` tab to assign roles to the user.
+   - Select the `drill4j` client from the Client Roles dropdown.
+   - Assign the appropriate roles (e.g., `admin`, `user`) to the user.
+6. **Open OpenID Configuration**: To get the OpenID configuration URL, navigate to:
+   ```
+   http://<KEYCLOAK_HOST>:<KEYCLOAK_PORT>/realms/<REALM_NAME>/.well-known/openid-configuration
+   ```
+   Replace `<KEYCLOAK_HOST>`, `<KEYCLOAK_PORT>`, and `<REALM_NAME>` with your Keycloak host, port, and realm name respectively.
+   This URL provides the necessary endpoints for Drill4J to interact with Keycloak.
+
+## Step 2: Configure Drill4J Backend
+1. **Set environment variables**: You need to set the following environment variables for Drill4J Backend to connect to Keycloak:
+   - Set `DRILL_OAUTH2_ENABLED` to `true`.
+   - Set `DRILL_OAUTH2_AUTHORIZE_URL` to the Keycloak authorization endpoint (See `authorization_endpoint` in the OpenID configuration)
+   - Set `DRILL_OAUTH2_ACCESS_TOKEN_URL` to the Keycloak token endpoint (See `token_endpoint` in the OpenID configuration)
+   - Set `DRILL_OAUTH2_REDIRECT_URL` to `http://<DRILL4J_HOST>:<DRILL4J_UI_PORT>`
+   - Set `DRILL_OAUTH2_CLIENT_ID` to `drill4j`.
+   - Set `DRILL_OAUTH2_CLIENT_SECRET` to the client secret you copied earlier
+   - Set `DRILL_OAUTH2_SCOPES` to `openid,roles`.
+   - Set `DRILL_OAUTH2_TOKEN_MAPPING_USERNAME` to `preferred_username` according to default Keycloak client scope mapping.
+   - Set `DRILL_OAUTH2_TOKEN_MAPPING_ROLES` to `roles`.
+   - If you want to disable Simple Authentication and allow only OAuth2 authentication, set `DRILL_AUTH_SIMPLE_ENABLED` to `false` and set `DRILL_OAUTH2_AUTOMATIC_SIGN_IN` to `true`.
+2. **Restart Drill4J Backend**: After setting the environment variables, restart the Drill4J Backend service to apply the changes.
+
+## Step 3: Verify the Integration
+1. **Access Drill4J UI**: Open your web browser and navigate to the Drill4J UI URL.
+2. **Login with Auth Provider**:
+   - Case 1: If you have enabled Simple Authentication `DRILL_AUTH_SIMPLE_ENABLED=true`, click the "Sign in with Auth Provider" button in the login window.
+   - Case 2: If you have disabled Simple Authentication `DRILL_AUTH_SIMPLE_ENABLED=false` and enabled OAuth Automatic Sign In `DRILL_OAUTH2_AUTOMATIC_SIGN_IN=true`, you will be automatically redirected to the Keycloak login page.
+3. **Authenticate**: Enter the credentials of a user you created in Keycloak.
+4. **Access Drill4J**: After successful authentication, you should be redirected back to the Drill4J UI and logged in with the appropriate role.
+
+## Troubleshooting
+- If you encounter issues during the integration, set Drill4J Backend logging level to `TRACE` to get detailed logs and check for any errors.
+```
+LOG_LEVEL=TRACE
+```
+- Ensure that the Keycloak server is running and accessible from the Drill4J Backend.
+- Verify that the environment variables are correctly set and that the URLs are accurate.
+- Check the Keycloak logs for any authentication errors.
+
