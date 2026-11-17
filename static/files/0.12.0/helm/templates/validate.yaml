@@ -1,0 +1,51 @@
+{{- /* Install-time checks. Renders nothing. */ -}}
+
+{{- if and (not .Values.postgresql.enabled) .Values.admin.enabled (not .Values.externalDatabase.host) }}
+{{- fail "postgresql.enabled=false requires externalDatabase.host" }}
+{{- end }}
+
+{{- if and (not .Values.postgresql.enabled) .Values.admin.enabled (not .Values.externalDatabase.existingSecret) (not .Values.externalDatabase.password) }}
+{{- fail "external database: set externalDatabase.password or externalDatabase.existingSecret" }}
+{{- end }}
+
+{{- if and (not .Values.postgresql.enabled) .Values.externalDatabase.metrics.passwordKey (not .Values.externalDatabase.existingSecret) }}
+{{- fail "externalDatabase.metrics.passwordKey requires externalDatabase.existingSecret containing that key" }}
+{{- end }}
+
+{{- $pg := .Values.postgresql }}
+{{- if and (not $pg.enabled) (or $pg.tls.enabled $pg.adminUser.enabled $pg.hardenPublicRole) }}
+{{- fail "postgresql.tls, postgresql.adminUser and postgresql.hardenPublicRole apply to the built-in PostgreSQL only (postgresql.enabled=true)" }}
+{{- end }}
+
+{{- if and $pg.enabled (or $pg.adminUser.enabled $pg.hardenPublicRole) (not (and .Values.admin.enabled .Values.admin.dbInit.enabled)) }}
+{{- fail "postgresql.adminUser.enabled and postgresql.hardenPublicRole require admin.enabled=true and admin.dbInit.enabled=true" }}
+{{- end }}
+
+{{- if and $pg.enabled $pg.adminUser.enabled (eq $pg.adminUser.username $pg.auth.username) }}
+{{- fail "postgresql.adminUser.username must differ from postgresql.auth.username (the superuser)" }}
+{{- end }}
+
+{{- if and $pg.enabled $pg.adminUser.enabled (eq $pg.adminUser.passwordKey $pg.auth.passwordKey) }}
+{{- fail "postgresql.adminUser.passwordKey must differ from postgresql.auth.passwordKey" }}
+{{- end }}
+
+{{- if and .Values.ui.enabled (not .Values.admin.enabled) (not .Values.ui.apiHost) }}
+{{- fail "admin.enabled=false: set ui.apiHost to the admin address used by the UI" }}
+{{- end }}
+
+{{- if and .Values.postgresql.enabled .Values.admin.enabled (ne (toString .Values.postgresql.maxConnections) "auto") }}
+{{- $required := int (include "drill.requiredConnections" .) }}
+{{- if lt (int .Values.postgresql.maxConnections) $required }}
+{{- fail (printf "postgresql.maxConnections=%d is too low: admin needs %d (admin pods incl. rollout surge x (db + metrics pool) + 20). Use \"auto\" or raise it." (int .Values.postgresql.maxConnections) $required) }}
+{{- end }}
+{{- end }}
+
+{{- if and (eq .Values.exposure.mode "ingress") (not .Values.ingress.host) }}
+{{- fail "exposure.mode=ingress requires ingress.host" }}
+{{- end }}
+
+{{- range (include "drill.usedDeprecatedKeys" . | fromYamlArray) }}
+{{- if .removed }}
+{{- fail (printf "value %q was removed, use %q instead (see UPGRADING.md)" .old .new) }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,182 @@
+{{- if .Values.postgresql.enabled }}
+{{- $p := .Values.postgresql -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "drill.postgresqlName" . }}
+  labels:
+    {{- include "drill.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+spec:
+  replicas: 1
+  serviceName: {{ include "drill.postgresqlName" . }}-headless
+  selector:
+    matchLabels:
+      {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 8 }}
+      {{- if $p.tls.enabled }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/postgresql/configmap.yaml") . | sha256sum }}
+      {{- end }}
+    spec:
+      {{- include "drill.imagePullSecrets" . | nindent 6 }}
+      {{- if $p.tls.enabled }}
+      {{- $svc := include "drill.postgresqlName" . }}
+      initContainers:
+        - name: tls
+          image: {{ include "drill.image" (dict "ctx" . "image" $p.image) }}
+          imagePullPolicy: {{ $p.image.pullPolicy }}
+          securityContext:
+            runAsUser: 0
+          command: ["sh", "-c"]
+          args:
+            - |
+              set -e
+              {{- if $p.tls.existingSecret }}
+              install -m 644 -o postgres -g postgres /tls-src/tls.crt /tls/server.crt
+              install -m 600 -o postgres -g postgres /tls-src/tls.key /tls/server.key
+              echo "using certificate from secret {{ $p.tls.existingSecret }}"
+              {{- else }}
+              openssl req -new -x509 -days 3650 -nodes \
+                -subj "/CN={{ $svc }}" \
+                -addext "subjectAltName=DNS:{{ $svc }},DNS:{{ $svc }}.{{ .Release.Namespace }}.svc,DNS:{{ $svc }}.{{ .Release.Namespace }}.svc.cluster.local" \
+                -keyout /tls/server.key -out /tls/server.crt
+              chown postgres:postgres /tls/server.crt /tls/server.key
+              chmod 644 /tls/server.crt
+              chmod 600 /tls/server.key
+              echo "generated self-signed certificate"
+              {{- end }}
+          volumeMounts:
+            - name: tls
+              mountPath: /tls
+            {{- if $p.tls.existingSecret }}
+            - name: tls-src
+              mountPath: /tls-src
+              readOnly: true
+            {{- end }}
+      {{- end }}
+      containers:
+        - name: postgresql
+          image: {{ include "drill.image" (dict "ctx" . "image" $p.image) }}
+          imagePullPolicy: {{ $p.image.pullPolicy }}
+          args:
+            - postgres
+            - -c
+            - max_connections={{ include "drill.postgresql.maxConnections" . }}
+            {{- if $p.debugLogging }}
+            - -c
+            - log_statement=all
+            - -c
+            - log_min_duration_statement=0
+            {{- end }}
+            {{- if $p.tls.enabled }}
+            - -c
+            - ssl=on
+            - -c
+            - ssl_cert_file=/tls/server.crt
+            - -c
+            - ssl_key_file=/tls/server.key
+            - -c
+            - hba_file=/etc/postgresql/hba/pg_hba.conf
+            {{- end }}
+          ports:
+            - name: postgresql
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: {{ $p.auth.username | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "drill.db.secretName" . }}
+                  key: {{ $p.auth.passwordKey }}
+            - name: POSTGRES_DB
+              value: {{ $p.database | quote }}
+            # Subdirectory: the volume root may contain lost+found.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -h 127.0.0.1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -h 127.0.0.1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          {{- with $p.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: dshm
+              mountPath: /dev/shm
+            {{- if $p.tls.enabled }}
+            - name: tls
+              mountPath: /tls
+              readOnly: true
+            - name: hba
+              mountPath: /etc/postgresql/hba
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ $p.shmSize }}
+        {{- if $p.tls.enabled }}
+        - name: tls
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
+        - name: hba
+          configMap:
+            name: {{ include "drill.postgresqlName" . }}
+        {{- if $p.tls.existingSecret }}
+        - name: tls-src
+          secret:
+            secretName: {{ $p.tls.existingSecret }}
+        {{- end }}
+        {{- end }}
+        {{- if $p.persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ $p.persistence.existingClaim }}
+        {{- end }}
+      {{- with $p.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $p.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $p.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if not $p.persistence.existingClaim }}
+  # PVCs created from this template are not deleted by `helm uninstall`.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          {{- include "drill.selectorLabels" (dict "ctx" . "component" "postgresql") | nindent 10 }}
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- with $p.persistence.storageClass }}
+        storageClassName: {{ . }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ $p.persistence.size }}
+  {{- end }}
+{{- end }}

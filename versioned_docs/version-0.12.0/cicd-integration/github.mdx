@@ -168,16 +168,16 @@ jobs:
         # Download
         curl -L ${{ vars.DRILL_APPLICATION_AGENT_URL }} -o agent.zip
         # Prep folders
-        mkdir -p ./temp-agent-dir /agent
+        mkdir -p ./temp-agent-dir ./agent
         # Unzip
         unzip agent.zip -d ./temp-agent-dir
-        # Move files to /agent folder
-        find temp-agent-dir -mindepth 2 -exec mv -t /agent/ {} +
+        # Move files to the workspace agent folder
+        find temp-agent-dir -mindepth 2 -exec mv -t ./agent/ {} +
 
     - name: Deploy the application
       run: # your command to deploy application
       env:
-        JAVA_TOOL_OPTIONS: -agentpath:/agent/libdrill_agent.so # libdrill_agent.so for linux, libdrill_agent.dylib for Mac, drill_agent.dll for Windows
+        JAVA_TOOL_OPTIONS: -agentpath:${{ github.workspace }}/agent/libdrill_agent.so # libdrill_agent.so for linux, libdrill_agent.dylib for Mac, drill_agent.dll for Windows
         # Set Application Agent parameters, see link to reference below
         DRILL_APP_ID: # ...
         DRILL_GROUP_ID: # ...

@@ -1,0 +1,71 @@
+Drill4J {{ .Chart.AppVersion }} — release "{{ .Release.Name }}" in namespace "{{ .Release.Namespace }}".
+
+{{- if eq .Values.exposure.mode "local" }}
+
+Access (exposure.mode=local, NodePort):
+{{- if .Values.ui.enabled }}
+  UI:      http://localhost:8091{{ .Values.ui.basePath }}   (NodePort {{ .Values.ui.service.nodePort }})
+{{- end }}
+{{- if .Values.admin.enabled }}
+  API:     http://localhost:8090   (NodePort {{ .Values.admin.service.nodePort }})
+  Swagger: http://localhost:8090/swagger
+{{- end }}
+
+  localhost works when minikube was created with the matching port mappings:
+    minikube start --driver=docker --ports=8090:{{ .Values.admin.service.nodePort }},8091:{{ .Values.ui.service.nodePort }}
+  Otherwise use port-forward:
+{{- if .Values.ui.enabled }}
+    kubectl -n {{ .Release.Namespace }} port-forward --address 0.0.0.0 svc/{{ include "drill.uiName" . }} 8091:{{ .Values.ui.service.port }}
+{{- end }}
+{{- if .Values.admin.enabled }}
+    kubectl -n {{ .Release.Namespace }} port-forward --address 0.0.0.0 svc/{{ include "drill.adminName" . }} 8090:{{ .Values.admin.service.port }}
+{{- end }}
+{{- else }}
+
+Access (exposure.mode=ingress):
+{{- $traefikTls := eq (toString (index (.Values.ingress.annotations | default dict) "traefik.ingress.kubernetes.io/router.tls")) "true" }}
+{{- $scheme := ternary "https" "http" (or (not (empty .Values.ingress.tls)) $traefikTls) }}
+  UI:      {{ $scheme }}://{{ .Values.ingress.host }}{{ .Values.ui.basePath | default "/" }}
+  API:     {{ $scheme }}://{{ .Values.ingress.host }}/api   (also used by Drill4J agents)
+  Swagger: {{ $scheme }}://{{ .Values.ingress.host }}/swagger
+{{- end }}
+
+{{- if .Values.admin.enabled }}
+
+Default UI login: admin / admin — change the password after the first sign-in.
+Check the installation: helm test {{ .Release.Name }} -n {{ .Release.Namespace }}
+{{- end }}
+
+{{- if .Values.postgresql.enabled }}
+
+PostgreSQL: built-in, max_connections={{ include "drill.postgresql.maxConnections" . }}.
+{{- with .Values.postgresql }}
+{{- if .tls.enabled }}
+  TLS: on ({{ ternary (printf "certificate from secret %s" .tls.existingSecret) "self-signed certificate" (not (empty .tls.existingSecret)) }}), non-TLS connections from other pods are rejected.
+{{- end }}
+{{- if and .adminUser.enabled $.Values.admin.enabled }}
+  Admin connects as least-privilege role "{{ .adminUser.username }}" (password: secret "{{ include "drill.db.secretName" $ }}", key "{{ .adminUser.passwordKey }}").
+{{- end }}
+{{- if .hardenPublicRole }}
+  Default PUBLIC privileges are revoked in "{{ .database }}" and "{{ .metricsDatabase }}".
+{{- end }}
+{{- end }}
+{{- else if .Values.admin.enabled }}
+
+PostgreSQL: external {{ .Values.externalDatabase.host }}:{{ .Values.externalDatabase.port }}.
+WARNING: the server must allow at least {{ include "drill.requiredConnections" . }} connections for this release
+         (admin pods incl. rollout surge x (db + metrics pool) + 20).
+{{- end }}
+
+{{- if include "drill.backup.enabled" . }}
+Backups: pg_dump before every upgrade/rollback into PVC "{{ .Values.backup.persistence.existingClaim | default (include "drill.backupName" .) }}" (keep {{ .Values.backup.keep }}).
+{{- if and .Release.IsUpgrade (not (include "drill.backup.pvcReady" .)) }}
+WARNING: backup PVC did not exist yet, so NO backup was taken for this upgrade. It is created now; backups start with the next upgrade.
+{{- end }}
+{{- end }}
+
+{{- range (include "drill.usedDeprecatedKeys" . | fromYamlArray) }}
+{{- if not .removed }}
+DEPRECATED: value "{{ .old }}" is deprecated, use "{{ .new }}" (see UPGRADING.md).
+{{- end }}
+{{- end }}

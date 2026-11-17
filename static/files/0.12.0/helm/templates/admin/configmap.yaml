@@ -1,0 +1,42 @@
+{{- if .Values.admin.enabled }}
+{{- $c := .Values.admin.config -}}
+{{- $m := include "drill.db.metrics" . | fromYaml -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "drill.adminName" . }}
+  labels:
+    {{- include "drill.labels" . | nindent 4 }}
+    app.kubernetes.io/component: admin
+data:
+  LOG_LEVEL: {{ $c.logLevel | quote }}
+  DRILL_DB_HOST: {{ include "drill.db.host" . | quote }}
+  DRILL_DB_PORT: {{ include "drill.db.port" . | quote }}
+  DRILL_DB_NAME: {{ include "drill.db.name" . | quote }}
+  DRILL_DB_USER_NAME: {{ include "drill.admin.db.user" . | quote }}
+  DRILL_DB_SSL: {{ include "drill.db.ssl" . | quote }}
+  DRILL_DB_MAX_POOL_SIZE: {{ $c.db.maxPoolSize | int64 | quote }}
+  DRILL_METRICS_DB_NAME: {{ include "drill.db.metricsName" . | quote }}
+  DRILL_METRICS_DB_MAX_POOL_SIZE: {{ $c.metricsDb.maxPoolSize | int64 | quote }}
+  {{- with $m.host }}
+  DRILL_METRICS_DB_HOST: {{ . | quote }}
+  {{- end }}
+  {{- with $m.port }}
+  DRILL_METRICS_DB_PORT: {{ . | toString | quote }}
+  {{- end }}
+  {{- with $m.username }}
+  DRILL_METRICS_DB_USER_NAME: {{ . | quote }}
+  {{- end }}
+  {{- if and (hasKey $m "ssl") (ne (toString $m.ssl) "") }}
+  DRILL_METRICS_DB_SSL: {{ $m.ssl | toString | quote }}
+  {{- end }}
+  DRILL_SCHEDULER_ETL_JOB_CRON: {{ $c.scheduler.etlJobCron | quote }}
+  DRILL_ETL_MAX_WORKERS: {{ $c.etl.maxWorkers | int64 | quote }}
+  DRILL_ETL_CONSISTENCY_WINDOW: {{ $c.etl.consistencyWindow | int64 | quote }}
+  DRILL_ETL_PROCESSING_DELAY: {{ $c.etl.processingDelay | int64 | quote }}
+  DRILL_ETL_BATCH_SIZE: {{ $c.etl.batchSize | int64 | quote }}
+  DRILL_ETL_BUFFER_SIZE: {{ $c.etl.bufferSize | int64 | quote }}
+  DRILL_ETL_FETCH_SIZE: {{ $c.etl.fetchSize | int64 | quote }}
+  DRILL_ETL_EXTRACTION_LIMIT: {{ $c.etl.extractionLimit | int64 | quote }}
+  DRILL_ETL_AGGREGATION_BUFFER_SIZE: {{ $c.etl.aggregationBufferSize | int64 | quote }}
+{{- end }}

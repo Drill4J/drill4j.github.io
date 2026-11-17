@@ -1,0 +1,49 @@
+# minikube / local machine, hardened PostgreSQL:
+#   minikube start --driver=docker --ports=8090:30090,8091:30091
+#   helm install drill ./drill -f values-local-secure.yaml
+# Use on a fresh installation (empty PostgreSQL volume).
+exposure:
+  mode: local
+
+admin:
+  config:
+    db:
+      maxPoolSize: 20
+    metricsDb:
+      maxPoolSize: 20
+    etl:
+      maxWorkers: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 768Mi
+    limits:
+      memory: 2Gi
+
+ui:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+
+postgresql:
+  tls:
+    enabled: true
+  adminUser:
+    enabled: true
+    username: drill
+  hardenPublicRole: true
+  persistence:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    # /dev/shm (shmSize 1Gi, memory-backed) counts against this limit: keep it well above shmSize.
+    limits:
+      memory: 2Gi
+
+backup:
+  enabled: false
