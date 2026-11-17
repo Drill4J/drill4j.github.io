@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "registry": { "type": "string" },
+        "repository": { "type": "string" },
+        "tag": { "type": "string" },
+        "pullPolicy": { "type": "string", "enum": ["Always", "IfNotPresent", "Never"] }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "size": { "type": "string" },
+        "storageClass": { "type": "string" },
+        "existingClaim": { "type": "string" }
+      }
+    },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "nodePort": { "type": "integer", "minimum": 30000, "maximum": 32767 }
+      }
+    },
+    "posInt": { "type": "integer", "minimum": 1 },
+    "nonNegInt": { "type": "integer", "minimum": 0 },
+    "list": { "type": "array" },
+    "obj": { "type": "object" }
+  },
+  "properties": {
+    "global": {
+      "type": "object",
+      "properties": {
+        "imageRegistry": { "type": "string" },
+        "imagePullSecrets": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "nameOverride": { "type": "string" },
+    "fullnameOverride": { "type": "string" },
+    "exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["local", "ingress"] }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "className": { "type": "string" },
+        "host": { "type": "string" },
+        "annotations": { "$ref": "#/definitions/obj" },
+        "tls": { "$ref": "#/definitions/list" }
+      }
+    },
+    "admin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "replicaCount": { "$ref": "#/definitions/posInt" },
+        "image": { "$ref": "#/definitions/image" },
+        "updateStrategy": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["RollingUpdate", "Recreate"] },
+            "rollingUpdate": { "type": "object" }
+          }
+        },
+        "service": { "$ref": "#/definitions/service" },
+        "config": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "logLevel": { "type": "string", "enum": ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"] },
+            "db": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": { "maxPoolSize": { "$ref": "#/definitions/posInt" } }
+            },
+            "metricsDb": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": { "maxPoolSize": { "$ref": "#/definitions/posInt" } }
+            },
+            "scheduler": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": { "etlJobCron": { "type": "string" } }
+            },
+            "etl": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "maxWorkers": { "$ref": "#/definitions/posInt" },
+                "consistencyWindow": { "$ref": "#/definitions/nonNegInt" },
+                "processingDelay": { "$ref": "#/definitions/nonNegInt" },
+                "batchSize": { "$ref": "#/definitions/posInt" },
+                "bufferSize": { "$ref": "#/definitions/posInt" },
+                "fetchSize": { "$ref": "#/definitions/posInt" },
+                "extractionLimit": { "$ref": "#/definitions/posInt" },
+                "aggregationBufferSize": { "$ref": "#/definitions/posInt" }
+              }
+            }
+          }
+        },
+        "jwt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "secret": { "type": "string" },
+            "existingSecret": { "type": "string" },
+            "secretKey": { "type": "string", "minLength": 1 }
+          }
+        },
+        "dbInit": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "maintenanceDatabase": { "type": "string", "minLength": 1 }
+          }
+        },
+        "extraEnv": { "$ref": "#/definitions/list" },
+        "extraEnvFrom": { "$ref": "#/definitions/list" },
+        "extraVolumes": { "$ref": "#/definitions/list" },
+        "extraVolumeMounts": { "$ref": "#/definitions/list" },
+        "probes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "path": { "type": "string" } }
+        },
+        "startupProbe": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "periodSeconds": { "$ref": "#/definitions/posInt" },
+            "failureThreshold": { "$ref": "#/definitions/posInt" }
+          }
+        },
+        "preStopSleepSeconds": { "$ref": "#/definitions/nonNegInt" },
+        "pdb": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "minAvailable": { "type": ["integer", "string"] } }
+        },
+        "resources": { "$ref": "#/definitions/obj" },
+        "podAnnotations": { "$ref": "#/definitions/obj" },
+        "nodeSelector": { "$ref": "#/definitions/obj" },
+        "tolerations": { "$ref": "#/definitions/list" },
+        "affinity": { "$ref": "#/definitions/obj" }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "replicaCount": { "$ref": "#/definitions/posInt" },
+        "image": { "$ref": "#/definitions/image" },
+        "service": { "$ref": "#/definitions/service" },
+        "apiHost": { "type": "string" },
+        "apiPort": { "type": ["string", "integer"] },
+        "preStopSleepSeconds": { "$ref": "#/definitions/nonNegInt" },
+        "basePath": { "type": "string", "pattern": "^(/[A-Za-z0-9_.-]+)*$" },
+        "extraEnv": { "$ref": "#/definitions/list" },
+        "resources": { "$ref": "#/definitions/obj" },
+        "podAnnotations": { "$ref": "#/definitions/obj" },
+        "nodeSelector": { "$ref": "#/definitions/obj" },
+        "tolerations": { "$ref": "#/definitions/list" },
+        "affinity": { "$ref": "#/definitions/obj" }
+      }
+    },
+    "postgresql": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "image": { "$ref": "#/definitions/image" },
+        "port": { "type": "integer" },
+        "database": { "type": "string", "minLength": 1 },
+        "metricsDatabase": { "type": "string", "minLength": 1 },
+        "auth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "username": { "type": "string", "minLength": 1 },
+            "password": { "type": "string" },
+            "existingSecret": { "type": "string" },
+            "passwordKey": { "type": "string", "minLength": 1 }
+          }
+        },
+        "maxConnections": {
+          "oneOf": [
+            { "type": "string", "enum": ["auto"] },
+            { "type": "integer", "minimum": 20 }
+          ]
+        },
+        "debugLogging": { "type": "boolean" },
+        "tls": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "existingSecret": { "type": "string" }
+          }
+        },
+        "adminUser": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "username": { "type": "string", "pattern": "^[a-z_][a-z0-9_]{0,62}$" },
+            "password": { "type": "string" },
+            "passwordKey": { "type": "string", "minLength": 1 }
+          }
+        },
+        "hardenPublicRole": { "type": "boolean" },
+        "shmSize": { "type": "string" },
+        "persistence": { "$ref": "#/definitions/persistence" },
+        "resources": { "$ref": "#/definitions/obj" },
+        "nodeSelector": { "$ref": "#/definitions/obj" },
+        "tolerations": { "$ref": "#/definitions/list" },
+        "affinity": { "$ref": "#/definitions/obj" }
+      }
+    },
+    "externalDatabase": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "host": { "type": "string" },
+        "port": { "type": "integer" },
+        "ssl": { "type": "boolean" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "existingSecret": { "type": "string" },
+        "passwordKey": { "type": "string", "minLength": 1 },
+        "database": { "type": "string", "minLength": 1 },
+        "metricsDatabase": { "type": "string", "minLength": 1 },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "host": { "type": "string" },
+            "port": { "type": ["string", "integer"] },
+            "ssl": { "type": ["string", "boolean"] },
+            "username": { "type": "string" },
+            "passwordKey": { "type": "string" }
+          }
+        }
+      }
+    },
+    "backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "string", "enum": ["auto"] }
+          ]
+        },
+        "keep": { "$ref": "#/definitions/posInt" },
+        "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "registry": { "type": "string" },
+            "repository": { "type": "string" },
+            "tag": { "type": "string" }
+          }
+        },
+        "persistence": { "$ref": "#/definitions/persistence" },
+        "activeDeadlineSeconds": { "$ref": "#/definitions/posInt" },
+        "resources": { "$ref": "#/definitions/obj" }
+      }
+    }
+  }
+}

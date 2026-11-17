@@ -1,0 +1,20 @@
+{{- if .Values.admin.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "drill.adminName" . }}
+  labels:
+    {{- include "drill.labels" . | nindent 4 }}
+    app.kubernetes.io/component: admin
+spec:
+  type: {{ ternary "NodePort" "ClusterIP" (eq .Values.exposure.mode "local") }}
+  selector:
+    {{- include "drill.selectorLabels" (dict "ctx" . "component" "admin") | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.admin.service.port }}
+      targetPort: http
+      {{- if and (eq .Values.exposure.mode "local") .Values.admin.service.nodePort }}
+      nodePort: {{ .Values.admin.service.nodePort }}
+      {{- end }}
+{{- end }}
