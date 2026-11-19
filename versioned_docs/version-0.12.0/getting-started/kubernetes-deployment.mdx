@@ -23,9 +23,15 @@ The chart requires Kubernetes 1.25 or later.
 
 ## Get the Helm chart
 
-Download [helm.zip](/files/0.12.0/helm/helm.zip) and extract it into an empty folder.
+Pull and extract the chart from the [GitHub Container Registry](https://github.com/Drill4J/drill4j.github.io/pkgs/container/drill):
 
-Open a terminal in the extracted folder containing `Chart.yaml`. Run the following Helm commands from this folder.
+<Codeblock language="shell">
+{`
+helm pull oci://ghcr.io/drill4j/drill --version ${versions.helm} --untar
+`}
+</Codeblock>
+
+This creates a `drill` folder containing `Chart.yaml`. Run the following Helm commands from that folder.
 
 ## Deploy to a Kubernetes cluster
 

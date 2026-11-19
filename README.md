@@ -1,6 +1,6 @@
 # Website
 
-Website [Drill4J](https://drill4j.github.io/drill4j-website/).
+Website [Drill4J](https://drill4j.github.io).
 
 ## Prerequisites
 

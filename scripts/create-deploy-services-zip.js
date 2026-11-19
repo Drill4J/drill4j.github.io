@@ -59,7 +59,6 @@ deployVersions.forEach((version) => {
 versions.forEach((version) => {
   [
     ["secure-config", "deploy-drill4j-services-secure.zip"],
-    ["helm", "helm.zip"],
   ].forEach(([folder, zipName]) => {
     const sourceDir = path.join(filesRoot, version, folder);
     if (fs.existsSync(sourceDir)) {
